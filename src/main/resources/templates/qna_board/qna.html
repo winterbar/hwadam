@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beauminity - 질문 게시판</title>
+
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link rel="stylesheet" th:href="@{/css/board.css}">
 </head>
 <body>
 
-    <div th:replace="~{fragments/header :: headerFragment}"></div>
+    <div th:replace="~{layout/header :: headerFragment}"></div>
 
     <main>
 
@@ -154,7 +155,7 @@
 
     </main>
 
-    <div th:replace="~{fragments/footer :: footerFragment}"></div>
+    <div th:replace="~{layout/footer :: footerFragment}"></div>
 
 </body>
 </html>
