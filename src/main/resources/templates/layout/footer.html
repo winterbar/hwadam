@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+</head>
+<body>
+
+    <footer th:fragment="footerFragment">
+        <div class="footer-container">
+            <div class="footer-info">
+                <h4>BEAUMINITY</h4>
+                <p>나만의 정체성과 가치를 채워주는 젠더리스 뷰티 플랫폼</p>
+                <p style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.5;">&copy; 2026 Beauminity Co. All rights reserved.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#">이용약관</a>
+                <a href="#">개인정보처리방침</a>
+                <a href="#">고객센터</a>
+            </div>
+        </div>
+
+        <script>
+            const themeBtn = document.getElementById('btn-theme-toggle');
+            const iconIndicator = document.getElementById('icon-theme-indicator');
+
+            themeBtn.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                
+                if (currentTheme === 'dark') {
+                    document.documentElement.removeAttribute('data-theme');
+                    iconIndicator.innerText = '🌙';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    iconIndicator.innerText = '☀️';
+                }
+            });
+        </script>
+    </footer>
+
+</body>
+</html>

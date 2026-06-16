@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Beauminity - 피드 작성 메인</title>
+    <link rel="stylesheet" th:href="@{/css/feed_write.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+
+    <header th:replace="~{fragments/header :: header}"></header>
+
+    <main class="write-main">
+        <section class="dashboard-section">
+            <div class="section-header">
+                <h2>✍️ BOTD 작성 <span>오늘의 뷰티 기록을 사진과 해시태그로 간단하게 공유해보세요.</span></h2>
+                <a href="beaminity_main_style_feed_botd_clean_linked.html" class="more-link">피드로 돌아가기</a>
+            </div>
+
+            <div class="write-guide">
+                <strong>작성 예시</strong> · 사진 1장 이상, 사용한 제품명, 피부 타입에 도움 되는 설명, 해시태그를 함께 넣으면 다른 사용자가 더 쉽게 참고할 수 있어요.
+            </div>
+
+            <div class="write-layout">
+                <div class="upload-preview-card">
+                    <div class="upload-preview-box">
+                        <span>이미지 미리보기</span>
+                    </div>
+                    <div class="upload-preview-info">
+                        <strong>업로드 미리보기</strong>
+                        <p>실제 구현 시 파일을 선택하면 이 영역에 업로드한 이미지가 표시되는 구조로 연결하면 됩니다.</p>
+                    </div>
+                </div>
+
+                <form class="write-form-card">
+
+                    
+
+
+                    <div class="form-group">
+                        <label for="feed-image">피드 이미지</label>
+                        <label class="image-upload-area" for="feed-image">
+                            <div>
+                                <strong>사진 업로드</strong>
+                                <span>JPG, PNG 파일을 선택하세요</span>
+                            </div>
+                        </label>
+                        <input id="feed-image" type="file" accept="image/*" hidden>
+                    </div>
+
+
+
+                    
+
+                    <div class="form-group">
+                        <label for="feed-content">본문</label>
+                        <textarea id="feed-content" class="form-textarea" placeholder="오늘 사용한 제품, 사용감, 지속력, 피부 타입별 팁 등을 자유롭게 적어주세요."></textarea>
+                    </div>
+
+
+
+
+
+                    <div class="form-group">
+                        <label for="product-name">정보 공유 게시판 링크</label>
+                        <input id="product-name" class="form-input" type="text" placeholder="예: 정보공유 게시글 링크를 붙여넣어 주세요">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="feed-tags">해시태그</label>
+                        <div class="tag-input-wrap">
+                            <input id="feed-tags" class="form-input tag-input" type="text" placeholder="예: 톤업크림 입력 후 Enter">
+                            <button type="button" class="tag-add-btn" id="tag-add-btn">등록</button>
+                        </div>
+                        <div class="tag-preview-list" id="tag-preview-list"></div>
+                    </div>
+
+                    <div class="write-actions">
+                        <button type="button" class="btn-cancel" onclick="location.href='beaminity_main_style_feed_botd_clean_linked.html'">취소</button>
+                        <button type="button" class="btn-submit">등록하기</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    <script th:inline="javascript">
+        const tagInput = document.getElementById('feed-tags');
+        const tagAddBtn = document.getElementById('tag-add-btn');
+        const tagPreviewList = document.getElementById('tag-preview-list');
+
+        function normalizeTag(value) {
+            return value.trim().replace(/^#+/, '');
+        }
+
+        function addTag() {
+            const tagName = normalizeTag(tagInput.value);
+
+            if (!tagName) return;
+
+            const existingTags = Array.from(tagPreviewList.querySelectorAll('.tag-chip'))
+                .map(chip => chip.dataset.tag);
+
+            if (existingTags.includes(tagName)) {
+                tagInput.value = '';
+                return;
+            }
+
+            const chip = document.createElement('button');
+            chip.type = 'button';
+            chip.className = 'tag-chip';
+            chip.dataset.tag = tagName;
+            chip.innerHTML = `#${tagName} <span>×</span>`;
+
+            chip.addEventListener('click', () => {
+                chip.remove();
+            });
+
+            tagPreviewList.appendChild(chip);
+            tagInput.value = '';
+        }
+
+        if (tagAddBtn && tagInput && tagPreviewList) {
+            tagAddBtn.addEventListener('click', addTag);
+
+            tagInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    addTag();
+                }
+            });
+
+            tagPreviewList.querySelectorAll('.tag-chip').forEach(chip => {
+                chip.dataset.tag = chip.textContent.replace('×', '').replace('#', '').trim();
+                chip.addEventListener('click', () => {
+                    chip.remove();
+                });
+            });
+        }
+
+
+        const themeBtn = document.getElementById('btn-theme-toggle');
+        const iconIndicator = document.getElementById('icon-theme-indicator');
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+
+            if (currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                iconIndicator.innerText = '🌙';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                iconIndicator.innerText = '☀️';
+            }
+        });
+    </script>
+</body>
+</html>

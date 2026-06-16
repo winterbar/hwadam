@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beauminity</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
+</head>
+<body>
+
+    <div th:replace="~{layout/header :: headerFragment}"></div>
+
+    <main>
+
+        <div class="main-left-content">
+            
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2>🔥 실시간 인기 게시글 <span>현재 커뮤니티에서 가장 핫한 대화 주제들</span></h2>
+                    <a th:href="@{/board/popular}" class="more-link">전체보기</a>
+                </div>
+                
+                <table class="main-post-table">
+                    <tbody>
+                        <tr>
+                            <td><span class="main-post-tag">[질문]</span></td>
+                            <td><a href="#" class="main-post-title">면도 후 인그로운 헤어랑 붉은 기 진정 어떻게 하시나요?</a><span class="main-post-replies">[14]</span></td>
+                            <td class="main-post-meta">조회 142</td>
+                        </tr>
+                        <tr>
+                            <td><span class="main-post-tag">[후기]</span></td>
+                            <td><a href="#" class="main-post-title">내돈내산) 올리브영 세일 때 쟁여야 할 지성 선크림 3종 솔직 비교</a><span class="main-post-replies">[29]</span></td>
+                            <td class="main-post-meta">조회 611</td>
+                        </tr>
+                        <tr>
+                            <td><span class="main-post-tag">[질문]</span></td>
+                            <td><a href="#" class="main-post-title">코 주변 블랙헤드 제거용으로 클렌징 오일 유화법 효과 보신 분 계신가요?</a><span class="main-post-replies">[26]</span></td>
+                            <td class="main-post-meta">조회 780</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2>✨ 오늘의 BOTD <span>Beauty Of The Day</span></h2>
+                    <a th:href="@{/botd/more}" class="more-link">더보기</a>
+                </div>
+
+                <div class="botd-grid">
+                    <div class="botd-card">
+                        <div class="botd-img-placeholder">📸</div>
+                        <div class="botd-info">
+                            <div class="botd-user">@grooming_master</div>
+                            <div class="botd-title">면접 프리패스용 깔끔 댄디 정석 셋업 메이크업</div>
+                        </div>
+                    </div>
+                    <div class="botd-card">
+                        <div class="botd-img-placeholder">📸</div>
+                        <div class="botd-info">
+                            <div class="botd-user">@skincare_daily</div>
+                            <div class="botd-title">여름철 유분기 잡는 보송보송 파데리스 파우더 루틴</div>
+                        </div>
+                    </div>
+                    <div class="botd-card">
+                        <div class="botd-img-placeholder">📸</div>
+                        <div class="botd-info">
+                            <div class="botd-user">@perfume_love</div>
+                            <div class="botd-title">장마철에도 쾌적한 중성적인 시트러스 우디 향수 코디</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <aside class="right-sidebar">
+            
+            <div class="sidebar-ranking">
+                <h4>👑 주간 멤버 랭킹</h4>
+                <ul class="ranking-list">
+                    <li class="ranking-item">
+                        <span class="rank-user"><span class="rank-num">1</span> 그루밍마스터</span>
+                        <span class="rank-points">4,250 p</span>
+                    </li>
+                    <li class="ranking-item">
+                        <span class="rank-user"><span class="rank-num">2</span> 훈훈스킨</span>
+                        <span class="rank-points">3,980 p</span>
+                    </li>
+                    <li class="ranking-item">
+                        <span class="rank-user"><span class="rank-num">3</span> 올영단골</span>
+                        <span class="rank-points">3,410 p</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-login-link-box">
+                <div class="login-link-title">
+                    더 다양한 그루밍 팁을 보려면<br><span>Beauminity</span>에 로그인하세요!
+                </div>
+                <button class="sidebar-move-login-btn" th:onclick="|location.href='@{/login}'|">로그인하러 가기</button>
+                <div class="login-link-sub">
+                    <a th:href="@{/register}">회원가입</a> | <a th:href="@{/find-account}">계정 찾기</a>
+                </div>
+            </div>
+
+            <a th:href="@{/chatbot}" class="sidebar-chatbot-banner">
+                <span class="banner-top-tag">AI COUNSELING</span>
+                <div class="banner-title">맞춤형 관리, 어려울 땐<br><span>그루밍 AI 챗봇</span>에게</div>
+                <div class="banner-desc">실시간 스킨케어 진단 받기</div>
+            </a>
+            
+        </aside>
+
+    </main>
+
+    <div th:replace="~{layout/footer :: footerFragment}"></div>
+
+</body>
+</html>
