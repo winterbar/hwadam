@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <header th:replace="~{fragments/header :: header}"></header>
+    <header th:replace="~{layout/header :: header}"></header>
 
     <div class="feed-filter-bar is-closed" id="feed-filter-bar">
         <div class="feed-filter-summary" id="feed-filter-summary" role="button" tabindex="0">
@@ -19,17 +19,10 @@
             </div>
             <em id="feed-filter-toggle-icon">펼치기 ＋</em>
         </div>
-        <div class="feed-filter-inner" id="feed-filter-inner" aria-label="해시태그 필터">
+        <div class="feed-filter-inner" id="feed-filter-inner" aria-label="해시태그 필터" style="display: none;">
             <button class="feed-tag-btn active" data-tag="all">#전체</button>
-            <button class="feed-tag-btn" data-tag="톤업크림">#톤업크림</button>
-            <button class="feed-tag-btn" data-tag="눈썹정리">#눈썹정리</button>
-            <button class="feed-tag-btn" data-tag="나이트루틴">#나이트루틴</button>
-            <button class="feed-tag-btn" data-tag="남자비비크림">#남자비비크림</button>
-            <button class="feed-tag-btn" data-tag="건성선크림">#건성선크림</button>
-            <button class="feed-tag-btn" data-tag="데일리메이크업">#데일리메이크업</button>
         </div>
     </div>
-
     <main>
 
         <div class="main-left-content">
@@ -39,144 +32,11 @@
                     <h2>📸 BOTD <span>사용자의 데일리 루틴과 사용샷을 모아보는 공간입니다.</span></h2>
                 </div>
 
-                <div class="feed-list">
-                    <article class="feed-card" data-tags="톤업크림 데일리메이크업 꾸안꾸">
-                        <div class="feed-card-head">
-                            <div class="feed-profile">
-                                <div class="feed-avatar">O</div>
-                                <div>
-                                    <div class="feed-profile-name">office_mood</div>
-                                    <div class="feed-profile-badges">
-                                        <span class="feed-badge">복합성</span>
-                                        <span class="feed-badge accent">봄웜</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="feed-more">···</div>
-                        </div>
-
-                        <div class="feed-visual">
-                            <div class="feed-product-chip">사용 제품 4개 · 후기 연결됨</div>
-                        </div>
-
-                        <div class="feed-body">
-                            <div class="feed-actions">
-                                <div class="feed-action-left">
-                                    <button class="feed-action-btn">♡</button>
-                                    <button class="feed-action-btn">💬</button>
-                                    <button class="feed-action-btn">↗</button>
-                                </div>
-                            </div>
-                            <div class="feed-likes">좋아요 142개</div>
-                            <div class="feed-caption">
-                                <strong>office_mood</strong> 출근 전 10분 꾸안꾸 메이크업. 톤업크림을 얇게 바르고 립밤으로만 마무리했어요.
-                            </div>
-                            <div class="feed-tags">
-                                <button>#톤업크림</button>
-                                <button>#데일리메이크업</button>
-                                <button>#꾸안꾸</button>
-                            </div>
-                            <div class="feed-comments">댓글 22개 모두 보기</div>
-                            <div class="feed-time">12분 전</div>
-                            <div class="feed-comment-input">
-                                <input type="text" placeholder="댓글 달기..." />
-                                <button>게시</button>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="feed-card" data-tags="눈썹정리 아이브로우 그루밍">
-                        <div class="feed-card-head">
-                            <div class="feed-profile">
-                                <div class="feed-avatar">B</div>
-                                <div>
-                                    <div class="feed-profile-name">brow_note</div>
-                                    <div class="feed-profile-badges">
-                                        <span class="feed-badge">지성</span>
-                                        <span class="feed-badge accent">여름쿨</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="feed-more">···</div>
-                        </div>
-
-                        <div class="feed-visual">
-                            <div class="feed-product-chip">아이브로우 루틴 · 초보 추천</div>
-                        </div>
-
-                        <div class="feed-body">
-                            <div class="feed-actions">
-                                <div class="feed-action-left">
-                                    <button class="feed-action-btn">♡</button>
-                                    <button class="feed-action-btn">💬</button>
-                                    <button class="feed-action-btn">↗</button>
-                                </div>
-                            </div>
-                            <div class="feed-likes">좋아요 118개</div>
-                            <div class="feed-caption">
-                                <strong>brow_note</strong> 눈썹 정리만 해도 인상이 달라져요. 초보자는 라인을 진하게 잡기보다 빈 곳만 채우는 게 자연스럽더라구요.
-                            </div>
-                            <div class="feed-tags">
-                                <button>#눈썹정리</button>
-                                <button>#아이브로우</button>
-                                <button>#그루밍</button>
-                            </div>
-                            <div class="feed-comments">댓글 16개 모두 보기</div>
-                            <div class="feed-time">25분 전</div>
-                            <div class="feed-comment-input">
-                                <input type="text" placeholder="댓글 달기..." />
-                                <button>게시</button>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="feed-card" data-tags="나이트루틴 건성피부 보습">
-                        <div class="feed-card-head">
-                            <div class="feed-profile">
-                                <div class="feed-avatar">S</div>
-                                <div>
-                                    <div class="feed-profile-name">skin_night</div>
-                                    <div class="feed-profile-badges">
-                                        <span class="feed-badge">건성</span>
-                                        <span class="feed-badge accent">가을웜</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="feed-more">···</div>
-                        </div>
-
-                        <div class="feed-visual">
-                            <div class="feed-product-chip">나이트 루틴 · 보습 집중</div>
-                        </div>
-
-                        <div class="feed-body">
-                            <div class="feed-actions">
-                                <div class="feed-action-left">
-                                    <button class="feed-action-btn">♡</button>
-                                    <button class="feed-action-btn">💬</button>
-                                    <button class="feed-action-btn">↗</button>
-                                </div>
-                            </div>
-                            <div class="feed-likes">좋아요 96개</div>
-                            <div class="feed-caption">
-                                <strong>skin_night</strong> 각질 패드로 가볍게 정리하고 크림을 두 번 나눠 바르니까 다음날 덜 당겨요.
-                            </div>
-                            <div class="feed-tags">
-                                <button>#나이트루틴</button>
-                                <button>#건성피부</button>
-                                <button>#보습</button>
-                            </div>
-                            <div class="feed-comments">댓글 9개 모두 보기</div>
-                            <div class="feed-time">1시간 전</div>
-                            <div class="feed-comment-input">
-                                <input type="text" placeholder="댓글 달기..." />
-                                <button>게시</button>
-                            </div>
-                        </div>
-                    </article>
+                <div class="feed-list" id="feed-list-container">
+                    
                 </div>
 
-                <div class="feed-empty" id="feed-empty">해당 해시태그가 포함된 피드가 아직 없어요.</div>
+                <div class="feed-empty" id="feed-empty" style="display: block;">등록된 피드가 없습니다. 첫 번째 피드를 작성해보세요!</div>
             </section>
 
         </div>
@@ -188,7 +48,7 @@
                     <div class="feed-upload-title">오늘의 피드를 <span>공유</span>해보세요</div>
                     <div class="feed-upload-desc">사진, 사용 제품, 해시태그를 함께 올리면 비슷한 피부 타입의 사용자가 더 쉽게 참고할 수 있어요.</div>
                 </div>
-                <button class="feed-upload-btn">피드 작성하기</button>
+                <button class="feed-upload-btn" type="button" onclick="location.href='/feed/write'">피드 작성하기</button>
             </div>
 
             <div class="sidebar-ranking">
@@ -219,76 +79,223 @@
 
     </main>
 
-
-    <footer th:replace="~{fragments/footer :: footer}"></footer>
+    <footer th:replace="~{layout/footer :: footer}"></footer>
 
     <script>
-        const filterBar = document.getElementById('feed-filter-bar');
-        const filterSummary = document.getElementById('feed-filter-summary');
-        const filterToggleIcon = document.getElementById('feed-filter-toggle-icon');
+    document.addEventListener('DOMContentLoaded', function () {
 
-        function toggleFeedFilter() {
-            const isClosed = filterBar.classList.toggle('is-closed');
-            filterToggleIcon.innerText = isClosed ? '펼치기 ＋' : '접기 －';
+    const filterBar = document.getElementById('feed-filter-bar');
+    const filterSummary = document.getElementById('feed-filter-summary');
+    const filterToggleIcon = document.getElementById('feed-filter-toggle-icon');
+    const filterInner = document.getElementById('feed-filter-inner');
+
+    const feedListContainer = document.getElementById('feed-list-container');
+    const feedEmpty = document.getElementById('feed-empty');
+
+    const uploadModal = document.getElementById('feed-upload-modal');
+    const openUploadModalBtn = document.getElementById('open-upload-modal');
+    const closeUploadModalBtn = document.getElementById('close-upload-modal');
+    const submitFeedBtn = document.getElementById('submit-feed-btn');
+
+    const inputProfileName = document.getElementById('input-profile-name');
+    const selectSkinType = document.getElementById('select-skin-type');
+    const selectSkinTone = document.getElementById('select-skin-tone');
+    const inputCaption = document.getElementById('input-caption');
+    const inputTags = document.getElementById('input-tags');
+
+    // 해시태그 펼치기 / 접기
+    function toggleFeedFilter() {
+        const isClosed = filterInner.style.display === 'none' || filterInner.style.display === '';
+
+        if (isClosed) {
+            filterInner.style.display = 'flex';
+            filterBar.classList.remove('is-closed');
+            filterToggleIcon.innerText = '접기 －';
+        } else {
+            filterInner.style.display = 'none';
+            filterBar.classList.add('is-closed');
+            filterToggleIcon.innerText = '펼치기 ＋';
         }
+    }
 
-        if (filterSummary) {
-            filterSummary.addEventListener('click', toggleFeedFilter);
-            filterSummary.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    toggleFeedFilter();
-                }
-            });
-        }
+    if (filterSummary) {
+        filterSummary.addEventListener('click', toggleFeedFilter);
 
-        const tagButtons = document.querySelectorAll('.feed-tag-btn');
-        const feedCards = document.querySelectorAll('.feed-card');
-        const feedResult = document.getElementById('feed-result-message');
-        const feedEmpty = document.getElementById('feed-empty');
-
-        tagButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                tagButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-
-                const selectedTag = button.dataset.tag;
-                let visibleCount = 0;
-
-                feedCards.forEach(card => {
-                    const tags = card.dataset.tags || '';
-                    const shouldShow = selectedTag === 'all' || tags.includes(selectedTag);
-                    card.classList.toggle('is-hidden', !shouldShow);
-                    if (shouldShow) visibleCount += 1;
-                });
-
-                if (feedResult) {
-                    feedResult.textContent = selectedTag === 'all'
-                        ? '전체 피드를 보고 있어요.'
-                        : `#${selectedTag} 해시태그가 포함된 피드 ${visibleCount}개를 보고 있어요.`;
-                }
-
-                if (feedEmpty) {
-                    feedEmpty.style.display = visibleCount === 0 ? 'block' : 'none';
-                }
-            });
-        });
-
-        const themeBtn = document.getElementById('btn-theme-toggle');
-        const iconIndicator = document.getElementById('icon-theme-indicator');
-
-        themeBtn.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            
-            if (currentTheme === 'dark') {
-                document.documentElement.removeAttribute('data-theme');
-                iconIndicator.innerText = '🌙';
-            } else {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                iconIndicator.innerText = '☀️';
+        filterSummary.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                toggleFeedFilter();
             }
         });
-    </script>
+    }
 
-</body>
-</html>
+    // 피드 필터 적용
+    function applyFilter(selectedTag) {
+        const feedCards = document.querySelectorAll('.feed-card');
+        let visibleCount = 0;
+
+        feedCards.forEach(function (card) {
+            const cardTags = card.dataset.tags || '';
+
+            if (selectedTag === 'all' || cardTags.includes(selectedTag)) {
+                card.style.display = 'block';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if (feedEmpty) {
+            feedEmpty.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+    }
+
+    // 해시태그 버튼 클릭
+    if (filterInner) {
+        filterInner.addEventListener('click', function (event) {
+            if (!event.target.classList.contains('feed-tag-btn')) return;
+
+            const tagButtons = document.querySelectorAll('.feed-tag-btn');
+
+            tagButtons.forEach(function (button) {
+                button.classList.remove('active');
+            });
+
+            event.target.classList.add('active');
+
+            const selectedTag = event.target.dataset.tag;
+            applyFilter(selectedTag);
+        });
+    }
+
+    // 해시태그 버튼 자동 추가
+    function addTagButton(tagName) {
+        if (!tagName) return;
+
+        const cleanTag = tagName.replace('#', '').trim();
+
+        if (!cleanTag) return;
+
+        const existingButton = document.querySelector(`.feed-tag-btn[data-tag="${cleanTag}"]`);
+
+        if (existingButton) return;
+
+        const button = document.createElement('button');
+        button.className = 'feed-tag-btn';
+        button.dataset.tag = cleanTag;
+        button.innerText = '#' + cleanTag;
+
+        filterInner.appendChild(button);
+    }
+
+    // 모달 열기
+    if (openUploadModalBtn) {
+        openUploadModalBtn.addEventListener('click', function () {
+            uploadModal.style.display = 'flex';
+        });
+    }
+
+    // 모달 닫기
+    if (closeUploadModalBtn) {
+        closeUploadModalBtn.addEventListener('click', function () {
+            uploadModal.style.display = 'none';
+        });
+    }
+
+    // 모달 바깥 누르면 닫기
+    if (uploadModal) {
+        uploadModal.addEventListener('click', function (event) {
+            if (event.target === uploadModal) {
+                uploadModal.style.display = 'none';
+            }
+        });
+    }
+
+    // 피드 등록
+    if (submitFeedBtn) {
+        submitFeedBtn.addEventListener('click', function () {
+            const profileName = inputProfileName.value.trim();
+            const skinType = selectSkinType.value;
+            const skinTone = selectSkinTone.value;
+            const caption = inputCaption.value.trim();
+            const tagText = inputTags.value.trim();
+
+            if (!profileName) {
+                alert('닉네임을 입력해주세요.');
+                return;
+            }
+
+            if (!caption) {
+                alert('내용을 입력해주세요.');
+                return;
+            }
+
+            const tags = tagText
+                .split(' ')
+                .map(function (tag) {
+                    return tag.replace('#', '').trim();
+                })
+                .filter(function (tag) {
+                    return tag !== '';
+                });
+
+            tags.forEach(function (tag) {
+                addTagButton(tag);
+            });
+
+            const tagHtml = tags.map(function (tag) {
+                return `<span class="feed-hashtag">#${tag}</span>`;
+            }).join('');
+
+            const feedCard = document.createElement('article');
+            feedCard.className = 'feed-card';
+            feedCard.dataset.tags = tags.join(',');
+
+            feedCard.innerHTML = `
+                <div class="feed-card-image">
+                    📸
+                </div>
+
+                <div class="feed-card-content">
+                    <div class="feed-card-top">
+                        <div>
+                            <strong>${profileName}</strong>
+                            <span>${skinType} · ${skinTone}</span>
+                        </div>
+                    </div>
+
+                    <p class="feed-card-caption">${caption}</p>
+
+                    <div class="feed-card-tags">
+                        ${tagHtml}
+                    </div>
+
+                    <div class="feed-card-bottom">
+                        <span>♡ 좋아요 0</span>
+                        <span>댓글 0</span>
+                    </div>
+                </div>
+            `;
+
+            feedListContainer.prepend(feedCard);
+
+            if (feedEmpty) {
+                feedEmpty.style.display = 'none';
+            }
+
+            inputProfileName.value = '';
+            inputCaption.value = '';
+            inputTags.value = '';
+
+            uploadModal.style.display = 'none';
+
+            const activeButton = document.querySelector('.feed-tag-btn.active');
+
+            if (activeButton) {
+                applyFilter(activeButton.dataset.tag);
+            }
+        });
+    }
+
+});
+</script>
