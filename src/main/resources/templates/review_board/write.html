@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>후기 작성</title>
+    
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/write.css}">
+    <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
+</head>
+<body>
+
+    <div th:replace="~{layout/header :: header}"></div>
+
+    <main>
+        <div class="write-container">
+            <div class="write-header">
+                <h2>후기 등록하기</h2>
+            </div>
+
+            <form th:action="@{/board/review/write}" method="post" enctype="multipart/form-data">
+                
+                <input type="hidden" id="mainCategory" name="mainCategory">
+                <input type="hidden" id="subCategory" name="subCategory">
+                <input type="hidden" id="productImage" name="productImage">
+                <input type="hidden" id="purchaseLink" name="purchaseLink">
+
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="author">작성자</label>
+                        <input type="text" id="author" name="author" class="form-control" 
+                               th:value="${loginUser}" required readonly>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="displayMainCategory">대분류</label>
+                        <input type="text" id="displayMainCategory" class="form-control" placeholder="검색 시 자동 입력됩니다" disabled>
+                    </div>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="displaySubCategory">소분류</label>
+                        <input type="text" id="displaySubCategory" class="form-control" placeholder="검색 시 자동 입력됩니다" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="apiSearch">네이버 상품 검색 연동</label>
+                        <div class="search-input-group">
+                            <input type="text" id="apiSearch" class="form-control" placeholder="검색어를 입력하세요.">
+                            <button type="button" class="btn-search" onclick="openSearchModal()">검색</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="targetTitle">선택된 리뷰 대상</label>
+                    <input type="text" id="targetTitle" name="targetTitle" class="form-control" placeholder="검색 창에서 제품을 선택해 주세요." readonly required>
+                </div>
+
+                <div class="form-group">
+                    <label for="title">리뷰 제목</label>
+                    <input type="text" id="title" name="title" class="form-control" placeholder="리뷰 제목을 입력해주세요." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="content">리뷰 내용</label>
+                    <textarea id="content" name="content" class="form-control" placeholder="내용을 정성껏 작성해주세요." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>이미지 첨부</label>
+                    <div class="file-upload-wrapper" onclick="document.getElementById('fileInput').click()">
+                        <span class="upload-icon">📁</span>
+                        <span class="upload-text">파일을 선택하거나 여기로 드래그하세요.</span>
+                        <span class="upload-hint">JPG, PNG, GIF 파일만 업로드 가능합니다.</span>
+                        <input type="file" id="fileInput" name="reviewFile">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel" th:onclick="|location.href='@{/board/review}'|">취소</button>
+                    <button type="submit" class="btn btn-submit">등록 완료</button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <div id="searchModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>네이버 상품 검색 결과</h3>
+                <button type="button" class="modal-close-btn" onclick="closeSearchModal()">&times;</button>
+            </div>
+            <div id="modalResultList" class="modal-body">
+                </div>
+        </div>
+    </div>
+
+    <div th:replace="~{layout/footer :: footer}"></div>
+
+    <script>
+            
+
+
+        // 검색 버튼 클릭 시 작동하는 함수 (모달 열기 및 가상 검색 결과 출력)
+        function openSearchModal() {
+            const keyword = document.getElementById('apiSearch').value.trim();
+            if (!keyword) {
+                alert('검색어를 입력해주세요.');
+                return;
+            }
+            
+            // 1. 백엔드 컨트롤러로 검색어 데이터 전송
+            fetch(`/api/search?keyword=${encodeURIComponent(keyword)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("네트워크 응답에 문제가 있습니다.");
+                    }
+                    return response.json(); // 서버가 준 데이터를 JSON 객체로 파싱
+                })
+                .then(data => {
+                    const modalBody = document.getElementById('modalResultList');
+                    modalBody.innerHTML = ''; // 기존 검색 초기화
+
+                    // 네이버 쇼핑 API 결과 데이터 구조는 'items'라는 배열 안에 담겨서 옵니다.
+                    const items = data.items;
+
+                    if (!items || items.length === 0){
+                        modalBody.innerHTML = '<p style="padding: 1rem; text-align: center;"> 검색 결과가 없습니다.</p>';
+                        document.getElementById('searchModal').style.display = 'flex';
+                        return;
+                    }
+                    
+                    // 2. 반복문을 돌며 JSON 데이터를 화면 HTML 구조로 동적 변환
+                    items.forEach(item => {
+                        // 네이버 제목에 포함된 <b> 태그 제거 처리
+                        const cleanTitle = item.title.replace(/<[^>]*>/g, '');
+
+                        // 검색 결과 목록 생성 및 클릭 이벤트(selectProduct) 연결
+                        modalBody.innerHTML += `
+                            <div class="search-item" onclick="selectProduct('${cleanTitle}', '${item.link}', '${item.image}', '${item.category2}', '${item.category3}')">
+                                <img src="${item.image}" alt="상품이미지" onerror="this.src='/images/common/no-image.png'">
+                                <div class="item-info">
+                                    <p class="item-title">${cleanTitle}</p>
+                                    <p class="item-cate">${item.category2} &gt; ${item.category3}</p>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    // 3. 데이터 구성이 완료되면 모달창 표시
+                    document.getElementById('searchModal').style.display = 'flex';
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("API 연동 중 오류가 발생했습니다.")
+                });
+        }
+
+        // 모달 닫기
+        function closeSearchModal() {
+            document.getElementById('searchModal').style.display = 'none';
+        }
+
+        // 상품 선택 시 폼에 데이터 바인딩
+        function selectProduct(title, link, image, mainCate, subCate) {
+            // 1. [화면 표시용] 사용자가 건드릴 수 없는 disabled 필드 및 읽기전용 필드에 세팅
+            document.getElementById('displayMainCategory').value = mainCate;
+            document.getElementById('displaySubCategory').value = subCate;
+            document.getElementById('targetTitle').value = title;
+
+            // 2. [서버 전송용] 숨김(hidden) 필드에 세팅 (이미지, 링크 등은 화면엔 안 보이지만 전송됨)
+            document.getElementById('mainCategory').value = mainCate;
+            document.getElementById('subCategory').value = subCate;
+            document.getElementById('productImage').value = image;
+            document.getElementById('purchaseLink').value = link;
+
+            // 3. 모달창 닫기
+            closeSearchModal();
+        }
+
+        // [테마 확장 인터페이스] 페이지 로드 시 기존 로컬 스토리지 설정을 읽어 테마 상태를 동기화
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme === "dark") {
+                document.body.classList.add("dark-mode");
+            }
+        });
+    </script>
+</body>
+</html>
