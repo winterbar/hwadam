@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>beauminity : 회원가입</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/register.css}">
+</head>
+<body>
+
+    <main class="register-main">
+
+        <div class="register-container">
+            
+            <div class="register-header">
+                <a th:href="@{/}">
+                    <img th:src="@{/images/common/title2.png}" alt="Beauminity" class="register-logo">
+                </a>
+            </div>
+
+            <form th:action="@{/register}" method="post">
+                
+                <div class="form-group">
+                    <label for="username">아이디</label>
+                    <div class="input-with-btn">
+                        <input type="text" id="username" name="username" class="form-input" placeholder="영어와 숫자 조합 (최대 16자)" maxlength="16" pattern="^[a-zA-Z0-9]+$" required autofocus>
+                        <button type="button" class="inline-action-btn" disabled>중복확인</button>
+                    </div>
+                    <span id="usernameError" class="error-text"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="영어와 숫자 조합 (최소 8자)" minlength="8" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">이름</label>
+                        <input type="text" id="name" name="name" class="form-input" placeholder="이름 (10자 이하)" maxlength="10" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nickname">닉네임</label>
+                        <input type="text" id="nickname" name="nickname" class="form-input" placeholder="닉네임 (12자 이하)" maxlength="12" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="birthday">생년월일</label>
+                        <input type="date" id="birthday" name="birthday" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>성별</label>
+                        <div class="gender-group">
+                            <label class="gender-label">
+                                <input type="radio" name="gender" value="M" required> 남
+                            </label>
+                            <label class="gender-label">
+                                <input type="radio" name="gender" value="F" required> 여
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="skinType">피부타입</label>
+                        <select id="skinType" name="skinType" class="form-select" required>
+                            <option value="중성" selected>중성</option>
+                            <option value="건성">건성</option>
+                            <option value="지성">지성</option>
+                            <option value="민감성">민감성</option>
+                            <option value="복합성">복합성</option>
+                            <option value="수부지">수부지</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="personalColor">퍼스널 컬러</label>
+                        <input type="text" id="personalColor" name="personalColor" class="form-input" placeholder="퍼스널 컬러 (10자 이하)" maxlength="10" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="example@domain.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">전화번호</label>
+                    <input type="tel" id="phone" name="phone" class="form-input" 
+                           placeholder="010-XXXX-XXXX" 
+                           pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" 
+                           required>
+                </div>
+
+                <button type="submit" class="register-submit-btn">회원가입</button>
+
+            </form>
+
+        </div>
+        
+    </main>
+
+    <script th:src="@{/js/register.js}"></script>
+</body>
+</html>
