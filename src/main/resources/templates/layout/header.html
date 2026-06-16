@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+</head>
+<body>
+
+    <header th:fragment="headerFragment">
+        <div class="header-container">
+            <div class="logo">
+                <a th:href="@{/}">
+                    <img th:src="@{/images/common/title.png}" alt="Beauminity">
+                </a>
+            </div>
+            
+            <button class="theme-toggle-btn" id="btn-theme-toggle" title="테마 변경">
+                <span id="icon-theme-indicator">🌙</span>
+            </button>
+        </div>
+
+        <div class="nav-bar">
+            <div class="nav-container">
+                <nav>
+                    <ul>
+                        <li><a th:href="@{/board/review}">후기 게시판</a></li>
+                        <li><a th:href="@{/board/qna}">질문 게시판</a></li>
+                        <li><a th:href="@{/board/info}">정보공유 게시판</a></li>
+                        <li><a th:href="@{/feed}">피드</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+</body>
+</html>

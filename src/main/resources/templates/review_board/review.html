@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beauminity - 후기 게시판</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/board.css}">
+</head>
+<body>
+
+    <div th:replace="~{fragments/header :: headerFragment}"></div>
+
+    <main>
+
+        <div class="main-left-content">
+            
+            <section class="board-section">
+                <div class="section-header">
+                    <h2>후기 게시판 <span>협찬 무관, 유저들의 리얼한 실사용 데이터입니다.</span></h2>
+                    <button class="write-btn" th:onclick="|location.href='@{/board/review/write}'|">리뷰 쓰기</button>
+                </div>
+                
+                <div class="board-utility">
+                    <div class="filter-group">
+                        <select name="category" id="filter-category">
+                            <option value="all">모든 카테고리</option>
+                            <option value="skincare">스킨케어</option>
+                            <option value="cleansing">클렌징</option>
+                            <option value="sun-care">선케어</option>
+                        </select>
+                        <select name="sort" id="filter-sort">
+                            <option value="latest">최신순</option>
+                            <option value="rating">평점 높은순</option>
+                            <option value="hits">조회순</option>
+                        </select>
+                    </div>
+                </div>
+
+                <table class="board-table">
+                    <thead>
+                        <tr>
+                            <th class="col-num">번호</th>
+                            <th class="col-product">제품 정보</th>
+                            <th class="col-title">제목</th>
+                            <th class="col-writer">작성자</th>
+                            <th class="col-date">작성일</th>
+                            <th class="col-hits">조회</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="col-num">15</td>
+                            <td class="col-product">[선케어]</td>
+                            <td>
+                                <a href="#" class="col-title">올리브영 세일 때 쟁여야 할 지성 선크림 3종 솔직 비교</a>
+                                <span class="rating-stars">★★★★★</span>
+                                <span class="reply-count">[29]</span>
+                            </td>
+                            <td class="col-writer">올영단골</td>
+                            <td class="col-date">06-15</td>
+                            <td class="col-hits">611</td>
+                        </tr>
+                        <tr>
+                            <td class="col-num">14</td>
+                            <td class="col-product">[스킨케어]</td>
+                            <td>
+                                <a href="#" class="col-title">한 달 동안 써본 시카 진정 앰플 붉은 기 개선 효과</a>
+                                <span class="rating-stars">★★★★☆</span>
+                                <span class="reply-count">[12]</span>
+                            </td>
+                            <td class="col-writer">스킨케어매니아</td>
+                            <td class="col-date">06-14</td>
+                            <td class="col-hits">342</td>
+                        </tr>
+                        <tr>
+                            <td class="col-num">13</td>
+                            <td class="col-product">[클렌징]</td>
+                            <td>
+                                <a href="#" class="col-title">블랙헤드 녹이는 클렌징 오일 유화법 직접 검증해봄</a>
+                                <span class="rating-stars">★★★★★</span>
+                                <span class="reply-count">[26]</span>
+                            </td>
+                            <td class="col-writer">훈훈스킨</td>
+                            <td class="col-date">06-14</td>
+                            <td class="col-hits">780</td>
+                        </tr>
+                        <tr>
+                            <td class="col-num">12</td>
+                            <td class="col-product">[스킨케어]</td>
+                            <td>
+                                <a href="#" class="col-title">악건성 피부 탈출용 고보습 크림 정착 가이드</a>
+                                <span class="rating-stars">★★★☆☆</span>
+                                <span class="reply-count">[7]</span>
+                            </td>
+                            <td class="col-writer">건조한사람</td>
+                            <td class="col-date">06-12</td>
+                            <td class="col-hits">198</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="board-footer">
+                    <ul class="pagination">
+                        <li><a href="#" class="active">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">➔</a></li>
+                    </ul>
+
+                    <div class="search-group">
+                        <select name="searchType">
+                            <option value="titleContent">제목+내용</option>
+                            <option value="title">제목</option>
+                            <option value="writer">작성자</option>
+                        </select>
+                        <input type="text" placeholder="검색어를 입력하세요.">
+                        <button class="search-btn">검색</button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <aside class="right-sidebar">
+            <div class="sidebar-ranking">
+                <h4>👑 주간 멤버 랭킹</h4>
+                <ul class="ranking-list">
+                    <li class="ranking-item">
+                        <span class="rank-user"><span class="rank-num">1</span> 그루밍마스터</span>
+                        <span class="rank-points">4,250 p</span>
+                    </li>
+                    <li class="ranking-item">
+                        <span class="rank-user"><span class="rank-num">2</span> 훈훈스킨</span>
+                        <span class="rank-points">3,980 p</span>
+                    </li>
+                    <li class="ranking-item">
+                        <span class="rank-user"><span class="rank-num">3</span> 올영단골</span>
+                        <span class="rank-points">3,410 p</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-login-link-box">
+                <div class="login-link-title">
+                    더 다양한 그루밍 팁을 보려면<br><span>Beauminity</span>에 로그인하세요!
+                </div>
+                <button class="sidebar-move-login-btn" th:onclick="|location.href='@{/login}'|">로그인하러 가기</button>
+                <div class="login-link-sub">
+                    <a th:href="@{/register}">회원가입</a> | <a th:href="@{/find-account}">계정 찾기</a>
+                </div>
+            </div>
+
+            <a th:href="@{/chatbot}" class="sidebar-chatbot-banner">
+                <span class="banner-top-tag">AI COUNSELING</span>
+                <div class="banner-title">맞춤형 관리, 어려울 땐<br><span>그루밍 AI 챗봇</span>에게</div>
+                <div class="banner-desc">실시간 스킨케어 진단 받기</div>
+            </a>
+        </aside>
+
+    </main>
+
+    <div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+</body>
+</html>
