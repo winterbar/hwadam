@@ -1152,4 +1152,176 @@
             .btn-submit {
                 width: 100%;
             }
+            
         }
+        .tag-preview-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-top: 10px;
+            }
+
+            .tag-chip {
+                border: 1px solid #f3c3c0;
+                background-color: #fff5f4;
+                color: #FA6E68;
+                padding: 7px 10px;
+                border-radius: 4px;
+                font-size: 13px;
+                font-weight: 700;
+                cursor: pointer;
+            }
+
+            .tag-chip span {
+                margin-left: 6px;
+                color: #999;
+            }
+            /* 피드 이미지 업로드 영역 */
+.file-area {
+    width: 100%;
+    min-height: 140px;
+    border: 1px dashed var(--border-color);
+    background-color: var(--bg-table-hover);
+    border-radius: 4px;
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    text-align: center;
+    color: var(--text-muted);
+    transition: all 0.15s ease;
+}
+
+.file-area:hover,
+.file-area.dragover {
+    border-color: var(--color-accent);
+    background-color: rgba(250, 110, 104, 0.05);
+}
+
+.file-area p {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.file-area button {
+    margin-top: 0.35rem;
+    border: none;
+    background-color: var(--text-main);
+    color: var(--bg-card);
+    border-radius: 2px;
+    padding: 0.7rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.file-area button:hover {
+    background-color: var(--color-accent);
+    color: #ffffff;
+}
+
+.preview-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.7rem;
+}
+
+.preview-item {
+    width: 82px;
+    height: 82px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-body);
+}
+
+.preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.file-list {
+    margin-top: 0.5rem;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.file-list p {
+    margin: 0;
+}
+.file-count-text {
+    margin-top: 0.55rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    text-align: right;
+}
+
+.preview-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 0.75rem;
+}
+
+.preview-item {
+    position: relative;
+    width: 86px;
+    height: 86px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-body);
+}
+
+.preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.preview-remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 22px;
+    height: 22px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(33, 37, 41, 0.78);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 22px;
+    cursor: pointer;
+}
+
+.preview-remove-btn:hover {
+    background-color: var(--color-accent);
+}
+
+.file-list {
+    margin-top: 0.6rem;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.file-list p {
+    margin: 0.2rem 0;
+}
+.tag-count-text {
+    margin-top: 0.45rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    text-align: right;
+}
