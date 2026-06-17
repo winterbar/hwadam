@@ -394,3 +394,11 @@ textarea.form-control {
         text-align: center;
     }
 }
+
+/* 파일이 드래그 영역 위에 올라와 있는 동안 적용될 스타일 */
+.file-upload-wrapper.drag-over {
+    border-color: var(--color-primary) !important;
+    background-color: var(--item-hover) !important;
+    transform: scale(1.01); /* 살짝 커지는 효과 (선택사항) */
+    transition: all 0.2s;
+}
