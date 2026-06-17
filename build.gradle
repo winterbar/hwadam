@@ -33,6 +33,11 @@ dependencies {
 	// lombok 라이브러리
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// Spring Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// 타임 리프에서 스프링 시큐리티에 접근해서 로그인 유무를 확인할 수 있는 라이브러리
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 }
 
 tasks.named('test') {

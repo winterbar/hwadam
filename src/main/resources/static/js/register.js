@@ -1,15 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
+    /* 이메일/전화번호 인증에 사용되는 엘리먼트 */
     const emailInput = document.getElementById('email');
     const phoneInput = document.getElementById('phone');
     const authRadios = document.querySelectorAll('input[name="authMethod"]');
     const sendAuthBtn = document.getElementById('sendAuthBtn');
     const verificationRow = document.getElementById('verificationRow');
     const verificationCode = document.getElementById('verificationCode');
+    /* 아이디 중복 확인에 사용되는 엘리먼트 */
     const timerDisplay = document.getElementById('timerDisplay');
     const usernameInput = document.getElementById('username');
+    const registerForm = document.querySelector('form');
     const checkDupBtn = document.querySelector('.input-with-btn .inline-action-btn');
 
-    // 최초 로드 시 아이디가 입력되지 않으면 중복 확인 버튼 비활성화
+    // 아이디 중복 확인 여부 플래그 변수
+    let isIdChecked = false;
+
+    // 아이디가 입력되지 않으면 중복 확인 버튼 비활성화
     if (usernameInput && checkDupBtn) {
         checkDupBtn.disabled = !usernameInput.value.trim();
 
@@ -34,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
             checkDupBtn.disabled = !usernameInput.value.trim();
         });
 
-        // 중복 버튼 클릭 이벤트
+        // 중복 확인 버튼 클릭 이벤트
         checkDupBtn.addEventListener('click', function() {
             const username = usernameInput.value.trim();
             // 아이디가 입력된 값이 없다면 중복을 확인하지 않음
@@ -52,24 +58,43 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json(); // 서버에서 boolean 값을 리턴 (isDuplicate)
             })
             .then(isDuplicate => {
-                if (isDuplicate) {
-                    // 중복된 아이디면 에러 메시지 출력
+                if (isDuplicate) { // 중복된 아이디인 경우 메시지 출력
                     if (usernameError) {
                         usernameError.textContent = '이미 사용중인 아이디입니다.';
                     }
-                } else {
-                    // 중복된 아이디가 아니면 아이디 입력창 및 버튼 비활성화 (readOnly)
+                    isIdChecked = false; // 아이디 중복 확인되지 않음
+                } else { // 새로운 아이디인 경우 아이디 입력창 및 버튼 비활성화 (readOnly)
                     checkDupBtn.disabled = true;
                     usernameInput.readOnly = true;
                     if (usernameError) {
                         usernameError.style.color = '#2DB400'
                         usernameError.textContent = '사용 가능한 아이디입니다.';
                     }
+                    isIdChecked = true; // 아이디 중복 확인 완료
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
             });
+        });
+    }
+
+    // 회원가입 버튼 클릭 이벤트
+    if (registerForm) {
+        registerForm.addEventListener("submit", function(event) {
+            // 아이디 중복 체크가 완료되지 않았다면
+            // form에 입력된 모든 내용을 서버에 전송하지 않음
+            if(!isIdChecked) {
+                event.preventDefault(); // 전송 방지
+
+                if(usernameError) {
+                usernameError.textContent = '아이디 중복을 확인해주세요.';
+                }
+
+                if(usernameInput) {
+                    usernameInput.focus();
+                }
+            }
         });
     }
     
