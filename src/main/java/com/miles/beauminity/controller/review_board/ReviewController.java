@@ -3,9 +3,12 @@ package com.miles.beauminity.controller.review_board;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
+import com.miles.beauminity.service.review_board.ReviewService;
+import com.miles.beauminity.vo.review.ReviewBoardVO;
+
+import lombok.RequiredArgsConstructor;
 
 
 
@@ -38,7 +41,7 @@ public class ReviewController { // 역할: 후기 게시판에 대한 사용자�
         
         // 로그인 미구현 대안: master_board.member_id(FK) 제약 조건 통과용 임시 ID 강제 설정 
         // ** 주의 ** 실제 DB member 테이블에 username이 'testuser01' 인 회원이 있어야 함
-        reviewBoardVO.setUsername("testuser01");
+        reviewBoardVO.setUserName("testuser01");
 
         // 실제로 3개의 테이블에 순차 저장 및 파일 물리 저장을 수행하는 서비스 매서드 호출
         reviewService.registerReviewPost(reviewBoardVO);

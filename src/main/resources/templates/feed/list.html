@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beauminity - 피드</title>
+    <title>Beauminity : 피드</title>
 
     <link rel="stylesheet" href="/css/feed.css" th:href="@{/css/feed.css}">
     <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}">
@@ -174,58 +174,9 @@
 
     </div>
 
-    <aside class="right-sidebar">
+    <div class="right-sidebar">
 
-        <div class="sidebar-ranking">
-            <h4>👑 주간 멤버 랭킹</h4>
-
-            <ul class="ranking-list">
-                <li class="ranking-item">
-                    <span class="rank-user">
-                        <span class="rank-num">1</span>
-                        그루밍마스터
-                    </span>
-                    <span class="rank-points">4,250 p</span>
-                </li>
-
-                <li class="ranking-item">
-                    <span class="rank-user">
-                        <span class="rank-num">2</span>
-                        훈훈스킨
-                    </span>
-                    <span class="rank-points">3,980 p</span>
-                </li>
-
-                <li class="ranking-item">
-                    <span class="rank-user">
-                        <span class="rank-num">3</span>
-                        올영단골
-                    </span>
-                    <span class="rank-points">3,410 p</span>
-                </li>
-            </ul>
-        </div>
-
-        <div class="sidebar-login-link-box">
-            <div class="login-link-title">
-                더 많은 정보를 <span>공유</span>해보세요!
-            </div>
-
-            <button class="sidebar-move-login-btn"
-                    type="button"
-                    onclick="location.href='/login'">
-                🛡 로그인
-            </button>
-
-            <div class="login-link-sub">
-                계정이 없으신가요?
-                <a href="/join">회원가입</a>
-                <br>
-                <a href="#">아이디 찾기</a>
-                |
-                <a href="#">비밀번호 찾기</a>
-            </div>
-        </div>
+        <div th:replace="~{layout/aside :: sidebarFragment}"></div>
 
         <div class="sidebar-ranking">
             <h4>🔥 인기 해시태그</h4>
@@ -250,19 +201,7 @@
                 </li>
             </ul>
         </div>
-
-        
-
-        <a href="#" class="sidebar-chatbot-banner">
-            <span class="banner-top-tag">AI COUNSELING</span>
-            <div class="banner-title">
-                피드 속 제품이 궁금할 땐<br>
-                <span>AI 챗봇</span>에게 물어보세요
-            </div>
-            <div class="banner-desc">성분과 피부 타입 궁합 보기</div>
-        </a>
-
-    </aside>
+    </div>
 
 </main>
 

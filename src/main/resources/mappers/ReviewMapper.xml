@@ -5,4 +5,7 @@
 
 <mapper namespace="com.miles.beauminity.mapper.ReviewMapper">
 
-    <insert id="insertMasterBoard" >
+    <insert id="insertMasterBoard">
+    </insert>
+
+</mapper>
