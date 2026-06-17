@@ -6,7 +6,7 @@
 <mapper namespace="com.miles.beauminity.mapper.MasterBoardMapper">
 
     <!-- 게시글 게시(구현 완료)  -->
-    <!-- username이 외래키라서 일단 임의로 회원 하나 등록해놓고 테스트했습니다. 성공적으로 적용되었습니다.-->
+    <!-- 테스트 유저 등록 확인.-->
     <insert id="insertBoard" parameterType="com.miles.beauminity.vo.MasterBoardVO">
         INSERT INTO master_board
         (username, board_type, title, content, created_at, edited_at
@@ -22,35 +22,51 @@
     다르게 해서 집어넣을 수 있는 좋은 방법이 없을까? 를 고민하다가 나온 게 HashMap을 사용하는 것입니다.
     처음 해보는 거라 저도 잘 될 지는 모르겠는데... 그러므로 일단은 등록 먼저 하고 마저 건드려보겠습니다.
     지금은 역시 등록이 먼저인 거 같네요. -->
-    <!-- <select id="getTypeBoard" parameterType="com.miles.beauminity.vo.MasterBoardVO">
-        SELECT 
-        board_id,
-        username,
-        title,
-        content,
-        created_at,
-        edited_at
-        FROM master_board
-        WHERE board_type = #{boardType}
-    </select> -->
 
-    <!-- 전체조회 매퍼 -->
-    <!-- 임시입니다. 해시맵으로 특정 조회 하고 나면 사라집니다. -->
+    <!-- 특정 게시판 조회 매퍼 -->
+    <!-- 임시입니다. 페이징을 추가할 때 수정합니다. 지금은 수정, 삭제, 상세조회 기능을 만들기 위해 뒀습니다. -->
     <select id="getTypeBoard" 
+        parameterType="String"
         resultType="com.miles.beauminity.vo.MasterBoardVO">
-        SELECT 
-        board_id,
-        username,
-        title,
-        content,
-        created_at,
-        edited_at
+        SELECT *
         FROM master_board
+        WHERE board_type = #{value} AND deleted = 0
         ORDER BY board_id DESC
     </select>
 
-    <!-- <update>
+    <!-- 특정게시글 조회 쿼리  -->
+    <select id="getOneBoard" 
+            parameterType="Long">
+        SELECT *
+        FROM master_board
+        WHERE board_id = #{value}
+    </select>
 
-    </update> -->
+    <!-- 특정게시글을 조회할 시 조회수를 올리는 쿼리 -->
+    <update id="viewUp"
+            parameterType="Long">
+            UPDATE master_board
+            SET view_cnt = view_cnt+1
+            WHERE board_id = #{value}
+    </update>
+
+
+    <!-- 게시글  삭제 쿼리. 단 삭제는 어디까지나 상태변경... -->
+    <update id="deleteBoard"
+        parameterType="Long">
+        UPDATE master_board
+        SET deleted = 1
+        WHERE board_id = #{value}
+    </update>
+
+    <!-- 게시글 수정 쿼리 -->
+    <update id="updateBoard"
+        parameterType="com.miles.beauminity.vo.MasterBoardVO">
+        UPDATE master_board
+        SET title = #{title},
+        content = #{content},
+        edited_at = NOW()
+        WHERE board_id = #{boardId}
+        </update>
 
 </mapper>

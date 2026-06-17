@@ -48,17 +48,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="col-num">102</td>
+                        <tr th:each="qna : ${qnaS}">
+                            <td class="col-num" th:text="${qna.boardId}"></td>
                             <td class="col-product" style="color: var(--color-accent); font-weight: 800;">[답변대기]</td>
                             <td>
-                                <a href="#" class="col-title">디페린 겔 사용 후 각질 부각이랑 따가움 현상 정상인가요?</a>
-                                <span class="reply-count">[3]</span>
+                                <a th:href="@{|/board/qna/${qna.boardId}|}" class="col-title" th:text="${qna.title}"></a>
+                                <span class="reply-count" th:text="|[${qna.replyCnt}]|"></span>
                             </td>
-                            <td class="col-writer">민감성피부</td>
-                            <td class="col-date">06-15</td>
-                            <td class="col-hits">42</td>
+                            <td class="col-writer" th:text="${qna.username}"></td>
+                            <td class="col-date" th:text="${qna.createdAt}"></td>
+                            <td class="col-hits" th:text="${qna.viewCnt}"></td>
                         </tr>
+                        <!--
                         <tr>
                             <td class="col-num">101</td>
                             <td class="col-product" style="color: var(--text-muted); font-weight: 500;">[답변완료]</td>
@@ -92,6 +93,7 @@
                             <td class="col-date">06-13</td>
                             <td class="col-hits">215</td>
                         </tr>
+                        -->
                     </tbody>
                 </table>
 

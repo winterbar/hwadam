@@ -2,12 +2,10 @@ package com.miles.beauminity.service.qna_board;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.miles.beauminity.mapper.MasterBoardMapper;
 import com.miles.beauminity.vo.MasterBoardVO;
-
 import lombok.AllArgsConstructor;
 
 // 질문게시판 구현체입니다.
@@ -28,9 +26,45 @@ public class QnaServiceImpl implements QnaService {
 
     // 게시글 전체조회
     @Override
-    public List<MasterBoardVO> getTypeBoard() {
-        return masterBoardMapper.getTypeBoard();
+    public List<MasterBoardVO> getTypeBoard(String type) {
+
+        System.out.println(type);
+
+        return masterBoardMapper.getTypeBoard(type);
     }
+
+    // 게시글 상세조회
+    @Override
+    public MasterBoardVO getOneBoard(Long id) {
+
+        System.out.println(masterBoardMapper.getOneBoard(id).toString());
+
+        return masterBoardMapper.getOneBoard(id);
+    }
+
+    // 게시글 삭제
+    @Override
+    public void deleteBoard(Long id) {
+        masterBoardMapper.deleteBoard(id);
+    }
+
+    // 조회수 증가
+    @Override
+    public void viewUp(Long id) {
+        masterBoardMapper.viewUp(id);
+    }
+
+    // 게시글 수정
+    @Override
+    public void updateBoard(MasterBoardVO masterBoardVO) {
+        masterBoardMapper.updateBoard(masterBoardVO);
+    }
+
+    
+
+
+
+    
 
     
 

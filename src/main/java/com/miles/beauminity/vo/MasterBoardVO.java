@@ -3,12 +3,16 @@ package com.miles.beauminity.vo;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 // 게시판 공용 VO
 public class MasterBoardVO {
     private Long boardId;
@@ -18,8 +22,8 @@ public class MasterBoardVO {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
-    private int viewCount;
-    private int replyCount;
-    private int likeCount;
+    private int viewCnt;
+    private int replyCnt;
+    private int likeCnt;
     private boolean deleted;
 }

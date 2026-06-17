@@ -14,16 +14,18 @@
     <main>
         <section class="write-container">
             <div class="section-header">
-                <h2>✍️ 질문하기 </h2>
+                <h2>✍️ 수정하기 </h2>
                 <a href="beaminity_main_style_feed_botd_clean_linked.html" class="more-link">목록으로 돌아가기</a>
             </div>
 
-            <form th:action="@{/board/qna}" method="POST">
+            <form th:action="@{/board/qna/update}" method="post">
+
+                <input type="hidden" name="boardId" th:value="${qnaEdit.boardId}">
                 
                 <div class="form-row-2">
                     <div class="form-group">
                         <label for="post-category">카테고리</label>
-                        <select id="post-category" class="form-control" required>
+                        <select id="post-category" name="category" class="form-control" required>
                             <option value="" disabled selected>카테고리를 선택해주세요</option>
                             <option value="skin">스킨케어</option>
                             <option value="shave">헤어/면도</option>
@@ -35,12 +37,12 @@
 
                 <div class="form-group">
                     <label for="post-title">제목</label>
-                    <input type="text" id="post-title" name="title" class="form-control" placeholder="질문 내용을 직관적으로 알 수 있도록 제목을 작성해 주세요." required>
+                    <input type="text" id="post-title" name="title" class="form-control" th:value="${qnaEdit.title}">
                 </div>
 
                 <div class="form-group">
                     <label for="post-content">내용</label>
-                    <textarea id="post-content" name="content" class="form-control" placeholder="피부 타입, 사용 중인 제품 루틴 등을 자세히 적어주시면 더 정확한 답변을 얻을 수 있습니다.&#10;(비방이나 홍보성 글은 제한될 수 있습니다.)" required></textarea>
+                    <textarea id="post-content" name="content" class="form-control" th:text="${qnaEdit.content}"></textarea>
                 </div>
 
                 <div class="form-group">
@@ -54,8 +56,8 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn btn-cancel" th:onclick="@{/board/qna}">취소하기</button>
-                    <button type="submit" class="btn btn-submit">게시하기</button>
+                    <button type="button" class="btn btn-cancel" th:onclick="|location.href='@{/board/qna}'|">취소하기</button>
+                    <button type="submit" class="btn btn-submit">수정하기</button>
                 </div>
 
             </form>
