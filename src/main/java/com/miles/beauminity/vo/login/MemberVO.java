@@ -7,11 +7,11 @@ import lombok.Data;
 @Data
 public class MemberVO {
     private String username;
-    private String grade_id = "lvl1";
+    private String gradeId = "lvl1";
     private String password;
     private String nickname;
     private String name;
-    private String brithday;
+    private String birthday;
     private String gender;
     private String email;
     private String phone;
@@ -19,4 +19,5 @@ public class MemberVO {
     private String personalColor;
     private int point;
     private LocalDateTime signedDate;
+    private String role;
 }

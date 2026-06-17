@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>beauminity : 회원가입</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/register-success.css}"
+</head>
+<body>
+
+    <main class="login-main">
+
+        <div class="login-container">
+            
+            <div class="login-header">
+                <a th:href="@{/}">
+                    <img th:src="@{/images/common/title2.png}" alt="Beauminity" class="login-logo">
+                </a>
+            </div>
+
+            <div class="success-content">
+                
+                <p>
+                    <span class="bold-name" th:text="${name}">홍길동</span>님, 회원가입을 축하합니다!
+                </p>
+                
+                <p class="id-info">
+                    가입하신 아이디는 <span class="highlight-id" th:text="${username}">hello1234</span>입니다.
+                </p>
+
+                <p>
+                    많은 사람들과 뷰티 정보를 공유하고
+                </p>
+                <p class="last-lead">
+                    내게 맞는 뷰티 아이템을 찾아보세요!
+                </p>
+
+                <a th:href="@{/login}" class="login-submit-btn">
+                    시작하기
+                </a>
+                
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+</html>
