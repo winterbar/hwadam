@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beauminity - 후기 게시판</title>
+    <title>Beauminity : 후기 게시판</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link rel="stylesheet" th:href="@{/css/board.css}">
 </head>
@@ -122,50 +122,7 @@
 
         </div>
 
-        <aside class="right-sidebar">
-            <div class="sidebar-ranking">
-                <h4>👑 주간 멤버 랭킹</h4>
-                <ul class="ranking-list">
-                    <li class="ranking-item">
-                        <span class="rank-user"><span class="rank-num">1</span> 그루밍마스터</span>
-                        <span class="rank-points">4,250 p</span>
-                    </li>
-                    <li class="ranking-item">
-                        <span class="rank-user"><span class="rank-num">2</span> 훈훈스킨</span>
-                        <span class="rank-points">3,980 p</span>
-                    </li>
-                    <li class="ranking-item">
-                        <span class="rank-user"><span class="rank-num">3</span> 올영단골</span>
-                        <span class="rank-points">3,410 p</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="sidebar-login-link-box">
-                <div class="login-link-title">
-                    더 많은 정보를 공유해보세요!
-                </div>
-                <button class="sidebar-move-login-btn" th:onclick="|location.href='@{/login}'|">
-                    <img th:src="@{/images/common/symbol.png}" alt="" class="sidebar-login-btn-icon">
-                    <span>로그인</span>
-                </button>
-                <div class="login-link-sub">
-                    <div style="margin-bottom: 0.5rem;">
-                        <span class="sidebar-login-register-lead">계정이 없으신가요?</span>
-                        <a th:href="@{/register}" class="sidebar-login-register-link">회원가입</a>
-                    </div>
-                    <div>
-                        <a th:href="@{/find-id}">아이디 찾기</a> | <a th:href="@{/find-pw}">비밀번호 찾기</a>
-                    </div>
-                </div>
-            </div>
-
-            <a th:href="@{/chatbot}" class="sidebar-chatbot-banner">
-                <span class="banner-top-tag">AI COUNSELING</span>
-                <div class="banner-title">맞춤형 관리, 어려울 땐<br><span>그루밍 AI 챗봇</span>에게</div>
-                <div class="banner-desc">실시간 스킨케어 진단 받기</div>
-            </a>
-        </aside>
+        <div th:replace="~{layout/aside :: sidebarFragment}"></div>
 
     </main>
 

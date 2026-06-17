@@ -29,7 +29,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth ->
                 auth
                 .requestMatchers("/", "/login", "/register", "/chkid-dup/{username}",
-                    "/css/**", "/images/**", "/js/**"
+                    "/css/**", "/images/**", "/js/**",
+                    // 개발용 지울거임 나중에
+                    "/board/**", "/feed/**"
                 ) // 클라이언트 요청이 이것과 일치한다면
                 .permitAll() // 접근을 허가
                 .requestMatchers("/board/review/**", "/board/qna/**",

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.miles.beauminity.mapper.ReviewMapper;
 import com.miles.beauminity.vo.MasterBoardFileVO;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
 
@@ -34,7 +35,7 @@ public class ReviewService { // 역할: 후기 게시판에 대한 서비스 요
         // 2 단계. 후기 전용 테이블(review_board)에 데이터 삽입
         // 1단계를 거치면서 vo.getBoardId()로 자동 주입된 글 번호를 꺼낼 수 있게 된다..
         // 이 번호를 매퍼가 인식하여 review_board의 외래키(board_id)로 활용해 인서트한다...
-        reviewmapper.insertReviewBoard(vo);
+        reviewMapper.insertReviewBoard(vo);
 
         // 3 단계. 다중 첨부파일 업로드 및 파일 데이블(board_file)에 데이터 삽입
         // 사용자가 화면에서 파일 항목을 등록했을 때만 작동하도록 코드 작성
