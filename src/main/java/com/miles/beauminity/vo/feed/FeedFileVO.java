@@ -11,4 +11,5 @@ public class FeedFileVO {
     private String filePath;
     private String fileType;
     private int fileSize;
+    
 }
