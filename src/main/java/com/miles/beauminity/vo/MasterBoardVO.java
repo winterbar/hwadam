@@ -3,12 +3,16 @@ package com.miles.beauminity.vo;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 // 게시판 공용 VO
 public class MasterBoardVO {
     private Long boardId;

@@ -5,7 +5,7 @@
 
 <mapper namespace="com.miles.beauminity.mapper.FeedMapper">
     <insert id="postFeed"
-            parameterType="com.miles.beauminity.vo.FeedVO"
+            parameterType="com.miles.beauminity.vo.feed.FeedVO"
             useGeneratedKeys="true"
             keyProperty="feedId">
         
