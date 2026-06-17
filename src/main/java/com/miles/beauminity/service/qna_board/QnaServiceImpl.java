@@ -37,6 +37,8 @@ public class QnaServiceImpl implements QnaService {
     @Override
     public MasterBoardVO getOneBoard(Long id) {
 
+        System.out.println(masterBoardMapper.getOneBoard(id).toString());
+
         return masterBoardMapper.getOneBoard(id);
     }
 
@@ -45,6 +47,20 @@ public class QnaServiceImpl implements QnaService {
     public void deleteBoard(Long id) {
         masterBoardMapper.deleteBoard(id);
     }
+
+    // 조회수 증가
+    @Override
+    public void viewUp(Long id) {
+        masterBoardMapper.viewUp(id);
+    }
+
+    // 게시글 수정
+    @Override
+    public void updateBoard(MasterBoardVO masterBoardVO) {
+        masterBoardMapper.updateBoard(masterBoardVO);
+    }
+
+    
 
 
 

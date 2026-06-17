@@ -22,5 +22,11 @@ public interface MasterBoardMapper {
     // UPDATE1 - 게시글 삭제
     public void deleteBoard(Long id);
 
+    // UPDATE2 - 게시글 조회수 증가
+    public void viewUp(Long id);
+
+    // UPDATE3 - 게시글 수정
+    public void updateBoard(MasterBoardVO masterBoardVO);
+
 }
 

@@ -15,5 +15,9 @@ public interface QnaService {
     MasterBoardVO getOneBoard(Long id);
 
     void deleteBoard(Long id);
+
+    void viewUp(Long id);
+
+    void updateBoard(MasterBoardVO masterBoardVO);
     
 }

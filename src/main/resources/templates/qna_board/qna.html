@@ -52,12 +52,12 @@
                             <td class="col-num" th:text="${qna.boardId}"></td>
                             <td class="col-product" style="color: var(--color-accent); font-weight: 800;">[답변대기]</td>
                             <td>
-                                <a th:href="@{|/board/qna/${qna.boardId}|}" class="col-title" th:text="${qna.content}"></a>
-                                <span class="reply-count" th:text="|[${qna.replyCount}]|"></span>
+                                <a th:href="@{|/board/qna/${qna.boardId}|}" class="col-title" th:text="${qna.title}"></a>
+                                <span class="reply-count" th:text="|[${qna.replyCnt}]|"></span>
                             </td>
                             <td class="col-writer" th:text="${qna.username}"></td>
                             <td class="col-date" th:text="${qna.createdAt}"></td>
-                            <td class="col-hits" th:text="${qna.viewCount}"></td>
+                            <td class="col-hits" th:text="${qna.viewCnt}"></td>
                         </tr>
                         <!--
                         <tr>

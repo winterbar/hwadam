@@ -6,7 +6,7 @@
 <mapper namespace="com.miles.beauminity.mapper.MasterBoardMapper">
 
     <!-- 게시글 게시(구현 완료)  -->
-    <!-- username이 외래키라서 일단 임의로 회원 하나 등록해놓고 테스트했습니다. 성공적으로 적용되었습니다.-->
+    <!-- 테스트 유저 등록 확인.-->
     <insert id="insertBoard" parameterType="com.miles.beauminity.vo.MasterBoardVO">
         INSERT INTO master_board
         (username, board_type, title, content, created_at, edited_at
@@ -28,13 +28,7 @@
     <select id="getTypeBoard" 
         parameterType="String"
         resultType="com.miles.beauminity.vo.MasterBoardVO">
-        SELECT 
-        board_id,
-        username,
-        title,
-        content,
-        created_at,
-        edited_at
+        SELECT *
         FROM master_board
         WHERE board_type = #{value} AND deleted = 0
         ORDER BY board_id DESC
@@ -48,6 +42,15 @@
         WHERE board_id = #{value}
     </select>
 
+    <!-- 특정게시글을 조회할 시 조회수를 올리는 쿼리 -->
+    <update id="viewUp"
+            parameterType="Long">
+            UPDATE master_board
+            SET view_cnt = view_cnt+1
+            WHERE board_id = #{value}
+    </update>
+
+
     <!-- 게시글  삭제 쿼리. 단 삭제는 어디까지나 상태변경... -->
     <update id="deleteBoard"
         parameterType="Long">
@@ -55,5 +58,15 @@
         SET deleted = 1
         WHERE board_id = #{value}
     </update>
+
+    <!-- 게시글 수정 쿼리 -->
+    <update id="updateBoard"
+        parameterType="com.miles.beauminity.vo.MasterBoardVO">
+        UPDATE master_board
+        SET title = #{title},
+        content = #{content},
+        edited_at = NOW()
+        WHERE board_id = #{boardId}
+        </update>
 
 </mapper>

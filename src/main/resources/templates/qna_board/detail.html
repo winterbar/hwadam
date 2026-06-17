@@ -26,7 +26,7 @@
                         <span class="meta-date" th:text="${qna.title}"></span>
                     </div>
                     <div class="meta-right">
-                        <span>조회수</span> <span th:text="${qna.viewCount}"></span>
+                        <span>조회수</span> <span th:text="${qna.viewCnt}"></span>
                     </div>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                     <a th:href="@{/board/qna}" class="btn btn-list">목록으로</a>
                 </div>
                 <div class="action-right">
-                    <a href="#" class="btn btn-modify">수정</a>
+                    <a th:href="@{|/board/qna/edit/${qna.boardId}|}" class="btn btn-modify">수정</a>
                     <button type="submit" class="btn btn-delete" th:onclick="|deleteBoard(${qna.boardId})|" style="display: inline;">삭제</button>
                     
                 </div>

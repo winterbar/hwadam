@@ -22,8 +22,8 @@ public class MasterBoardVO {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
-    private int viewCount;
-    private int replyCount;
-    private int likeCount;
+    private int viewCnt;
+    private int replyCnt;
+    private int likeCnt;
     private boolean deleted;
 }
