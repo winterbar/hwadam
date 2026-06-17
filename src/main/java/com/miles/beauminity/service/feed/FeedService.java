@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.miles.beauminity.vo.FeedVO;
-import com.miles.beauminity.vo.TagVO;
+import com.miles.beauminity.vo.feed.FeedVO;
+import com.miles.beauminity.vo.feed.TagVO;
 
 public interface FeedService {
     void postFeed(FeedVO feedVO,MultipartFile[] files,List<TagVO> tagNames);

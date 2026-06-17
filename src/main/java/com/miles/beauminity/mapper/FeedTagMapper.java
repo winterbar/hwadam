@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.miles.beauminity.vo.TagVO;
+import com.miles.beauminity.vo.feed.TagVO;
 
 @Mapper
 public interface FeedTagMapper {
