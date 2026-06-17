@@ -1,4 +1,4 @@
-package com.miles.beauminity.vo;
+package com.miles.beauminity.vo.feed;
 
 import java.time.LocalDateTime;
 

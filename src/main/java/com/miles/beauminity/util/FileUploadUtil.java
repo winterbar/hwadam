@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.miles.beauminity.vo.FeedFileVO;
+import com.miles.beauminity.vo.feed.FeedFileVO;
 
 public class FileUploadUtil {
     public static List<FeedFileVO> saveFiles(

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.miles.beauminity.service.feed.FeedService;
-import com.miles.beauminity.vo.FeedVO;
-import com.miles.beauminity.vo.TagVO;
+import com.miles.beauminity.vo.feed.FeedVO;
+import com.miles.beauminity.vo.feed.TagVO;
 
 import lombok.AllArgsConstructor;
 

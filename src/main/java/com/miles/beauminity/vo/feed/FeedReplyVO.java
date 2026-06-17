@@ -1,4 +1,4 @@
-package com.miles.beauminity.vo;
+package com.miles.beauminity.vo.feed;
 
 public class FeedReplyVO {
     private Long replyId;

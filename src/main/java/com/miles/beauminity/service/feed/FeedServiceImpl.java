@@ -10,10 +10,10 @@ import com.miles.beauminity.mapper.FeedFileMapper;
 import com.miles.beauminity.mapper.FeedMapper;
 import com.miles.beauminity.mapper.FeedTagMapper;
 import com.miles.beauminity.util.FileUploadUtil;
-import com.miles.beauminity.vo.FeedFileVO;
-import com.miles.beauminity.vo.FeedTagVO;
-import com.miles.beauminity.vo.FeedVO;
-import com.miles.beauminity.vo.TagVO;
+import com.miles.beauminity.vo.feed.FeedFileVO;
+import com.miles.beauminity.vo.feed.FeedTagVO;
+import com.miles.beauminity.vo.feed.FeedVO;
+import com.miles.beauminity.vo.feed.TagVO;
 
 import lombok.AllArgsConstructor;
 
