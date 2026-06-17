@@ -1,0 +1,386 @@
+/* ===================================================
+   게시글 상세조회 페이지 전용 스타일
+=================================================== */
+
+/* 레이아웃 그리드 설정 (메인 구조와 동일하게 맞춤) */
+.detail-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* 상세 컨텐츠 카드 */
+.detail-container {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* 1. 상단 헤더 영역 */
+.post-header {
+    border-bottom: 2px solid var(--text-main);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    transition: border-color 0.3s;
+}
+
+.post-category {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+}
+
+.post-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1.4;
+    margin-bottom: 1rem;
+}
+
+/* 메타 정보 (작성자, 날짜, 조회수) */
+.post-meta-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.meta-left {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.meta-author {
+    font-weight: 700;
+    color: var(--text-dark-muted);
+}
+
+.meta-divider {
+    opacity: 0.4;
+}
+
+/* 2. 본문 영역 */
+.post-content {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-main);
+    min-height: 300px;
+    word-break: break-all;
+}
+
+.post-content p {
+    margin-bottom: 1.2rem;
+}
+
+/* 3. 하단 버튼 컨트롤 영역 */
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-row);
+}
+
+/* 버튼 공통 스타일 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1.2rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+/* 목록으로 버튼 */
+.btn-list {
+    background-color: var(--border-row);
+    color: var(--text-dark-muted);
+    border: 1px solid var(--border-color);
+}
+
+.btn-list:hover {
+    background-color: var(--border-color);
+    color: var(--text-main);
+}
+
+/* 수정 버튼 */
+.btn-modify {
+    background-color: var(--text-main);
+    color: var(--bg-card);
+    margin-right: 0.5rem;
+}
+
+.btn-modify:hover {
+    background-color: var(--color-primary);
+    color: #212529; /* 옐로우 모드일 때 텍스트 어둡게 */
+}
+
+/* 삭제 버튼 */
+.btn-delete {
+    background-color: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+}
+
+.btn-delete:hover {
+    background-color: #FA6E68; /* var(--color-accent) 피드백 컬러 직접 대입 */
+    color: #ffffff;
+    border-color: #FA6E68;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.right-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: relative;
+    top: 0;
+}
+
+/* 주간 멤버 랭킹 */
+.sidebar-ranking {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1.2rem;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.sidebar-ranking h4 {
+    font-size: 0.9rem;
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-bottom: 2px solid var(--text-main);
+    padding-bottom: 0.4rem;
+    transition: border-color 0.3s;
+}
+
+.ranking-list {
+    list-style: none;
+}
+
+.ranking-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    font-size: 0.85rem;
+}
+
+.ranking-item .rank-user {
+    display: flex;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+
+.ranking-item .rank-num {
+    color: var(--color-accent);
+    font-weight: 800;
+    width: 15px;
+}
+
+.ranking-item .rank-points {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* 로그인 링크 박스 */
+.sidebar-login-link-box {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1.5rem 1.2rem;
+    text-align: center;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.login-link-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-dark-muted);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.sidebar-move-login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 100%;
+    background-color: var(--text-main);
+    color: var(--bg-card);
+    padding: 0.75rem 0;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.15s, transform 0.1s, color 0.3s;
+}
+
+.sidebar-move-login-btn:hover {
+    background-color: var(--color-accent);
+    color: #ffffff;
+}
+
+.sidebar-move-login-btn:active {
+    transform: scale(0.98);
+}
+
+.sidebar-login-btn-icon {
+    height: 1.1rem;
+    width: auto;
+    display: block;
+    filter: brightness(0) invert(1);
+}
+
+[data-theme="dark"] .sidebar-login-btn-icon {
+    filter: brightness(0) invert(0.6);
+}
+
+.login-link-sub {
+    margin-top: 0.8rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.login-link-sub a {
+    margin: 0 0.4rem;
+    color: var(--text-link-muted);
+}
+
+[data-theme="dark"] .login-link-sub a {
+    color: var(--text-muted);
+}
+
+.login-link-sub a:hover {
+    color: var(--text-main);
+    text-decoration: underline;
+}
+
+.sidebar-login-register-lead {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.sidebar-login-register-link {
+    font-weight: 700;
+    color: #000000;
+    margin-left: 0.3rem;
+    text-decoration: none;
+}
+
+.sidebar-login-register-link:hover {
+    text-decoration: underline;
+}
+
+[data-theme="dark"] .sidebar-login-register-link {
+    color: var(--text-main);
+}
+
+/* AI COUNSELING 챗봇 배너 */
+.sidebar-chatbot-banner {
+    background: linear-gradient(135deg, #212529 0%, #343A40 100%);
+    border: 1px solid #495057;
+    border-radius: 4px;
+    padding: 1.25rem;
+    color: #ffffff;
+    display: block; 
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.sidebar-chatbot-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    background-color: var(--color-primary);
+}
+
+.sidebar-chatbot-banner:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(250, 110, 104, 0.15);
+    border-color: var(--color-accent);
+}
+
+.banner-top-tag {
+    display: inline-block;
+    background-color: var(--color-accent);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.5px;
+}
+
+.banner-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    line-height: 1.35;
+    margin-bottom: 0.3rem;
+}
+
+.banner-title span {
+    color: var(--color-primary);
+}
+
+.banner-desc {
+    font-size: 0.75rem;
+    color: #ADB5BD;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.banner-desc::after {
+    content: '➔';
+    font-size: 0.7rem;
+    color: var(--color-primary);
+    transition: transform 0.2s;
+}
+
+.sidebar-chatbot-banner:hover .banner-desc::after {
+    transform: translateX(3px);
+}
+
+/* 반응형 처리 (기존 1024px 미디어쿼리와 호환) */
+@media (max-width: 1024px) {
+    .detail-layout {
+        grid-template-columns: 1fr;
+    }
+    .detail-container {
+        padding: 1.5rem;
+    }
+    .post-title {
+        font-size: 1.35rem;
+    }
+}

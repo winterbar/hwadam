@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${qna.title} + ' - BEAUMINITY'"></title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/qna_detail.css}">
+</head>
+<body>
+
+    <header th:replace="~{layout/header :: headerFragment}"></header>
+
+    <main class="detail-layout">
+        
+        <section class="detail-container">
+            
+            <div class="post-header">
+                <div class="post-category">질문 게시판</div>
+                <h1 class="post-title" th:text="${qna.title}"></h1>
+                
+                <div class="post-meta-info">
+                    <div class="meta-left">
+                        <span class="meta-author" th:text="${qna.username}"></span>
+                        <span class="meta-divider">|</span>
+                        <span class="meta-date" th:text="${qna.title}"></span>
+                    </div>
+                    <div class="meta-right">
+                        <span>조회수</span> <span th:text="${qna.viewCount}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-content" th:text="${qna.content}">
+            </div>
+
+            <div class="post-actions">
+                <div class="action-left">
+                    <a th:href="@{/board/qna}" class="btn btn-list">목록으로</a>
+                </div>
+                <div class="action-right">
+                    <a href="#" class="btn btn-modify">수정</a>
+                    <button type="submit" class="btn btn-delete" th:onclick="|deleteBoard(${qna.boardId})|" style="display: inline;">삭제</button>
+                    
+                </div>
+            </div>
+
+        </section>
+
+        <aside class="right-sidebar">
+            
+            <div class="sidebar-ranking">
+                <h4>👑 주간 멤버 랭킹</h4>
+                <ul class="ranking-list">
+                    <li class="ranking-item">
+                        <span class="rank-user"><span class="rank-num">1</span> 그루밍마스터</span>
+                        <span class="rank-points">4,250 p</span>
+                    </li>
+                    <li class="ranking-item">
+                        <span class="rank-user"><span class="rank-num">2</span> 훈훈스킨</span>
+                        <span class="rank-points">3,980 p</span>
+                    </li>
+                    <li class="ranking-item">
+                        <span class="rank-user"><span class="rank-num">3</span> 올영단골</span>
+                        <span class="rank-points">3,410 p</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-login-link-box">
+                <div class="login-link-title">
+                    더 많은 정보를 공유해보세요!
+                </div>
+                <button class="sidebar-move-login-btn" th:onclick="|location.href='@{/login}'|">
+                    <img th:src="@{/images/common/symbol.png}" alt="" class="sidebar-login-btn-icon">
+                    <span>로그인</span>
+                </button>
+                <div class="login-link-sub">
+                    <div style="margin-bottom: 0.5rem;">
+                        <span class="sidebar-login-register-lead">계정이 없으신가요?</span>
+                        <a th:href="@{/register}" class="sidebar-login-register-link">회원가입</a>
+                    </div>
+                    <div>
+                        <a th:href="@{/find-id}">아이디 찾기</a> | <a th:href="@{/find-pw}">비밀번호 찾기</a>
+                    </div>
+                </div>
+            </div>
+
+            <a th:href="@{/chatbot}" class="sidebar-chatbot-banner">
+                <span class="banner-top-tag">AI COUNSELING</span>
+                <div class="banner-title">맞춤형 관리, 어려울 땐<br><span>그루밍 AI 챗봇</span>에게</div>
+                <div class="banner-desc">실시간 스킨케어 진단 받기</div>
+            </a>
+            
+        </aside>
+
+    </main>
+
+    <footer th:replace="~{layout/footer :: footerFragment}"></footer>
+
+</body>
+</html>
+<script>
+    
+    function deleteBoard(id){
+        const delBoard = confirm("정말 삭제하시겠습니까?");
+        if(delBoard){
+            location.href='/board/qna/delete/'+id;
+        }
+    }
+
+</script>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beauminity - 글쓰기</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/qna_write.css}">
+</head>
+<body>
+
+    <header th:replace="~{layout/header :: header}"></header>
+
+    <main>
+        <section class="write-container">
+            <div class="section-header">
+                <h2>✍️ 수정하기 </h2>
+                <a href="beaminity_main_style_feed_botd_clean_linked.html" class="more-link">목록으로 돌아가기</a>
+            </div>
+
+            <form th:action="@{/board/qna}" method="POST">
+                
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="post-category">카테고리</label>
+                        <select id="post-category" class="form-control" required>
+                            <option value="" disabled selected>카테고리를 선택해주세요</option>
+                            <option value="skin">스킨케어</option>
+                            <option value="shave">헤어/면도</option>
+                            <option value="makeup">메이크업</option>
+                            <option value="body">바디/향수</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="post-title">제목</label>
+                    <input type="text" id="post-title" name="title" class="form-control" placeholder="질문 내용을 직관적으로 알 수 있도록 제목을 작성해 주세요." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="post-content">내용</label>
+                    <textarea id="post-content" name="content" class="form-control" placeholder="피부 타입, 사용 중인 제품 루틴 등을 자세히 적어주시면 더 정확한 답변을 얻을 수 있습니다.&#10;(비방이나 홍보성 글은 제한될 수 있습니다.)" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>사진/파일 첨부</label>
+                    <label for="file-input" class="file-upload-wrapper">
+                        <input type="file" id="file-input" multiple>
+                        <span class="upload-icon">📁</span>
+                        <span class="upload-text">클릭하거나 파일을 여기로 드래그하여 업로드</span>
+                        <span class="upload-hint">JPG, PNG, GIF 파일 가능 (최대 10MB)</span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel" onclick="history.back();">취소하기</button>
+                    <button type="submit" class="btn btn-submit">게시하기</button>
+                </div>
+
+            </form>
+        </section>
+    </main>
+
+    <footer th:replace="~{layout/footer :: footer}"></footer>
+
+</body>
+</html>
