@@ -822,3 +822,619 @@
                 height: 360px;
             }
         }
+        .feed-filter-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+}
+
+.feed-tag-btn {
+    flex: 0 0 auto;
+    max-width: 100%;
+    white-space: normal;
+    word-break: break-all;
+    line-height: 1.4;
+}
+.feed-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.feed-card {
+    background: #fff;
+    border: 1px solid #eeeeee;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.feed-card-image {
+    width: 100%;
+    aspect-ratio: 4 / 5;   /* 세로형 피드 비율 */
+    max-height: 520px;
+    background: #eadfce;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #f0f0f0;
+    overflow: hidden;
+}
+
+.feed-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;     /* 칸에 꽉 차게 */
+    object-position: center;
+    display: block;
+}
+
+.feed-image-placeholder {
+    width: 58%;
+    aspect-ratio: 3 / 4;
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #7f8da3;
+    font-size: 14px;
+    font-weight: 800;
+    transform: rotate(-7deg);
+}
+
+.feed-image-placeholder span {
+    display: block;
+    margin-top: 8px;
+    font-size: 13px;
+    color: #7f8da3;
+}
+
+.feed-card-content {
+    padding: 18px;
+}
+
+.feed-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.feed-card-top strong {
+    display: block;
+    font-size: 15px;
+    color: #222;
+}
+
+.feed-card-top span {
+    display: block;
+    margin-top: 3px;
+    font-size: 12px;
+    color: #888;
+}
+
+.feed-more-btn {
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+    color: #777;
+}
+
+.feed-card-caption {
+    margin: 0 0 12px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #333;
+    white-space: pre-line;
+}
+
+.feed-info-link {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #fff7e0;
+    color: #5a4300;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.feed-info-link:hover {
+    background: #FACB47;
+}
+
+.feed-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0 14px;
+}
+
+.feed-hashtag {
+    font-size: 13px;
+    font-weight: 700;
+    color: #FA6E68;
+}
+
+.feed-card-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.feed-card-actions button {
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.feed-card-bottom {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #444;
+}
+
+.feed-comment-box {
+    display: flex;
+    gap: 8px;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 12px;
+}
+
+.feed-comment-box input {
+    flex: 1;
+    border: 1px solid #e5e5e5;
+    border-radius: 999px;
+    padding: 10px 14px;
+    font-size: 13px;
+    outline: none;
+}
+
+.feed-comment-box input:focus {
+    border-color: #FA6E68;
+}
+
+.feed-comment-box button {
+    border: none;
+    border-radius: 999px;
+    background: #FA6E68;
+    color: #fff;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+}
+/* 사진 오른쪽 위 1/1 표시 */
+.feed-card-image {
+    position: relative;
+}
+
+.feed-photo-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    min-width: 44px;
+    height: 26px;
+    padding: 0 9px;
+    border-radius: 4px;
+    background-color: rgba(33, 37, 41, 0.62);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+}
+
+/* ... 메뉴 */
+.feed-more-wrap {
+    position: relative;
+}
+
+.feed-more-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 20px;
+    font-weight: 900;
+    cursor: pointer;
+    padding: 4px 6px;
+}
+
+.feed-more-menu {
+    position: absolute;
+    top: 32px;
+    right: 0;
+    width: 112px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: none;
+    z-index: 20;
+}
+
+.feed-more-menu.is-open {
+    display: block;
+}
+
+.feed-menu-item {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 10px 12px;
+    text-align: left;
+    color: var(--text-main);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.feed-menu-item:hover {
+    background-color: var(--bg-table-hover);
+}
+
+.feed-menu-item.danger {
+    color: #FA6E68;
+}
+
+/* 해시태그 클릭 버튼 */
+.feed-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0 12px;
+}
+
+.feed-hashtag-btn {
+    border: none;
+    background: transparent;
+    color: #FA6E68;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    padding: 0;
+}
+
+.feed-hashtag-btn:hover {
+    text-decoration: underline;
+}
+
+/* 댓글 개수 회색 표시 */
+.feed-comment-count {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+/* 댓글 입력 */
+.feed-comment-box {
+    display: flex;
+    gap: 8px;
+    border-top: 1px solid var(--border-row);
+    padding-top: 12px;
+}
+
+.feed-comment-box input {
+    flex: 1;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-body);
+    border-radius: 999px;
+    padding: 10px 14px;
+    font-size: 13px;
+    outline: none;
+    color: var(--text-main);
+}
+
+.feed-comment-box input:focus {
+    border-color: #FA6E68;
+    background-color: var(--bg-card);
+}
+
+.feed-comment-box button {
+    border: none;
+    border-radius: 999px;
+    background-color: #FA6E68;
+    color: #ffffff;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+}
+/* ===============================
+   FEED 최종 보정 스타일
+   =============================== */
+
+.feed-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.feed-write-top-btn {
+    flex: 0 0 auto;
+    border: none;
+    border-radius: 2px;
+    background-color: #FA6E68;
+    color: #ffffff;
+    padding: 0.75rem 1.35rem;
+    font-size: 0.84rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.feed-write-top-btn:hover {
+    background-color: #f45d57;
+}
+
+
+.feed-photo-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    min-width: 46px;
+    height: 26px;
+    padding: 0 9px;
+    border-radius: 4px;
+    background-color: rgba(33, 37, 41, 0.62);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+}
+
+.feed-photo-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 46px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(33, 37, 41, 0.32);
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: 300;
+    cursor: pointer;
+    z-index: 6;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.feed-photo-arrow:hover {
+    background-color: rgba(33, 37, 41, 0.55);
+}
+
+.feed-photo-prev {
+    left: 12px;
+}
+
+.feed-photo-next {
+    right: 12px;
+}
+
+.feed-more-wrap {
+    position: relative;
+}
+
+.feed-more-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 20px;
+    font-weight: 900;
+    cursor: pointer;
+    padding: 4px 6px;
+}
+
+.feed-more-menu {
+    position: absolute;
+    top: 32px;
+    right: 0;
+    width: 112px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: none;
+    z-index: 20;
+}
+
+.feed-more-menu.is-open {
+    display: block;
+}
+
+.feed-menu-item {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 10px 12px;
+    text-align: left;
+    color: var(--text-main);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.feed-menu-item:hover {
+    background-color: var(--bg-table-hover);
+}
+
+.feed-menu-item.danger {
+    color: #FA6E68;
+}
+
+.feed-hashtag-btn {
+    border: none;
+    background: transparent;
+    color: #FA6E68;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    padding: 0;
+}
+
+.feed-hashtag-btn:hover {
+    text-decoration: underline;
+}
+
+.feed-comment-count {
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin-bottom: 12px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.feed-comment-count:hover {
+    text-decoration: underline;
+}
+
+.feed-comment-list {
+    display: none;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border-radius: 4px;
+    background-color: var(--bg-table-hover);
+}
+
+.feed-comment-list.is-open {
+    display: block;
+}
+
+.feed-comment-item {
+    display: flex;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.feed-comment-item strong {
+    flex: 0 0 auto;
+    color: var(--text-main);
+    font-weight: 800;
+}
+
+.feed-comment-item span {
+    color: var(--text-muted);
+}
+
+.feed-comment-box {
+    display: flex;
+    gap: 8px;
+    border-top: 1px solid var(--border-row);
+    padding-top: 12px;
+}
+
+.feed-comment-box input {
+    flex: 1;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-body);
+    border-radius: 999px;
+    padding: 10px 14px;
+    font-size: 13px;
+    outline: none;
+    color: var(--text-main);
+}
+
+.feed-comment-box input:focus {
+    border-color: #FA6E68;
+    background-color: var(--bg-card);
+}
+
+.feed-comment-box button {
+    border: none;
+    border-radius: 999px;
+    background-color: #FA6E68;
+    color: #ffffff;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.sidebar-ranking {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1.2rem;
+}
+
+.sidebar-ranking h4 {
+    font-size: 0.95rem;
+    font-weight: 900;
+    margin-bottom: 0.8rem;
+    border-bottom: 2px solid var(--text-main);
+    padding-bottom: 0.65rem;
+}
+
+.ranking-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ranking-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.55rem 0;
+    font-size: 0.86rem;
+}
+
+.rank-user {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-weight: 700;
+}
+
+.rank-num {
+    color: #FA6E68;
+    font-weight: 900;
+    width: 14px;
+}
+
+.rank-points {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+}
+
+@media (max-width: 600px) {
+    .feed-section-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .feed-write-top-btn {
+        width: 100%;
+    }
+}

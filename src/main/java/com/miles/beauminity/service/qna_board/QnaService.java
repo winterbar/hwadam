@@ -10,6 +10,14 @@ public interface QnaService {
 
     void insertBoard(MasterBoardVO masterBoardVO);
 
-    List<MasterBoardVO> getTypeBoard();
+    List<MasterBoardVO> getTypeBoard(String type);
+
+    MasterBoardVO getOneBoard(Long id);
+
+    void deleteBoard(Long id);
+
+    void viewUp(Long id);
+
+    void updateBoard(MasterBoardVO masterBoardVO);
     
 }

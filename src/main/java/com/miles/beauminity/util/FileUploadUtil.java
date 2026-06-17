@@ -35,6 +35,7 @@ public class FileUploadUtil {
                     fileVO.setOriginalName(originalName);
                     fileVO.setSavedName(savedName);
                     fileVO.setFilePath(uploadPath);
+                    fileVO.setFileType("image/png");
                     fileVO.setFileSize((int)file.getSize());
 
                     fileList.add(fileVO);

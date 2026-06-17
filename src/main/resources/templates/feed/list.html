@@ -3,133 +3,420 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beauminity - 메인</title>
-    <link rel="stylesheet" th:href="@{/css/feed.css}">
-    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <title>Beauminity : 피드</title>
+
+    <link rel="stylesheet" href="/css/feed.css" th:href="@{/css/feed.css}">
+    <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}">
 </head>
 <body>
 
-    <header th:replace="~{layout/header :: header}"></header>
+<header th:replace="~{layout/header :: header}"></header>
 
-    <div class="feed-filter-bar is-closed" id="feed-filter-bar">
-        <div class="feed-filter-summary" id="feed-filter-summary" role="button" tabindex="0">
-            <div>
-                <strong>해시태그로 피드 보기</strong>
-                <span>궁금한 태그를 열어서 관련 피드만 모아보세요.</span>
-            </div>
-            <em id="feed-filter-toggle-icon">펼치기 ＋</em>
+<div class="feed-filter-bar is-closed" id="feed-filter-bar">
+    <div class="feed-filter-summary" id="feed-filter-summary" role="button" tabindex="0">
+        <div>
+            <strong>해시태그로 피드 보기</strong>
+            <span>궁금한 태그를 열어서 관련 피드만 모아보세요.</span>
         </div>
-        <div class="feed-filter-inner" id="feed-filter-inner" aria-label="해시태그 필터" style="display: none;">
-            <button class="feed-tag-btn active" data-tag="all">#전체</button>
+        <em id="feed-filter-toggle-icon">펼치기 ＋</em>
+    </div>
+
+    <div class="feed-filter-inner"
+         id="feed-filter-inner"
+         aria-label="해시태그 필터"
+         style="display: none;">
+
+        <button type="button"
+                class="feed-tag-btn active"
+                data-tag="all">
+            #전체
+        </button>
+
+        <button type="button"
+                class="feed-tag-btn"
+                th:each="tagName : ${tagList}"
+                th:data-tag="${tagName}"
+                th:text="'#' + ${tagName}">
+            #해시태그
+        </button>
+
+    </div>
+</div>
+
+<main>
+
+    <div class="main-left-content">
+
+        <section class="dashboard-section">
+            <div class="section-header feed-section-header">
+                <h2>
+                    📸 BOTD
+                    <span>사용자의 데일리 루틴과 사용샷을 모아보는 공간입니다.</span>
+                </h2>
+
+                <button class="feed-write-top-btn"
+                        type="button"
+                        onclick="location.href='/feed/write'">
+                    피드 작성하기
+                </button>
+            </div>
+
+            <div class="feed-list" id="feed-list-container">
+
+                <article class="feed-card"
+                         th:each="feed : ${feedList}"
+                         th:data-content="${feed.feedContent}"
+                         th:data-images="${feed.savedName}"
+                         data-tags="BOTD">
+
+                    <div class="feed-card-image">
+
+                        <button type="button" class="feed-photo-arrow feed-photo-prev">‹</button>
+
+                        <img alt="피드 이미지"
+                             class="feed-image js-feed-image"
+                             style="display: none;">
+
+                        <div class="feed-image-placeholder js-feed-placeholder">
+                            📸
+                            <span>이미지 준비중</span>
+                        </div>
+
+                        <button type="button" class="feed-photo-arrow feed-photo-next">›</button>
+
+                        <div class="feed-photo-badge js-photo-badge">
+                            1 / 1
+                        </div>
+
+                    </div>
+
+                    <div class="feed-card-content">
+
+                        <div class="feed-card-top">
+                            <div>
+                                <strong>뷰미니티 회원</strong>
+                                <span>피부타입 미등록 · 퍼스널컬러 미등록</span>
+                            </div>
+
+                            <div class="feed-more-wrap">
+                                <button type="button" class="feed-more-btn">···</button>
+
+                                <div class="feed-more-menu">
+                                    <button type="button" class="feed-menu-item">수정하기</button>
+                                    <button type="button" class="feed-menu-item danger">삭제하기</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="feed-card-caption">
+                            피드 내용
+                        </p>
+
+                        <a class="feed-info-link"
+                           href="#"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           style="display: none;">
+                            정보공유 게시글 보러가기
+                        </a>
+
+                        <div class="feed-card-tags">
+                            <button type="button"
+                                    class="feed-hashtag-btn"
+                                    th:each="tagName : ${tagList}"
+                                    th:data-tag="${tagName}"
+                                    th:text="'#' + ${tagName}"
+                                    data-tag="BOTD">
+                                    
+                            </button>
+                        </div>
+
+                        <div class="feed-card-actions">
+    <button type="button"
+            class="feed-like-btn"
+            data-liked="false"
+            data-like-count="0">
+        <span class="feed-like-icon">♡</span>
+        <span class="feed-like-count">0</span>
+    </button>
+
+    <button type="button" class="feed-action-btn">💬</button>
+</div>
+
+                        <button type="button" class="feed-comment-count">
+                            댓글 0개 모두 보기
+                        </button>
+
+                        <div class="feed-comment-list">
+                            <div class="feed-comment-item">
+                                <strong>뷰미니티 회원</strong>
+                                <span>아직 등록된 댓글이 없습니다.</span>
+                            </div>
+                        </div>
+
+                        <div class="feed-comment-box">
+                            <input type="text" placeholder="댓글을 입력하세요">
+                            <button type="button">등록</button>
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+            <div class="feed-empty"
+                 id="feed-empty"
+                 th:if="${feedList == null or #lists.isEmpty(feedList)}">
+                등록된 피드가 없습니다. 첫 번째 피드를 작성해보세요!
+            </div>
+        </section>
+
+    </div>
+
+    <div class="right-sidebar">
+
+        <div th:replace="~{layout/aside :: sidebarFragment}"></div>
+
+        <div class="sidebar-ranking">
+            <h4>🔥 인기 해시태그</h4>
+            <ul class="ranking-list">
+                <li class="ranking-item">
+                    <span class="rank-user">
+                        <span class="rank-num">1</span> #톤업크림
+                    </span>
+                    <span class="rank-points">142 posts</span>
+                </li>
+                <li class="ranking-item">
+                    <span class="rank-user">
+                        <span class="rank-num">2</span> #눈썹정리
+                    </span>
+                    <span class="rank-points">98 posts</span>
+                </li>
+                <li class="ranking-item">
+                    <span class="rank-user">
+                        <span class="rank-num">3</span> #나이트루틴
+                    </span>
+                    <span class="rank-points">73 posts</span>
+                </li>
+            </ul>
         </div>
     </div>
-    <main>
 
-        <div class="main-left-content">
+</main>
 
-            <section class="dashboard-section">
-                <div class="section-header">
-                    <h2>📸 BOTD <span>사용자의 데일리 루틴과 사용샷을 모아보는 공간입니다.</span></h2>
-                </div>
+<footer th:replace="~{layout/footer :: footer}"></footer>
 
-                <div class="feed-list" id="feed-list-container">
-                    
-                </div>
-
-                <div class="feed-empty" id="feed-empty" style="display: block;">등록된 피드가 없습니다. 첫 번째 피드를 작성해보세요!</div>
-            </section>
-
-        </div>
-
-        <aside class="right-sidebar">
-
-            <div class="feed-upload-summary">
-                <div>
-                    <div class="feed-upload-title">오늘의 피드를 <span>공유</span>해보세요</div>
-                    <div class="feed-upload-desc">사진, 사용 제품, 해시태그를 함께 올리면 비슷한 피부 타입의 사용자가 더 쉽게 참고할 수 있어요.</div>
-                </div>
-                <button class="feed-upload-btn" type="button" onclick="location.href='/feed/write'">피드 작성하기</button>
-            </div>
-
-            <div class="sidebar-ranking">
-                <h4>🔥 인기 해시태그</h4>
-                <ul class="ranking-list">
-                    <li class="ranking-item">
-                        <span class="rank-user"><span class="rank-num">1</span> #톤업크림</span>
-                        <span class="rank-points">142 posts</span>
-                    </li>
-                    <li class="ranking-item">
-                        <span class="rank-user"><span class="rank-num">2</span> #눈썹정리</span>
-                        <span class="rank-points">98 posts</span>
-                    </li>
-                    <li class="ranking-item">
-                        <span class="rank-user"><span class="rank-num">3</span> #나이트루틴</span>
-                        <span class="rank-points">73 posts</span>
-                    </li>
-                </ul>
-            </div>
-
-            <a href="#" class="sidebar-chatbot-banner">
-                <span class="banner-top-tag">AI COUNSELING</span>
-                <div class="banner-title">피드 속 제품이 궁금할 땐<br><span>AI 챗봇</span>에게 물어보세요</div>
-                <div class="banner-desc">성분과 피부 타입 궁합 보기</div>
-            </a>
-
-        </aside>
-
-    </main>
-
-    <footer th:replace="~{layout/footer :: footer}"></footer>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
 
     const filterBar = document.getElementById('feed-filter-bar');
     const filterSummary = document.getElementById('feed-filter-summary');
     const filterToggleIcon = document.getElementById('feed-filter-toggle-icon');
     const filterInner = document.getElementById('feed-filter-inner');
-
-    const feedListContainer = document.getElementById('feed-list-container');
     const feedEmpty = document.getElementById('feed-empty');
 
-    const uploadModal = document.getElementById('feed-upload-modal');
-    const openUploadModalBtn = document.getElementById('open-upload-modal');
-    const closeUploadModalBtn = document.getElementById('close-upload-modal');
-    const submitFeedBtn = document.getElementById('submit-feed-btn');
+    function removeDuplicateTagButtons() {
+        const tagButtons = document.querySelectorAll('.feed-tag-btn');
+        const seenTags = new Set();
 
-    const inputProfileName = document.getElementById('input-profile-name');
-    const selectSkinType = document.getElementById('select-skin-type');
-    const selectSkinTone = document.getElementById('select-skin-tone');
-    const inputCaption = document.getElementById('input-caption');
-    const inputTags = document.getElementById('input-tags');
+        tagButtons.forEach(function (button) {
+            const tag = button.dataset.tag
+                ? button.dataset.tag.replace('#', '').trim().toLowerCase()
+                : '';
 
-    // 해시태그 펼치기 / 접기
-    function toggleFeedFilter() {
-        const isClosed = filterInner.style.display === 'none' || filterInner.style.display === '';
+            if (!tag) return;
 
-        if (isClosed) {
-            filterInner.style.display = 'flex';
-            filterBar.classList.remove('is-closed');
-            filterToggleIcon.innerText = '접기 －';
-        } else {
-            filterInner.style.display = 'none';
-            filterBar.classList.add('is-closed');
-            filterToggleIcon.innerText = '펼치기 ＋';
-        }
-    }
-
-    if (filterSummary) {
-        filterSummary.addEventListener('click', toggleFeedFilter);
-
-        filterSummary.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                toggleFeedFilter();
+            if (seenTags.has(tag)) {
+                button.remove();
+            } else {
+                seenTags.add(tag);
             }
         });
     }
 
-    // 피드 필터 적용
+    function renderFeedContentAndLink() {
+        const feedCards = document.querySelectorAll('.feed-card');
+
+        feedCards.forEach(function (card) {
+            const rawContent = card.dataset.content
+                ? card.dataset.content.trim()
+                : '';
+
+            const caption = card.querySelector('.feed-card-caption');
+            const link = card.querySelector('.feed-info-link');
+
+            if (!caption || !link) return;
+
+            caption.style.display = 'none';
+            link.style.display = 'none';
+
+            if (!rawContent) return;
+
+            let contentText = '';
+            let linkText = '';
+
+            function isLink(text) {
+                if (!text) return false;
+
+                const value = text.trim().toLowerCase();
+
+                return value.startsWith('http://') || value.startsWith('https://');
+            }
+
+            if (rawContent.includes(',')) {
+                const parts = rawContent.split(',');
+
+                const first = parts[0] ? parts[0].trim() : '';
+                const second = parts.length > 1 ? parts.slice(1).join(',').trim() : '';
+
+                if (isLink(first)) {
+                    linkText = first;
+                } else {
+                    contentText = first;
+                }
+
+                if (isLink(second)) {
+                    linkText = second;
+                }
+            } else {
+                if (isLink(rawContent)) {
+                    linkText = rawContent;
+                } else {
+                    contentText = rawContent;
+                }
+            }
+
+            if (contentText) {
+                caption.textContent = contentText;
+                caption.style.display = 'block';
+            }
+
+            if (linkText) {
+                link.href = linkText;
+                link.style.display = 'inline-flex';
+            }
+        });
+    }
+
+    function renderFeedImages() {
+        const feedCards = document.querySelectorAll('.feed-card');
+
+        feedCards.forEach(function (card) {
+            const imageEl = card.querySelector('.js-feed-image');
+            const placeholder = card.querySelector('.js-feed-placeholder');
+            const badge = card.querySelector('.js-photo-badge');
+            const prevBtn = card.querySelector('.feed-photo-prev');
+            const nextBtn = card.querySelector('.feed-photo-next');
+
+            const rawImages = card.dataset.images ? card.dataset.images.trim() : '';
+
+            const images = rawImages
+                .split(',')
+                .map(function (name) {
+                    return name.trim();
+                })
+                .filter(function (name) {
+                    return name !== '' && name !== 'null';
+                });
+
+            let currentIndex = 0;
+
+            function updateImage() {
+                if (images.length === 0) {
+                    if (imageEl) imageEl.style.display = 'none';
+                    if (placeholder) placeholder.style.display = 'flex';
+                    if (badge) badge.style.display = 'none';
+                    if (prevBtn) prevBtn.style.display = 'none';
+                    if (nextBtn) nextBtn.style.display = 'none';
+                    return;
+                }
+
+                if (imageEl) {
+                    imageEl.src = '/upload/' + images[currentIndex];
+                    imageEl.style.display = 'block';
+                }
+
+                if (placeholder) {
+                    placeholder.style.display = 'none';
+                }
+
+                if (badge) {
+                    badge.style.display = 'flex';
+                    badge.textContent = (currentIndex + 1) + ' / ' + images.length;
+                }
+
+                if (prevBtn && nextBtn) {
+                    if (images.length > 1) {
+                        prevBtn.style.display = 'flex';
+                        nextBtn.style.display = 'flex';
+                    } else {
+                        prevBtn.style.display = 'none';
+                        nextBtn.style.display = 'none';
+                    }
+                }
+            }
+
+            if (prevBtn) {
+                prevBtn.addEventListener('click', function () {
+                    if (images.length <= 1) return;
+
+                    currentIndex--;
+
+                    if (currentIndex < 0) {
+                        currentIndex = images.length - 1;
+                    }
+
+                    updateImage();
+                });
+            }
+
+            if (nextBtn) {
+                nextBtn.addEventListener('click', function () {
+                    if (images.length <= 1) return;
+
+                    currentIndex++;
+
+                    if (currentIndex >= images.length) {
+                        currentIndex = 0;
+                    }
+
+                    updateImage();
+                });
+            }
+
+            updateImage();
+        });
+    }
+
+    function toggleFeedFilter() {
+        if (!filterInner) return;
+
+        const isClosed = filterInner.style.display === 'none' || filterInner.style.display === '';
+
+        if (isClosed) {
+            filterInner.style.display = 'flex';
+
+            if (filterBar) {
+                filterBar.classList.remove('is-closed');
+            }
+
+            if (filterToggleIcon) {
+                filterToggleIcon.innerText = '접기 －';
+            }
+        } else {
+            filterInner.style.display = 'none';
+
+            if (filterBar) {
+                filterBar.classList.add('is-closed');
+            }
+
+            if (filterToggleIcon) {
+                filterToggleIcon.innerText = '펼치기 ＋';
+            }
+        }
+    }
+
     function applyFilter(selectedTag) {
         const feedCards = document.querySelectorAll('.feed-card');
         let visibleCount = 0;
@@ -150,7 +437,22 @@
         }
     }
 
-    // 해시태그 버튼 클릭
+    removeDuplicateTagButtons();
+    renderFeedContentAndLink();
+    renderFeedImages();
+    initLikeButtons();
+
+    if (filterSummary) {
+        filterSummary.addEventListener('click', toggleFeedFilter);
+
+        filterSummary.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                toggleFeedFilter();
+            }
+        });
+    }
+
     if (filterInner) {
         filterInner.addEventListener('click', function (event) {
             if (!event.target.classList.contains('feed-tag-btn')) return;
@@ -168,134 +470,115 @@
         });
     }
 
-    // 해시태그 버튼 자동 추가
-    function addTagButton(tagName) {
-        if (!tagName) return;
+    document.querySelectorAll('.feed-hashtag-btn').forEach(function (button) {
+        button.addEventListener('click', function () {
+            const selectedTag = button.dataset.tag;
 
-        const cleanTag = tagName.replace('#', '').trim();
+            document.querySelectorAll('.feed-tag-btn').forEach(function (tagButton) {
+                tagButton.classList.remove('active');
 
-        if (!cleanTag) return;
-
-        const existingButton = document.querySelector(`.feed-tag-btn[data-tag="${cleanTag}"]`);
-
-        if (existingButton) return;
-
-        const button = document.createElement('button');
-        button.className = 'feed-tag-btn';
-        button.dataset.tag = cleanTag;
-        button.innerText = '#' + cleanTag;
-
-        filterInner.appendChild(button);
-    }
-
-    // 모달 열기
-    if (openUploadModalBtn) {
-        openUploadModalBtn.addEventListener('click', function () {
-            uploadModal.style.display = 'flex';
-        });
-    }
-
-    // 모달 닫기
-    if (closeUploadModalBtn) {
-        closeUploadModalBtn.addEventListener('click', function () {
-            uploadModal.style.display = 'none';
-        });
-    }
-
-    // 모달 바깥 누르면 닫기
-    if (uploadModal) {
-        uploadModal.addEventListener('click', function (event) {
-            if (event.target === uploadModal) {
-                uploadModal.style.display = 'none';
-            }
-        });
-    }
-
-    // 피드 등록
-    if (submitFeedBtn) {
-        submitFeedBtn.addEventListener('click', function () {
-            const profileName = inputProfileName.value.trim();
-            const skinType = selectSkinType.value;
-            const skinTone = selectSkinTone.value;
-            const caption = inputCaption.value.trim();
-            const tagText = inputTags.value.trim();
-
-            if (!profileName) {
-                alert('닉네임을 입력해주세요.');
-                return;
-            }
-
-            if (!caption) {
-                alert('내용을 입력해주세요.');
-                return;
-            }
-
-            const tags = tagText
-                .split(' ')
-                .map(function (tag) {
-                    return tag.replace('#', '').trim();
-                })
-                .filter(function (tag) {
-                    return tag !== '';
-                });
-
-            tags.forEach(function (tag) {
-                addTagButton(tag);
+                if (tagButton.dataset.tag === selectedTag) {
+                    tagButton.classList.add('active');
+                }
             });
 
-            const tagHtml = tags.map(function (tag) {
-                return `<span class="feed-hashtag">#${tag}</span>`;
-            }).join('');
+            applyFilter(selectedTag);
 
-            const feedCard = document.createElement('article');
-            feedCard.className = 'feed-card';
-            feedCard.dataset.tags = tags.join(',');
-
-            feedCard.innerHTML = `
-                <div class="feed-card-image">
-                    📸
-                </div>
-
-                <div class="feed-card-content">
-                    <div class="feed-card-top">
-                        <div>
-                            <strong>${profileName}</strong>
-                            <span>${skinType} · ${skinTone}</span>
-                        </div>
-                    </div>
-
-                    <p class="feed-card-caption">${caption}</p>
-
-                    <div class="feed-card-tags">
-                        ${tagHtml}
-                    </div>
-
-                    <div class="feed-card-bottom">
-                        <span>♡ 좋아요 0</span>
-                        <span>댓글 0</span>
-                    </div>
-                </div>
-            `;
-
-            feedListContainer.prepend(feedCard);
-
-            if (feedEmpty) {
-                feedEmpty.style.display = 'none';
+            if (filterInner) {
+                filterInner.style.display = 'flex';
             }
 
-            inputProfileName.value = '';
-            inputCaption.value = '';
-            inputTags.value = '';
+            if (filterBar) {
+                filterBar.classList.remove('is-closed');
+            }
 
-            uploadModal.style.display = 'none';
-
-            const activeButton = document.querySelector('.feed-tag-btn.active');
-
-            if (activeButton) {
-                applyFilter(activeButton.dataset.tag);
+            if (filterToggleIcon) {
+                filterToggleIcon.innerText = '접기 －';
             }
         });
-    }
+    });
+
+    document.querySelectorAll('.feed-more-btn').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+            event.stopPropagation();
+
+            const currentMenu = button.closest('.feed-more-wrap').querySelector('.feed-more-menu');
+
+            document.querySelectorAll('.feed-more-menu').forEach(function (menu) {
+                if (menu !== currentMenu) {
+                    menu.classList.remove('is-open');
+                }
+            });
+
+            currentMenu.classList.toggle('is-open');
+        });
+    });
+
+    document.addEventListener('click', function () {
+        document.querySelectorAll('.feed-more-menu').forEach(function (menu) {
+            menu.classList.remove('is-open');
+        });
+    });
+
+    document.querySelectorAll('.feed-menu-item').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+            event.stopPropagation();
+
+            if (button.classList.contains('danger')) {
+                alert('삭제 기능은 컨트롤러 연결 후 동작합니다.');
+            } else {
+                alert('수정 기능은 컨트롤러 연결 후 동작합니다.');
+            }
+        });
+    });
+
+    document.querySelectorAll('.feed-comment-count').forEach(function (button) {
+        button.addEventListener('click', function () {
+            const card = button.closest('.feed-card');
+            const commentList = card.querySelector('.feed-comment-list');
+
+            if (!commentList) return;
+
+            commentList.classList.toggle('is-open');
+
+            if (commentList.classList.contains('is-open')) {
+                button.textContent = '댓글 접기';
+            } else {
+                button.textContent = '댓글 0개 모두 보기';
+            }
+        });
+    });
+    function initLikeButtons() {
+    const likeButtons = document.querySelectorAll('.feed-like-btn');
+
+    likeButtons.forEach(function (button) {
+        const icon = button.querySelector('.feed-like-icon');
+        const countText = button.querySelector('.feed-like-count');
+
+        button.addEventListener('click', function () {
+            const isLiked = button.dataset.liked === 'true';
+            let count = Number(button.dataset.likeCount || 0);
+
+            if (isLiked) {
+                count = Math.max(0, count - 1);
+                button.dataset.liked = 'false';
+                button.classList.remove('is-liked');
+                icon.textContent = '♡';
+            } else {
+                count = count + 1;
+                button.dataset.liked = 'true';
+                button.classList.add('is-liked');
+                icon.textContent = '♥';
+            }
+
+            button.dataset.likeCount = count;
+            countText.textContent = count;
+        });
+    });
+}
 
 });
 </script>
+
+</body>
+</html>

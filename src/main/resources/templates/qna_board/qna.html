@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beauminity - 질문 게시판</title>
+    <title>Beauminity : 질문 게시판</title>
 
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link rel="stylesheet" th:href="@{/css/board.css}">
@@ -48,17 +48,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="col-num">102</td>
+                        <tr th:each="qna : ${qnaS}">
+                            <td class="col-num" th:text="${qna.boardId}"></td>
                             <td class="col-product" style="color: var(--color-accent); font-weight: 800;">[답변대기]</td>
                             <td>
-                                <a href="#" class="col-title">디페린 겔 사용 후 각질 부각이랑 따가움 현상 정상인가요?</a>
-                                <span class="reply-count">[3]</span>
+                                <a th:href="@{|/board/qna/${qna.boardId}|}" class="col-title" th:text="${qna.title}"></a>
+                                <span class="reply-count" th:text="|[${qna.replyCnt}]|"></span>
                             </td>
-                            <td class="col-writer">민감성피부</td>
-                            <td class="col-date">06-15</td>
-                            <td class="col-hits">42</td>
+                            <td class="col-writer" th:text="${qna.username}"></td>
+                            <td class="col-date" th:text="${qna.createdAt}"></td>
+                            <td class="col-hits" th:text="${qna.viewCnt}"></td>
                         </tr>
+                        <!--
                         <tr>
                             <td class="col-num">101</td>
                             <td class="col-product" style="color: var(--text-muted); font-weight: 500;">[답변완료]</td>
@@ -92,6 +93,7 @@
                             <td class="col-date">06-13</td>
                             <td class="col-hits">215</td>
                         </tr>
+                        -->
                     </tbody>
                 </table>
 
@@ -117,41 +119,7 @@
 
         </div>
 
-        <aside class="right-sidebar">
-            <div class="sidebar-ranking">
-                <h4>👑 주간 멤버 랭킹</h4>
-                <ul class="ranking-list">
-                    <li class="ranking-item">
-                        <span class="rank-user"><span class="rank-num">1</span> 그루밍마스터</span>
-                        <span class="rank-points">4,250 p</span>
-                    </li>
-                    <li class="ranking-item">
-                        <span class="rank-user"><span class="rank-num">2</span> 훈훈스킨</span>
-                        <span class="rank-points">3,980 p</span>
-                    </li>
-                    <li class="ranking-item">
-                        <span class="rank-user"><span class="rank-num">3</span> 올영단골</span>
-                        <span class="rank-points">3,410 p</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="sidebar-login-link-box">
-                <div class="login-link-title">
-                    더 다양한 그루밍 팁을 보려면<br><span>Beauminity</span>에 로그인하세요!
-                </div>
-                <button class="sidebar-move-login-btn" th:onclick="|location.href='@{/login}'|">로그인하러 가기</button>
-                <div class="login-link-sub">
-                    <a th:href="@{/register}">회원가입</a> | <a th:href="@{/find-account}">계정 찾기</a>
-                </div>
-            </div>
-
-            <a th:href="@{/chatbot}" class="sidebar-chatbot-banner">
-                <span class="banner-top-tag">AI COUNSELING</span>
-                <div class="banner-title">맞춤형 관리, 어려울 땐<br><span>그루밍 AI 챗봇</span>에게</div>
-                <div class="banner-desc">실시간 스킨케어 진단 받기</div>
-            </a>
-        </aside>
+        <div th:replace="~{layout/aside :: sidebarFragment}"></div>
 
     </main>
 

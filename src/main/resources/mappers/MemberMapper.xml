@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.miles.beauminity.mapper.MemberMapper">
+
+    <select id="findMemberById"
+            parameterType="String"
+            resultType="long">
+
+        SELECT count(*)
+        FROM member
+        WHERE username = #{username}
+    
+    </select>
+
+    <select id="findLoginId"
+            parameterType="String"
+            resultType="com.miles.beauminity.vo.login.MemberVO">
+
+        SELECT *
+        FROM member
+        WHERE username = #{username}
+    
+    </select>
+
+    <insert id="insertMember"
+            parameterType="com.miles.beauminity.vo.login.MemberVO">
+    
+        INSERT INTO member(
+            username,
+            grade_id,
+            password,
+            nickname,
+            name,
+            birthday,
+            gender,
+            email,
+            phone,
+            skin_type,
+            personal_color
+        ) VALUES (
+            #{username},
+            #{gradeId},
+            #{password},
+            #{nickname},
+            #{name},
+            #{birthday},
+            #{gender},
+            #{email},
+            #{phone},
+            #{skinType},
+            #{personalColor}
+        )
+
+    </insert>
+
+</mapper>
