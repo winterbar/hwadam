@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.miles.beauminity.mapper.FeedMapper">
+    <insert id="postFeed"
+            parameterType="com.miles.beauminity.vo.FeedVO"
+            useGeneratedKeys="true"
+            keyProperty="feedId">
+        
+        insert into feed (
+            member_id,
+            feed_content,
+            like_cnt,
+            reply_cnt,
+            created_at,
+            edited_at,
+            deleted
+        )
+        values (
+            #{memberId},
+            #{feedContent},
+            #{likeCnt},
+            #{replyCnt},
+            #{createdAt},
+            #{editedAt},
+            #{deleted}
+        )
+    </insert>
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.miles.beauminity.mapper.MasterBoardMapper">
+
+    <!-- 게시글 게시(구현 완료)  -->
+    <!-- username이 외래키라서 일단 임의로 회원 하나 등록해놓고 테스트했습니다. 성공적으로 적용되었습니다.-->
+    <insert id="insertBoard" parameterType="com.miles.beauminity.vo.MasterBoardVO">
+        INSERT INTO master_board
+        (username, board_type, title, content, created_at, edited_at
+        )
+        VALUES (#{username}, #{boardType}, #{title}, #{content}, NOW(), NOW()
+        )
+    </insert>
+
+    <!-- 특정 게시판 게시글 전체조회 -->
+    <!-- 게시글을 특정 게시판에 맞출려면 각 컨트롤러랑 서비스 단에서 boardType을 명시해서 전달해야 한다. 
+    하지만 추후에 페이징을 넣을 것을 고려하면... 페이지 vo가 따로 있을 것이다. 
+    그렇기 때문에 파라미터 타입을 다르게 해서 집어넣어야겠다...
+    다르게 해서 집어넣을 수 있는 좋은 방법이 없을까? 를 고민하다가 나온 게 HashMap을 사용하는 것입니다.
+    처음 해보는 거라 저도 잘 될 지는 모르겠는데... 그러므로 일단은 등록 먼저 하고 마저 건드려보겠습니다.
+    지금은 역시 등록이 먼저인 거 같네요. -->
+    <!-- <select id="getTypeBoard" parameterType="com.miles.beauminity.vo.MasterBoardVO">
+        SELECT 
+        board_id,
+        username,
+        title,
+        content,
+        created_at,
+        edited_at
+        FROM master_board
+        WHERE board_type = #{boardType}
+    </select> -->
+
+    <!-- 전체조회 매퍼 -->
+    <!-- 임시입니다. 해시맵으로 특정 조회 하고 나면 사라집니다. -->
+    <select id="getTypeBoard" 
+        resultType="com.miles.beauminity.vo.MasterBoardVO">
+        SELECT 
+        board_id,
+        username,
+        title,
+        content,
+        created_at,
+        edited_at
+        FROM master_board
+        ORDER BY board_id DESC
+    </select>
+
+    <!-- <update>
+
+    </update> -->
+
+</mapper>
