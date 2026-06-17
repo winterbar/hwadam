@@ -4,13 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.miles.beauminity.mapper.FeedMapper">
+<!--피드 내용 DB 저장-->
     <insert id="postFeed"
-            parameterType="com.miles.beauminity.vo.FeedVO"
+            parameterType="com.miles.beauminity.vo.feed.FeedVO"
             useGeneratedKeys="true"
             keyProperty="feedId">
         
         insert into feed (
-            member_id,
+            username,
             feed_content,
             like_cnt,
             reply_cnt,
@@ -19,13 +20,31 @@
             deleted
         )
         values (
-            #{memberId},
+            #{username},
             #{feedContent},
             #{likeCnt},
             #{replyCnt},
-            #{createdAt},
-            #{editedAt},
+            NOW(),
+            NOW(),
             #{deleted}
         )
     </insert>
+    <select id="getFeedList"
+            resultType="com.miles.beauminity.vo.feed.FeedVO">
+        select f.feed_id, 
+               f.username, 
+               f.feed_content,
+               f.like_cnt,
+               f.reply_cnt,
+               f.created_at,
+               ff.saved_name,
+               ff.file_path
+        from feed f
+        join feed_file ff
+        on f.feed_id = ff.feed_id
+        join feed_tag t 
+        on f.feed_id = t.feed_id
+        where deleted=0
+        order by f.created_at desc
+    </select>
 </mapper>
