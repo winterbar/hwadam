@@ -1,5 +1,5 @@
 /* ===================================================
-   [기본 테마] 라이트모드 컬러 변수 정의
+   [기본 테마] 컬러 변수 정의
 =================================================== */
 :root {
     --bg-body: #F8F9FA;
@@ -18,24 +18,6 @@
     /* 원래 코드의 고유 브랜드 컬러 */
     --color-primary: #FACB47; /* 선명한 옐로우 */
     --color-accent: #FA6E68;  /* 코랄 스칼렛 */
-}
-
-/* ===================================================
-   [다크 테마] 다크모드 컬러 변수 정의
-=================================================== */
-[data-theme="dark"] {
-    --bg-body: #121214;
-    --bg-card: #1A1A1E;
-    --bg-nav: #1A1A1E;
-    --border-color: #2D2D35;
-    --border-row: #23232A;
-    --text-main: #ECECEF;
-    --text-muted: #707075;
-    --text-dark-muted: #A0A0A5;
-    --text-link-muted: #868E96;
-    --bg-botd-card: #23232A;
-    --border-botd: #2D2D35;
-    --bg-table-hover: #23201B;
 }
 
 * {
@@ -85,26 +67,6 @@ header {
     max-height: 36px;
     width: auto;
     display: block;
-}
-
-.theme-toggle-btn {
-    background: var(--border-row);
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
-    width: 36px;
-    height: 36px;
-    font-size: 1.05rem;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-}
-
-.theme-toggle-btn:hover {
-    border-color: var(--color-accent);
-    transform: scale(1.05);
 }
 
 /* 2. 메뉴바 영역 */
@@ -616,10 +578,6 @@ footer {
     filter: brightness(0) invert(1);
 }
 
-[data-theme="dark"] .sidebar-login-btn-icon {
-    filter: brightness(0) invert(0.6);
-}
-
 .sidebar-login-register-lead {
     color: var(--text-muted);
     font-size: 0.8rem;
@@ -636,14 +594,6 @@ footer {
     text-decoration: underline;
 }
 
-[data-theme="dark"] .sidebar-login-register-link {
-    color: var(--text-main);
-}
-
 .login-link-sub a {
     color: var(--text-link-muted);
-}
-
-[data-theme="dark"] .login-link-sub a {
-    color: var(--text-muted);
 }
