@@ -18,7 +18,7 @@
                 <a href="beaminity_main_style_feed_botd_clean_linked.html" class="more-link">목록으로 돌아가기</a>
             </div>
 
-            <form th:action="@{/board/qna}" method="POST">
+            <form th:action="@{/board/qna}" method="POST" enctype="multipart/form-data">
                 
                 <div class="form-row-2">
                     <div class="form-group">
@@ -46,7 +46,7 @@
                 <div class="form-group">
                     <label>사진/파일 첨부</label>
                     <label for="file-input" class="file-upload-wrapper">
-                        <input type="file" id="file-input" multiple>
+                        <input type="file" id="file-input" multiple name="files">
                         <span class="upload-icon">📁</span>
                         <span class="upload-text">클릭하거나 파일을 여기로 드래그하여 업로드</span>
                         <span class="upload-hint">JPG, PNG, GIF 파일 가능 (최대 10MB)</span>

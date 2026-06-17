@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.miles.beauminity.vo.MasterBoardFileVO;
 import com.miles.beauminity.vo.MasterBoardVO;
 
 // 게시글용 매퍼
@@ -11,7 +12,10 @@ import com.miles.beauminity.vo.MasterBoardVO;
 @Mapper
 public interface MasterBoardMapper {
     // CREATE - 게시글 추가
-    public void insertBoard (MasterBoardVO masterBoardVO);
+    public void insertBoard(MasterBoardVO masterBoardVO);
+
+    // CREATE2 - 파일 추가
+    public void insertFile(MasterBoardFileVO masterBoardFileVO);
 
     // READ1 - 게시글 전체조회(페이징 미적용 매퍼 구현완료)
     public List<MasterBoardVO> getTypeBoard(String type);
