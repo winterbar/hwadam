@@ -31,7 +31,6 @@
                         <label for="author">작성자</label>
                         <input type="text" id="author" name="author" class="form-control" 
                                th:value="${loginUser}" required readonly>
-
                     </div>
 
                     <div class="form-group">
@@ -72,11 +71,11 @@
 
                 <div class="form-group">
                     <label>이미지 첨부</label>
-                    <div class="file-upload-wrapper" onclick="document.getElementById('fileInput').click()">
+                    <div class="file-upload-wrapper" id="dropZone" >
                         <span class="upload-icon">📁</span>
-                        <span class="upload-text">파일을 선택하거나 여기로 드래그하세요.</span>
+                        <span class="upload-text" id="uploadText">파일을 선택하거나 여기로 드래그하세요.</span>
                         <span class="upload-hint">JPG, PNG, GIF 파일만 업로드 가능합니다.</span>
-                        <input type="file" id="fileInput" name="reviewFile">
+                        <input type="file" id="fileInput" name="reviewFiles" multiple>
                     </div>
                 </div>
 
@@ -103,7 +102,8 @@
     <div th:replace="~{layout/footer :: footer}"></div>
 
     <script>
-            
+        // 전역 파일 배열 객체 선언 (드롭과 클릭 추가 파일들을 누적해서 관리하기 위함)
+        let globalFiles = [];
 
 
         // 검색 버튼 클릭 시 작동하는 함수 (모달 열기 및 가상 검색 결과 출력)
@@ -189,6 +189,112 @@
             if (savedTheme === "dark") {
                 document.body.classList.add("dark-mode");
             }
+        });
+
+        //==================
+        // 파일 드래그 앤 드롭 기능 제어
+        //==================
+        document.addEventListener("DOMContentLoaded", function () {
+            const dropZone = document.getElementById("dropZone");
+            const fileInput = document.getElementById("fileInput");
+            const uploadText = document.getElementById("uploadText");
+            
+            // 안전 장치: DOM 요소가 화면에 로드외지 않았다면 스크립트 예외 발생 처리 방지
+            if (!dropZone || !fileInput) {
+                console.error("드롭존 또는 파일 인풋 태그를 찾을 수 없습니다.");
+                return;
+            }
+
+            // 1. 모든 드래그 관련 이벤트에서 브라우저 기본 행위 전면 차단
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            // 2. 모든 드래그 이벤트 가로채기 차단
+            const dragEvents = ['dragenter','dragover','dragleave','drop'];
+            dragEvents.forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            // 3. 마우스가 파일 들고 박스 위로 진입했을 대 스타일(노란 대시선) 추가
+            
+            const enterEvents = ['dragenter', 'dragover'];
+            enterEvents.forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.add('drag-over');
+                }, false);
+            })
+
+            // 4. 마우스가 박스 밖으로 나갔을 때 스타일 제거
+            const leaveEvents = ['dragleave', 'drop'];
+            leaveEvents.forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.remove('drag-over');
+                }, false);
+            });
+
+            // 화면에 선택된 멀티 파일들의 텍스트를 갱신해주는 공통 로직 함수
+            function updateUploadText(files){
+                if (files.length === 0) {
+                    uploadText.textContent = "파일을 선택하거나 여기로 드래그하세요.";
+                } else if (files.length ===1) {
+                    uploadText.textContent = `선택된 파일: ${files[0].name}`;
+                } else {
+                    uploadText.textContent = `선택된 파일: ${files[0].name} 외 ${files.length - 1}개`;
+                }
+            }
+
+            // 파일 리스트 배열을 input[type=file]태그의 실제 내부 데이터 객체(FileList)에 동기화 해주는 함수
+            function syncFilesToInput() {
+                const dataTransfer = new DataTransfer();
+                globalFiles.forEach(file => {
+                    dataTransfer.items.add(file);
+                });
+                fileInput.files = dataTransfer.files; // 가상 객체의 파일 목록 데이터를 실제 input 태그에 주입
+            }
+
+
+            // 5. 가장 중요: 파일을 드롭했을 때 처리하는 로직(데이터 주입 및 UI 변경 로직)
+            dropZone.addEventListener('drop', function (e) {
+                preventDefaults(e); // 브라우저 가로채기 및 클릭 이벤트 간섭 완전 차단
+                dropZone.classList.remove('drag-over'); // 드롭 완료 시 스타일 제거
+
+                const dt = e.dataTransfer;
+                const newFiles = dt.files; // 드롭된 파일 객체 목록
+
+                if (newFiles && newFiles.length > 0) {
+                  
+                    for (let i = 0; i < newFiles.length; i++) {
+                        globalFiles.push(newFiles[i]);
+                    }
+                    syncFilesToInput(); // input 태그 데이터 갱신
+                    updateUploadText(globalFiles); // 화면 글자 갱신
+                }
+            }, false);
+
+            // 6. 드롭 박스 영역 클릭시 안전하게 스크립트 내부에서 클릭 이벤트 연결
+            dropZone.addEventListener('click', function (e) {
+    
+                if (e.target === fileInput) {
+                    fileInput.click();
+                }
+            })
+
+            // 7. 드롭 대신 클릭해서 일반적인 방법(파일 탐색기)으로 파일을 선택했을 때도 텍스트 변경 처리
+            fileInput.addEventListener('change', function () {
+                const selectedFiles = fileInput.files;
+
+                if (selectedFiles && selectedFiles.length > 0) {
+                    // 파일 개수에 따른 화면 텍스트 분기 처리
+                    for (let i = 0; i < selectedFiles.length; i++) {
+                        // 중복 유입 방지를 위해 전역 배열에 순차 등록
+                        globalFiles.push(selectedFiles[i]);
+                    }
+                    syncFilesToInput();
+                    updateUploadText(globalFiles);
+                }
+            });
         });
     </script>
 </body>
