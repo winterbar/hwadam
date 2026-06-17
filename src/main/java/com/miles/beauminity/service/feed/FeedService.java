@@ -8,5 +8,7 @@ import com.miles.beauminity.vo.feed.FeedVO;
 import com.miles.beauminity.vo.feed.TagVO;
 
 public interface FeedService {
-    void postFeed(FeedVO feedVO,MultipartFile[] files,List<TagVO> tagNames);
+    void postFeed(FeedVO feedVO,MultipartFile[] files,List<String> tagNames);
+    List<String> getTagNameList();
+    List<String> getFeedList();
 }
