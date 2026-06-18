@@ -62,6 +62,16 @@ public class CustomUserDetails implements UserDetails {
         return member.getUsername();
     }
 
+    /* 사용자 닉네임 반환 */
+    public String getNickname() {
+        return member.getNickname();
+    }
+
+    /* 사용자 포인트 변환 */
+    public int getPoint() {
+        return member.getPoint();
+    }
+
     /**
      * 계정 만료 여부
      * true  : 계정 사용 가능

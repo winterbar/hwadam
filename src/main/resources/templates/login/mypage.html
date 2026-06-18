@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>beauminity : 마이페이지</title>
+    <!-- 기본 공통 메인 스타일 유지 -->
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <style>
+        /* 마이페이지 독립 전용 스타일 */
+        body {
+            margin: 0;
+            background-color: var(--bg-body, #f9f9f9);
+            color: var(--text-main, #333333);
+        }
+
+        .mypage-main {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 1rem 1rem 1rem 1rem;
+            min-height: 80vh;
+            box-sizing: border-box;
+        }
+
+        .mypage-container {
+            width: 100%;
+            max-width: 550px;
+            background-color: #ffffff;
+            border: 1px solid var(--border-color, #e2e2e2);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        /* 1. 상단 프로필 섹션 */
+        .profile-section {
+            position: relative; 
+            background-color: #e9f0f8; 
+            padding: 2.5rem 2rem 2rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color, #e2e2e2);
+        }
+
+        /* 프로필 편집 버튼 스타일 변경 */
+        .btn-profile-edit {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #FA6E68;
+            background-color: #ffffff;
+            border: 1px solid #FA6E68;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            text-decoration: none;
+            box-shadow: 0 2px 4px rgba(250, 110, 104, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .btn-profile-edit:hover {
+            background-color: #FA6E68;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(250, 110, 104, 0.3);
+        }
+
+        .profile-img-container {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 1px solid var(--border-color, #e2e2e2);
+            margin: 0 auto 1rem auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .profile-img-placeholder {
+            font-size: 0.85rem;
+            color: var(--text-muted, #777777);
+            font-weight: 700;
+        }
+
+        .profile-info h2 {
+            margin: 0 0 0.35rem 0;
+            font-size: 1.35rem;
+            font-weight: 800;
+        }
+
+        .profile-info .user-id {
+            font-size: 0.95rem;
+            color: #555555;
+            font-weight: 500;
+        }
+
+        .profile-points {
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #333333; /* 검정색으로 수정 */
+        }
+
+        /* 2. 활동 통계 그리드 섹션 */
+        .stats-section {
+            display: flex;
+            background-color: #FA6E68; 
+            border-bottom: 1px solid var(--border-color, #e2e2e2);
+        }
+
+        .stats-item {
+            flex: 1;
+            text-align: center;
+            padding: 1.25rem 0;
+            color: #ffffff;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .stats-item:last-child {
+            border-right: none;
+        }
+
+        .stats-item:hover {
+            background-color: #e55d57;
+        }
+
+        .stats-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.35rem;
+            opacity: 0.9;
+        }
+
+        .stats-count {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+        /* 3. 상세 정보 내용 섹션 */
+        .info-section {
+            padding: 2rem;
+        }
+
+        .info-group-title {
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #333333;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .info-group-title::after {
+            content: '';
+            flex: 1;
+            margin-left: 0.75rem;
+            height: 1px;
+            background-color: var(--border-color, #e2e2e2);
+        }
+
+        .info-group-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem 1.5rem;
+            padding: 0 0.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted, #888888);
+        }
+
+        .info-value {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-main, #333333);
+        }
+
+        /* 4. 하단 버튼 영역 */
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0 2rem 2rem 2rem;
+        }
+
+        .btn-mypage {
+            flex: 1;
+            padding: 0.85rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+
+        .btn-edit {
+            background-color: #ffffff;
+            color: var(--text-main, #333333);
+            border: 1px solid var(--border-color, #e2e2e2);
+        }
+
+        .btn-edit:hover {
+            background-color: #f5f5f5;
+        }
+
+        .btn-withdraw {
+            background-color: #ffffff;
+            color: #777777;
+            border: 1px solid var(--border-color, #e2e2e2);
+        }
+
+        .btn-withdraw:hover {
+            background-color: #fff1f0;
+            color: #FA6E68;
+            border-color: #ffccc7;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 타임리프 상단 헤더 조각 대체 -->
+    <div th:replace="~{layout/header :: headerFragment}"></div>
+
+    <!-- 메인 컨텐츠 영역 -->
+    <main class="mypage-main">
+        <div class="mypage-container">
+            
+            <!-- 1. 프로필 사진 & 기본 타이틀 상단부 -->
+            <div class="profile-section">
+                <!-- 스타일이 변경된 프로필 편집 버튼 -->
+                <a th:href="@{/mypage/profile/edit}" class="btn-profile-edit">프로필 편집</a>
+
+                <div class="profile-img-container">
+                    <span class="profile-img-placeholder">프로필 사진</span>
+                </div>
+                <div class="profile-info">
+                    <h2>홍기루동구 <span class="user-id">(user_beauty01)</span></h2>
+                    <div class="profile-points">반짝반짝 4,500 p</div>
+                </div>
+            </div>
+
+            <!-- 2. 후기 / 질문 / 정보공유 / 피드 카운트 바 -->
+            <div class="stats-section">
+                <a th:href="@{/mypage/reviews}" class="stats-item">
+                    <span class="stats-label">후기</span>
+                    <span class="stats-count">19</span>
+                </a>
+                <a th:href="@{/mypage/questions}" class="stats-item">
+                    <span class="stats-label">질문</span>
+                    <span class="stats-count">20</span>
+                </a>
+                <a th:href="@{/mypage/shares}" class="stats-item">
+                    <span class="stats-label">정보공유</span>
+                    <span class="stats-count">8</span>
+                </a>
+                <a th:href="@{/mypage/feeds}" class="stats-item">
+                    <span class="stats-label">피드</span>
+                    <span class="stats-count">104</span>
+                </a>
+            </div>
+
+            <!-- 3. 회원 상세 데이터 출력 영역 -->
+            <div class="info-section">
+                
+                <div class="info-group-title">기본 정보</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">아이디</span>
+                        <span class="info-value">user_beauty01</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">닉네임</span>
+                        <span class="info-value">홍기루동구</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">이름</span>
+                        <span class="info-value">홍길동</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">성별</span>
+                        <span class="info-value">남</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">이메일</span>
+                        <span class="info-value">example@naver.com</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">전화번호</span>
+                        <span class="info-value">010-1234-5678</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">가입일</span>
+                        <span class="info-value">2026.06.08</span>
+                    </div>
+                </div>
+
+                <div class="info-group-title">뷰티 정보</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">피부타입</span>
+                        <span class="info-value">건성</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">퍼스널 컬러</span>
+                        <span class="info-value">쿨 웜톤</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 4. 하단 회원 제어 버튼 세트 -->
+            <div class="action-buttons">
+                <a th:href="@{/mypage/edit}" class="btn-mypage btn-edit">회원정보 수정</a>
+                <a th:href="@{/mypage/withdraw}" class="btn-mypage btn-withdraw">회원탈퇴</a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 타임리프 하단 푸터 조각 대체 -->
+    <div th:replace="~{layout/footer :: footerFragment}"></div>
+
+</body>
+</html>
