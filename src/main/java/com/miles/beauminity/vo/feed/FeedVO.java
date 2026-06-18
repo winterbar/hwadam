@@ -1,6 +1,7 @@
 package com.miles.beauminity.vo.feed;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.Data;
 
@@ -16,5 +17,8 @@ public class FeedVO {
     private boolean deleted;
     private String savedName;
     private String filePath;
+    private String tagName;
+    private List<String> feedTagList;
+    private List<String> feedFileList;
 
 }

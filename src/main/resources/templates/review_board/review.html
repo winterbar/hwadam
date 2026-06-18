@@ -49,53 +49,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="col-num">15</td>
-                            <td class="col-product">[선케어]</td>
+                        <tr th:each="board : ${reviewList}">
+            
+                            <td class="col-num" th:text="${board.boardId}">15</td>
+            
+                            <td class="col-product" th:text="${board.category1} + '/' + ${board.category2}">스킨케어/선케어</td>
+            
                             <td>
-                                <a href="#" class="col-title">올리브영 세일 때 쟁여야 할 지성 선크림 3종 솔직 비교</a>
+                                <a th:href="@{/board/review/detail/{id}(id=${board.boardId})}" 
+                                class="col-title" 
+                                th:text="${board.title}"
+                                style="display: block; font-weight: bold; margin-bottom: 4px;">
+                                올리브영 세일 때 쟁여야 할 지성 선크림 3종 솔직 비교
+                                </a>
+                                <span class="selected-product-name" 
+                                    th:text="'선택 제품: ' + ${board.productName}"
+                                    style="font-size: 0.85em; color: #666; display: block; margin-bottom: 6px;">
+                                    선택 제품: 라로슈포제 선크림
+                                </span>
                                 <span class="rating-stars">★★★★★</span>
-                                <span class="reply-count">[29]</span>
+                                <span class="reply-count" th:text="'[' + ${board.reply_cnt} + ']'">[0]</span>
                             </td>
-                            <td class="col-writer">올영단골</td>
-                            <td class="col-date">06-15</td>
-                            <td class="col-hits">611</td>
-                        </tr>
-                        <tr>
-                            <td class="col-num">14</td>
-                            <td class="col-product">[스킨케어]</td>
-                            <td>
-                                <a href="#" class="col-title">한 달 동안 써본 시카 진정 앰플 붉은 기 개선 효과</a>
-                                <span class="rating-stars">★★★★☆</span>
-                                <span class="reply-count">[12]</span>
-                            </td>
-                            <td class="col-writer">스킨케어매니아</td>
-                            <td class="col-date">06-14</td>
-                            <td class="col-hits">342</td>
-                        </tr>
-                        <tr>
-                            <td class="col-num">13</td>
-                            <td class="col-product">[클렌징]</td>
-                            <td>
-                                <a href="#" class="col-title">블랙헤드 녹이는 클렌징 오일 유화법 직접 검증해봄</a>
-                                <span class="rating-stars">★★★★★</span>
-                                <span class="reply-count">[26]</span>
-                            </td>
-                            <td class="col-writer">훈훈스킨</td>
-                            <td class="col-date">06-14</td>
-                            <td class="col-hits">780</td>
-                        </tr>
-                        <tr>
-                            <td class="col-num">12</td>
-                            <td class="col-product">[스킨케어]</td>
-                            <td>
-                                <a href="#" class="col-title">악건성 피부 탈출용 고보습 크림 정착 가이드</a>
-                                <span class="rating-stars">★★★☆☆</span>
-                                <span class="reply-count">[7]</span>
-                            </td>
-                            <td class="col-writer">건조한사람</td>
-                            <td class="col-date">06-12</td>
-                            <td class="col-hits">198</td>
+            
+                            <td class="col-writer" th:text="${board.username}">올영단골</td>
+            
+                            <td class="col-date" th:text="${#temporals.format(board.createdAt, 'MM-dd')}">06-15</td>
+            
+                            <td class="col-hits" th:text="${board.viewCnt}">0</td>
                         </tr>
                     </tbody>
                 </table>
