@@ -9,6 +9,8 @@ import com.miles.beauminity.vo.feed.FeedVO;
 @Mapper
 public interface FeedMapper {
     void postFeed(FeedVO feedVO);
-    List<String> getFeedList();
+    List<FeedVO> getFeedList();
+    List<String> getFeedTagList(Long feedId);
+    List<String> getFeedFileList(Long feedId);
     
 }

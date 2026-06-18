@@ -16,7 +16,7 @@
         #{tagName}
     )
 </insert>
-<!--DB에 저장된 태그 아이디 불러오기-->
+<!--DB에 저장된 태그 이름 불러오기-->
 <select id="getTagNameList">
     select distinct tag_name
     from tag
@@ -35,4 +35,5 @@
         #{tagId}
     )
 </insert>
+
 </mapper>
