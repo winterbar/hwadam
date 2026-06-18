@@ -1,7 +1,68 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <link rel="stylesheet" th:href="@{/css/main.css}">
+    
+    <style>
+        .user-greet {
+            text-align: center;
+        }
+
+        .sidebar-user-name {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .sidebar-user-id {
+            font-weight: 700;
+            color: var(--color-primary); 
+            margin-left: 0.3rem;
+            margin-right: 0.1rem;
+        }
+
+        .sidebar-logout-form {
+            display: block;
+            width: 100%;
+        }
+
+        .sidebar-move-login-btn.logout-btn-style {
+            background-color: #23272e; 
+            color: #ffffff;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-move-login-btn.logout-btn-style:hover {
+            background-color: #1a1d22;
+        }
+
+        .sidebar-mypage-sub-box {
+            text-align: center;
+            margin-top: 0.8rem;
+        }
+
+        .sidebar-mypage-sub-box a, 
+        .sidebar-mypage-sub-box span {
+            font-size: 0.85rem;
+            color: #717d8a;
+            text-decoration: none;
+        }
+
+        .sidebar-mypage-sub-box .bold-link {
+            font-size: 0.75rem;
+            font-weight: 700 !important;
+            color: var(--text-main) !important;
+        }
+
+        .sidebar-mypage-divider {
+            margin: 0 0.4rem;
+            color: var(--text-link-muted);
+            opacity: 0.5;
+        }
+    </style>
 </head>
 <body>
 
@@ -25,7 +86,7 @@
             </ul>
         </div>
 
-        <div class="sidebar-login-link-box">
+        <div class="sidebar-login-link-box" sec:authorize="isAnonymous()">
             <div class="login-link-title">
                 더 많은 정보를 공유해보세요!
             </div>
@@ -34,16 +95,54 @@
                 <span>로그인</span>
             </button>
             <div class="login-link-sub">
-                <div style="margin-bottom: 0.5rem;">
+                <div class="register-lead-box">
                     <span class="sidebar-login-register-lead">계정이 없으신가요?</span>
                     <a th:href="@{/register}" class="sidebar-login-register-link">회원가입</a>
-                </div>
-                <div>
-                    <a th:href="@{/find-id}">아이디 찾기</a> | <a th:href="@{/find-pw}">비밀번호 찾기</a>
                 </div>
             </div>
         </div>
 
+        <div class="sidebar-login-link-box" sec:authorize="isAuthenticated()">
+            
+            <div class="login-link-title user-greet">
+                <span class="sidebar-user-name" sec:authentication="principal.nickname">닉네임</span>
+                <span class="sidebar-user-id" id="sidebar-masked-id" th:data-username="${#authentication.name}"></span> 님
+            </div>
+            
+            <form th:action="@{/logout}" method="post" class="sidebar-logout-form">
+                <button type="submit" class="sidebar-move-login-btn logout-btn-style">
+                    <img th:src="@{/images/common/symbol.png}" alt="" class="sidebar-login-btn-icon">
+                    <span>로그아웃</span>
+                </button>
+            </form>
+
+            <div class="login-link-sub sidebar-mypage-sub-box">
+                <div>
+                    <span>내 포인트 : <span th:remove="tag" sec:authentication="principal.point">0</span>p</span>
+                    <span class="sidebar-mypage-divider">|</span>
+                    <a th:href="@{/mypage}" class="bold-link">마이페이지</a>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const idElement = document.getElementById("sidebar-masked-id");
+                    
+                    if (idElement) {
+                        const rawId = idElement.getAttribute("data-username") ? idElement.getAttribute("data-username").trim() : ""; 
+                        
+                        if (rawId.length > 0) {
+                            const visiblePart = rawId.substring(0, 4);
+                            const maskedPart = "*".repeat(Math.max(0, rawId.length - 4));
+                            
+                            idElement.textContent = `(${visiblePart}${maskedPart})`;
+                        }
+                    }
+                });
+            </script>
+
+        </div>
+        
         <a th:href="@{/chatbot}" class="sidebar-chatbot-banner">
             <span class="banner-top-tag">AI COUNSELING</span>
             <div class="banner-title">맞춤형 관리, 어려울 땐<br><span>그루밍 AI 챗봇</span>에게</div>

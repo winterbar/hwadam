@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ReviewApiController {
     
     private final String CLIENT_ID ="rfulAKUI_G_GhOE7CIgi";
-    private final String CLIENT_SECRET ="raLaKOLSgV";
+    private final String CLIENT_SECRET ="XPl1EGqljQ";
 
     @GetMapping("/search")
     public ResponseEntity<String> searchProduct(@RequestParam("keyword") String keyword) {
