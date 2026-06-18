@@ -5,7 +5,77 @@
 
 <mapper namespace="com.miles.beauminity.mapper.ReviewMapper">
 
-    <insert id="insertMasterBoard">
+    <insert id="insertMasterBoard" useGeneratedKeys="true" keyProperty="boardId">
+        INSERT INTO master_board (
+            username,
+            board_type,
+            title,
+            content
+        ) VALUES (
+            #{userName},
+            'REVIEW',
+            #{title},
+            #{content}
+        )
     </insert>
+
+    <insert id="insertReviewBoard">
+        INSERT INTO review_board (
+            board_id,
+            product_name,
+            product_link,
+            product_image,
+            category1,
+            category2
+        ) VALUES (
+            #{boardId},
+            #{productName},
+            #{productLink},
+            #{productImage},
+            #{category1},
+            #{category2}
+        )
+    </insert>
+
+    <insert id="insertBoardFile">
+        INSERT INTO board_file (
+            board_id,
+            original_name,
+            saved_name,
+            file_path,
+            file_type,
+            file_size
+        ) VALUES (
+            #{boardId},
+            #{originalName},
+            #{savedName},
+            #{filePath},
+            #{fileType},
+            #{fileSize}
+        )
+    </insert>
+
+    <select id="selectReviewBoardList" 
+            resultType="com.miles.beauminity.vo.review.ReviewBoardVO">
+        SELECT 
+            m.board_id,
+            m.username,
+            m.title,
+            m.content,
+            m.created_at,
+            m.edited_at,
+            m.view_cnt,
+            m.like_cnt,
+            m.reply_cnt,
+            r.product_name,
+            r.product_link,
+            r.product_image,
+            r.category1,
+            r.category2
+        FROM master_board m
+        INNER JOIN review_board r on m.board_id = r.board_id
+        WHERE m.board_type = 'REVIEW'
+        ORDER BY m.board_id desc;
+    </select>
 
 </mapper>

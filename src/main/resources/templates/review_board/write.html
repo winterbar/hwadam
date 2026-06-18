@@ -21,10 +21,10 @@
 
             <form th:action="@{/board/review/write}" method="post" enctype="multipart/form-data">
                 
-                <input type="hidden" id="mainCategory" name="mainCategory">
-                <input type="hidden" id="subCategory" name="subCategory">
+                <input type="hidden" id="mainCategory" name="category1">
+                <input type="hidden" id="subCategory" name="category2">
                 <input type="hidden" id="productImage" name="productImage">
-                <input type="hidden" id="purchaseLink" name="purchaseLink">
+                <input type="hidden" id="purchaseLink" name="productLink">
 
                 <div class="form-row-2">
                     <div class="form-group">
@@ -56,7 +56,7 @@
 
                 <div class="form-group">
                     <label for="targetTitle">선택된 리뷰 대상</label>
-                    <input type="text" id="targetTitle" name="targetTitle" class="form-control" placeholder="검색 창에서 제품을 선택해 주세요." readonly required>
+                    <input type="text" id="targetTitle" name="productName" class="form-control" placeholder="검색 창에서 제품을 선택해 주세요." readonly required>
                 </div>
 
                 <div class="form-group">

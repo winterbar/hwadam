@@ -44,6 +44,7 @@ public class ReviewApiController {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
         RestTemplate restTemplate = new RestTemplate();
 
         try {
@@ -57,6 +58,11 @@ public class ReviewApiController {
             // 4. 네이버가 돌려준 JSON 데이터를 우리 화면(브라우저)으로 그대로 전달
             return ResponseEntity.ok(response.getBody());
 
+        } catch (org.springframework.web.client.HttpStatusCodeException e) {
+            // 네이버 서버가 에러 코드를 뱉은 경우 (401, 403 등) 어떤 응답을 줬는지 로그 확인
+            System.out.println("네이버 API 반환 에러 코드"+ e.getStatusCode());
+            System.out.println("네이버 API 반환 본문: " + e.getResponseBodyAsString());
+            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("API 요청 둥 오류가 발생했습니다.");
