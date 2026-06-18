@@ -53,8 +53,25 @@ public class FeedServiceImpl implements FeedService{
     }
     //작성된 피드 가져오기
     @Override
-    public List<String> getFeedList() {
-        return feedMapper.getFeedList();
+    public List<FeedVO> getFeedList() {
+        List<FeedVO> feedList = feedMapper.getFeedList();
+        // 특정 피드에 작성된 해시태그 가져오기
+        // 피드 전체 길이 만큼 반복
+        for (FeedVO feed : feedList) {
+            // 특정 피드 아이디에 해당하는 해시태그를 가져와서 리스트로 저장 
+            List<String> feedTagList = feedMapper.getFeedTagList(feed.getFeedId());
+            // 특정 피드 아이디에 해당하는 사진 가져와서 리스트로 저장
+            List<String> feedFileList = feedMapper.getFeedFileList(feed.getFeedId());
+            feed.setFeedFileList(feedFileList);
+            feed.setFeedTagList(feedTagList);
+        }
+
+        return feedList;
+    }
+    
+    @Override
+    public List<String> getFeedTagList(Long feedId) {
+        return feedMapper.getFeedTagList(feedId);
     }
 
 }

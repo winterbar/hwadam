@@ -32,7 +32,7 @@ public class SecurityConfig {
                     "/register", "/chkid-dup/{username}", "/find",
                     "/css/**", "/images/**", "/js/**",
                     // 개발용 지울거임 나중에
-                    "/board/**", "/feed/**", "/api/**"
+                    "/board/**", "/feed/**", "/api/**", "/upload/**"
                 ) // 클라이언트 요청이 이것과 일치한다면
                 .permitAll() // 접근을 허가
                 .requestMatchers("/board/review/**", "/board/qna/**",

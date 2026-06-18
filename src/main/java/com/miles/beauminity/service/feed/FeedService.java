@@ -9,5 +9,6 @@ import com.miles.beauminity.vo.feed.FeedVO;
 public interface FeedService {
     void postFeed(FeedVO feedVO,MultipartFile[] files,List<String> tagNames);
     List<String> getTagNameList();
-    List<String> getFeedList();
+    List<FeedVO> getFeedList();
+    List<String> getFeedTagList(Long feedId);
 }
