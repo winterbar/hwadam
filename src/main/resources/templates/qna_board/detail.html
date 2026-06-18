@@ -34,6 +34,40 @@
             <div class="post-content" th:text="${qna.content}">
             </div>
 
+            <!-- 첨부파일 -->
+        <div class="info-box" th:if="${flist != null and !#lists.isEmpty(flist)}">
+            <!-- <span class="label">첨부파일</span> -->
+            <div class="preview-list">
+                                
+                <div  th:each="file : ${flist}">
+                    <div class="preview-item">
+
+                            <!-- 이미지 파일만 출력 -->
+                        <img th:if="${#strings.endsWith(
+                    file.originalName.toLowerCase(),
+                    '.jpg')
+                or
+                #strings.endsWith(
+                    file.originalName.toLowerCase(),
+                    '.jpeg')
+                or
+                #strings.endsWith(
+                    file.originalName.toLowerCase(),
+                    '.png')
+                or
+                #strings.endsWith(
+                    file.originalName.toLowerCase(),
+                    '.gif')}" th:src="@{/download/{id}(id=${file.savedName})}">
+
+                    </div>
+                    <div>
+                        <!-- 다운로드는 모두 가능. 이전에는 file.id를 넘겼다가 변경 -->
+                        <a th:href="@{/download/{id}(id=${file.savedName})}"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
             <div class="post-actions">
                 <div class="action-left">
                     <a th:href="@{/board/qna}" class="btn btn-list">목록으로</a>
@@ -44,7 +78,6 @@
                     
                 </div>
             </div>
-
         </section>
 
         <aside class="right-sidebar">
@@ -93,6 +126,26 @@
             </a>
             
         </aside>
+
+        <section class="comment-section">
+            <h3>댓글 <span>0</span></h3>
+    
+            <div class="comment-input-area">
+                <textarea placeholder="댓글을 남겨보세요." rows="2"></textarea>
+                <button class="btn btn-comment-submit">등록</button>
+            </div>
+            
+
+            <div class="comment-list">
+                <div class="comment-item">
+                    <div class="comment-info">
+                        <span class="comment-author">그루밍왕초보</span>
+                        <span class="comment-date">2026-06-18</span>
+                    </div>
+                    <div class="comment-content">도움이 많이 되는 정보네요! 감사합니다.</div>
+                </div>
+            </div>
+        </section>
 
     </main>
 

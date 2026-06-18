@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.miles.beauminity.mapper.MasterBoardFileMapper;
 import com.miles.beauminity.mapper.MasterBoardMapper;
 import com.miles.beauminity.util.MasterFileUploadUtil;
 import com.miles.beauminity.vo.MasterBoardFileVO;
@@ -20,6 +21,7 @@ public class QnaServiceImpl implements QnaService {
 
     // 매퍼를 객체로 불러와줍니다.
     private MasterBoardMapper masterBoardMapper;
+    private MasterBoardFileMapper masterBoardFileMapper;
 
     // 게시글 등록 
     @Override
@@ -41,7 +43,7 @@ public class QnaServiceImpl implements QnaService {
             f.setBoardId(boardId);
 
             // 매퍼 적용
-            masterBoardMapper.insertFile(f);
+            masterBoardFileMapper.insertFile(f);
         }
 
         //
@@ -65,6 +67,12 @@ public class QnaServiceImpl implements QnaService {
         return masterBoardMapper.getOneBoard(id);
     }
 
+    // 게시글 상세조회 시 파일 조회
+    @Override
+    public List<MasterBoardFileVO> getBoardById(Long id) {
+        return masterBoardFileMapper.getBoardById(id);
+    }
+
     // 게시글 삭제
     @Override
     public void deleteBoard(Long id) {
@@ -82,6 +90,8 @@ public class QnaServiceImpl implements QnaService {
     public void updateBoard(MasterBoardVO masterBoardVO) {
         masterBoardMapper.updateBoard(masterBoardVO);
     }
+
+    
 
     
 

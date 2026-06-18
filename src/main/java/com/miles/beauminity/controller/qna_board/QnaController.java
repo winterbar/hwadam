@@ -1,11 +1,12 @@
 package com.miles.beauminity.controller.qna_board;
 
-import com.miles.beauminity.BeauminityApplication;
-import com.miles.beauminity.controller.feed.FeedController;
-import com.miles.beauminity.security.CustomUserDetailsService;
+import java.io.File;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,12 +14,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.miles.beauminity.service.qna_board.QnaService;
+import com.miles.beauminity.vo.MasterBoardFileVO;
 import com.miles.beauminity.vo.MasterBoardVO;
 
 import lombok.AllArgsConstructor;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -86,14 +89,15 @@ public class QnaController {
     public String getQnaDetail(@PathVariable("id") Long id, Model model) {
 
         MasterBoardVO qna = qnaService.getOneBoard(id);
+        List<MasterBoardFileVO> qnaFiles = qnaService.getBoardById(id);
 
         qnaService.viewUp(id);
 
         System.out.println(qna.toString());
 
         model.addAttribute("qna", qna);
+        model.addAttribute("flist", qnaFiles);
 
-        
 
         return "qna_board/detail";
     }
@@ -137,7 +141,25 @@ public class QnaController {
         
         return "redirect:/board/qna";
     }
-    
+
+    // 파일 첨부 메서드
+    @ResponseBody
+    @GetMapping("/download/{filename}")
+    public ResponseEntity<Resource> downLoadFile(@PathVariable("filename") String filename) {
+        String uploadDir = "C:\\uploads";
+        File file = new File(uploadDir, filename);
+
+        if (!file.exists() || !file.isFile()) {
+            return ResponseEntity.notFound().build();
+        }
+        Resource resource = new FileSystemResource(file);
+
+        return ResponseEntity.ok()
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "inline; filename=\"" + filename + "\"")
+                .body(resource);
+    }
     
 
     
