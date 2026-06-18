@@ -29,22 +29,37 @@
             #{deleted}
         )
     </insert>
+    <!-- 피드 내용 전체 가져오기-->
     <select id="getFeedList"
+            parameterType="com.miles.beauminity.vo.feed.FeedVO"
             resultType="com.miles.beauminity.vo.feed.FeedVO">
-        select f.feed_id, 
-               f.username, 
-               f.feed_content,
-               f.like_cnt,
-               f.reply_cnt,
-               f.created_at,
-               ff.saved_name,
-               ff.file_path
-        from feed f
-        join feed_file ff
-        on f.feed_id = ff.feed_id
-        join feed_tag t 
-        on f.feed_id = t.feed_id
+        select feed_id, 
+               username, 
+               feed_content,
+               like_cnt,
+               reply_cnt,
+               created_at as createdAt
+        from feed
         where deleted=0
-        order by f.created_at desc
+        order by created_at desc
+    </select>
+    <!--해당 피드의 해시태그 리스트 가져오기-->
+    <select id="getFeedTagList" parameterType="long" resultType="string">
+        select
+            t.tag_name
+        from feed_tag ft
+        join tag t
+            on ft.tag_id = t.tag_id
+        where ft.feed_id = #{feedId}
+        order by t.tag_id asc
+    </select>
+    <!--해당 피드의 파일 저장명 가져오기-->
+    <select id="getFeedFileList" parameterType="long" 
+    resultType="string">
+        select saved_name
+        from feed_file
+        where feed_id = #{feedId}
+        order by file_id asc
+
     </select>
 </mapper>

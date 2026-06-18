@@ -7,7 +7,8 @@
 
     <!-- 게시글 게시(구현 완료)  -->
     <!-- 테스트 유저 등록 확인.-->
-    <insert id="insertBoard" parameterType="com.miles.beauminity.vo.MasterBoardVO">
+    <!-- 지금 로그인 중인 작성자명을 DB에 넣으려면 어떻게 해야할까요? 이 부분도 연구해야겠다싶네요. -->
+    <insert id="insertBoard" parameterType="com.miles.beauminity.vo.MasterBoardVO" useGeneratedKeys="true" keyProperty="boardId">
         INSERT INTO master_board
         (username, board_type, title, content, created_at, edited_at
         )
@@ -67,6 +68,6 @@
         content = #{content},
         edited_at = NOW()
         WHERE board_id = #{boardId}
-        </update>
+    </update>
 
 </mapper>

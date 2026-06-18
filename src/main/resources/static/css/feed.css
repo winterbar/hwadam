@@ -1,828 +1,834 @@
 /* 메인 레이아웃 본문 구역 */
-        main {
-            max-width: 1200px;
-            margin: 2.5rem auto;
-            padding: 0 1.5rem;
-            display: grid;
-            grid-template-columns: 1fr 280px;
-            gap: 2rem;
-            align-items: start;
-        }
+main {
+    max-width: 1200px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 2rem;
+    align-items: start;
+}
 
-        /* ===================================================
+/* ===================================================
            LEFT CONTENT: 메인 대시보드 (인기글 + MOTD 피드)
         =================================================== */
-        .main-left-content {
-            display: flex;
-            flex-direction: column;
-            gap: 2.5rem;
-        }
+.main-left-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
 
-        .dashboard-section {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 2rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
-            transition: background-color 0.3s, border-color 0.3s;
-        }
+.dashboard-section {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01);
+    transition: background-color 0.3s, border-color 0.3s;
+}
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--text-main);
-            padding-bottom: 1rem;
-            margin-bottom: 1.2rem;
-            transition: border-color 0.3s;
-        }
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--text-main);
+    padding-bottom: 1rem;
+    margin-bottom: 1.2rem;
+    transition: border-color 0.3s;
+}
 
-        .section-header h2 {
-            font-size: 1.25rem;
-            font-weight: 800;
-        }
+.section-header h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+}
 
-        .section-header h2 span {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            margin-left: 0.5rem;
-            font-weight: 500;
-        }
+.section-header h2 span {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+    font-weight: 500;
+}
 
-        .more-link {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-link-muted);
-            transition: color 0.15s;
-        }
+.more-link {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-link-muted);
+    transition: color 0.15s;
+}
 
-        .more-link:hover {
-            color: var(--color-accent);
-        }
+.more-link:hover {
+    color: var(--color-accent);
+}
 
-        /* 인기 글 목록 테이블 */
-        .main-post-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
+/* 인기 글 목록 테이블 */
+.main-post-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
 
-        .main-post-table td {
-            padding: 1.1rem 0.5rem;
-            font-size: 0.9rem;
-            border-bottom: 1px solid var(--border-row);
-            transition: border-color 0.3s;
-        }
+.main-post-table td {
+    padding: 1.1rem 0.5rem;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border-row);
+    transition: border-color 0.3s;
+}
 
-        .main-post-table tr:hover td {
-            background-color: var(--bg-table-hover);
-        }
+.main-post-table tr:hover td {
+    background-color: var(--bg-table-hover);
+}
 
-        .main-post-tag {
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: var(--color-accent);
-            width: 90px;
-            display: inline-block;
-        }
+.main-post-tag {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    width: 90px;
+    display: inline-block;
+}
 
-        .main-post-title {
-            font-weight: 600;
-            color: var(--text-main);
-        }
+.main-post-title {
+    font-weight: 600;
+    color: var(--text-main);
+}
 
-        .main-post-title:hover {
-            color: var(--color-accent);
-        }
+.main-post-title:hover {
+    color: var(--color-accent);
+}
 
-        .main-post-replies {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--color-accent);
-            margin-left: 0.3rem;
-        }
+.main-post-replies {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    margin-left: 0.3rem;
+}
 
-        .main-post-meta {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-align: right;
-        }
+.main-post-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: right;
+}
 
-        /* 오늘의 MOTD 갤러리 */
-        .motd-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.2rem;
-            margin-top: 0.5rem;
-        }
+/* 오늘의 MOTD 갤러리 */
+.motd-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin-top: 0.5rem;
+}
 
-        .motd-card {
-            border: 1px solid var(--border-motd);
-            border-radius: 4px;
-            overflow: hidden;
-            background-color: var(--bg-motd-card);
-            transition: transform 0.2s, border-color 0.2s, background-color 0.3s;
-        }
+.motd-card {
+    border: 1px solid var(--border-motd);
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: var(--bg-motd-card);
+    transition: transform 0.2s, border-color 0.2s, background-color 0.3s;
+}
 
-        .motd-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--color-primary);
-        }
+.motd-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-primary);
+}
 
-        .motd-img-placeholder {
-            width: 100%;
-            height: 160px;
-            background-color: var(--border-motd);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text-muted);
-            font-size: 1.8rem;
-            font-weight: bold;
-            border-bottom: 1px solid var(--border-motd);
-            transition: background-color 0.3s, border-color 0.3s;
-        }
+.motd-img-placeholder {
+    width: 100%;
+    height: 160px;
+    background-color: var(--border-motd);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-muted);
+    font-size: 1.8rem;
+    font-weight: bold;
+    border-bottom: 1px solid var(--border-motd);
+    transition: background-color 0.3s, border-color 0.3s;
+}
 
-        .motd-info {
-            padding: 0.9rem;
-        }
+.motd-info {
+    padding: 0.9rem;
+}
 
-        .motd-user {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-dark-muted);
-            margin-bottom: 0.3rem;
-        }
+.motd-user {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-dark-muted);
+    margin-bottom: 0.3rem;
+}
 
-        .motd-title {
-            font-size: 0.85rem;
-            color: var(--text-main);
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+.motd-title {
+    font-size: 0.85rem;
+    color: var(--text-main);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 
-        /* ===================================================
+/* ===================================================
            RIGHT SIDEBAR: 메인 화면 사이드바 구역
         =================================================== */
-        .right-sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            position: relative;
-            top: 0;
-        }
+.right-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: relative;
+    top: 0;
+}
 
-        /* 멤버 랭킹 */
-        .sidebar-ranking {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 1.2rem;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
+/* 멤버 랭킹 */
+.sidebar-ranking {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1.2rem;
+    transition: background-color 0.3s, border-color 0.3s;
+}
 
-        .sidebar-ranking h4 {
-            font-size: 0.9rem;
-            font-weight: 800;
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            border-bottom: 2px solid var(--text-main);
-            padding-bottom: 0.4rem;
-            transition: border-color 0.3s;
-        }
+.sidebar-ranking h4 {
+    font-size: 0.9rem;
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-bottom: 2px solid var(--text-main);
+    padding-bottom: 0.4rem;
+    transition: border-color 0.3s;
+}
 
-        .ranking-list {
-            list-style: none;
-        }
+.ranking-list {
+    list-style: none;
+}
 
-        .ranking-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0;
-            font-size: 0.85rem;
-        }
+.ranking-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    font-size: 0.85rem;
+}
 
-        .ranking-item .rank-user {
-            display: flex;
-            gap: 0.5rem;
-            font-weight: 600;
-        }
+.ranking-item .rank-user {
+    display: flex;
+    gap: 0.5rem;
+    font-weight: 600;
+}
 
-        .ranking-item .rank-num {
-            color: var(--color-accent);
-            font-weight: 800;
-            width: 15px;
-        }
+.ranking-item .rank-num {
+    color: var(--color-accent);
+    font-weight: 800;
+    width: 15px;
+}
 
-        .ranking-item .rank-points {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
+.ranking-item .rank-points {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
 
-        /* 미니멀 로그인 링크 박스 */
-        .sidebar-login-link-box {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 1.5rem 1.2rem;
-            text-align: center;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
+/* 미니멀 로그인 링크 박스 */
+.sidebar-login-link-box {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1.5rem 1.2rem;
+    text-align: center;
+    transition: background-color 0.3s, border-color 0.3s;
+}
 
-        .login-link-title {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-dark-muted);
-            margin-bottom: 1rem;
-            line-height: 1.4;
-        }
+.login-link-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-dark-muted);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
 
-        .login-link-title span {
-            color: var(--color-accent);
-            font-weight: 800;
-        }
+.login-link-title span {
+    color: var(--color-accent);
+    font-weight: 800;
+}
 
-        .sidebar-move-login-btn {
-            display: block;
-            width: 100%;
-            background-color: var(--text-main);
-            color: var(--bg-card);
-            padding: 0.75rem 0;
-            font-weight: 700;
-            font-size: 0.85rem;
-            border: none;
-            border-radius: 2px;
-            cursor: pointer;
-            transition: background-color 0.15s, transform 0.1s, color 0.3s;
-        }
+.sidebar-move-login-btn {
+    display: block;
+    width: 100%;
+    background-color: var(--text-main);
+    color: var(--bg-card);
+    padding: 0.75rem 0;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.15s, transform 0.1s, color 0.3s;
+}
 
-        .sidebar-move-login-btn:hover {
-            background-color: var(--color-accent);
-            color: #ffffff;
-        }
+.sidebar-move-login-btn:hover {
+    background-color: var(--color-accent);
+    color: #ffffff;
+}
 
-        .sidebar-move-login-btn:active {
-            transform: scale(0.98);
-        }
+.sidebar-move-login-btn:active {
+    transform: scale(0.98);
+}
 
-        .login-link-sub {
-            margin-top: 0.8rem;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
+.login-link-sub {
+    margin-top: 0.8rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
 
-        .login-link-sub a {
-            margin: 0 0.4rem;
-        }
+.login-link-sub a {
+    margin: 0 0.4rem;
+}
 
-        .login-link-sub a:hover {
-            color: var(--text-main);
-            text-decoration: underline;
-        }
+.login-link-sub a:hover {
+    color: var(--text-main);
+    text-decoration: underline;
+}
 
-        /* 스마트 AI 챗봇 바로가기 배너 */
-        .sidebar-chatbot-banner {
-            background: linear-gradient(135deg, #212529 0%, #343A40 100%);
-            border: 1px solid #495057;
-            border-radius: 4px;
-            padding: 1.25rem;
-            color: #ffffff;
-            display: block; 
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            position: relative;
-            overflow: hidden;
-        }
+/* 스마트 AI 챗봇 바로가기 배너 */
+.sidebar-chatbot-banner {
+    background: linear-gradient(135deg, #212529 0%, #343A40 100%);
+    border: 1px solid #495057;
+    border-radius: 4px;
+    padding: 1.25rem;
+    color: #ffffff;
+    display: block;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+}
 
-        .sidebar-chatbot-banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 4px;
-            height: 100%;
-            background-color: var(--color-primary);
-        }
+.sidebar-chatbot-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    background-color: var(--color-primary);
+}
 
-        .sidebar-chatbot-banner:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(250, 110, 104, 0.15);
-            border-color: var(--color-accent);
-        }
+.sidebar-chatbot-banner:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(250, 110, 104, 0.15);
+    border-color: var(--color-accent);
+}
 
-        .banner-top-tag {
-            display: inline-block;
-            background-color: var(--color-accent);
-            color: #ffffff;
-            font-size: 0.7rem;
-            font-weight: 800;
-            padding: 0.15rem 0.4rem;
-            border-radius: 2px;
-            margin-bottom: 0.6rem;
-            letter-spacing: 0.5px;
-        }
+.banner-top-tag {
+    display: inline-block;
+    background-color: var(--color-accent);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.5px;
+}
 
-        .banner-title {
-            font-size: 0.95rem;
-            font-weight: 800;
-            line-height: 1.35;
-            margin-bottom: 0.3rem;
-        }
+.banner-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    line-height: 1.35;
+    margin-bottom: 0.3rem;
+}
 
-        .banner-title span {
-            color: var(--color-primary);
-        }
+.banner-title span {
+    color: var(--color-primary);
+}
 
-        .banner-desc {
-            font-size: 0.75rem;
-            color: #ADB5BD;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
+.banner-desc {
+    font-size: 0.75rem;
+    color: #ADB5BD;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
 
-        .banner-desc::after {
-            content: '➔';
-            font-size: 0.7rem;
-            color: var(--color-primary);
-            transition: transform 0.2s;
-        }
+.banner-desc::after {
+    content: '➔';
+    font-size: 0.7rem;
+    color: var(--color-primary);
+    transition: transform 0.2s;
+}
 
-        .sidebar-chatbot-banner:hover .banner-desc::after {
-            transform: translateX(3px);
-        }
+.sidebar-chatbot-banner:hover .banner-desc::after {
+    transform: translateX(3px);
+}
 
-        /* 반응형 헬퍼 */
-        @media (max-width: 1024px) {
-            main {
-                grid-template-columns: 1fr;
-            }
-            .right-sidebar {
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                gap: 1rem;
-            }
-        }
+/* 반응형 헬퍼 */
+@media (max-width: 1024px) {
+    main {
+        grid-template-columns: 1fr;
+    }
 
-        @media (max-width: 768px) {
-            .motd-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .right-sidebar {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
+    .right-sidebar {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+    }
+}
 
-        @media (max-width: 600px) {
-            .header-container {
-                text-align: center;
-                justify-content: center;
-                flex-direction: column;
-                gap: 1rem;
-            }
-            nav ul {
-                gap: 1.5rem;
-                justify-content: center;
-            }
-            .motd-grid {
-                grid-template-columns: 1fr;
-            }
-            .right-sidebar {
-                grid-template-columns: 1fr;
-            }
-        }
-    
-        /* ===================================================
+@media (max-width: 768px) {
+    .motd-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .right-sidebar {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .header-container {
+        text-align: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    nav ul {
+        gap: 1.5rem;
+        justify-content: center;
+    }
+
+    .motd-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .right-sidebar {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===================================================
            FEED PAGE: 메인 화면 톤에 맞춘 피드 전용 영역
         =================================================== */
-        .feed-filter-bar {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 1.5rem 0;
-        }
+.feed-filter-bar {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 0;
+}
 
 
 
-        .feed-filter-summary {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 0.95rem 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            cursor: pointer;
-            transition: background-color 0.15s ease, border-color 0.15s ease;
-        }
+.feed-filter-summary {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.95rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
 
-        .feed-filter-summary:hover {
-            border-color: var(--color-accent);
-            background-color: var(--bg-table-hover);
-        }
+.feed-filter-summary:hover {
+    border-color: var(--color-accent);
+    background-color: var(--bg-table-hover);
+}
 
-        .feed-filter-summary strong {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 850;
-            color: var(--text-main);
-            margin-bottom: 0.25rem;
-        }
+.feed-filter-summary strong {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 850;
+    color: var(--text-main);
+    margin-bottom: 0.25rem;
+}
 
-        .feed-filter-summary span {
-            display: block;
-            font-size: 0.76rem;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
+.feed-filter-summary span {
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
 
-        .feed-filter-summary em {
-            flex: 0 0 auto;
-            font-style: normal;
-            font-size: 0.76rem;
-            font-weight: 850;
-            color: var(--color-accent);
-            padding: 0.38rem 0.55rem;
-            border: 1px solid rgba(250, 110, 104, 0.22);
-            background-color: rgba(250, 110, 104, 0.06);
-            border-radius: 2px;
-        }
+.feed-filter-summary em {
+    flex: 0 0 auto;
+    font-style: normal;
+    font-size: 0.76rem;
+    font-weight: 850;
+    color: var(--color-accent);
+    padding: 0.38rem 0.55rem;
+    border: 1px solid rgba(250, 110, 104, 0.22);
+    background-color: rgba(250, 110, 104, 0.06);
+    border-radius: 2px;
+}
 
-        .feed-filter-bar.is-closed .feed-filter-inner {
-            max-height: 0;
-            margin-top: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-            border-color: transparent;
-            opacity: 0;
-            overflow: hidden;
-            pointer-events: none;
-        }
+.feed-filter-bar.is-closed .feed-filter-inner {
+    max-height: 0;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-color: transparent;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
 
-        .feed-filter-inner {
-            margin-top: 0.5rem;
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 0.9rem 1rem;
-            display: flex;
-            gap: 0.55rem;
-            overflow-x: auto;
-            max-height: 90px;
-            opacity: 1;
-            transition: max-height 0.25s ease, margin 0.25s ease, padding 0.25s ease, opacity 0.2s ease, background-color 0.3s, border-color 0.3s;
-        }
+.feed-filter-inner {
+    margin-top: 0.5rem;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.9rem 1rem;
+    display: flex;
+    gap: 0.55rem;
+    overflow-x: auto;
+    max-height: 90px;
+    opacity: 1;
+    transition: max-height 0.25s ease, margin 0.25s ease, padding 0.25s ease, opacity 0.2s ease, background-color 0.3s, border-color 0.3s;
+}
 
-        .feed-filter-inner::-webkit-scrollbar {
-            height: 0;
-        }
+.feed-filter-inner::-webkit-scrollbar {
+    height: 0;
+}
 
-        .feed-tag-btn {
-            flex: 0 0 auto;
-            border: 1px solid var(--border-color);
-            background-color: var(--bg-motd-card);
-            color: var(--text-dark-muted);
-            padding: 0.55rem 0.85rem;
-            border-radius: 2px;
-            font-size: 0.78rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
+.feed-tag-btn {
+    flex: 0 0 auto;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-motd-card);
+    color: var(--text-dark-muted);
+    padding: 0.55rem 0.85rem;
+    border-radius: 2px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
 
-        .feed-tag-btn:hover {
-            border-color: var(--color-accent);
-            color: var(--color-accent);
-            background-color: var(--bg-table-hover);
-        }
+.feed-tag-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background-color: var(--bg-table-hover);
+}
 
-        .feed-tag-btn.active {
-            background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
-            border-color: transparent;
-            color: #ffffff;
-            box-shadow: 0 6px 14px rgba(250, 110, 104, 0.18);
-        }
+.feed-tag-btn.active {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+    border-color: transparent;
+    color: #ffffff;
+    box-shadow: 0 6px 14px rgba(250, 110, 104, 0.18);
+}
 
-        .feed-upload-summary {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 1.3rem;
-            display: grid;
-            gap: 1rem;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
+.feed-upload-summary {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1.3rem;
+    display: grid;
+    gap: 1rem;
+    transition: background-color 0.3s, border-color 0.3s;
+}
 
-        .feed-upload-title {
-            font-size: 0.95rem;
-            font-weight: 800;
-            line-height: 1.4;
-        }
+.feed-upload-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    line-height: 1.4;
+}
 
-        .feed-upload-title span {
-            color: var(--color-accent);
-        }
+.feed-upload-title span {
+    color: var(--color-accent);
+}
 
-        .feed-upload-desc {
-            color: var(--text-muted);
-            font-size: 0.78rem;
-            line-height: 1.55;
-        }
+.feed-upload-desc {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    line-height: 1.55;
+}
 
-        .feed-upload-btn {
-            width: 100%;
-            border: none;
-            border-radius: 2px;
-            background-color: var(--text-main);
-            color: var(--bg-card);
-            padding: 0.75rem 0;
-            font-size: 0.83rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
+.feed-upload-btn {
+    width: 100%;
+    border: none;
+    border-radius: 2px;
+    background-color: var(--text-main);
+    color: var(--bg-card);
+    padding: 0.75rem 0;
+    font-size: 0.83rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
 
-        .feed-upload-btn:hover {
-            background-color: var(--color-accent);
-            color: #ffffff;
-        }
+.feed-upload-btn:hover {
+    background-color: var(--color-accent);
+    color: #ffffff;
+}
 
-        .feed-list {
-            display: grid;
-            gap: 1.3rem;
-        }
+.feed-list {
+    display: grid;
+    gap: 1.3rem;
+}
 
-        .feed-card {
-            border: 1px solid var(--border-color);
-            background-color: var(--bg-card);
-            border-radius: 4px;
-            overflow: hidden;
-            transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.3s;
-        }
+.feed-card {
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-card);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.3s;
+}
 
-        .feed-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--color-primary);
-        }
+.feed-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary);
+}
 
-        .feed-card-head {
-            padding: 1rem 1.1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-row);
-        }
+.feed-card-head {
+    padding: 1rem 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-row);
+}
 
-        .feed-profile {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            min-width: 0;
-        }
+.feed-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+}
 
-        .feed-avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 0.8rem;
-            font-weight: 800;
-            flex: 0 0 auto;
-        }
+.feed-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: 800;
+    flex: 0 0 auto;
+}
 
-        .feed-profile-name {
-            font-size: 0.9rem;
-            font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 0.25rem;
-        }
+.feed-profile-name {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 0.25rem;
+}
 
-        .feed-profile-badges {
-            display: flex;
-            gap: 0.35rem;
-            flex-wrap: wrap;
-        }
+.feed-profile-badges {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+}
 
-        .feed-badge {
-            display: inline-flex;
-            align-items: center;
-            background-color: var(--bg-table-hover);
-            border: 1px solid var(--border-row);
-            color: var(--text-dark-muted);
-            padding: 0.18rem 0.45rem;
-            font-size: 0.68rem;
-            font-weight: 800;
-            border-radius: 2px;
-        }
+.feed-badge {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--bg-table-hover);
+    border: 1px solid var(--border-row);
+    color: var(--text-dark-muted);
+    padding: 0.18rem 0.45rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    border-radius: 2px;
+}
 
-        .feed-badge.accent {
-            color: var(--color-accent);
-            background-color: rgba(250, 110, 104, 0.08);
-            border-color: rgba(250, 110, 104, 0.18);
-        }
+.feed-badge.accent {
+    color: var(--color-accent);
+    background-color: rgba(250, 110, 104, 0.08);
+    border-color: rgba(250, 110, 104, 0.18);
+}
 
-        .feed-more {
-            color: var(--text-muted);
-            font-size: 1.25rem;
-            font-weight: 800;
-        }
+.feed-more {
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    font-weight: 800;
+}
 
-        .feed-visual {
-            position: relative;
-            height: 440px;
-            background-color: var(--bg-motd-card);
-            border-bottom: 1px solid var(--border-row);
-            overflow: hidden;
-        }
+.feed-visual {
+    position: relative;
+    height: 440px;
+    background-color: var(--bg-motd-card);
+    border-bottom: 1px solid var(--border-row);
+    overflow: hidden;
+}
 
-        .feed-visual::before {
-            content: "";
-            position: absolute;
-            left: 50%;
-            top: 52%;
-            width: 150px;
-            height: 210px;
-            transform: translate(-50%, -50%) rotate(-7deg);
-            background: rgba(255, 255, 255, 0.34);
-            border: 1px solid rgba(255, 255, 255, 0.45);
-            box-shadow: 0 18px 42px rgba(0,0,0,0.08);
-        }
+.feed-visual::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    width: 150px;
+    height: 210px;
+    transform: translate(-50%, -50%) rotate(-7deg);
+    background: rgba(255, 255, 255, 0.34);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.08);
+}
 
-        .feed-visual::after {
-            content: "";
-            position: absolute;
-            left: 50%;
-            top: 25%;
-            width: 70px;
-            height: 34px;
-            transform: translateX(-50%);
-            background: rgba(33, 37, 41, 0.12);
-        }
+.feed-visual::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    width: 70px;
+    height: 34px;
+    transform: translateX(-50%);
+    background: rgba(33, 37, 41, 0.12);
+}
 
-        .feed-card:nth-child(1) .feed-visual {
-            background: linear-gradient(135deg, #EFE3D2, #D5C8B9);
-        }
+.feed-card:nth-child(1) .feed-visual {
+    background: linear-gradient(135deg, #EFE3D2, #D5C8B9);
+}
 
-        .feed-card:nth-child(2) .feed-visual {
-            background: radial-gradient(circle at 72% 22%, rgba(255,255,255,0.62), transparent 18%),
-                        linear-gradient(135deg, #FFE1C4 0%, var(--color-primary) 100%);
-        }
+.feed-card:nth-child(2) .feed-visual {
+    background: radial-gradient(circle at 72% 22%, rgba(255, 255, 255, 0.62), transparent 18%),
+        linear-gradient(135deg, #FFE1C4 0%, var(--color-primary) 100%);
+}
 
-        .feed-card:nth-child(3) .feed-visual {
-            background: linear-gradient(135deg, #E8ECEF, #CED4DA);
-        }
+.feed-card:nth-child(3) .feed-visual {
+    background: linear-gradient(135deg, #E8ECEF, #CED4DA);
+}
 
-        .feed-product-chip {
-            position: absolute;
-            left: 1rem;
-            bottom: 1rem;
-            background-color: rgba(255, 255, 255, 0.88);
-            color: #212529;
-            border: 1px solid rgba(255,255,255,0.6);
-            border-radius: 2px;
-            padding: 0.55rem 0.75rem;
-            font-size: 0.75rem;
-            font-weight: 800;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.08);
-        }
+.feed-product-chip {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    background-color: rgba(255, 255, 255, 0.88);
+    color: #212529;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 2px;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
 
-        .feed-body {
-            padding: 1rem 1.1rem 1.1rem;
-        }
+.feed-body {
+    padding: 1rem 1.1rem 1.1rem;
+}
 
-        .feed-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.75rem;
-        }
+.feed-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
 
-        .feed-action-left {
-            display: flex;
-            gap: 0.9rem;
-        }
+.feed-action-left {
+    display: flex;
+    gap: 0.9rem;
+}
 
-        .feed-action-btn {
-            border: none;
-            background: transparent;
-            color: var(--text-main);
-            font-size: 1.15rem;
-            cursor: pointer;
-        }
+.feed-action-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-main);
+    font-size: 1.15rem;
+    cursor: pointer;
+}
 
-        .feed-likes {
-            font-size: 0.85rem;
-            font-weight: 800;
-            margin-bottom: 0.55rem;
-        }
+.feed-likes {
+    font-size: 0.85rem;
+    font-weight: 800;
+    margin-bottom: 0.55rem;
+}
 
-        .feed-caption {
-            color: var(--text-main);
-            font-size: 0.9rem;
-            line-height: 1.65;
-            margin-bottom: 0.55rem;
-        }
+.feed-caption {
+    color: var(--text-main);
+    font-size: 0.9rem;
+    line-height: 1.65;
+    margin-bottom: 0.55rem;
+}
 
-        .feed-caption strong {
-            font-weight: 800;
-        }
+.feed-caption strong {
+    font-weight: 800;
+}
 
-        .feed-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.45rem;
-            margin-bottom: 0.6rem;
-        }
+.feed-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 0.6rem;
+}
 
-        .feed-tags button {
-            border: none;
-            background: transparent;
-            color: var(--color-accent);
-            font-size: 0.8rem;
-            font-weight: 800;
-            cursor: pointer;
-        }
+.feed-tags button {
+    border: none;
+    background: transparent;
+    color: var(--color-accent);
+    font-size: 0.8rem;
+    font-weight: 800;
+    cursor: pointer;
+}
 
-        .feed-comments {
-            color: var(--text-muted);
-            font-size: 0.82rem;
-            font-weight: 600;
-            margin-bottom: 0.6rem;
-        }
+.feed-comments {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+}
 
-        .feed-time {
-            color: var(--text-muted);
-            font-size: 0.72rem;
-            font-weight: 700;
-        }
+.feed-time {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+}
 
-        .feed-comment-input {
-            margin-top: 1rem;
-            padding-top: 0.9rem;
-            border-top: 1px solid var(--border-row);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
+.feed-comment-input {
+    margin-top: 1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--border-row);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
 
-        .feed-comment-input input {
-            flex: 1;
-            border: none;
-            outline: none;
-            background: transparent;
-            color: var(--text-main);
-            font-size: 0.82rem;
-        }
+.feed-comment-input input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--text-main);
+    font-size: 0.82rem;
+}
 
-        .feed-comment-input button {
-            border: none;
-            background: transparent;
-            color: var(--color-accent);
-            font-size: 0.8rem;
-            font-weight: 800;
-            cursor: pointer;
-        }
+.feed-comment-input button {
+    border: none;
+    background: transparent;
+    color: var(--color-accent);
+    font-size: 0.8rem;
+    font-weight: 800;
+    cursor: pointer;
+}
 
-        .feed-result-message {
-            color: var(--text-muted);
-            font-size: 0.82rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
+.feed-result-message {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
 
-        .feed-card.is-hidden {
-            display: none;
-        }
+.feed-card.is-hidden {
+    display: none;
+}
 
-        .feed-empty {
-            display: none;
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 2.5rem 1rem;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            font-weight: 700;
-        }
+.feed-empty {
+    display: none;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 2.5rem 1rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
 
-        @media (max-width: 768px) {
-            .feed-visual {
-                height: 360px;
-            }
-        }
-        .feed-filter-inner {
+@media (max-width: 768px) {
+    .feed-visual {
+        height: 360px;
+    }
+}
+
+.feed-filter-inner {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
@@ -840,6 +846,7 @@
     word-break: break-all;
     line-height: 1.4;
 }
+
 .feed-list {
     display: flex;
     flex-direction: column;
@@ -856,7 +863,8 @@
 
 .feed-card-image {
     width: 100%;
-    aspect-ratio: 4 / 5;   /* 세로형 피드 비율 */
+    aspect-ratio: 4 / 5;
+    /* 세로형 피드 비율 */
     max-height: 520px;
     background: #eadfce;
     display: flex;
@@ -869,7 +877,8 @@
 .feed-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;     /* 칸에 꽉 차게 */
+    object-fit: cover;
+    /* 칸에 꽉 차게 */
     object-position: center;
     display: block;
 }
@@ -1019,6 +1028,7 @@
     font-weight: 800;
     cursor: pointer;
 }
+
 /* 사진 오른쪽 위 1/1 표시 */
 .feed-card-image {
     position: relative;
@@ -1159,6 +1169,7 @@
     font-weight: 800;
     cursor: pointer;
 }
+
 /* ===============================
    FEED 최종 보정 스타일
    =============================== */
@@ -1437,4 +1448,565 @@
     .feed-write-top-btn {
         width: 100%;
     }
+
+    /* ==========================================================================
+   인스타그램 스타일 피드 교정 및 가로 폭 고정 선언
+   ========================================================================== */
+
+    /* 피드 카드 전체 크기 유지 및 수직 흐름 강제 */
+    .feed-card {
+        display: block;
+        /* 수평 정렬을 차단하여 옆으로 늘어나는 현상 방지 */
+        width: 100%;
+        /* 기존 레이아웃이 정한 가로폭에 100% 맞춤 */
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    /* 1. 프로필 영역: 인스타그램 서클 레이아웃 적용 */
+    .feed-card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .feed-profile-area {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* [요청사항] B가 들어가는 프로필 자리를 동그란 사진 모양으로 변경 */
+    .feed-profile-img {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        /* 완벽한 원형 생성 */
+        background-color: #FA6E68;
+        /* 기존 메인 포인트 색상 유지 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        flex-shrink: 0;
+        /* 공간이 부족해도 원형이 찌그러지지 않음 */
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    /* 나중에 실제 <img> 태그가 프로필 안에 들어가도 원형으로 꽉 차게 처리 */
+    .feed-profile-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .feed-profile-img span {
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    .feed-profile-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .feed-profile-text strong {
+        font-size: 14px;
+        color: var(--text-main);
+        font-weight: 600;
+    }
+
+    .feed-profile-text span {
+        font-size: 11px;
+        color: #8e8e8e;
+    }
+
+    /* 2. 하단 콘텐츠 영역: 가로 고정 및 텍스트 자동 개행 처리 */
+    .feed-card-content {
+        display: block;
+        /* 내부 요소들이 순서대로 아래로 쌓이도록 설정 */
+        padding: 16px;
+    }
+
+    /* [요청사항] 글이 아무리 많아져도 옆으로 늘어나지 않고 아래로 늘어나게 선언 */
+    .feed-card-caption {
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--text-main);
+        margin: 12px 0;
+
+        /* 가로 한계를 넘어가면 강제로 줄바꿈 시키는 핵심 속성 */
+        white-space: pre-wrap;
+        /* 줄바꿈, 띄어쓰기 그대로 유지 */
+        word-break: break-all;
+        /* 텍스트가 경계선에 도달하면 글자 단위로 쪼개서 아래로 내림 */
+        overflow-wrap: break-word;
+        /* 긴 영문/기호가 와도 터지지 않게 방지 */
+    }
+
+    /* 3. 액션 바 레이아웃 (댓글 모양 옆부분에 링크 배치하되 너무 다닥다닥 붙지 않게 설정) */
+    .feed-card-actions {
+        display: flex;
+        justify-content: space-between;
+        /* 좌측 버튼군과 우측 링크를 양끝으로 배치 */
+        align-items: center;
+        margin-bottom: 4px;
+    }
+
+    .feed-card-actions .action-left {
+        display: flex;
+        gap: 16px;
+        /* 좋아요와 댓글 아이콘 사이 여백 확보 */
+        align-items: center;
+    }
+
+    /* 아이콘 크기 및 정렬 */
+    .feed-like-btn,
+    .feed-comment-toggle-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--text-main);
+    }
+
+    .feed-like-icon,
+    .feed-comment-icon {
+        font-size: 24px;
+        /* 인스타 감성으로 아이콘 크기 확장 */
+    }
+
+    /* 정보공유 바로가기 링크 스타일 (다닥다닥 붙지 않도록 간격 유지) */
+    .feed-share-link {
+        font-size: 13px;
+        color: #3897f0;
+        /* 인스타 포인트 블루 색상 적용 */
+        text-decoration: none;
+        font-weight: 600;
+        padding: 4px 8px;
+        transition: opacity 0.2s;
+    }
+
+    .feed-share-link:hover {
+        opacity: 0.8;
+        text-decoration: underline;
+    }
+
+    /* 해시태그 배치 */
+    .feed-card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 8px;
+    }
+
+    /* ==========================================================================
+   [요청 교정] 피드 카드 가로폭 고정 및 이미지 구조 완벽 매칭 
+   ========================================================================== */
+
+    /* 피드 카드 전체 가로폭 고정 (절대 옆으로 터지지 않음) */
+    .feed-card {
+        display: flex;
+        flex-direction: column;
+        /* 무조건 위에서 아래로 수직 배치 */
+        width: 100%;
+        max-width: 614px;
+        /* image_18638e.jpg 속 최적의 피드 가로 사이즈 정의 */
+        background-color: var(--bg-card, #ffffff);
+        border: 1px solid var(--border-color, #e1e1e1);
+        border-radius: 8px;
+        margin-bottom: 24px;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    /* 1. 상단 프로필 영역 (image_18638e.jpg 디자인 완벽 구현) */
+    .feed-card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border-color, #f0f0f0);
+    }
+
+    .feed-profile-area {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* 주황색 원형 프로필 이미지 자리 */
+    .feed-profile-img {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background-color: #fca34d;
+        /* 이미지 속 은은한 주황색 계열 반영 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .feed-profile-img span {
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    /* 프로필 텍스트 및 하단 태그 배지 가로 정렬 구조 */
+    .feed-profile-text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .feed-profile-text strong {
+        font-size: 14px;
+        color: var(--text-main, #262626);
+        font-weight: 600;
+    }
+
+    /* 피부타입 배지 라인 (가로로 예쁘게 나열) */
+    .feed-badge-container {
+        display: flex;
+        gap: 4px;
+    }
+
+    .feed-badge {
+        font-size: 11px;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: 500;
+    }
+
+    .feed-badge.skin-type {
+        background-color: #f5f5f5;
+        color: #666;
+    }
+
+    /* 복합성 스타일 */
+    .feed-badge.personal-color {
+        background-color: #ffeef0;
+        color: #ff6b7a;
+    }
+
+    /* 봄웜 스타일 */
+
+    /* 2. 하단 텍스트 영역 (100글자가 넘어도 무조건 아래로 줄바꿈 처리) */
+    .feed-card-content {
+        display: block;
+        /* 내부 텍스트들이 박스 크기에 갇혀 흐르도록 block 처리 */
+        width: 100%;
+        padding: 16px;
+        box-sizing: border-box;
+    }
+
+    /* [핵심 교정] 글이 길어져도 가로를 절대 깨뜨리지 않고 아래로 흐르게 강제 제어 */
+    .feed-card-caption {
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--text-main, #262626);
+        margin: 8px 0;
+
+        /* 가로폭 경계를 만나는 순간 쪼개서 다음 줄로 내리는 브라우저 규칙 선언 */
+        white-space: pre-wrap;
+        /* 공백, 줄바꿈 브라우저 유지 */
+        word-break: break-all;
+        /* 100자 이상 시 알파벳/한글 모두 가로 경계에서 줄바꿈 */
+        overflow-wrap: break-word;
+        /* 특수기호나 링크가 섞여있어도 카드 밖으로 이탈 방지 */
+    }
+
+    /* 본문 내 작성자 아이디 강조 처리 */
+    .caption-username {
+        font-weight: 600;
+        margin-right: 6px;
+        color: #262626;
+    }
+
+    /* 3. 하단 액션 버튼 바 및 기타 인스타 요소 스타일 */
+    .feed-card-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .feed-card-actions .action-left {
+        display: flex;
+        gap: 14px;
+    }
+
+    .feed-like-btn,
+    .feed-comment-toggle-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        font-size: 20px;
+        display: inline-flex;
+        align-items: center;
+        color: #262626;
+    }
+
+    /* 좋아요 수 표시 문구 스타일 */
+    .feed-likes-count-text {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #262626;
+    }
+
+    /* ===== 프로필 영역만 수정 ===== */
+
+    .feed-card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 14px 18px 12px;
+        border-bottom: 1px solid #f1f1f1;
+        box-sizing: border-box;
+    }
+
+    .feed-profile-area {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        min-width: 0;
+    }
+
+    .feed-profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #FA6E68, #FACB47);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .feed-profile-img span {
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .feed-profile-meta {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        min-width: 0;
+        padding-top: 1px;
+    }
+
+    .feed-profile-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: #111;
+        line-height: 1.2;
+        margin-bottom: 6px;
+        word-break: keep-all;
+    }
+
+    .feed-profile-badges {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .feed-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 20px;
+        padding: 0 8px;
+        border-radius: 3px;
+        font-size: 11px;
+        line-height: 1;
+        font-weight: 500;
+        box-sizing: border-box;
+        border: 1px solid #eee;
+        background: #fff;
+        color: #666;
+    }
+
+    .feed-badge.skin-type {
+        background: #fff6cf;
+        color: #7a6700;
+        border-color: #f1df8a;
+    }
+
+    .feed-badge.personal-color {
+        background: #fff0ee;
+        color: #e27973;
+        border-color: #f4c5bf;
+    }
+
+    .feed-more-btn {
+        border: none;
+        background: transparent;
+        color: #8b8b8b;
+        font-size: 20px;
+        line-height: 1;
+        cursor: pointer;
+        padding: 2px 4px;
+        margin-top: 2px;
+        flex-shrink: 0;
+    }
+
+    .feed-more-btn:hover {
+        color: #444;
+    }
+
+    /* ===============================
+   피드 프로필 영역만 수정
+   사진/본문/좋아요/댓글 건드리지 않음
+   =============================== */
+
+    .feed-card>.feed-profile-header {
+        width: 100%;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 16px 18px 14px 18px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        border-bottom: 1px solid #f0f0f0;
+        background: #ffffff;
+    }
+
+    /* 왼쪽: 프로필사진 + 텍스트 */
+    .feed-profile-left {
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        min-width: 0;
+        flex: 1;
+    }
+
+    /* 원형 프로필 사진 */
+    .feed-profile-circle {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+        min-height: 40px !important;
+        border-radius: 50% !important;
+        background: linear-gradient(135deg, #FA6E68 0%, #FACB47 100%) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+        flex: 0 0 40px !important;
+    }
+
+    .feed-profile-circle span {
+        color: #ffffff !important;
+        font-size: 14px !important;
+        font-weight: 900 !important;
+        line-height: 1 !important;
+    }
+
+    /* 닉네임 + 피부타입 */
+    .feed-profile-detail {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .feed-profile-nickname {
+        font-size: 14px !important;
+        font-weight: 900 !important;
+        color: #111111 !important;
+        line-height: 1.2 !important;
+        margin-bottom: 5px !important;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .feed-profile-type {
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        color: #777777 !important;
+        line-height: 1.2 !important;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* 오른쪽 ... */
+    .feed-profile-header .feed-more-wrap {
+        position: relative;
+        flex: 0 0 auto;
+        margin-left: 12px;
+    }
+
+    .feed-profile-header .feed-more-btn {
+        border: none !important;
+        background: transparent !important;
+        color: #888888 !important;
+        font-size: 20px !important;
+        font-weight: 900 !important;
+        line-height: 1 !important;
+        padding: 0 2px !important;
+        margin: 0 !important;
+        cursor: pointer;
+    }
+
+    .feed-profile-header .feed-more-btn:hover {
+        color: #333333 !important;
+    }
+
+    /* 댓글 아이콘 옆 정보공유 버튼 */
+    .action-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .feed-share-link {
+        align-items: center;
+        justify-content: center;
+        height: 28px;
+        padding: 0 12px;
+        border-radius: 999px;
+        background: #fff7df;
+        border: 1px solid rgba(250, 203, 71, 0.65);
+        color: #6f5200;
+        font-size: 12px;
+        font-weight: 800;
+        text-decoration: none;
+        line-height: 1;
+        white-space: nowrap;
+    }
+
+    .feed-share-link:hover {
+        background: #FACB47;
+        color: #3f2f00;
+    }
+
+
+
+
+
 }

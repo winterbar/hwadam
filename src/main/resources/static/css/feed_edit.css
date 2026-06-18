@@ -1,0 +1,352 @@
+* { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: #f5f6f8;
+            color: #151922;
+            font-family: Arial, 'Noto Sans KR', sans-serif;
+            font-size: 13px;
+        }
+
+        .page-wrap {
+            width: 906px;
+            min-height: 100vh;
+            margin: 0 auto;
+            padding: 30px 26px 44px;
+            background: #ffffff;
+            border-left: 1px solid #d8dde6;
+            border-right: 1px solid #d8dde6;
+        }
+
+        .write-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #111111;
+        }
+
+        .write-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .write-title h1 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: -0.4px;
+        }
+
+        .write-title span {
+            color: #7c8a9e;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .back-link {
+            border: 0;
+            background: transparent;
+            font-size: 11px;
+            font-weight: 800;
+            color: #243044;
+            cursor: pointer;
+        }
+
+        .notice {
+            margin: 16px 0;
+            padding: 13px 14px;
+            border: 1px solid #efe7db;
+            background: #fffdf8;
+            border-radius: 3px;
+            color: #7c8a9e;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .notice b {
+            color: #FA6E68;
+        }
+
+        .edit-grid {
+            display: grid;
+            grid-template-columns: 416px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .preview-card,
+        .form-card {
+            border: 1px solid #d8dde6;
+            border-radius: 4px;
+            background: #ffffff;
+        }
+
+        .preview-photo {
+            height: 416px;
+            background: #e8dccb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .tilt-photo {
+            width: 242px;
+            height: 322px;
+            background: #f4eee6;
+            border: 1px solid rgba(255,255,255,0.95);
+            transform: rotate(-8deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c7f99;
+            font-size: 12px;
+            font-weight: 900;
+            box-shadow: 0 12px 26px rgba(94, 76, 52, 0.06);
+        }
+
+        .preview-info {
+            padding: 15px 14px 13px;
+            background: #ffffff;
+        }
+
+        .preview-info strong {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 900;
+        }
+
+        .preview-info p {
+            margin: 0;
+            color: #7c8a9e;
+            font-size: 11px;
+            line-height: 1.55;
+        }
+
+        .current-image-list {
+            display: flex;
+            gap: 8px;
+            padding: 12px 14px 15px;
+            border-top: 1px solid #eef1f5;
+        }
+
+        .current-image {
+            position: relative;
+            width: 56px;
+            height: 56px;
+            border: 1px solid #d8dde6;
+            background: #f5efe5;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7c8a9e;
+            font-size: 10px;
+            font-weight: 900;
+        }
+
+        .current-image.is-main {
+            border-color: #FACB47;
+            box-shadow: 0 0 0 2px rgba(250, 203, 71, 0.25);
+        }
+
+        .current-image button {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 18px;
+            height: 18px;
+            border: 0;
+            border-radius: 50%;
+            background: #151922;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .form-card {
+            padding: 22px 21px 20px;
+        }
+
+        .form-group {
+            margin-bottom: 21px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 11px;
+            font-weight: 900;
+            color: #273142;
+        }
+
+        .upload-box {
+            height: 112px;
+            border: 1px dashed #d5dce7;
+            background: #fffdfa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            color: #7c8a9e;
+            font-size: 11px;
+        }
+
+        .upload-btn,
+        .tag-add-btn,
+        .submit {
+            background: #171b22;
+            color: #ffffff;
+        }
+
+        .upload-btn {
+            border: 0;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .image-count {
+            text-align: right;
+            margin-top: 8px;
+            color: #7c8a9e;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        textarea,
+        input[type="text"] {
+            width: 100%;
+            border: 1px solid #d8dde6;
+            background: #fbfcfd;
+            outline: none;
+            color: #1f2937;
+            font-size: 12px;
+        }
+
+        textarea:focus,
+        input[type="text"]:focus {
+            border-color: #FA6E68;
+            background: #ffffff;
+        }
+
+        textarea {
+            height: 120px;
+            resize: none;
+            padding: 15px 14px;
+            line-height: 1.7;
+        }
+
+        input[type="text"] {
+            height: 38px;
+            padding: 0 13px;
+        }
+
+        .hint {
+            margin-top: 8px;
+            color: #7c8a9e;
+            font-size: 10.5px;
+            line-height: 1.5;
+        }
+
+        .tag-row {
+            display: flex;
+            gap: 7px;
+        }
+
+        .tag-row input {
+            flex: 1;
+        }
+
+        .tag-add-btn {
+            width: 54px;
+            border: 0;
+            font-size: 12px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 11px;
+        }
+
+        .tag-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 26px;
+            padding: 0 9px;
+            border-radius: 999px;
+            background: #fff8dd;
+            border: 1px solid #eadb9d;
+            color: #6d5700;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .tag-chip button {
+            border: 0;
+            background: transparent;
+            color: #9a7a00;
+            cursor: pointer;
+            font-weight: 900;
+            padding: 0;
+        }
+
+        .line {
+            height: 1px;
+            background: #eef1f5;
+            margin: 26px 0 18px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 9px;
+        }
+
+        .cancel,
+        .submit {
+            height: 38px;
+            padding: 0 22px;
+            border: 0;
+            font-size: 12px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .cancel {
+            background: #f2f4f7;
+            color: #5f6b7a;
+            border: 1px solid #d8dde6;
+        }
+
+        .submit:hover,
+        .upload-btn:hover,
+        .tag-add-btn:hover {
+            background: #FA6E68;
+        }
+
+        @media (max-width: 920px) {
+            .page-wrap {
+                width: 100%;
+                padding: 22px 18px 36px;
+            }
+
+            .edit-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-photo {
+                height: 360px;
+            }
+        }

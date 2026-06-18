@@ -133,3 +133,11 @@ body {
     color: var(--text-main);
     text-decoration: underline;
 }
+
+.login-error-text {
+    color: #FA6E68; 
+    font-size: 0.8rem;     
+    display: block;         
+    text-align: left;      
+    font-weight: 500;
+}

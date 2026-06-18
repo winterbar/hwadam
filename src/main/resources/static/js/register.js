@@ -1,13 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    /* 이메일/전화번호 인증에 사용되는 엘리먼트 */
-    const emailInput = document.getElementById('email');
-    const phoneInput = document.getElementById('phone');
-    const authRadios = document.querySelectorAll('input[name="authMethod"]');
-    const sendAuthBtn = document.getElementById('sendAuthBtn');
-    const verificationRow = document.getElementById('verificationRow');
-    const verificationCode = document.getElementById('verificationCode');
-    /* 아이디 중복 확인에 사용되는 엘리먼트 */
-    const timerDisplay = document.getElementById('timerDisplay');
     const usernameInput = document.getElementById('username');
     const registerForm = document.querySelector('form');
     const checkDupBtn = document.querySelector('.input-with-btn .inline-action-btn');
@@ -97,72 +88,4 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
-    // let timerInterval = null;
-
-    // function checkAuthValidity() {
-    //     if (authRadios[0].disabled) return;
-        
-    //     let selectedMethod = document.querySelector('input[name="authMethod"]:checked');
-        
-    //     if (!selectedMethod) {
-    //         sendAuthBtn.disabled = true;
-    //         return;
-    //     }
-
-    //     if (selectedMethod.value === 'email') {
-    //         if (emailInput.value.trim() !== '' && emailInput.checkValidity()) {
-    //             sendAuthBtn.disabled = false;
-    //         } else {
-    //             sendAuthBtn.disabled = true;
-    //         }
-    //     } else if (selectedMethod.value === 'phone') {
-    //         if (phoneInput.value.length === 13 && phoneInput.checkValidity()) {
-    //             sendAuthBtn.disabled = false;
-    //         } else {
-    //             sendAuthBtn.disabled = true;
-    //         }
-    //     }
-    // }
-
-    // emailInput.addEventListener('input', checkAuthValidity);
-    // phoneInput.addEventListener('input', checkAuthValidity);
-    // authRadios.forEach(radio => radio.addEventListener('change', checkAuthValidity));
-
-    // sendAuthBtn.addEventListener('click', function() {
-    //     if (!sendAuthBtn.disabled) {
-    //         let selectedMethod = document.querySelector('input[name="authMethod"]:checked');
-            
-    //         authRadios.forEach(radio => radio.disabled = true);
-            
-    //         if (selectedMethod && selectedMethod.value === 'email') {
-    //             emailInput.readOnly = true;
-    //         } else if (selectedMethod && selectedMethod.value === 'phone') {
-    //             phoneInput.readOnly = true;
-    //         }
-            
-
-    //         verificationRow.style.display = 'flex';
-    //         verificationCode.setAttribute('required', 'required');
-            
-    //         if (timerInterval) clearInterval(timerInterval);
-            
-    //         let timeLeft = 180;
-            
-    //         function updateTimer() {
-    //             if (timeLeft <= 0) {
-    //                 clearInterval(timerInterval);
-    //                 timerDisplay.textContent = "인증번호 만료";
-    //                 return;
-    //             }
-    //             timeLeft--;
-    //             let minutes = Math.floor(timeLeft / 60);
-    //             let seconds = timeLeft % 60;
-    //             let secondsStr = seconds < 10 ? '0' + seconds : seconds;
-    //             timerDisplay.textContent = `남은 시간 : ${minutes}분 ${secondsStr}초`;
-    //         }
-            
-    //         timerInterval = setInterval(updateTimer, 1000);
-    //     }
-    // });
 });
