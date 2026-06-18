@@ -16,26 +16,6 @@
         )
     </insert>
 
-    <!-- 파일 등록 -->
-    <insert id="insertFile" parameterType="com.miles.beauminity.vo.MasterBoardFileVO">
-        INSERT INTO board_file(
-            board_id,
-            original_name,
-            saved_name,
-            file_path,
-            file_type,
-            file_size
-        )
-        VALUES(
-            #{boardId},
-            #{originalName},
-            #{savedName},
-            #{filePath},
-            #{fileType},
-            #{fileSize}
-        )
-    </insert>
-
     <!-- 특정 게시판 게시글 전체조회 -->
     <!-- 게시글을 특정 게시판에 맞출려면 각 컨트롤러랑 서비스 단에서 boardType을 명시해서 전달해야 한다. 
     하지만 추후에 페이징을 넣을 것을 고려하면... 페이지 vo가 따로 있을 것이다. 
@@ -88,6 +68,6 @@
         content = #{content},
         edited_at = NOW()
         WHERE board_id = #{boardId}
-        </update>
+    </update>
 
 </mapper>
