@@ -25,11 +25,13 @@ public class FeedController {
     // 피드 버튼 눌렀을때 화면 호출
     @GetMapping("/feed")
     public String getMainFeed(Model model) {
-        List<String> feedList = feedService.getFeedList();
-        //저장되어있는 태그 리스트로 가져와서 화면 띄우기
+        // 작성된 피드 리스트로 가져와서 화면 띄우기
+        List<FeedVO> feedList = feedService.getFeedList();
+        //저장되어있는 전체 태그 리스트로 가져와서 화면 띄우기
         List<String> tagList = feedService.getTagNameList();
         model.addAttribute("tagList",tagList);
         model.addAttribute("feedList",feedList);
+
         return "feed/list";
     }
     // 피드 작성하기 버튼 눌렀을때 화면 호출
@@ -44,6 +46,7 @@ public class FeedController {
         @RequestParam("files") MultipartFile[] files,
         @RequestParam("tagNames") List<String> tagNames
     ) {
+        // 피드 내용과 사진,해시태그 저장
         feedService.postFeed(feedVO,files,tagNames);
         return "redirect:/feed";
     }
