@@ -12,4 +12,5 @@ public interface TagMapper {
     void postTag(TagVO tagNames);
     List<String> getTagNameList();
     void tagFeed(@Param("feedId")Long getFeedId,@Param("tagId") Long getTagId);
+    List<String> getfeedTagList();
 }
