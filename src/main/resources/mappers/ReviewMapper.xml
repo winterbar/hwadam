@@ -5,7 +5,30 @@
 
 <mapper namespace="com.miles.beauminity.mapper.ReviewMapper">
 
-    <insert id="insertMasterBoard">
+    <insert id="insertMasterBoard" useGeneratedKeys="true" keyProperty="boardId">
+        INSERT INTO master_board (
+            username,
+            board_type,
+            title,
+            content,
+            created_at,
+            edited_at,
+            view_cnt,
+            reply_cnt,
+            like_cnt,
+            deleted
+        ) VALUES (
+            #{username},
+            'REVIEW',
+            #{title},
+            #{content},
+            now(),
+            now(),
+            0,
+            0,
+            0,
+            0
+        )
     </insert>
 
 </mapper>
