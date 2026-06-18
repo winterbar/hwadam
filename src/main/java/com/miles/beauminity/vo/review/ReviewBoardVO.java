@@ -14,10 +14,14 @@ import lombok.ToString;
 public class ReviewBoardVO {
     private Long boardId;
     private String userName; // 회원의 아이디
-    private String grade_id;
+    private String gradeId;
     private String nickName;  // 회원의 닉네임
     private String title;                       // 후기 등록 폼은 리뷰 제목
     private String content;                     // 후기 등록 폼은 리뷰 내용
+    
+    private long viewCnt;
+    private long likeCnt;
+    private long replyCnt;
 
     // 후기 전용 데이터 (review_board에 넣게 위한 변수들)
     private String productName;                 // 후기 등록 폼은 선택된 리뷰 대상

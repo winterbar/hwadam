@@ -1,14 +1,15 @@
 package com.miles.beauminity.controller.review_board;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.miles.beauminity.service.review_board.ReviewService;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
-
 import lombok.RequiredArgsConstructor;
 
 
@@ -22,8 +23,12 @@ public class ReviewController { // 역할: 후기 게시판에 대한 사용자�
     
     // 후기 게시판 페이지 요청 처리
     @GetMapping("/board/review")
-    public String reviewPage() {
+    public String reviewPage(Model model) {
+        // 1. 서비스 호출을 통해 전체 후기 리스트 데이터 확보
+        List<ReviewBoardVO> reviewList = reviewService.getReviewBoardList();
 
+        // 2. **타임리프 화면으로 데이터를 "reviewList"라는 열쇠(key)로 배송
+        model.addAttribute("reviewList", reviewList);
 
         return "review_board/review";
     }
@@ -38,7 +43,7 @@ public class ReviewController { // 역할: 후기 게시판에 대한 사용자�
     }
 
     @PostMapping("/board/review/write")
-    public String registerReview(@RequestBody ReviewBoardVO reviewBoardVO) {
+    public String registerReview(@ModelAttribute ReviewBoardVO reviewBoardVO) {
         
         // 로그인 미구현 대안: master_board.member_id(FK) 제약 조건 통과용 임시 ID 강제 설정 
         // ** 주의 ** 실제 DB member 테이블에 username이 'testuser01' 인 회원이 있어야 함
