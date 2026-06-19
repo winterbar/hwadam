@@ -1,6 +1,7 @@
 package com.miles.beauminity.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -27,6 +28,9 @@ public interface MasterBoardMapper {
 
     // UPDATE3 - 게시글 수정
     public void updateBoard(MasterBoardVO masterBoardVO);
+
+    // SELECT - 게시판 별 회원이 등록한 게시글 수 조회
+    public List<Map<String, Object>> countBoard(String username);
 
 }
 

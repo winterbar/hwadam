@@ -51,7 +51,6 @@
             WHERE board_id = #{value}
     </update>
 
-
     <!-- 게시글  삭제 쿼리. 단 삭제는 어디까지나 상태변경... -->
     <update id="deleteBoard"
         parameterType="Long">
@@ -69,5 +68,17 @@
         edited_at = NOW()
         WHERE board_id = #{boardId}
     </update>
+
+    <!-- 회원의 게시판 별 등록한 글 수 조회 -->
+    <select id="countBoard"
+            parameterType="String"
+            resultType="map">
+
+        SELECT board_type, count(*) as count
+        FROM master_board
+        WHERE username = #{member.username} AND deleted = 0
+        GROUP BY board_type
+
+    </select>
 
 </mapper>

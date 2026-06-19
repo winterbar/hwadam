@@ -12,5 +12,5 @@ public interface FeedMapper {
     List<FeedVO> getFeedList();
     List<String> getFeedTagList(Long feedId);
     List<String> getFeedFileList(Long feedId);
-    
+    long countFeed(String username);
 }

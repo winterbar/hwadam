@@ -62,4 +62,16 @@
         order by file_id asc
 
     </select>
+    
+    <!-- 회원이 등록한 피드 수 검색 -->
+    <select id="countFeed"
+            parameterType="String"
+            resultType="long">
+
+        SELECT count(*)
+        FROM feed
+        WHERE username = #{username} AND deleted = 0
+
+    </select>
+
 </mapper>
