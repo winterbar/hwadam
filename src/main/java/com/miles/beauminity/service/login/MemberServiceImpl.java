@@ -1,12 +1,18 @@
 package com.miles.beauminity.service.login;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.miles.beauminity.mapper.FeedMapper;
+import com.miles.beauminity.mapper.MasterBoardMapper;
 import com.miles.beauminity.mapper.MemberMapper;
 import com.miles.beauminity.mapper.MemberProfileMapper;
 import com.miles.beauminity.vo.login.MemberVO;
+import com.miles.beauminity.vo.login.MyPageVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,6 +22,8 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberMapper memberMapper;
     private final MemberProfileMapper memberProfileMapper;
+    private final MasterBoardMapper MasterBoardMapper;
+    private final FeedMapper feedMapper;
     private final PasswordEncoder passwordEncoder;
 
     // 사용자가 입력한 아이디로 가입된 계정이 있는지 확인
@@ -52,5 +60,30 @@ public class MemberServiceImpl implements MemberService {
     private String convertLowerId(String username) {
         String converted_username = username.trim().toLowerCase();
         return converted_username;
+    }
+
+    // 로그인한 사용자의 정보 및 게시글 별로 등록된 글 개수를 반환
+    @Override
+    public MyPageVO getMemberInfo(String username) {
+        MemberVO member = memberMapper.findLoginId(username);
+        MyPageVO memberInfo = new MyPageVO();
+
+        // 회원 정보
+        memberInfo.setMember(member);
+        // 회원의 등급 이름
+        memberInfo.setGradeName(memberMapper.findGradeName(member.getGradeId()));
+        // 후기, 질문, 정보공유 게시판별 회원이 등록한 글 개수
+        List<Map<String, Object>> resultMap = MasterBoardMapper.countBoard(username);
+        for(Map<String, Object> result : resultMap) {
+            String type = (String) result.get("board_type");
+            Long count = (Long) result.get("count");
+
+            if("review".equals(type)) memberInfo.setReviewCnt(count);
+            else if("qna".equals(type)) memberInfo.setQnaCnt(count);
+            else if("infoshare".equals(type)) memberInfo.setInfoshareCnt(count);
+        }
+        // 회원이 등록한 피드 수
+        memberInfo.setFeedCnt(feedMapper.countFeed(username));
+        return memberInfo;
     }
 }

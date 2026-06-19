@@ -52,6 +52,17 @@
         from feed 
         where feed_id = #{feedId}
     </select>
+    
+    <!-- 회원이 등록한 피드 수 검색 -->
+    <select id="countFeed"
+            parameterType="String"
+            resultType="long">
+
+        SELECT count(*)
+        FROM feed
+        WHERE username = #{username} AND deleted = 0
+
+    </select>
     <update id="deleteFeed"
             parameterType="long">
         update feed
