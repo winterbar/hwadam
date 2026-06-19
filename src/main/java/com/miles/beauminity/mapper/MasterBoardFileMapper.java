@@ -13,6 +13,6 @@ public interface MasterBoardFileMapper {
     public void insertFile(MasterBoardFileVO masterBoardFileVO);
 
     // READ1 - 특정 게시글의 파일 전체조회
-    public List<MasterBoardFileVO> getBoardById(Long id);
+    public List<MasterBoardFileVO> getBoardFileById(Long id);
 
 }
