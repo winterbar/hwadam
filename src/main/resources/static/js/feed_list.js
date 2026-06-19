@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const filterToggleIcon = document.getElementById('feed-filter-toggle-icon');
     const filterInner = document.getElementById('feed-filter-inner');
     const feedEmpty = document.getElementById('feed-empty');
-    
-    //해시태그 생성되면 화면에 버튼으로 출력
+
+    // 화면에 출력된 해시태그 필터 버튼 중 중복된 버튼을 제거하는 기능
     function removeDuplicateTagButtons() {
         const tagButtons = document.querySelectorAll('.feed-tag-btn');
         const seenTags = new Set();
@@ -24,7 +24,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    
+
+    // 피드 본문 + 정보공유 링크 출력 기능
     function renderFeedContentAndLink() {
         const feedCards = document.querySelectorAll('.feed-card');
 
@@ -87,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // 피드 이미지 출력 기능
     function renderFeedImages() {
         const feedCards = document.querySelectorAll('.feed-card');
 
@@ -194,7 +196,8 @@ document.addEventListener('DOMContentLoaded', function () {
             updateImage();
         });
     }
-    //해시태그 필터 열고 닫는 기능
+
+    // 해시태그 필터 열고 닫는 기능
     function toggleFeedFilter() {
         if (!filterInner) return;
 
@@ -222,7 +225,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
-    //
+
+    // 해시태그 필터 적용 기능
     function applyFilter(selectedTag) {
         const feedCards = document.querySelectorAll('.feed-card');
         let visibleCount = 0;
@@ -243,6 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // 좋아요 버튼 기능
     function initLikeButtons() {
         document.querySelectorAll('.feed-like-btn').forEach(function (button) {
             const icon = button.querySelector('.feed-like-icon');
@@ -285,6 +290,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // 댓글 영역 열고 닫기 기능
     function initCommentArea() {
         document.querySelectorAll('.feed-card').forEach(function (card) {
             const commentToggleBtn = card.querySelector('.feed-comment-toggle-btn');
@@ -328,6 +334,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // 피드 안에 해시태그 버튼 클릭 기능
     function initHashtagButtons() {
         document.querySelectorAll('.feed-hashtag-btn').forEach(function (button) {
             button.addEventListener('click', function () {
@@ -358,6 +365,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // 점 3개 피드 메뉴 기능
     function initMoreMenu() {
         document.querySelectorAll('.feed-more-btn').forEach(function (button) {
             button.addEventListener('click', function (event) {
@@ -387,15 +395,35 @@ document.addEventListener('DOMContentLoaded', function () {
             btn.addEventListener('click', function (event) {
                 event.stopPropagation();
 
+                const card = btn.closest('.feed-card');
+                const feedId = card ? card.dataset.feedId : null;
+
+                if (!feedId) {
+                    alert('피드 번호를 찾을 수 없습니다.');
+                    return;
+                }
+
+                // 삭제하기 버튼
                 if (btn.classList.contains('danger')) {
-                    alert('삭제 기능은 컨트롤러 연결 후 동작합니다.');
-                } else {
-                    alert('수정 기능은 컨트롤러 연결 후 동작합니다.');
+                    const isDelete = confirm('해당 피드를 삭제하시겠습니까?');
+
+                    if (!isDelete) {
+                        return;
+                    }
+
+                    location.href = '/feed/' + feedId + '/delete';
+                    return;
+                }
+
+                // 수정하기 버튼
+                if (btn.classList.contains('edit-btn')) {
+                    location.href = '/feed/' + feedId + '/edit';
                 }
             });
         });
     }
 
+    // 피드 페이지 처음 열릴 때 실행
     removeDuplicateTagButtons();
     renderFeedContentAndLink();
     renderFeedImages();
@@ -404,6 +432,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initHashtagButtons();
     initMoreMenu();
 
+    // 상단 해시태그 필터 클릭 시
     if (filterSummary) {
         filterSummary.addEventListener('click', toggleFeedFilter);
 

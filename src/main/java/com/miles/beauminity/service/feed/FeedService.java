@@ -7,8 +7,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.miles.beauminity.vo.feed.FeedVO;
 
 public interface FeedService {
-    void postFeed(FeedVO feedVO,MultipartFile[] files,List<String> tagNames);
+    void postFeed(FeedVO feedVO, MultipartFile[] files, List<String> tagNames);
+
     List<String> getTagNameList();
+
     List<FeedVO> getFeedList();
-    List<String> getFeedTagList(Long feedId);
+
+    FeedVO loadFeedData(Long feedId);
+
+    void deleteFeed(Long feedId);
+
 }
