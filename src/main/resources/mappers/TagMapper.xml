@@ -19,9 +19,21 @@
 <!--DB에 저장된 태그 이름 불러오기-->
 <select id="getTagNameList">
     select distinct tag_name
-    from tag
-    order by tag_id
+    from tag t
+    join feed_tag ft
+    on t.tag_id = ft.tag_id
+    order by t.tag_id
 </select>
+<!--해당 피드의 해시태그 리스트 가져오기-->
+    <select id="getFeedTagList" parameterType="long" resultType="string">
+        select
+            t.tag_name
+        from feed_tag ft
+        join tag t
+            on ft.tag_id = t.tag_id
+        where ft.feed_id = #{feedId}
+        order by t.tag_id asc
+    </select>
 <!-- 태그피드 테이블에 피드아이디와 태그아이디 저장-->
 <insert id="tagFeed"
     parameterType="com.miles.beauminity.vo.feed.FeedTagVO"
@@ -35,5 +47,13 @@
         #{tagId}
     )
 </insert>
+
+<delete id="deleteTag"
+        parameterType="long">
+    delete from feed_tag
+    where feed_id=#{feedId}
+
+</delete>
+
 
 </mapper>
