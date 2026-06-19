@@ -15,7 +15,6 @@ import com.miles.beauminity.vo.feed.FeedVO;
 
 import lombok.AllArgsConstructor;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @AllArgsConstructor
