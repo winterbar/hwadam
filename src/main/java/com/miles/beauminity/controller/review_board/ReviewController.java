@@ -6,11 +6,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.miles.beauminity.service.review_board.ReviewService;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -32,6 +35,26 @@ public class ReviewController { // 역할: 후기 게시판에 대한 사용자�
 
         return "review_board/review";
     }
+
+    // 후기 게시판 상세 페이지 요청 처리
+    @GetMapping("/board/review/detail/{boardId}")
+    public String reviewDetailPage(@PathVariable("boardId") Long boardId, Model model) {
+
+        // 1. 서비스 호출을 통해 후기 상세 데이터 가져오기
+        ReviewBoardVO detail = reviewService.getReviewBoardDetail(boardId);
+
+        try {
+
+        } catch (Exception e) {
+            return "error/500";
+        }
+
+
+
+        return "review_board/detail";
+    }
+    
+
     
     // 후기 게시판 리뷰 쓰기 요청 처리
     @GetMapping("/board/review/write")
