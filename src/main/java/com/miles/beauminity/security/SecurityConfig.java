@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/board/review/**",
                     "/board/qna/**",
-                    "/infoshare/**", "/feed/**"
+                    "/infoshare/**", "/feed/**", "/mypage"
                 ).hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated() // 위에서 허가하지 않은 요청은 인가와 인증을 받음
             )

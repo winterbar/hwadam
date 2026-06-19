@@ -10,6 +10,9 @@ import com.miles.beauminity.mapper.MasterBoardMapper;
 import com.miles.beauminity.util.MasterFileUploadUtil;
 import com.miles.beauminity.vo.MasterBoardFileVO;
 import com.miles.beauminity.vo.MasterBoardVO;
+import com.miles.beauminity.vo.PageVO;
+import com.miles.beauminity.vo.TypeOffsetVO;
+
 import lombok.AllArgsConstructor;
 
 // 질문게시판 구현체입니다.
@@ -51,11 +54,17 @@ public class QnaServiceImpl implements QnaService {
 
     // 게시글 전체조회
     @Override
-    public List<MasterBoardVO> getTypeBoard(String type) {
+    public List<MasterBoardVO> getTypeBoard(String type, PageVO pageVO) {
 
         System.out.println(type);
 
-        return masterBoardMapper.getTypeBoard(type);
+        TypeOffsetVO typeOffsetVO = new TypeOffsetVO();
+
+        typeOffsetVO.setType(type);
+        typeOffsetVO.setOffset(pageVO.getOffset());
+        typeOffsetVO.setSize(pageVO.getSize());
+
+        return masterBoardMapper.getTypeBoard(typeOffsetVO);
     }
 
     // 게시글 상세조회
@@ -69,8 +78,8 @@ public class QnaServiceImpl implements QnaService {
 
     // 게시글 상세조회 시 파일 조회
     @Override
-    public List<MasterBoardFileVO> getBoardById(Long id) {
-        return masterBoardFileMapper.getBoardById(id);
+    public List<MasterBoardFileVO> getBoardFileById(Long id) {
+        return masterBoardFileMapper.getBoardFileById(id);
     }
 
     // 게시글 삭제

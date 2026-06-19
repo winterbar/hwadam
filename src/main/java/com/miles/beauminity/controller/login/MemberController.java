@@ -14,6 +14,8 @@ import com.miles.beauminity.service.login.MemberService;
 import com.miles.beauminity.vo.login.MemberVO;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @Controller
@@ -40,12 +42,19 @@ public class MemberController {
         if(loginMember == null) {
             return "redirect:/login";
         }
-
-        String username = loginMember.getUsername();
-        System.out.println("로그인한 사용자 아이디 : " + username);
-
+        model.addAttribute("memberInfo",
+                            memberService.getMemberInfo(loginMember.getUsername()));
+        System.out.println(memberService.getMemberInfo(loginMember.getUsername()).toString());
         return "login/mypage";
     }
+
+    // 회원정보 수정 요청 (프로필 사진)
+    @PostMapping("/mypage/edit/photo")
+    public String editProfilePhoto() {
+        
+        return "redirect:/mypage";
+    }
+    
 
     // 회원가입 요청
     @PostMapping("/register")

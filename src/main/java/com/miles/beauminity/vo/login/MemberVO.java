@@ -18,6 +18,6 @@ public class MemberVO {
     private String skinType;
     private String personalColor;
     private int point;
-    private LocalDateTime signedDate;
+    private LocalDateTime signedAt;
     private String role;
 }

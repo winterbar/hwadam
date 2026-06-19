@@ -9,4 +9,5 @@ public interface MemberMapper {
     public long findMemberById(String username);
     public void insertMember(MemberVO memberVO);
     public MemberVO findLoginId(String username);
+    public String findGradeName(String gradeId);
 }
