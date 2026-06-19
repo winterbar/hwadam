@@ -9,90 +9,97 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.miles.beauminity.mapper.ReviewMapper;
+import com.miles.beauminity.mapper.MasterBoardFileMapper;
+import com.miles.beauminity.mapper.MasterBoardMapper;
+import com.miles.beauminity.mapper.ReviewBoardMapper;
+import com.miles.beauminity.util.MasterFileUploadUtil;
 import com.miles.beauminity.vo.MasterBoardFileVO;
+import com.miles.beauminity.vo.MasterBoardVO;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
     
     // 메퍼단에 작업을 요청하기 위한 변수 선언
-    private final ReviewMapper reviewMapper; 
-    
+    private final ReviewBoardMapper reviewBoardMapper; 
+    private final MasterBoardMapper masterBoardMapper;
+    private final MasterBoardFileMapper masterBoardFileMapper;
+  
     @Override
     @Transactional(rollbackFor = Exception.class) // 여러 데이블의 데이터 정보 무결성을 위해 트랜잭션 어노테이션 필수 부여
-    public void registerReviewPost(ReviewBoardVO vo) {  // 책임: 후기 게시판 등록 서비스 처리
-        // 1 단계. 공용 게시판 테이블에 데이터 삽입
-        // 이 메서드가 실행되고 나면, MyBatyis의 설정에 의해서
-        // DB가 자동으로 생성해준 board_id(PK) 값이 vo 객체의 boardId 필드에 자동으로 채워진다...
-        reviewMapper.insertMasterBoard(vo);
+    // 역할: 후기 게시판 등록요청 서비스 처리
+    public boolean registerReviewPost(ReviewBoardVO reviewBoardVO) {
+        try {
+            // 1. 공용 마스터 VO 변환 및 데이터 세팅
+            MasterBoardVO masterVO = new MasterBoardVO();
+            masterVO.setUsername(reviewBoardVO.getUserName());
+            masterVO.setBoardType("review");
+            masterVO.setTitle(reviewBoardVO.getTitle());
+            masterVO.setContent(reviewBoardVO.getContent());
 
-        
-
-        // 2 단계. 후기 전용 테이블(review_board)에 데이터 삽입
-        // 1단계를 거치면서 vo.getBoardId()로 자동 주입된 글 번호를 꺼낼 수 있게 된다..
-        // 이 번호를 매퍼가 인식하여 review_board의 외래키(board_id)로 활용해 인서트한다...
-        reviewMapper.insertReviewBoard(vo);
-
-        // 3 단계. 다중 첨부파일 업로드 및 파일 데이블(board_file)에 데이터 삽입
-        // 사용자가 화면에서 파일 항목을 등록했을 때만 작동하도록 코드 작성
-        if (vo.getReviewFiles() != null && !vo.getReviewFiles().isEmpty()) {
+            log.info("DB로 출발하는 username 값: [{}]",masterVO.getUsername());
             
-            // 1. 물리 파일이 저장될 컴퓨터(서버) 내부의 경로 지정
-            String uploadDir = "C:/upload/review/";
-            File dir = new File(uploadDir);
-            if (!dir.exists()) {
-                dir.mkdirs(); // 만약 컴퓨터에 해당 폴더가 없다면 자동으로 생성
-            }
+            // 2. masterBoard 테이블에 데이터 입력
+            masterBoardMapper.insertBoard(masterVO); 
+            
+            // MyBatis useGeneratedKeys 덕분에 void 메서드여도 masterVO 객체 내부에는 boardId가 자동으로 탑재됨
+            reviewBoardVO.setBoardId(masterVO.getBoardId());
+            
+            // 3. reviewBoard 테이블에 데이터 입력
+            reviewBoardMapper.insertReviewBoard(reviewBoardVO);
+            
+            // 4. 첨부 파일 처리 구역
+            List<MultipartFile> fileList = reviewBoardVO.getReviewFiles();
 
-            // 2. 사용자가 올린 파일의 개수만큼 루프(반복문)를 돌린다.
-            for (MultipartFile file : vo.getReviewFiles()) {
-                // 선택창만 있고 실제 첨부된 파일이 없은 빈칸은 건너뛴다.
-                if (file.isEmpty()) continue;
+            if (fileList != null && !fileList.isEmpty() && !fileList.get(0).isEmpty()) {
+                // 파일 업로드 및 공용 파일 매퍼 호출 로직 위치
+                // 1. 물리 파일이 저장될 디스크 경로 지정
+                String uploadPath = "C:/upload/review";
 
-                // 클라이언트가 보낸 원래 파일명, 타입, 용량 획득
-                String originalName = file.getOriginalFilename();
-                String fileType = file.getContentType();
-                long fileSize = file.getSize();
-                
-                // 3. 파일명 중복 방지를 위한 UUID 고유 식별자 결합 (예: UUID_공용.png)
-                String ext = originalName.substring(originalName.lastIndexOf("."));
-                String savedName = UUID.randomUUID().toString() + ext;
+                // 2. 유틸리티 스펙(배열)에 맞춰 List를 MultipartFile[] 배열로 기계적 변환
+                MultipartFile[] filesArray = fileList.toArray(new MultipartFile[0]);
 
-                try {
-                    // 4. 실제로 컴퓨터 하드디스크 경로에 물리 파일을 영구 저장한다.
-                    file.transferTo(new File(uploadDir + savedName));
+                // 3. static 매서드 다이렉트 호출 -> 디스크 저장 후 파일 정보 VO 리스트 리턴
+                List<MasterBoardFileVO> savedFileList = MasterFileUploadUtil.saveFiles(filesArray, uploadPath);
 
-                    // 5. 공용 파일 VO(MasterBoardFileVO)를 사용하여 자바 규격을 맞춘다.
-                    MasterBoardFileVO fileVO = new MasterBoardFileVO();
+                // 4. 반환된 파일 리스트를 루프 돌며 board_file 테이블에 순차 insert
+                for (MasterBoardFileVO fileVO : savedFileList) {
+                    // 마스터 게시글 등록 시 발급받은 고유 boardId를 파일 객체에 수동 매핑
+                    fileVO.setBoardId(reviewBoardVO.getBoardId());
 
-                    // 종합 바구니(vo)에서 확보해 둔 부모 글번호(boardId)를 공용 파일 객체에 매핑합니다.
-                    fileVO.setBoardId(vo.getBoardId());
-                    fileVO.setOriginalName(originalName);
-                    fileVO.setSavedName(savedName);
-                    fileVO.setFilePath(uploadDir);
-                    fileVO.setFileType(fileType);
-                    fileVO.setFileSize((int) fileSize);
-
-                    // 6. 세팅이 완료된 공용 파일 객체를 매퍼로 넘겨 board_file 테이블에 최종 저장한다.
-                    reviewMapper.insertBoardFile(fileVO);
-
-                } catch (IOException e) {
-                    // 파일 저장 중 하드디스크 용량 부족이나 경로 에러 발생 시
-                    // 의도적으로 강제 예외를 발생시켜 상단의 @Transactional이 작동(전체 롤백)하도록 유도
-                    throw new RuntimeException("물리 파일 저장 오류로 인해 게시글 등록을 전면 취소합니다.", e);
+                    // ReviewServiceImpl 에 void insertBoardFile 호출
+                    masterBoardFileMapper.insertFile(fileVO);
                 }
             }
-        } 
+            
+            return true; 
+            
+        } catch (Exception e) {
+            // SQL Syntax 에러나 제약조건 위배 등 모든 DB 문제는 기계적으로 이 catch 구문으로 잡혀서 디버깅 로그가 찍힘
+            log.error("❌ [디버깅 에러 발생] 원인: {}", e.getMessage(), e);
+            throw e; // 트랜잭션 자동 롤백 유도
+        }
+    }
+
+    
+    @Override
+    // 역할: 후기게시판 게시글 전체보기 요청 서비스 처리
+    public List<ReviewBoardVO> getReviewBoardList() {
+
+            return reviewBoardMapper.selectReviewBoardList(); 
     }
 
     @Override
-    public List<ReviewBoardVO> getReviewBoardList() {
+    // 역할: 후기게시판 게시글 상세보기 요청 서비스 처리
+    public ReviewBoardVO getReviewBoardDetail(Long boardId) {
 
-            return reviewMapper.selectReviewBoardList(); 
+        return reviewBoardMapper.selectReviewBoardDetail(boardId);
+        
     }
 
 }

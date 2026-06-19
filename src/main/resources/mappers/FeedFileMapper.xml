@@ -23,4 +23,15 @@
             #{fileSize}
         )
     </insert>
+    <!--해당 피드의 파일 저장명 가져오기-->
+    <select id="getFeedFileList" parameterType="long" 
+    resultType="string">
+        select saved_name
+        from feed_file
+        where feed_id = #{feedId}
+        order by file_id asc
+
+    </select>
+    
+
 </mapper>

@@ -1,8 +1,11 @@
 package com.miles.beauminity.vo.review;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
+
+import com.miles.beauminity.vo.MasterBoardFileVO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +21,8 @@ public class ReviewBoardVO {
     private String nickName;  // 회원의 닉네임
     private String title;                       // 후기 등록 폼은 리뷰 제목
     private String content;                     // 후기 등록 폼은 리뷰 내용
-    
+    private LocalDateTime createdAt;
+
     private long viewCnt;
     private long likeCnt;
     private long replyCnt;
@@ -30,6 +34,9 @@ public class ReviewBoardVO {
     private String category1;                   // 대분류
     private String category2;                   // 소분류
 
-    // 다수의 파일 수신용
+    // 다수의 파일 수신용 (DB 입력용)
     private List<MultipartFile> reviewFiles;       // 이미지 첨부 파일
+
+    // 컨트롤러에 넘길 파일 목록 (화면 출력용)
+    private List<MasterBoardFileVO> attachedFiles;
 }
