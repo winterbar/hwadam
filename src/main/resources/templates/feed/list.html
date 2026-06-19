@@ -1,334 +1,363 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Beauminity - 피드</title>
 
-    <link rel="stylesheet" href="/css/feed.css" th:href="@{/css/feed.css}">
-    <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" href="/css/feed.css" th:href="@{/css/feed.css}" />
+    <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}" />
 
     <style>
-        .feed-card > .feed-profile-header {
-            width: 100%;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-            padding: 16px 18px 14px 18px !important;
-            margin: 0 !important;
-            box-sizing: border-box !important;
-            background: #ffffff !important;
-            border-bottom: 1px solid #f0f0f0 !important;
-        }
+      .feed-card > .feed-profile-header {
+        width: 100%;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 16px 18px 14px 18px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        background: #ffffff !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+      }
 
-        .feed-profile-left {
-            display: flex !important;
-            align-items: center !important;
-            gap: 12px !important;
-            flex: 1 !important;
-            min-width: 0 !important;
-        }
+      .feed-profile-left {
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        flex: 1 !important;
+        min-width: 0 !important;
+      }
 
-        .feed-profile-avatar {
-            width: 40px !important;
-            height: 40px !important;
-            min-width: 40px !important;
-            min-height: 40px !important;
-            border-radius: 50% !important;
-            background: linear-gradient(135deg, #FA6E68 0%, #FACB47 100%) !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            color: #ffffff !important;
-            font-size: 14px !important;
-            font-weight: 900 !important;
-            line-height: 1 !important;
-            flex: 0 0 40px !important;
-            box-shadow: 0 3px 8px rgba(250, 110, 104, 0.2) !important;
-        }
+      .feed-profile-avatar {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+        min-height: 40px !important;
+        border-radius: 50% !important;
+        background: linear-gradient(
+          135deg,
+          #fa6e68 0%,
+          #facb47 100%
+        ) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #ffffff !important;
+        font-size: 14px !important;
+        font-weight: 900 !important;
+        line-height: 1 !important;
+        flex: 0 0 40px !important;
+        box-shadow: 0 3px 8px rgba(250, 110, 104, 0.2) !important;
+      }
 
-        .feed-profile-info {
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-            min-width: 0 !important;
-            flex: 1 !important;
-        }
+      .feed-profile-info {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        min-width: 0 !important;
+        flex: 1 !important;
+      }
 
-        .feed-profile-nickname {
-            font-size: 14px !important;
-            font-weight: 900 !important;
-            color: #111111 !important;
-            line-height: 1.2 !important;
-            margin: 0 0 6px 0 !important;
+      .feed-profile-nickname {
+        font-size: 14px !important;
+        font-weight: 900 !important;
+        color: #111111 !important;
+        line-height: 1.2 !important;
+        margin: 0 0 6px 0 !important;
 
-            white-space: nowrap !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
-        }
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
 
-        .feed-profile-tags {
-            display: flex !important;
-            align-items: center !important;
-            gap: 6px !important;
-            flex-wrap: wrap !important;
-        }
+      .feed-profile-tags {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        flex-wrap: wrap !important;
+      }
 
-        .feed-profile-tag {
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            height: 21px !important;
-            padding: 0 8px !important;
-            border-radius: 3px !important;
-            box-sizing: border-box !important;
-            font-size: 11px !important;
-            font-weight: 700 !important;
-            line-height: 1 !important;
-            white-space: nowrap !important;
-        }
+      .feed-profile-tag {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        height: 21px !important;
+        padding: 0 8px !important;
+        border-radius: 3px !important;
+        box-sizing: border-box !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+      }
 
-        .feed-profile-tag.skin {
-            background: #fff8db !important;
-            border: 1px solid #f0df9a !important;
-            color: #7a6500 !important;
-        }
+      .feed-profile-tag.skin {
+        background: #fff8db !important;
+        border: 1px solid #f0df9a !important;
+        color: #7a6500 !important;
+      }
 
-        .feed-profile-tag.color {
-            background: #fff0ee !important;
-            border: 1px solid #f3c4bf !important;
-            color: #e1726c !important;
-        }
+      .feed-profile-tag.color {
+        background: #fff0ee !important;
+        border: 1px solid #f3c4bf !important;
+        color: #e1726c !important;
+      }
 
-        .feed-profile-header .feed-more-wrap {
-            position: relative !important;
-            flex: 0 0 auto !important;
-            margin-left: 12px !important;
-        }
+      .feed-profile-header .feed-more-wrap {
+        position: relative !important;
+        flex: 0 0 auto !important;
+        margin-left: 12px !important;
+      }
 
-        .feed-profile-header .feed-more-btn {
-            border: none !important;
-            background: transparent !important;
-            color: #8b8b8b !important;
-            font-size: 20px !important;
-            font-weight: 900 !important;
-            line-height: 1 !important;
-            padding: 0 2px !important;
-            margin: 0 !important;
-            cursor: pointer !important;
-        }
+      .feed-profile-header .feed-more-btn {
+        border: none !important;
+        background: transparent !important;
+        color: #8b8b8b !important;
+        font-size: 20px !important;
+        font-weight: 900 !important;
+        line-height: 1 !important;
+        padding: 0 2px !important;
+        margin: 0 !important;
+        cursor: pointer !important;
+      }
 
-        .feed-profile-header .feed-more-btn:hover {
-            color: #333333 !important;
-        }/* 사진 아래 오른쪽 작성일 */
-.feed-created-date {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    padding: 8px 18px 0 18px;
-    box-sizing: border-box;
-    background: #ffffff;
-}
+      .feed-profile-header .feed-more-btn:hover {
+        color: #333333 !important;
+      } /* 사진 아래 오른쪽 작성일 */
+      .feed-created-date {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        padding: 8px 18px 0 18px;
+        box-sizing: border-box;
+        background: #ffffff;
+      }
 
-.feed-created-date span {
-    font-size: 12px;
-    font-weight: 600;
-    color: #9a9a9a;
-    line-height: 1;
-}
+      .feed-created-date span {
+        font-size: 12px;
+        font-weight: 600;
+        color: #9a9a9a;
+        line-height: 1;
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <header th:replace="~{layout/header :: header}"></header>
 
     <div class="feed-filter-bar is-closed" id="feed-filter-bar">
-        <div class="feed-filter-summary" id="feed-filter-summary" role="button" tabindex="0">
-            <div>
-                <strong>해시태그로 피드 보기</strong>
-                <span>궁금한 태그를 열어서 관련 피드만 모아보세요.</span>
-            </div>
-            <em id="feed-filter-toggle-icon">펼치기 ＋</em>
+      <div
+        class="feed-filter-summary"
+        id="feed-filter-summary"
+        role="button"
+        tabindex="0"
+      >
+        <div>
+          <strong>해시태그로 피드 보기</strong>
+          <span>궁금한 태그를 열어서 관련 피드만 모아보세요.</span>
         </div>
+        <em id="feed-filter-toggle-icon">펼치기 ＋</em>
+      </div>
 
-        <div class="feed-filter-inner"
-             id="feed-filter-inner"
-             aria-label="해시태그 필터"
-             style="display: none;">
+      <div
+        class="feed-filter-inner"
+        id="feed-filter-inner"
+        aria-label="해시태그 필터"
+        style="display: none"
+      >
+        <button type="button" class="feed-tag-btn active" data-tag="all">
+          #전체
+        </button>
 
-            <button type="button"
-                    class="feed-tag-btn active"
-                    data-tag="all">
-                #전체
-            </button>
-
-            <button type="button"
-                    class="feed-tag-btn"
-                    th:each="tagName : ${tagList}"
-                    th:data-tag="${tagName}"
-                    th:text="'#' + ${tagName}">
-                #해시태그
-            </button>
-        </div>
+        <button
+          type="button"
+          class="feed-tag-btn"
+          th:each="tagName : ${tagList}"
+          th:data-tag="${tagName}"
+          th:text="'#' + ${tagName}"
+        >
+          #해시태그
+        </button>
+      </div>
     </div>
 
     <main>
-        <div class="main-left-content">
-            <section class="dashboard-section">
-                <div class="section-header feed-section-header">
-                    <h2>
-                        📸 BOTD
-                        <span>사용자의 데일리 루틴과 사용샷을 모아보는 공간입니다.</span>
-                    </h2>
+      <div class="main-left-content">
+        <section class="dashboard-section">
+          <div class="section-header feed-section-header">
+            <h2>
+              📸 BOTD
+              <span>사용자의 데일리 루틴과 사용샷을 모아보는 공간입니다.</span>
+            </h2>
 
-                    <button class="feed-write-top-btn"
-                            type="button"
-                            th:onclick="|location.href='@{/feed/write}'|">
-                        피드 작성하기
+            <button
+              class="feed-write-top-btn"
+              type="button"
+              th:onclick="|location.href='@{/feed/write}'|"
+            >
+              피드 작성하기
+            </button>
+          </div>
+
+          <div class="feed-list" id="feed-list-container">
+            <article
+              class="feed-card"
+              th:each="feed : ${feedList}"
+              th:data-feed-id="${feed.feedId}"
+              th:data-content="${feed.feedContent}"
+              th:data-images="${feed.feedFileList != null ? #strings.listJoin(feed.feedFileList, ',') : ''}"
+              th:data-tags="${feed.feedTagList != null ? #strings.listJoin(feed.feedTagList, ',') : ''}"
+            >
+              <!-- 프로필 부분 수정 -->
+              <div class="feed-card-top feed-profile-header">
+                <div class="feed-profile-left">
+                  <div class="feed-profile-avatar">O</div>
+
+                  <div class="feed-profile-info">
+                    <div class="feed-profile-nickname">office_mood</div>
+
+                    <div class="feed-profile-tags">
+                      <span class="feed-profile-tag skin">복합성</span>
+                      <span class="feed-profile-tag color">봄웜</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="feed-more-wrap">
+                  <button type="button" class="feed-more-btn">···</button>
+                  <div class="feed-more-menu">
+                    <button
+                      type="button"
+                      class="feed-menu-item edit-btn"
+                      th:onclick="|location.href='@{/feed/{feedId}/edit}'|"
+                    >
+                      수정하기
                     </button>
+
+                    <button type="button" class="feed-menu-item danger">
+                      삭제하기
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="feed-card-image">
+                <button type="button" class="feed-photo-arrow feed-photo-prev">
+                  ‹
+                </button>
+                <img
+                  alt="피드 이미지"
+                  class="feed-image js-feed-image"
+                  style="display: none"
+                />
+                <div class="feed-image-placeholder js-feed-placeholder">
+                  📸 <span>이미지 준비중</span>
+                </div>
+                <button type="button" class="feed-photo-arrow feed-photo-next">
+                  ›
+                </button>
+                <div class="feed-photo-badge js-photo-badge">1 / 1</div>
+              </div>
+              <div class="feed-created-date">
+                <span
+                  th:text="${#temporals.format(feed.createdAt, 'yyyy.MM.dd')}"
+                ></span>
+              </div>
+
+              <div class="feed-card-content">
+                <div class="feed-card-actions">
+                  <div class="action-left">
+                    <button
+                      type="button"
+                      class="feed-like-btn"
+                      data-liked="false"
+                      th:data-like-count="${feed.likeCnt != null ? feed.likeCnt : 0}"
+                    >
+                      <span class="feed-like-icon">♡</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      class="feed-comment-toggle-btn"
+                      th:data-comment-count="${feed.replyCnt != null ? feed.replyCnt : 0}"
+                    >
+                      <span class="feed-comment-icon">💬</span>
+                    </button>
+
+                    <a
+                      class="feed-info-link feed-share-link"
+                      href="#"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style="display: none"
+                    >
+                      정보 공유 바로가기 ↗
+                    </a>
+                  </div>
                 </div>
 
-                <div class="feed-list" id="feed-list-container">
-
-                    <article class="feed-card"
-                        th:each="feed : ${feedList}"
-                        th:data-content="${feed.feedContent}"
-                        th:data-images="${feed.feedFileList != null ? #strings.listJoin(feed.feedFileList, ',') : ''}"
-                        th:data-tags="${feed.feedTagList != null ? #strings.listJoin(feed.feedTagList, ',') : ''}">
-
-                        <!-- 프로필 부분 수정 -->
-                        <div class="feed-card-top feed-profile-header">
-                            <div class="feed-profile-left">
-
-                                <div class="feed-profile-avatar">
-                                    O
-                                </div>
-
-                                <div class="feed-profile-info">
-                                    <div class="feed-profile-nickname">
-                                        office_mood
-                                    </div>
-
-                                    <div class="feed-profile-tags">
-                                        <span class="feed-profile-tag skin">복합성</span>
-                                        <span class="feed-profile-tag color">봄웜</span>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="feed-more-wrap">
-                                <button type="button" class="feed-more-btn">···</button>
-                                <div class="feed-more-menu">
-                                    <button type="button" class="feed-menu-item">수정하기</button>
-                                    <button type="button" class="feed-menu-item danger">삭제하기</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="feed-card-image">
-                            <button type="button" class="feed-photo-arrow feed-photo-prev">‹</button>
-                            <img alt="피드 이미지" class="feed-image js-feed-image" style="display: none;">
-                            <div class="feed-image-placeholder js-feed-placeholder">
-                                📸 <span>이미지 준비중</span>
-                            </div>
-                            <button type="button" class="feed-photo-arrow feed-photo-next">›</button>
-                            <div class="feed-photo-badge js-photo-badge">1 / 1</div>
-                        </div>
-                        <div class="feed-created-date">
-                <span th:text="${#temporals.format(feed.createdAt, 'yyyy.MM.dd')}"></span>
-                        </div>
-
-                        <div class="feed-card-content">
-
-                            <div class="feed-card-actions">
-                                <div class="action-left">
-                                    <button type="button"
-                                            class="feed-like-btn"
-                                            data-liked="false"
-                                            th:data-like-count="${feed.likeCnt != null ? feed.likeCnt : 0}">
-                                        <span class="feed-like-icon">♡</span>
-                                    </button>
-
-                                    <button type="button"
-                                            class="feed-comment-toggle-btn"
-                                            th:data-comment-count="${feed.replyCnt != null ? feed.replyCnt : 0}">
-                                        <span class="feed-comment-icon">💬</span>
-                                    </button>
-
-                                    <a class="feed-info-link feed-share-link"
-                                        href="#"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        style="display: none;">
-                                        정보 공유 바로가기 ↗
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="feed-likes-count-text">
-                                좋아요 <span class="feed-like-count" th:text="${feed.likeCnt != null ? feed.likeCnt : 0}">0</span>개
-                            </div>
-
-                            <p class="feed-card-caption">
-                                <span class="js-caption-text"></span>
-                            </p>
-
-                           <div class="feed-card-tags">
-                                <button type="button"
-                                    class="feed-hashtag-btn"
-                                    th:each="tagName : ${feed.feedTagList}"
-                                    th:data-tag="${tagName}"
-                                    th:text="'#' + ${tagName}">
-                                    #BOTD
-                                    </button>
-                                    </div>
-
-                            <button type="button"
-                                    class="feed-comment-count"
-                                    th:data-comment-count="${feed.replyCnt != null ? feed.replyCnt : 0}">
-                                댓글 0개 모두 보기
-                            </button>
-
-                            <div class="feed-comment-list">
-                                <div class="feed-comment-item">
-                                    <strong>뷰미니티 회원</strong>
-                                    <span>아직 등록된 댓글이 없습니다.</span>
-                                </div>
-                            </div>
-
-                            <div class="feed-comment-box">
-                                <input type="text" placeholder="댓글 달기...">
-                                <button type="button" class="comment-submit-btn">게시</button>
-                            </div>
-                        </div>
-                    </article>
-
+                <div class="feed-likes-count-text">
+                  좋아요
+                  <span
+                    class="feed-like-count"
+                    th:text="${feed.likeCnt != null ? feed.likeCnt : 0}"
+                    >0</span
+                  >개
                 </div>
 
-                <div class="feed-empty"
-                     id="feed-empty"
-                     th:if="${feedList == null or #lists.isEmpty(feedList)}">
-                    등록된 피드가 없습니다. 첫 번째 피드를 작성해보세요!
+                <p class="feed-card-caption">
+                  <span class="js-caption-text"></span>
+                </p>
+
+                <div class="feed-card-tags">
+                  <button
+                    type="button"
+                    class="feed-hashtag-btn"
+                    th:each="tagName : ${feed.feedTagList}"
+                    th:data-tag="${tagName}"
+                    th:text="'#' + ${tagName}"
+                  >
+                    #BOTD
+                  </button>
                 </div>
-            </section>
-        </div>
 
-        <aside th:replace="~{layout/aside :: sidebarFragment}"></aside>
+                <button
+                  type="button"
+                  class="feed-comment-count"
+                  th:data-comment-count="${feed.replyCnt != null ? feed.replyCnt : 0}"
+                >
+                  댓글 0개 모두 보기
+                </button>
 
-        <div class="sidebar-ranking">
-            <h4>🔥 인기 해시태그</h4>
-            <ul class="ranking-list">
-                <li class="ranking-item"><span class="rank-user"><span class="rank-num">1</span> #톤업크림</span><span class="rank-points">142 posts</span></li>
-                <li class="ranking-item"><span class="rank-user"><span class="rank-num">2</span> #눈썹정리</span><span class="rank-points">98 posts</span></li>
-                <li class="ranking-item"><span class="rank-user"><span class="rank-num">3</span> #나이트루틴</span><span class="rank-points">73 posts</span></li>
-            </ul>
-        </div>
+                <div class="feed-comment-list">
+                  <div class="feed-comment-item">
+                    <strong>뷰미니티 회원</strong>
+                    <span>아직 등록된 댓글이 없습니다.</span>
+                  </div>
+                </div>
+
+                <div class="feed-comment-box">
+                  <input type="text" placeholder="댓글 달기..." />
+                  <button type="button" class="comment-submit-btn">게시</button>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div
+            class="feed-empty"
+            id="feed-empty"
+            th:if="${feedList == null or #lists.isEmpty(feedList)}"
+          >
+            등록된 피드가 없습니다. 첫 번째 피드를 작성해보세요!
+          </div>
+        </section>
+      </div>
+
+      <aside th:replace="~{layout/aside :: sidebarFragment}"></aside>
     </main>
 
     <footer th:replace="~{layout/footer :: footer}"></footer>
     <script th:src="@{/js/feed_list.js}"></script>
-
-    
-</body>
+  </body>
 </html>

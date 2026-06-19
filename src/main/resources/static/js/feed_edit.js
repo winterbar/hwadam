@@ -1,94 +1,220 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const tagInput = document.querySelector('.tag-row input');
-    const tagAddBtn = document.querySelector('.tag-add-btn');
-    const tagList = document.querySelector('.tag-list');
-    const tagCount = document.querySelector('.tag-count');
-    const imageItems = document.querySelectorAll('.current-image');
-    const imageCount = document.querySelector('.image-current-count');
-    const cancelBtn = document.querySelector('.cancel');
-    const backBtn = document.querySelector('.back-link');
+    renderEditFeedContentAndLink();
+    initEditImageArea();
 
-    function updateTagCount() {
-        if (!tagCount || !tagList) return;
-        const count = tagList.querySelectorAll('.tag-chip').length;
-        tagCount.textContent = count + ' / 5';
-    }
+    function renderEditFeedContentAndLink() {
+        const form = document.querySelector('form');
 
-    function addTag() {
-        if (!tagInput || !tagList) return;
+        if (!form) return;
 
-        let value = tagInput.value.trim();
-        if (!value) return;
+        const rawContent = form.dataset.content
+            ? form.dataset.content.trim()
+            : '';
 
-        value = value.replace(/^#/, '');
+        const contentInput = document.getElementById('editFeedContent');
+        const linkInput = document.getElementById('editInfoLink');
 
-        const currentTags = Array.from(tagList.querySelectorAll('.tag-chip')).map(function (chip) {
-            return chip.dataset.tag;
-        });
+        if (!contentInput || !linkInput) return;
+        if (!rawContent) return;
 
-        if (currentTags.length >= 5) {
-            alert('해시태그는 최대 5개까지 입력할 수 있어요.');
-            return;
+        let contentText = '';
+        let linkText = '';
+
+        function isLink(text) {
+            if (!text) return false;
+
+            const value = text.trim().toLowerCase();
+
+            return value.startsWith('http://') || value.startsWith('https://');
         }
 
-        if (currentTags.includes(value)) {
-            alert('이미 등록된 해시태그예요.');
-            return;
-        }
+        if (rawContent.includes(',')) {
+            const parts = rawContent.split(',');
 
-        const chip = document.createElement('span');
-        chip.className = 'tag-chip';
-        chip.dataset.tag = value;
-        chip.innerHTML = '#' + value + ' <button type="button">×</button>';
-        tagList.appendChild(chip);
+            const first = parts[0] ? parts[0].trim() : '';
+            const second = parts.length > 1 ? parts.slice(1).join(',').trim() : '';
 
-        tagInput.value = '';
-        updateTagCount();
-    }
-
-    if (tagAddBtn) {
-        tagAddBtn.addEventListener('click', addTag);
-    }
-
-    if (tagInput) {
-        tagInput.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                addTag();
+            if (isLink(first)) {
+                linkText = first;
+            } else {
+                contentText = first;
             }
-        });
+
+            if (isLink(second)) {
+                linkText = second;
+            }
+        } else {
+            if (isLink(rawContent)) {
+                linkText = rawContent;
+            } else {
+                contentText = rawContent;
+            }
+        }
+
+        contentInput.value = contentText;
+        linkInput.value = linkText;
     }
 
-    if (tagList) {
-        tagList.addEventListener('click', function (event) {
-            if (event.target.tagName !== 'BUTTON') return;
-            event.target.closest('.tag-chip').remove();
-            updateTagCount();
+    function initEditImageArea() {
+        const imageList = document.getElementById('current-image-list');
+        const fileInput = document.getElementById('fileInput');
+        const addBtn = document.getElementById('image-add-btn');
+        const countEl = document.getElementById('image-current-count');
+        const previewImage = document.getElementById('main-preview-image');
+        const previewText = document.getElementById('main-preview-text');
+
+        const MAX_IMAGE_COUNT = 5;
+
+        if (!imageList || !fileInput || !addBtn) return;
+
+        // 처음 화면 들어왔을 때 기존 사진 기준으로 대표 이미지 세팅
+        updateImageState();
+
+        // + 이미지 추가 버튼 누르면 파일 선택창 열기
+        addBtn.addEventListener('click', function () {
+            fileInput.click();
         });
+
+        // 파일 선택하면 새 이미지 미리보기 추가
+        fileInput.addEventListener('change', function () {
+            const selectedFiles = Array.from(fileInput.files);
+
+            if (selectedFiles.length === 0) return;
+
+            const currentCount = getImageBoxes().length;
+            const availableCount = MAX_IMAGE_COUNT - currentCount;
+
+            if (availableCount <= 0) {
+                alert('이미지는 최대 5개까지 등록할 수 있습니다.');
+                fileInput.value = '';
+                return;
+            }
+
+            const filesToAdd = selectedFiles.slice(0, availableCount);
+
+            if (selectedFiles.length > availableCount) {
+                alert('이미지는 최대 5개까지 등록할 수 있어요. 가능한 개수만 추가됩니다.');
+            }
+
+            filesToAdd.forEach(function (file) {
+                addNewImageBox(file);
+            });
+
+            updateImageState();
+        });
+
+        // 삭제 버튼 클릭 처리
+        imageList.addEventListener('click', function (event) {
+            const deleteBtn = event.target.closest('.current-image-delete-btn');
+
+            if (!deleteBtn) return;
+
+            const imageBox = deleteBtn.closest('.current-image');
+
+            if (!imageBox) return;
+
+            // 기존 이미지라면 삭제할 이미지 이름을 hidden으로 따로 보냄
+            if (imageBox.dataset.imageType === 'existing') {
+                const savedName = imageBox.dataset.savedName;
+
+                if (savedName) {
+                    addDeletedImageInput(savedName);
+                }
+            }
+
+            imageBox.remove();
+            updateImageState();
+        });
+
+        function getImageBoxes() {
+            return Array.from(imageList.querySelectorAll('.current-image'));
+        }
+
+        function updateImageState() {
+            const imageBoxes = getImageBoxes();
+
+            imageBoxes.forEach(function (box) {
+                box.classList.remove('is-main');
+            });
+
+            if (countEl) {
+                countEl.textContent = imageBoxes.length + ' / ' + MAX_IMAGE_COUNT;
+            }
+
+           if (imageBoxes.length === 0) {
+    const previewBox = document.getElementById('main-preview-box');
+
+    if (previewBox) {
+        previewBox.classList.remove('has-image');
     }
 
-    imageItems.forEach(function (item) {
-        const deleteBtn = item.querySelector('button');
-        if (!deleteBtn) return;
-
-        deleteBtn.addEventListener('click', function () {
-            item.remove();
-            const remain = document.querySelectorAll('.current-image').length;
-            if (imageCount) imageCount.textContent = remain + ' / 5';
-        });
-    });
-
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', function () {
-            history.back();
-        });
+    if (previewImage) {
+        previewImage.removeAttribute('src');
+        previewImage.style.display = 'none';
     }
 
-    if (backBtn) {
-        backBtn.addEventListener('click', function () {
-            history.back();
-        });
+    if (previewText) {
+        previewText.style.display = 'flex';
+        previewText.textContent = '대표 이미지 미리보기';
     }
 
-    updateTagCount();
+    return;
+}
+
+            const previewBox = document.getElementById('main-preview-box');
+
+if (previewBox) {
+    previewBox.classList.add('has-image');
+}
+
+const mainBox = imageBoxes[0];
+mainBox.classList.add('is-main');
+
+const mainImg = mainBox.querySelector('img');
+
+if (mainImg && previewImage) {
+    previewImage.src = mainImg.src;
+    previewImage.style.display = 'block';
+}
+
+if (previewText) {
+    previewText.style.display = 'none';
+}
+        }
+
+        function addNewImageBox(file) {
+            const imageUrl = URL.createObjectURL(file);
+
+            const imageBox = document.createElement('div');
+            imageBox.className = 'current-image';
+            imageBox.dataset.imageType = 'new';
+
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            img.alt = '새로 추가한 이미지';
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.className = 'current-image-delete-btn';
+            deleteBtn.textContent = '×';
+
+            imageBox.appendChild(img);
+            imageBox.appendChild(deleteBtn);
+
+            imageList.appendChild(imageBox);
+        }
+
+        function addDeletedImageInput(savedName) {
+            const form = document.querySelector('form');
+
+            if (!form) return;
+
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'deletedImages';
+            input.value = savedName;
+
+            form.appendChild(input);
+        }
+    }
 });

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.miles.beauminity.service.qna_board.QnaService;
 import com.miles.beauminity.vo.MasterBoardFileVO;
 import com.miles.beauminity.vo.MasterBoardVO;
+import com.miles.beauminity.vo.PageVO;
 
 import lombok.AllArgsConstructor;
 
@@ -37,16 +38,12 @@ public class QnaController {
     // 여기에서 목록을 받아와야할 거 같은데...
     // 파라미터에 값 받아오는 느낌인가 으음 
     @GetMapping("/board/qna")
-    public String getQnaList(Model model) {
+    public String getQnaList(@ModelAttribute PageVO pageVO, Model model) {
 
         // 파라미터 여러개는 페이징 적용 이후에 고려해보는 걸로. 
         String type = "qna";
 
-        List<MasterBoardVO> qnaBoardList=qnaService.getTypeBoard(type);
-
-        for(MasterBoardVO q : qnaBoardList){
-            System.out.println(q.toString());
-        }
+        List<MasterBoardVO> qnaBoardList=qnaService.getTypeBoard(type, pageVO);
         // 일단 
 
         model.addAttribute("qnaS", qnaBoardList);
@@ -89,7 +86,7 @@ public class QnaController {
     public String getQnaDetail(@PathVariable("id") Long id, Model model) {
 
         MasterBoardVO qna = qnaService.getOneBoard(id);
-        List<MasterBoardFileVO> qnaFiles = qnaService.getBoardById(id);
+        List<MasterBoardFileVO> qnaFiles = qnaService.getBoardFileById(id);
 
         qnaService.viewUp(id);
 
@@ -122,7 +119,11 @@ public class QnaController {
 
         MasterBoardVO qnaEdit = qnaService.getOneBoard(id);
 
+        // 수정하는 거에 사진도 같이 넣으려면 어떻게 해야하나 
+        List<MasterBoardFileVO> files = qnaService.getBoardFileById(id);
+
         model.addAttribute("qnaEdit", qnaEdit);
+        model.addAttribute("qnaFiles", files);
 
         System.out.println("테스트: "+qnaEdit.toString());
 
