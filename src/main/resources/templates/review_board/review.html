@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beauminity : 후기 게시판</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
-    <link rel="stylesheet" th:href="@{/css/board.css}">
+    <link rel="stylesheet" th:href="@{/css/review_common.css}">
+    
+    
 </head>
 <body>
 
@@ -41,7 +43,7 @@
                     <thead>
                         <tr>
                             <th class="col-num">번호</th>
-                            <th class="col-product">제품 정보</th>
+                            <th class="col-category">카테고리</th>
                             <th class="col-title">제목</th>
                             <th class="col-writer">작성자</th>
                             <th class="col-date">작성일</th>
@@ -51,9 +53,9 @@
                     <tbody>
                         <tr th:each="board : ${reviewList}">
             
-                            <td class="col-num" th:text="${board.boardId}">15</td>
+                            <td class="col-num" th:text="${board.boardId}"></td>
             
-                            <td class="col-product" th:text="${board.category1} + '/' + ${board.category2}">스킨케어/선케어</td>
+                            <td class="col-category" th:text="${board.category1} + '/' + ${board.category2}"></td>
             
                             <td>
                                 <a th:href="@{/board/review/detail/{id}(id=${board.boardId})}" 
@@ -65,13 +67,13 @@
                                 <span class="selected-product-name" 
                                     th:text="'선택 제품: ' + ${board.productName}"
                                     style="font-size: 0.85em; color: #666; display: block; margin-bottom: 6px;">
-                                    선택 제품: 라로슈포제 선크림
                                 </span>
                                 <span class="rating-stars">★★★★★</span>
-                                <span class="reply-count" th:text="'[' + ${board.reply_cnt} + ']'">[0]</span>
+                                <span style="font-size: 0.85em; color: #666; margin-left: 8px;">댓글 수</span>
+                                <span class="reply-count" th:text="'[' + ${board. replyCnt} + ']'">[0]</span>
                             </td>
             
-                            <td class="col-writer" th:text="${board.username}">올영단골</td>
+                            <td class="col-writer" th:text="${board.nickName}">올영단골</td>
             
                             <td class="col-date" th:text="${#temporals.format(board.createdAt, 'MM-dd')}">06-15</td>
             
