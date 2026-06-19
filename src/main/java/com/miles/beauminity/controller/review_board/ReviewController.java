@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.miles.beauminity.service.review_board.ReviewService;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestParam;
-
-
 
 
 @Controller

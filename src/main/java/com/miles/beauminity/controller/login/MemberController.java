@@ -14,9 +14,6 @@ import com.miles.beauminity.service.login.MemberService;
 import com.miles.beauminity.vo.login.MemberVO;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestBody;
-
-
 
 @Controller
 @RequiredArgsConstructor
