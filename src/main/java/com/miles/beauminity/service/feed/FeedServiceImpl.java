@@ -17,61 +17,74 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class FeedServiceImpl implements FeedService{
-    private final FeedMapper feedMapper; 
+public class FeedServiceImpl implements FeedService {
+    private final FeedMapper feedMapper;
     private final FeedFileMapper feedFileMapper;
     private final TagMapper tagMapper;
 
-    
     @Override
-    public void postFeed(FeedVO feedVO,MultipartFile[] files,List<String> tagNames) {
-        //파일 저장
+    public void postFeed(FeedVO feedVO, MultipartFile[] files, List<String> tagNames) {
+        // 파일 저장
         feedMapper.postFeed(feedVO);
         Long feedId = feedVO.getFeedId();
         String uploadPath = "c:/upload";
-        List<FeedFileVO> fileList = FileUploadUtil.saveFiles(files,uploadPath);
-        for(FeedFileVO f:fileList) {
+        List<FeedFileVO> fileList = FileUploadUtil.saveFiles(files, uploadPath);
+        for (FeedFileVO f : fileList) {
             f.setFeedId((feedId));
             feedFileMapper.postFile(f);
         }
         // 한개의 피드에 해시태그 여러개 등록할 수 있어 반복문 사용
-        for(String tag:tagNames) {
+        for (String tag : tagNames) {
             TagVO t = new TagVO();
             t.setTagName(tag);
             // 태그 저장
             tagMapper.postTag(t);
             Long tagId = t.getTagId();
-            //피드태그 테이블에 피드 아이디 및 태그 저장
-            tagMapper.tagFeed(feedId,tagId);
-        } 
+            // 피드태그 테이블에 피드 아이디 및 태그 저장
+            tagMapper.tagFeed(feedId, tagId);
+        }
 
     }
-    //태그 리스트 가져오기
+
+    // 태그 리스트 가져오기
     @Override
     public List<String> getTagNameList() {
         return tagMapper.getTagNameList();
     }
-    //작성된 피드 가져오기
+
+    // 작성된 피드 가져오기
     @Override
     public List<FeedVO> getFeedList() {
         List<FeedVO> feedList = feedMapper.getFeedList();
         // 특정 피드에 작성된 해시태그 가져오기
         // 피드 전체 길이 만큼 반복
         for (FeedVO feed : feedList) {
-            // 특정 피드 아이디에 해당하는 해시태그를 가져와서 리스트로 저장 
-            List<String> feedTagList = feedMapper.getFeedTagList(feed.getFeedId());
+            // 특정 피드 아이디에 해당하는 해시태그를 가져와서 리스트로 저장
+            List<String> feedTagList = tagMapper.getFeedTagList(feed.getFeedId());
             // 특정 피드 아이디에 해당하는 사진 가져와서 리스트로 저장
-            List<String> feedFileList = feedMapper.getFeedFileList(feed.getFeedId());
+            List<String> feedFileList = feedFileMapper.getFeedFileList(feed.getFeedId());
             feed.setFeedFileList(feedFileList);
             feed.setFeedTagList(feedTagList);
         }
 
         return feedList;
     }
-    
+
     @Override
-    public List<String> getFeedTagList(Long feedId) {
-        return feedMapper.getFeedTagList(feedId);
+    public FeedVO loadFeedData(Long feedId) {
+        FeedVO feed = feedMapper.loadFeedData(feedId);
+        List<String> feedTagList = tagMapper.getFeedTagList(feedId);
+        // 특정 피드 아이디에 해당하는 사진 가져와서 리스트로 저장
+        List<String> feedFileList = feedFileMapper.getFeedFileList(feedId);
+        feed.setFeedFileList(feedFileList);
+        feed.setFeedTagList(feedTagList);
+        return feed;
+    }
+
+    @Override
+    public void deleteFeed(Long feedId) {
+        feedMapper.deleteFeed(feedId);
+        tagMapper.deleteTag(feedId);
     }
 
 }
