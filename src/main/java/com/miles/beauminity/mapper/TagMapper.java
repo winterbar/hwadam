@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.miles.beauminity.vo.feed.FeedVO;
 import com.miles.beauminity.vo.feed.TagVO;
 
 @Mapper
@@ -20,5 +21,7 @@ public interface TagMapper {
     List<String> getfeedTagList();
 
     void deleteTag(Long feedId);
+
+    void deleteFeedTag(FeedVO feedVO);
 
 }
