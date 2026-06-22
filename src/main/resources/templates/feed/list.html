@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Beauminity - 피드</title>
 
-    <link rel="stylesheet" href="/css/feed.css" th:href="@{/css/feed.css}" />
-    <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/feed/feed.css}" />
+    <link rel="stylesheet" th:href="@{/css/common/main.css}" />
 
     <style>
       .feed-card > .feed-profile-header {
@@ -426,6 +426,6 @@
     </main>
 
     <footer th:replace="~{layout/footer :: footer}"></footer>
-    <script th:src="@{/js/feed_list.js}"></script>
+    <script th:src="@{/js/feed/feed_list.js}"></script>
   </body>
 </html>

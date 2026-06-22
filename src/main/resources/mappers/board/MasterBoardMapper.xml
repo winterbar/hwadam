@@ -3,12 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.miles.beauminity.mapper.MasterBoardMapper">
+<mapper namespace="com.miles.beauminity.mapper.board.MasterBoardMapper">
 
     <!-- 게시글 게시(구현 완료)  -->
     <!-- 테스트 유저 등록 확인.-->
     <!-- 지금 로그인 중인 작성자명을 DB에 넣으려면 어떻게 해야할까요? 이 부분도 연구해야겠다싶네요. -->
-    <insert id="insertBoard" parameterType="com.miles.beauminity.vo.MasterBoardVO" useGeneratedKeys="true" keyProperty="boardId">
+    <insert id="insertBoard" parameterType="com.miles.beauminity.vo.board.MasterBoardVO" useGeneratedKeys="true" keyProperty="boardId">
         INSERT INTO master_board
         (username, board_type, title, content, created_at, edited_at
         )
@@ -27,8 +27,8 @@
     <!-- 특정 게시판 조회 매퍼 -->
     <!-- 임시입니다. 페이징을 추가할 때 수정합니다. 지금은 수정, 삭제, 상세조회 기능을 만들기 위해 뒀습니다. -->
     <select id="getTypeBoard" 
-        parameterType="com.miles.beauminity.vo.TypeOffsetVO"
-        resultType="com.miles.beauminity.vo.MasterBoardVO">
+        parameterType="com.miles.beauminity.vo.board.TypeOffsetVO"
+        resultType="com.miles.beauminity.vo.board.MasterBoardVO">
         SELECT *
         FROM master_board
         WHERE board_type = #{type} AND deleted = 0
@@ -62,7 +62,7 @@
 
     <!-- 게시글 수정 쿼리 -->
     <update id="updateBoard"
-        parameterType="com.miles.beauminity.vo.MasterBoardVO">
+        parameterType="com.miles.beauminity.vo.board.MasterBoardVO">
         UPDATE master_board
         SET title = #{title},
         content = #{content},

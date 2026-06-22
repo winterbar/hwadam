@@ -1,4 +1,4 @@
-package com.miles.beauminity.mapper;
+package com.miles.beauminity.mapper.feed;
 
 import java.util.List;
 

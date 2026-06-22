@@ -1,12 +1,12 @@
-package com.miles.beauminity.mapper;
+package com.miles.beauminity.mapper.board;
 
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.miles.beauminity.vo.MasterBoardVO;
-import com.miles.beauminity.vo.TypeOffsetVO;
+import com.miles.beauminity.vo.board.MasterBoardVO;
+import com.miles.beauminity.vo.board.TypeOffsetVO;
 
 // 게시글용 매퍼
 

@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.miles.beauminity.service.qna_board.QnaService;
-import com.miles.beauminity.vo.MasterBoardFileVO;
-import com.miles.beauminity.vo.MasterBoardVO;
-import com.miles.beauminity.vo.PageVO;
+import com.miles.beauminity.vo.board.MasterBoardFileVO;
+import com.miles.beauminity.vo.board.MasterBoardVO;
+import com.miles.beauminity.vo.board.PageVO;
 
 import lombok.AllArgsConstructor;
 

@@ -1,6 +1,5 @@
 package com.miles.beauminity.controller.feed;
 
-import java.lang.reflect.Member;
 import java.security.Principal;
 import java.util.List;
 
@@ -15,11 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.miles.beauminity.service.feed.FeedService;
 import com.miles.beauminity.vo.feed.FeedReplyVO;
 import com.miles.beauminity.vo.feed.FeedVO;
-import com.miles.beauminity.vo.login.MemberVO;
 
 import lombok.AllArgsConstructor;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @AllArgsConstructor
