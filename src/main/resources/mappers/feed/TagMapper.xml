@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.miles.beauminity.mapper.TagMapper">
+<mapper namespace="com.miles.beauminity.mapper.feed.TagMapper">
 <!--사용자가 작성한 태그 DB에 저장-->
 <insert id="postTag"
         parameterType="com.miles.beauminity.vo.feed.TagVO"

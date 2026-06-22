@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.miles.beauminity.mapper.MasterBoardFileMapper;
-import com.miles.beauminity.mapper.MasterBoardMapper;
-import com.miles.beauminity.mapper.MemberMapper;
-import com.miles.beauminity.mapper.ReviewBoardMapper;
+import com.miles.beauminity.mapper.board.MasterBoardFileMapper;
+import com.miles.beauminity.mapper.board.MasterBoardMapper;
+import com.miles.beauminity.mapper.login.MemberMapper;
+import com.miles.beauminity.mapper.review_board.ReviewBoardMapper;
 import com.miles.beauminity.util.MasterFileUploadUtil;
-import com.miles.beauminity.vo.MasterBoardFileVO;
-import com.miles.beauminity.vo.MasterBoardVO;
+import com.miles.beauminity.vo.board.MasterBoardFileVO;
+import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
 
 import lombok.AllArgsConstructor;

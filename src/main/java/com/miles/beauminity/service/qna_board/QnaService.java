@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.miles.beauminity.vo.MasterBoardFileVO;
-import com.miles.beauminity.vo.MasterBoardVO;
-import com.miles.beauminity.vo.PageVO;
+import com.miles.beauminity.vo.board.MasterBoardFileVO;
+import com.miles.beauminity.vo.board.MasterBoardVO;
+import com.miles.beauminity.vo.board.PageVO;
 
 // 스프링에서 쓸 거니까 서비스 걸어줍니다.
 

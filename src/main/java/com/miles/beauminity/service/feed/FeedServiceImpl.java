@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.miles.beauminity.mapper.FeedFileMapper;
-import com.miles.beauminity.mapper.FeedMapper;
-import com.miles.beauminity.mapper.TagMapper;
+import com.miles.beauminity.mapper.feed.FeedFileMapper;
+import com.miles.beauminity.mapper.feed.FeedMapper;
+import com.miles.beauminity.mapper.feed.TagMapper;
 import com.miles.beauminity.util.FileUploadUtil;
 import com.miles.beauminity.vo.feed.FeedFileVO;
 import com.miles.beauminity.vo.feed.FeedReplyVO;

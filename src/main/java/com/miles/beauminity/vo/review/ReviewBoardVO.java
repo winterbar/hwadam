@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.miles.beauminity.vo.MasterBoardFileVO;
+import com.miles.beauminity.vo.board.MasterBoardFileVO;
 
 import lombok.Getter;
 import lombok.Setter;

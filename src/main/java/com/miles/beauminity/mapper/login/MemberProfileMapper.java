@@ -1,4 +1,4 @@
-package com.miles.beauminity.mapper;
+package com.miles.beauminity.mapper.login;
 
 import org.apache.ibatis.annotations.Mapper;
 

@@ -1,4 +1,4 @@
-package com.miles.beauminity.vo.qna;
+package com.miles.beauminity.vo.qna_board;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.miles.beauminity.mapper.FeedMapper;
-import com.miles.beauminity.mapper.MasterBoardMapper;
-import com.miles.beauminity.mapper.MemberMapper;
-import com.miles.beauminity.mapper.MemberProfileMapper;
+import com.miles.beauminity.mapper.board.MasterBoardMapper;
+import com.miles.beauminity.mapper.feed.FeedMapper;
+import com.miles.beauminity.mapper.login.MemberMapper;
+import com.miles.beauminity.mapper.login.MemberProfileMapper;
 import com.miles.beauminity.security.CustomUserDetails;
 import com.miles.beauminity.util.MemberFileUtil;
 import com.miles.beauminity.vo.login.MemberVO;

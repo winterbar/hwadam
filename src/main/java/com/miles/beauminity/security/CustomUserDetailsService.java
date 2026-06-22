@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.miles.beauminity.mapper.MemberMapper;
+import com.miles.beauminity.mapper.login.MemberMapper;
 import com.miles.beauminity.vo.login.MemberVO;
 
 import lombok.RequiredArgsConstructor;

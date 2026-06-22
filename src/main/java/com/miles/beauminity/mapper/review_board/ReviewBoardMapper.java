@@ -1,10 +1,10 @@
-package com.miles.beauminity.mapper;
+package com.miles.beauminity.mapper.review_board;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.miles.beauminity.vo.MasterBoardFileVO;
+import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
 
 @Mapper

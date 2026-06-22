@@ -1,4 +1,4 @@
-package com.miles.beauminity.vo;
+package com.miles.beauminity.vo.board;
 
 import lombok.Getter;
 import lombok.Setter;
