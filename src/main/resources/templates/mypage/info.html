@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>beauminity : 마이페이지</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage/info.css}"
+</head>
+<body>
+
+    <div th:replace="~{layout/header :: headerFragment}"></div>
+
+    <main class="mypage-main">
+        <div class="mypage-container">
+            
+            <div class="profile-section">
+                <a href="javascript:void(0)" onclick="openProfileModal()" class="btn-profile-edit">프로필 편집</a>
+                <a th:href="@{/mypage/reset/photo}" class="btn-profile-reset">기본 이미지로 변경</a>
+
+                <div class="profile-img-container">
+                    <img th:src="${memberInfo.profile != null} ? @{'/upload/profile/' + ${memberInfo.profile.savedName}} : @{/images/common/base_profile.png}" alt="프로필 사진">
+                </div>
+                <div class="profile-info">
+                    <h2><span th:text="${memberInfo.member.nickname}">닉네임</span> <span class="user-id" th:text="'(' + ${memberInfo.member.username} + ')'">(아이디)</span></h2>
+                    <div class="profile-points"> <span th:text="${memberInfo.gradeName}"></span>  <span th:text="${#numbers.formatInteger(memberInfo.member.point, 1, 'COMMA')}"></span>p</div>
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <div class="stats-item">
+                    <span class="stats-label">후기</span>
+                    <span class="stats-count" th:text="${memberInfo.reviewCnt}">0</span>
+                </div>
+                <div class="stats-item">
+                    <span class="stats-label">질문</span>
+                    <span class="stats-count" th:text="${memberInfo.qnaCnt}">0</span>
+                </div>
+                <div class="stats-item">
+                    <span class="stats-label">정보공유</span>
+                    <span class="stats-count" th:text="${memberInfo.infoshareCnt}">0</span>
+                </div>
+                <div class="stats-item">
+                    <span class="stats-label">피드</span>
+                    <span class="stats-count" th:text="${memberInfo.feedCnt}">0</span>
+                </div>
+            </div>
+
+            <div class="info-section">
+                
+                <div class="info-group-title">기본 정보</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">아이디</span>
+                        <span class="info-value" th:text="${memberInfo.member.username}">아이디</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">닉네임</span>
+                        <span class="info-value" th:text="${memberInfo.member.nickname}">닉네임</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">이름</span>
+                        <span class="info-value" th:text="${memberInfo.member.name}">이름</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">성별</span>
+                        <span class="info-value" th:text="${memberInfo.member.gender}">성별</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">이메일</span>
+                        <span class="info-value" th:text="${memberInfo.member.email}">이메일</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">전화번호</span>
+                        <span class="info-value" th:text="${memberInfo.member.phone}">전화번호</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">가입일</span>
+                        <span class="info-value" th:text="${#temporals.format(memberInfo.member.signedAt, 'yyyy.MM.dd')}">가입일</span>
+                    </div>
+                </div>
+
+                <div class="info-group-title">뷰티 정보</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">피부타입</span>
+                        <span class="info-value" th:text="${memberInfo.member.skinType}">피부타입</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">퍼스널 컬러</span>
+                        <span class="info-value" th:text="${memberInfo.member.personalColor}">퍼스널 컬러</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="action-buttons">
+                <a th:href="@{/mypage/edit}" class="btn-mypage btn-edit">회원정보 수정</a>
+                <a th:href="@{/mypage/withdraw}" class="btn-mypage btn-withdraw">회원탈퇴</a>
+            </div>
+
+        </div>
+    </main>
+
+    <div th:replace="~{layout/footer :: footerFragment}"></div>
+
+    <div id="profileModal">
+        <div class="modal-content">
+            <h3>프로필 사진 변경</h3>
+            <p class="modal-info-text">5MB 이하의 이미지 파일만 등록 가능합니다.</p>
+            
+            <form th:action="@{/mypage/edit/photo}" method="post" enctype="multipart/form-data">
+                <div id="dropZone" class="drop-zone">
+                    <p>파일을 여기로 드래그하거나</p>
+                    <p>클릭하여 선택</p>
+                    <input type="file" name="profile" id="fileInput" accept="image/*" style="display:none;">
+                </div>
+                
+                <div id="fileInfo">
+                    파일명: <span id="fileName"></span><br>
+                    파일크기: <span id="fileSize"></span>
+                </div>
+
+                <div class="modal-btns">
+                    <button type="submit" class="btn-save" id="saveBtn" disabled>저장</button>
+                    <button type="button" onclick="closeProfileModal()" class="btn-cancel">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script th:src="@{/js/mypage.js}"></script>
+</body>
+</html>

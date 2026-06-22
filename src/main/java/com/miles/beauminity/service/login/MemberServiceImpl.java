@@ -1,17 +1,22 @@
 package com.miles.beauminity.service.login;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.miles.beauminity.mapper.FeedMapper;
 import com.miles.beauminity.mapper.MasterBoardMapper;
 import com.miles.beauminity.mapper.MemberMapper;
 import com.miles.beauminity.mapper.MemberProfileMapper;
+import com.miles.beauminity.security.CustomUserDetails;
+import com.miles.beauminity.util.MemberFileUtil;
 import com.miles.beauminity.vo.login.MemberVO;
+import com.miles.beauminity.vo.login.MyPageFileVO;
 import com.miles.beauminity.vo.login.MyPageVO;
 
 import lombok.RequiredArgsConstructor;
@@ -62,16 +67,52 @@ public class MemberServiceImpl implements MemberService {
         return converted_username;
     }
 
-    // 로그인한 사용자의 정보 및 게시글 별로 등록된 글 개수를 반환
+    // 사용자의 프로필 사진 수정
     @Override
+    public void updateMemberProfile(CustomUserDetails loginMember, MultipartFile file) {
+        // 등록한 이미지가 존재할 경우 해당 이미지 삭제
+        MyPageFileVO profile = memberProfileMapper.findMemberProfile(loginMember.getUsername());
+        if(profile.getSavedName() != null) {
+            MemberFileUtil.deleteFiles(profile.getFilePath(), profile.getSavedName());
+        }
+        // 새로운 이미지 저장
+        String uploadDir = "C:/upload/profile";
+        MyPageFileVO savedFile = MemberFileUtil.saveFiles(file, uploadDir);
+        if(savedFile != null) {
+            savedFile.setUsername(loginMember.getUsername()); // 로그인된 회원 아이디
+        }
+        memberProfileMapper.updateMemberProfile(savedFile);
+    }
+
+    // 사용자의 프로필 사진을 기본 프로필로 수정
+    @Override
+    public void resetMemberProfile(String username) {
+        // 등록한 이미지가 존재할 경우 해당 이미지 삭제
+        MyPageFileVO profile = memberProfileMapper.findMemberProfile(username);
+        if(profile.getSavedName() != null) {
+            MemberFileUtil.deleteFiles(profile.getFilePath(), profile.getSavedName());
+        }
+        memberProfileMapper.resetMemberProfile(username);
+    }
+
+    // 사용자의 정보(회원 정보, 프로필 사진, 작성된 글 수 등) 검색
+    @Override
+    @Transactional(readOnly = true)
     public MyPageVO getMemberInfo(String username) {
         MemberVO member = memberMapper.findLoginId(username);
         MyPageVO memberInfo = new MyPageVO();
 
         // 회원 정보
         memberInfo.setMember(member);
-        // 회원의 등급 이름
+        // 등급 이름
         memberInfo.setGradeName(memberMapper.findGradeName(member.getGradeId()));
+        // 프로필 사진 정보
+        MyPageFileVO profile = memberProfileMapper.findMemberProfile(username);
+        String filePath = "C:/upload/profile/" + profile.getSavedName();
+        File file = new File(filePath);
+        if(file.exists()) { // 실제로 서버 하드에 사진이 저장되어 있는지 확인
+            memberInfo.setProfile(profile);
+        }
         // 후기, 질문, 정보공유 게시판별 회원이 등록한 글 개수
         List<Map<String, Object>> resultMap = MasterBoardMapper.countBoard(username);
         for(Map<String, Object> result : resultMap) {
@@ -84,6 +125,8 @@ public class MemberServiceImpl implements MemberService {
         }
         // 회원이 등록한 피드 수
         memberInfo.setFeedCnt(feedMapper.countFeed(username));
+        
         return memberInfo;
     }
+
 }
