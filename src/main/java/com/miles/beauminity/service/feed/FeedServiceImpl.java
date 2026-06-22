@@ -3,6 +3,7 @@ package com.miles.beauminity.service.feed;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.miles.beauminity.mapper.FeedFileMapper;
@@ -10,8 +11,10 @@ import com.miles.beauminity.mapper.FeedMapper;
 import com.miles.beauminity.mapper.TagMapper;
 import com.miles.beauminity.util.FileUploadUtil;
 import com.miles.beauminity.vo.feed.FeedFileVO;
+import com.miles.beauminity.vo.feed.FeedReplyVO;
 import com.miles.beauminity.vo.feed.FeedVO;
 import com.miles.beauminity.vo.feed.TagVO;
+import com.miles.beauminity.vo.login.MemberVO;
 
 import lombok.AllArgsConstructor;
 
@@ -82,9 +85,73 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public void deleteFeed(Long feedId) {
-        feedMapper.deleteFeed(feedId);
+    public void deleteFeedId(Long feedId) {
+        feedMapper.deleteFeedId(feedId);
         tagMapper.deleteTag(feedId);
+    }
+
+    @Override
+    @Transactional
+    public void updateFeed(Long feedId, FeedVO feedVO,
+            MultipartFile[] files,
+            List<String> existingImages,
+            List<String> tagNames) {
+
+        // 피드 내용 수정
+        feedMapper.updateFeed(feedVO);
+
+        // 기존 파일 목록 조회
+        List<FeedFileVO> oldFileList = feedFileMapper.getFileListByFeedId(feedId);
+
+        // DB에서 기존 파일 전체 삭제
+        feedFileMapper.deleteFile(feedVO);
+
+        // 사용자가 삭제하지 않고 남긴 기존 사진만 다시 저장
+        if (existingImages != null) {
+            for (FeedFileVO oldFile : oldFileList) {
+                if (existingImages.contains(oldFile.getSavedName())) {
+                    oldFile.setFileId(null);
+                    oldFile.setFeedId(feedId);
+                    feedFileMapper.postFile(oldFile);
+                }
+            }
+        }
+
+        // 새로 추가한 사진 저장
+        if (files != null) {
+            String uploadPath = "c:/upload";
+
+            List<FeedFileVO> fileList = FileUploadUtil.saveFiles(files, uploadPath);
+
+            for (FeedFileVO f : fileList) {
+                f.setFeedId(feedId);
+                feedFileMapper.postFile(f);
+            }
+        }
+
+        // 태그는 기존 연결 삭제 후 다시 등록
+        tagMapper.deleteTag(feedId);
+
+        if (tagNames != null) {
+            for (String tag : tagNames) {
+                if (tag == null || tag.trim().isEmpty())
+                    continue;
+
+                TagVO t = new TagVO();
+                t.setTagName(tag.trim());
+
+                tagMapper.postTag(t);
+
+                Long tagId = t.getTagId();
+
+                tagMapper.tagFeed(feedId, tagId);
+            }
+        }
+    }
+
+    @Override
+    public void postReply(FeedReplyVO feedReplyVO) {
+        feedMapper.postReply(feedReplyVO);
     }
 
 }

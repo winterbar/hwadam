@@ -47,13 +47,11 @@
         #{tagId}
     )
 </insert>
-
+<!-- 해당 피드 태그 삭제 -->
 <delete id="deleteTag"
         parameterType="long">
     delete from feed_tag
     where feed_id=#{feedId}
-
 </delete>
-
 
 </mapper>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.miles.beauminity.vo.feed.FeedFileVO;
+import com.miles.beauminity.vo.feed.FeedVO;
 
 @Mapper
 public interface FeedFileMapper {
@@ -13,4 +14,8 @@ public interface FeedFileMapper {
     List<String> getFileList();
 
     List<String> getFeedFileList(Long feedId);
+
+    void deleteFile(FeedVO feedVO);
+
+    List<FeedFileVO> getFileListByFeedId(Long feedId);
 }

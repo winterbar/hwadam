@@ -5,6 +5,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const filterInner = document.getElementById('feed-filter-inner');
     const feedEmpty = document.getElementById('feed-empty');
 
+    // CSRF 토큰 가져오기
+    function getCsrfHeaders() {
+        const csrfToken = document.querySelector('meta[name="_csrf"]');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]');
+
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+
+        if (csrfToken && csrfHeader) {
+            headers[csrfHeader.getAttribute('content')] = csrfToken.getAttribute('content');
+        }
+
+        return headers;
+    }
+
     // 화면에 출력된 해시태그 필터 버튼 중 중복된 버튼을 제거하는 기능
     function removeDuplicateTagButtons() {
         const tagButtons = document.querySelectorAll('.feed-tag-btn');
@@ -157,19 +173,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 if (prevBtn) {
-                    if (images.length > 1 && currentIndex > 0) {
-                        prevBtn.style.display = 'flex';
-                    } else {
-                        prevBtn.style.display = 'none';
-                    }
+                    prevBtn.style.display =
+                        images.length > 1 && currentIndex > 0 ? 'flex' : 'none';
                 }
 
                 if (nextBtn) {
-                    if (images.length > 1 && currentIndex < images.length - 1) {
-                        nextBtn.style.display = 'flex';
-                    } else {
-                        nextBtn.style.display = 'none';
-                    }
+                    nextBtn.style.display =
+                        images.length > 1 && currentIndex < images.length - 1 ? 'flex' : 'none';
                 }
             }
 
@@ -247,46 +257,87 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // 좋아요 버튼 기능
+    // 좋아요 버튼 기능 - 서버 요청 + 하트 변경 + 카운트 변경
     function initLikeButtons() {
         document.querySelectorAll('.feed-like-btn').forEach(function (button) {
             const icon = button.querySelector('.feed-like-icon');
             const card = button.closest('.feed-card');
             const countText = card ? card.querySelector('.feed-like-count') : null;
 
+            let isRequesting = false;
+
+            let liked = button.dataset.liked === 'true';
             let count = Number(button.dataset.likeCount || 0);
 
-            if (countText) {
-                countText.textContent = count;
-            }
+            applyLikeUI(liked, count);
 
             button.addEventListener('click', function () {
-                const isLiked = button.dataset.liked === 'true';
+                if (isRequesting) return;
+
+                const feedId = card ? card.dataset.feedId : null;
+
+                if (!feedId) {
+                    alert('피드 번호를 찾을 수 없습니다.');
+                    return;
+                }
+
+                isRequesting = true;
+
+                fetch('/feed/' + feedId + '/like', {
+                    method: 'POST',
+                    headers: getCsrfHeaders()
+                })
+                    .then(function (response) {
+                        if (response.status === 401 || response.status === 403) {
+                            alert('로그인 후 좋아요를 누를 수 있습니다.');
+                            throw new Error('login required');
+                        }
+
+                        if (!response.ok) {
+                            alert('좋아요 처리 중 오류가 발생했습니다.');
+                            throw new Error('like request failed');
+                        }
+
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        const serverLiked = data.liked === true || data.liked === 'true';
+                        const serverLikeCount = Number(data.likeCount || 0);
+
+                        applyLikeUI(serverLiked, serverLikeCount);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+                    .finally(function () {
+                        isRequesting = false;
+                    });
+            });
+
+            function applyLikeUI(isLiked, likeCount) {
+                button.dataset.liked = isLiked ? 'true' : 'false';
+                button.dataset.likeCount = likeCount;
 
                 if (isLiked) {
-                    count = Math.max(0, count - 1);
-                    button.dataset.liked = 'false';
-                    button.classList.remove('is-liked');
-
-                    if (icon) {
-                        icon.textContent = '♡';
-                    }
-                } else {
-                    count = count + 1;
-                    button.dataset.liked = 'true';
                     button.classList.add('is-liked');
 
                     if (icon) {
                         icon.textContent = '♥';
+                        icon.style.color = '#111';
+                    }
+                } else {
+                    button.classList.remove('is-liked');
+
+                    if (icon) {
+                        icon.textContent = '♡';
+                        icon.style.color = '';
                     }
                 }
 
-                button.dataset.likeCount = count;
-
                 if (countText) {
-                    countText.textContent = count;
+                    countText.textContent = likeCount;
                 }
-            });
+            }
         });
     }
 
@@ -365,11 +416,51 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // 로그인한 사용자와 게시글 작성자가 같은지 확인
+    function isOwner(card) {
+        if (!card) return false;
+
+        const loginUsername = document.body.dataset.loginUsername
+            ? document.body.dataset.loginUsername.trim()
+            : '';
+
+        const feedUsername = card.dataset.username
+            ? card.dataset.username.trim()
+            : '';
+
+        if (!loginUsername || !feedUsername) {
+            return false;
+        }
+
+        return loginUsername === feedUsername;
+    }
+
+    // 본인 게시글이 아니면 ... 메뉴 자체 숨기기
+    function initOwnerMoreMenus() {
+        document.querySelectorAll('.feed-card').forEach(function (card) {
+            const moreWrap = card.querySelector('.feed-more-wrap');
+
+            if (!moreWrap) return;
+
+            if (isOwner(card)) {
+                moreWrap.style.display = 'block';
+            } else {
+                moreWrap.style.display = 'none';
+            }
+        });
+    }
+
     // 점 3개 피드 메뉴 기능
     function initMoreMenu() {
         document.querySelectorAll('.feed-more-btn').forEach(function (button) {
             button.addEventListener('click', function (event) {
                 event.stopPropagation();
+
+                const card = button.closest('.feed-card');
+
+                if (!isOwner(card)) {
+                    return;
+                }
 
                 const currentMenu = button
                     .closest('.feed-more-wrap')
@@ -396,6 +487,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 event.stopPropagation();
 
                 const card = btn.closest('.feed-card');
+
+                if (!isOwner(card)) {
+                    alert('본인이 작성한 피드만 수정하거나 삭제할 수 있습니다.');
+                    return;
+                }
+
                 const feedId = card ? card.dataset.feedId : null;
 
                 if (!feedId) {
@@ -430,6 +527,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initLikeButtons();
     initCommentArea();
     initHashtagButtons();
+    initOwnerMoreMenus();
     initMoreMenu();
 
     // 상단 해시태그 필터 클릭 시
@@ -456,4 +554,5 @@ document.addEventListener('DOMContentLoaded', function () {
             applyFilter(event.target.dataset.tag);
         });
     }
+    
 });
