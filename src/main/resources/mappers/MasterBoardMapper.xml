@@ -27,8 +27,8 @@
     <!-- 특정 게시판 조회 매퍼 -->
     <!-- 임시입니다. 페이징을 추가할 때 수정합니다. 지금은 수정, 삭제, 상세조회 기능을 만들기 위해 뒀습니다. -->
     <select id="getTypeBoard" 
-        parameterType="HashMap"
-        resultType="com.miles.beauminity.vo.TypeOffsetVO">
+        parameterType="com.miles.beauminity.vo.TypeOffsetVO"
+        resultType="com.miles.beauminity.vo.MasterBoardVO">
         SELECT *
         FROM master_board
         WHERE board_type = #{type} AND deleted = 0
@@ -69,6 +69,15 @@
         edited_at = NOW()
         WHERE board_id = #{boardId}
     </update>
+
+    <!-- 전체 게시판 별 등록한 글의 수 조회  -->
+    <select id="getTypeBoardCount" 
+        parameterType="String"
+        resultType="Int">
+        SELECT COUNT(*)
+        FROM master_board
+        WHERE board_type = #{value} AND deleted = 0
+    </select>
 
     <!-- 회원의 게시판 별 등록한 글 수 조회 -->
     <select id="countBoard"
