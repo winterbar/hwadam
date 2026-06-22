@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.miles.beauminity.security.CustomUserDetails;
 import com.miles.beauminity.service.login.MemberService;
@@ -40,19 +42,40 @@ public class MemberController {
             return "redirect:/login";
         }
         model.addAttribute("memberInfo",
-                            memberService.getMemberInfo(loginMember.getUsername()));
-        System.out.println(memberService.getMemberInfo(loginMember.getUsername()).toString());
-        return "login/mypage";
+            memberService.getMemberInfo(loginMember.getUsername())
+        );
+        return "mypage/info";
     }
 
-    // 회원정보 수정 요청 (프로필 사진)
+    @GetMapping("/mypage/edit")
+    public String getMyPageEdit(@AuthenticationPrincipal CustomUserDetails loginMember, Model model) {
+        if(loginMember == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("memberInfo",
+            memberService.getMemberInfo(loginMember.getUsername())
+        );
+        return "mypage/edit";
+    }
+
+    // 프로필 사진 수정 요청
     @PostMapping("/mypage/edit/photo")
-    public String editProfilePhoto() {
-        
+    public String editProfilePhoto(@AuthenticationPrincipal CustomUserDetails loginMember,
+                                @RequestParam("profile") MultipartFile file) {
+        if(file == null || file.getSize() <= 0) {
+            return "redirect:/mypage";
+        }
+        memberService.updateMemberProfile(loginMember, file);
+        return "redirect:/mypage";
+    }
+
+    // 프로필 사진 초기화 요청
+    @GetMapping("/mypage/reset/photo")
+    public String resetProfilePhoto(@AuthenticationPrincipal CustomUserDetails loginMember) {
+        memberService.resetMemberProfile(loginMember.getUsername());
         return "redirect:/mypage";
     }
     
-
     // 회원가입 요청
     @PostMapping("/register")
     public String registerMember(@ModelAttribute MemberVO memberVO, Model model) {

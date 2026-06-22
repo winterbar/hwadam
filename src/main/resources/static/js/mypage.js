@@ -3,6 +3,7 @@ function openProfileModal() {
     const modal = document.getElementById('profileModal');
     if (modal) {
         modal.style.display = 'flex';
+        saveBtn.disabled = true;
     }
 }
 
@@ -31,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const fileInfo = document.getElementById('fileInfo');
     const fileName = document.getElementById('fileName');
     const fileSize = document.getElementById('fileSize');
+    const saveBtn = document.getElementById('saveBtn');
 
     // 클릭 시 파일 선택
     dropZone.onclick = () => fileInput.click();
@@ -65,8 +67,8 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('fileName').textContent = file.name;
         document.getElementById('fileSize').textContent = (file.size / 1024 / 1024).toFixed(2) + " MB";
         document.getElementById('fileInfo').style.display = 'block';
-        
-        document.getElementById('fileInput').files = files;
+
+        saveBtn.disabled = false; // 파일 선택 시 저장 버튼 활성화
     }
 });
 
