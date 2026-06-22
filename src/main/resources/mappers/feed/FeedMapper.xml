@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.miles.beauminity.mapper.feed.FeedMapper">
+<!--피드 내용 DB 저장-->
+    <insert id="postFeed"
+            parameterType="com.miles.beauminity.vo.feed.FeedVO"
+            useGeneratedKeys="true"
+            keyProperty="feedId">
+        
+        insert into feed (
+            username,
+            feed_content,
+            like_cnt,
+            reply_cnt,
+            created_at,
+            edited_at,
+            deleted
+        )
+        values (
+            #{username},
+            #{feedContent},
+            #{likeCnt},
+            #{replyCnt},
+            NOW(),
+            NOW(),
+            #{deleted}
+        )
+    </insert>
+    <!-- 피드 내용 전체 가져오기-->
+    <select id="getFeedList"
+            parameterType="com.miles.beauminity.vo.feed.FeedVO"
+            resultType="com.miles.beauminity.vo.feed.FeedVO">
+        select feed_id, 
+               f.username, 
+               feed_content,
+               like_cnt,
+               reply_cnt,
+               created_at,
+               nickname,
+               skin_type,
+               personal_color
+
+        from feed f
+        join member m
+            on f.username = m.username
+        where deleted=0
+        order by created_at desc
+    </select>
+    
+    <!-- 특정 피드 데이터 불러오기-->
+    <select id="loadFeedData"
+            parameterType="long"
+            resultType="com.miles.beauminity.vo.feed.FeedVO">
+        select feed_content
+        from feed 
+        where feed_id = #{feedId}
+    </select>
+    
+    <!-- 회원이 등록한 피드 수 검색 -->
+    <select id="countFeed"
+            parameterType="String"
+            resultType="long">
+
+        SELECT count(*)
+        FROM feed
+        WHERE username = #{username} AND deleted = 0
+
+    </select>
+    <!--특정 피드 삭제-->
+    <update id="deleteFeedId"
+            parameterType="long">
+        update feed
+        set deleted=1
+        where feed_id=#{feedId}
+    </update>
+    <!-- 피드 내용 수정 -->
+    <update id="updateFeed"
+            parameterType="com.miles.beauminity.vo.feed.FeedVO">
+        update feed 
+        set feed_content = #{feedContent}
+        where feed_id=#{feedId}
+    </update>
+    <insert id="postReply"
+            parameterType="com.miles.beauminity.vo.feed.FeedReplyVO">
+        insert into feed_reply(
+            reply_id,
+            feed_id,
+            username,
+            reply_content,
+            like_cnt,
+            deleted
+        )
+        values(
+            #{replyId},
+            #{feedId},
+            #{username},
+            #{replyContent},
+            #{likeCnt},
+            #{deleted}
+        )
+    </insert>
+
+</mapper>

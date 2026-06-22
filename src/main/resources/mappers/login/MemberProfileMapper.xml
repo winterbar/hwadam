@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.miles.beauminity.mapper.login.MemberProfileMapper">
+
+    <insert id="insertMemberProfile"
+            parameterType="String">
+
+        INSERT INTO member_profile(username)
+        VALUES (#{username})
+
+    </insert>
+
+    <update id="updateMemberProfile"
+            parameterType="com.miles.beauminity.vo.login.MyPageFileVO">
+
+        UPDATE member_profile
+        SET
+            original_name = #{originalName},
+            saved_name = #{savedName},
+            file_path = #{filePath},
+            file_type = #{fileType},
+            file_size = #{fileSize}
+        WHERE username = #{username}
+    
+    </update>
+
+    <update id="resetMemberProfile"
+            parameterType="String">
+
+        UPDATE member_profile
+        SET
+            original_name = null,
+            saved_name = null,
+            file_path = null,
+            file_type = null,
+            file_size = null
+        WHERE username = #{username}
+
+    </update>
+
+    <select id="findMemberProfile"
+            parameterType="String"
+            resultType="com.miles.beauminity.vo.login.MyPageFileVO">
+
+        SELECT *
+        FROM member_profile
+        WHERE username = #{username}
+
+    </select>
+
+</mapper>

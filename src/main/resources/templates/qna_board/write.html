@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beauminity - 글쓰기</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-    <link rel="stylesheet" th:href="@{/css/qna_write.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+    <link rel="stylesheet" th:href="@{/css/qna_board/qna_write.css}">
 </head>
 <body>
 
@@ -23,7 +23,7 @@
                 <div class="form-row-2">
                     <div class="form-group">
                         <label for="post-category">카테고리</label>
-                        <select id="post-category" class="form-control" required>
+                        <select id="post-category" name="category" class="form-control" required>
                             <option value="" disabled selected>카테고리를 선택해주세요</option>
                             <option value="beginner">입문</option>
                             <option value="compare">비교</option>

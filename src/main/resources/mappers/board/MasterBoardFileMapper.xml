@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.miles.beauminity.mapper.board.MasterBoardFileMapper">
+
+    <!-- 파일 등록 -->
+    <insert id="insertFile" parameterType="com.miles.beauminity.vo.board.MasterBoardFileVO">
+        INSERT INTO board_file(
+            board_id,
+            original_name,
+            saved_name,
+            file_path,
+            file_type,
+            file_size
+        )
+        VALUES(
+            #{boardId},
+            #{originalName},
+            #{savedName},
+            #{filePath},
+            #{fileType},
+            #{fileSize}
+        )
+    </insert>
+
+    <select id="getBoardFileById" 
+            parameterType="Long"
+            resultType="com.miles.beauminity.vo.board.MasterBoardFileVO">
+        SELECT *
+        FROM board_file
+        WHERE board_id = #{value}
+    </select>
+
+</mapper>

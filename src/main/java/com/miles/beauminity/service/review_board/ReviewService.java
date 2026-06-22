@@ -12,8 +12,9 @@ public interface ReviewService { // 역할: 후기 게시판에 대한 서비스
     // 후기 게시판 목록 조회 명세
     List<ReviewBoardVO> getReviewBoardList();
 
-    // 후기 게시팜 목록에서 게시글 상세조회 명세
+    // 후기 게시판 목록에서 게시글 상세조회 명세
     ReviewBoardVO getReviewBoardDetail(Long boardId);
+
 
         
 }

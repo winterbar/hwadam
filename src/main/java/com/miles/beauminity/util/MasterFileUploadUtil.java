@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.miles.beauminity.vo.MasterBoardFileVO;
+import com.miles.beauminity.vo.board.MasterBoardFileVO;
 
 public class MasterFileUploadUtil {
     public static List<MasterBoardFileVO> saveFiles(

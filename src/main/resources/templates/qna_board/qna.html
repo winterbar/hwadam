@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beauminity : 질문 게시판</title>
 
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-    <link rel="stylesheet" th:href="@{/css/board.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+    <link rel="stylesheet" th:href="@{/css/common/board.css}">
+    <link rel="stylesheet" th:href="@{/css/qna_board/qna_common.css}">
 </head>
 <body>
 
@@ -48,7 +49,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="qna : ${qnaS}">
+                        <tr th:each="qna, stat : ${qnaS}">
                             <td class="col-num" th:text="${qna.boardId}"></td>
                             <td class="col-product" style="color: var(--color-accent); font-weight: 800;">[답변대기]</td>
                             <td>
@@ -56,7 +57,7 @@
                                 <span class="reply-count" th:text="|[${qna.replyCnt}]|"></span>
                             </td>
                             <td class="col-writer" th:text="${qna.username}"></td>
-                            <td class="col-date" th:text="${qna.createdAt}"></td>
+                            <td class="col-date" th:text="${#temporals.format(qna.createdAt, 'yyyy.MM.dd')}"></td>
                             <td class="col-hits" th:text="${qna.viewCnt}"></td>
                         </tr>
                         <!--
@@ -98,12 +99,22 @@
                 </table>
 
                 <div class="board-footer">
-                    <ul class="pagination">
-                        <li><a href="#" class="active">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">➔</a></li>
-                    </ul>
+                    <div class="pagination">
+                        <li>
+                            <a th:if="${pageVO.prev}" th:href="@{qna(page=${pageVO.startPage-1})}">←</a>
+                        </li>
+                        <th:block
+                            th:each="num : ${#numbers.sequence(pageVO.startPage, pageVO.endPage)}">
+                            <li>
+                                <a th:href="@{qna(page=${num})}"
+                                th:text="${num}"
+                                th:classappend="${pageVO.page == num} ? 'active'"></a>
+                            </li>
+                        </th:block>
+                        <li>
+                            <a th:if="${pageVO.next}" th:href="@{qna(page=${pageVO.endPage+1})}">→</a>
+                        </li>
+                    </div>
 
                     <div class="search-group">
                         <select name="searchType">
@@ -118,8 +129,6 @@
             </section>
 
         </div>
-
-        <div th:replace="~{layout/aside :: sidebarFragment}"></div>
 
     </main>
 

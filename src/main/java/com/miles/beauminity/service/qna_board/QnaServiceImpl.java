@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.miles.beauminity.mapper.MasterBoardFileMapper;
-import com.miles.beauminity.mapper.MasterBoardMapper;
+import com.miles.beauminity.mapper.board.MasterBoardFileMapper;
+import com.miles.beauminity.mapper.board.MasterBoardMapper;
 import com.miles.beauminity.util.MasterFileUploadUtil;
-import com.miles.beauminity.vo.MasterBoardFileVO;
-import com.miles.beauminity.vo.MasterBoardVO;
-import com.miles.beauminity.vo.PageVO;
-import com.miles.beauminity.vo.TypeOffsetVO;
+import com.miles.beauminity.vo.board.MasterBoardFileVO;
+import com.miles.beauminity.vo.board.MasterBoardVO;
+import com.miles.beauminity.vo.board.PageVO;
+import com.miles.beauminity.vo.board.TypeOffsetVO;
 
 import lombok.AllArgsConstructor;
 
@@ -99,6 +99,13 @@ public class QnaServiceImpl implements QnaService {
     public void updateBoard(MasterBoardVO masterBoardVO) {
         masterBoardMapper.updateBoard(masterBoardVO);
     }
+
+    // 게시글 수 조회
+    public int getTypeBoardCount(String type) {
+        return masterBoardMapper.getTypeBoardCount(type);
+    }
+
+    
 
     
 

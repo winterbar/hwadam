@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Beauminity - 피드</title>
 
-    <link rel="stylesheet" href="/css/feed.css" th:href="@{/css/feed.css}" />
-    <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/feed/feed.css}" />
+    <link rel="stylesheet" th:href="@{/css/common/main.css}" />
 
     <style>
       .feed-card > .feed-profile-header {
@@ -65,7 +65,6 @@
         color: #111111 !important;
         line-height: 1.2 !important;
         margin: 0 0 6px 0 !important;
-
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
@@ -124,7 +123,8 @@
 
       .feed-profile-header .feed-more-btn:hover {
         color: #333333 !important;
-      } /* 사진 아래 오른쪽 작성일 */
+      }
+
       .feed-created-date {
         width: 100%;
         display: flex;
@@ -140,9 +140,43 @@
         color: #9a9a9a;
         line-height: 1;
       }
+
+      .feed-like-btn.is-liked .feed-like-icon {
+        color: #111;
+      }
+
+      .feed-comment-box {
+        width: 100%;
+      }
+
+      .feed-comment-form {
+        width: 100%;
+        display: flex;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .feed-comment-form input {
+        flex: 1;
+        height: 42px;
+        box-sizing: border-box;
+      }
+
+      .feed-comment-form .comment-submit-btn {
+        height: 42px;
+        min-width: 58px;
+        padding: 0 16px;
+        border-radius: 999px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
     </style>
   </head>
-  <body>
+
+  <body th:data-login-username="${#authentication.name}">
     <header th:replace="~{layout/header :: header}"></header>
 
     <div class="feed-filter-bar is-closed" id="feed-filter-bar">
@@ -204,21 +238,38 @@
               class="feed-card"
               th:each="feed : ${feedList}"
               th:data-feed-id="${feed.feedId}"
+              th:data-username="${feed.username}"
+              th:data-skin-type="${feed.skinType}"
+              th:data-personal-color="${feed.personalColor}"
               th:data-content="${feed.feedContent}"
               th:data-images="${feed.feedFileList != null ? #strings.listJoin(feed.feedFileList, ',') : ''}"
               th:data-tags="${feed.feedTagList != null ? #strings.listJoin(feed.feedTagList, ',') : ''}"
             >
-              <!-- 프로필 부분 수정 -->
               <div class="feed-card-top feed-profile-header">
                 <div class="feed-profile-left">
                   <div class="feed-profile-avatar">O</div>
 
                   <div class="feed-profile-info">
-                    <div class="feed-profile-nickname">office_mood</div>
+                    <div
+                      class="feed-profile-nickname"
+                      th:text="${feed.nickname != null ? feed.nickname : feed.username}"
+                    >
+                      닉네임
+                    </div>
 
                     <div class="feed-profile-tags">
-                      <span class="feed-profile-tag skin">복합성</span>
-                      <span class="feed-profile-tag color">봄웜</span>
+                      <span
+                        class="feed-profile-tag skin"
+                        th:text="${feed.skinType}"
+                      >
+                        피부타입
+                      </span>
+                      <span
+                        class="feed-profile-tag color"
+                        th:text="${feed.personalColor}"
+                      >
+                        퍼스널컬러
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -226,11 +277,7 @@
                 <div class="feed-more-wrap">
                   <button type="button" class="feed-more-btn">···</button>
                   <div class="feed-more-menu">
-                    <button
-                      type="button"
-                      class="feed-menu-item edit-btn"
-                      th:onclick="|location.href='@{/feed/{feedId}/edit}'|"
-                    >
+                    <button type="button" class="feed-menu-item edit-btn">
                       수정하기
                     </button>
 
@@ -245,23 +292,30 @@
                 <button type="button" class="feed-photo-arrow feed-photo-prev">
                   ‹
                 </button>
+
                 <img
                   alt="피드 이미지"
                   class="feed-image js-feed-image"
                   style="display: none"
                 />
+
                 <div class="feed-image-placeholder js-feed-placeholder">
                   📸 <span>이미지 준비중</span>
                 </div>
+
                 <button type="button" class="feed-photo-arrow feed-photo-next">
                   ›
                 </button>
+
                 <div class="feed-photo-badge js-photo-badge">1 / 1</div>
               </div>
+
               <div class="feed-created-date">
                 <span
-                  th:text="${#temporals.format(feed.createdAt, 'yyyy.MM.dd')}"
-                ></span>
+                  th:text="${feed.createdAt != null ? #temporals.format(feed.createdAt, 'yyyy.MM.dd') : ''}"
+                >
+                  2026.06.22
+                </span>
               </div>
 
               <div class="feed-card-content">
@@ -301,8 +355,10 @@
                   <span
                     class="feed-like-count"
                     th:text="${feed.likeCnt != null ? feed.likeCnt : 0}"
-                    >0</span
-                  >개
+                  >
+                    0
+                  </span>
+                  개
                 </div>
 
                 <p class="feed-card-caption">
@@ -331,14 +387,26 @@
 
                 <div class="feed-comment-list">
                   <div class="feed-comment-item">
-                    <strong>뷰미니티 회원</strong>
                     <span>아직 등록된 댓글이 없습니다.</span>
                   </div>
                 </div>
 
                 <div class="feed-comment-box">
-                  <input type="text" placeholder="댓글 달기..." />
-                  <button type="button" class="comment-submit-btn">게시</button>
+                  <form
+                    class="feed-comment-form"
+                    th:action="@{/feed/{feedId}/reply(feedId=${feed.feedId})}"
+                    method="post"
+                  >
+                    <input
+                      type="text"
+                      name="replyContent"
+                      placeholder="댓글 달기..."
+                      autocomplete="off"
+                    />
+                    <button type="submit" class="comment-submit-btn">
+                      게시
+                    </button>
+                  </form>
                 </div>
               </div>
             </article>
@@ -358,6 +426,6 @@
     </main>
 
     <footer th:replace="~{layout/footer :: footer}"></footer>
-    <script th:src="@{/js/feed_list.js}"></script>
+    <script th:src="@{/js/feed/feed_list.js}"></script>
   </body>
 </html>
