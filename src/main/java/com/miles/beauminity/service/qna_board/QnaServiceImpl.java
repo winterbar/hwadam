@@ -100,6 +100,13 @@ public class QnaServiceImpl implements QnaService {
         masterBoardMapper.updateBoard(masterBoardVO);
     }
 
+    // 게시글 수 조회
+    public int getTypeBoardCount(String type) {
+        return masterBoardMapper.getTypeBoardCount(type);
+    }
+
+    
+
     
 
     

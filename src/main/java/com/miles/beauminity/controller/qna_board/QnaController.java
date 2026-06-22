@@ -7,6 +7,9 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,19 +37,39 @@ public class QnaController {
     // 서비스를 받아옵니다.
     private final QnaService qnaService;
 
+    public String getUsername(){
+    
+        // 멤버 정보 가져오기
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        String username = authentication.getName();
+        
+        return username;
+    }
+
+
     // 질문 게시판 이동
     // 여기에서 목록을 받아와야할 거 같은데...
     // 파라미터에 값 받아오는 느낌인가 으음 
     @GetMapping("/board/qna")
     public String getQnaList(@ModelAttribute PageVO pageVO, Model model) {
 
-        // 파라미터 여러개는 페이징 적용 이후에 고려해보는 걸로. 
+        // 게시판 종류 설정
         String type = "qna";
 
+        System.out.println("page: "+pageVO.getPage());
+        System.out.println("offset: "+pageVO.getOffset());
+
+        // 전체 게시글수 확인
+        int count = qnaService.getTypeBoardCount(type); 
+        System.out.println("게시글의 수:" + count);
+        pageVO.pageInfo(count);
+
+        // 파라미터 여러개는 페이징 적용 이후에 고려해보는 걸로. 
         List<MasterBoardVO> qnaBoardList=qnaService.getTypeBoard(type, pageVO);
-        // 일단 
 
         model.addAttribute("qnaS", qnaBoardList);
+        model.addAttribute("pageVO", pageVO);
 
         return "qna_board/qna";
     }
@@ -59,11 +82,14 @@ public class QnaController {
 
     // 질문 게시글을 포스트
     @PostMapping("/board/qna")
-    public String postQna(@ModelAttribute MasterBoardVO masterBoardVO, @RequestParam("files") MultipartFile[] files) {
+    public String postQna(@ModelAttribute MasterBoardVO masterBoardVO
+        , @RequestParam("category") String category, @RequestParam("files") MultipartFile[] files) {
         
+            System.out.println(category);
         masterBoardVO.setBoardType("qna");
 
-        // 회원 등록이 아직 없기 때문에 임시로 적용.
+        // 로그인 중인 회원의 아이디를 저장 
+        masterBoardVO.setUsername(getUsername());
 
         // 0617 - 파일 메타데이터 저장 추가, 확인을 위해 순차적 출력 시도.
         for(MultipartFile f:files){

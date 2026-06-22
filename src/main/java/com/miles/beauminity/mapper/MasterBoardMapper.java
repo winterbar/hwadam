@@ -30,8 +30,11 @@ public interface MasterBoardMapper {
     // UPDATE3 - 게시글 수정
     public void updateBoard(MasterBoardVO masterBoardVO);
 
-    // SELECT - 게시판 별 회원이 등록한 게시글 수 조회
+    // SELECT1 - 게시판 별 회원이 등록한 게시글 수 조회
     public List<Map<String, Object>> countBoard(String username);
+
+    // SELECT2 - 게시판별 게시글 수 조회
+    int getTypeBoardCount(String type);
 
 }
 

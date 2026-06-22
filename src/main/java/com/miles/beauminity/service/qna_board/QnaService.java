@@ -25,5 +25,7 @@ public interface QnaService {
     void viewUp(Long id);
 
     void updateBoard(MasterBoardVO masterBoardVO);
+
+    int getTypeBoardCount(String type);
     
 }
