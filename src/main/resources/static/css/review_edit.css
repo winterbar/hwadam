@@ -1,0 +1,34 @@
+@charset "UTF-8";
+
+/* ===================================================
+   [REVIEW EDIT COMPONENT] 후기 게시글 수정 페이지 전용 스타일
+=================================================== */
+.edit-input-text {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+        }
+        .edit-input-text:focus {
+            border-color: var(--color-accent);
+        }
+        .edit-textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            resize: vertical;
+            outline: none;
+        }
+        .edit-textarea:focus {
+            border-color: var(--color-accent);
+        }
