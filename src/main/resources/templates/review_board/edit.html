@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beauminity : 후기 게시글 수정 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/review_common.css}">
+    <link rel="stylesheet" th:href="@{/css/review_detail.css}">
+    <link rel="stylesheet" th:href="@{/css/reivew_edit.css}">
+
+</head>
+
+<div th:replace="~{layout/header :: header}"></div>
+
+<body>
+
+    <main>
+        <form th:action="@{/board/review/edit/{id}(id=${reviewForm.boardId})}" th:object="${reviewForm}" method="post" class="detail-container">
+            
+            <input type="hidden" th:field="*{boardId}" />
+
+            <div class="category-path">
+                카테고리: <span th:text="*{category1}">대분류</span> &gt; <span th:text="*{category2}">소분류</span>
+            </div>
+
+            <div class="detail-header">
+                <div class="detail-title-row" style="margin-bottom: 1rem;">
+                    <input type="text" th:field="*{title}" class="edit-input-text" style="font-weight: bold; font-size: 1.4rem;" placeholder="제목을 입력하세요." required />
+                </div>
+                <div class="detail-meta-row">
+                    <div>
+                        작성자: <strong th:text="*{nickName}">작성자 닉네임</strong>
+                        <span style="margin: 0 0.5rem; color: var(--border-color);">|</span>
+                        등록일: <span th:text="${#temporals.format(reviewForm.createdAt, 'yyyy-MM-dd HH:mm')}">2026-06-19</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-info-card">
+                <div>
+                    <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.3rem;">리뷰 대상</span>
+                    <span class="product-name" th:text="*{productName}">제품명 정보</span>
+                </div>
+                <div class="product-image-wrapper">
+                    <img th:if="*{productImage}" th:src="*{productImage}" alt="제품 사진">
+                    <span th:unless="*{productImage}" style="font-size: 0.8rem; color: var(--text-muted);">사진 없음</span>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.5rem;">리뷰 내용 수정</label>
+                <textarea th:field="*{content}" class="edit-textarea" placeholder="솔직한 실사용 후기를 작성해 주세요." required></textarea>
+            </div>
+
+            <div class="attached-images-grid" style="margin-bottom: 2.5rem;">
+                <div class="image-item-box">
+                    <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">업로드한 이미지1</span>
+                    <div style="color: var(--text-muted); padding: 2rem 0; font-size: 0.85rem; font-weight: 600;">이미지 변경 기능 (추후 구현)</div>
+                </div>
+                <div class="image-item-box">
+                    <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">업로드한 이미지2</span>
+                    <div style="color: var(--text-muted); padding: 2rem 0; font-size: 0.85rem; font-weight: 600;">이미지 변경 기능 (추후 구현)</div>
+                </div>
+            </div>
+
+            <div class="detail-actions-row">
+                <div>
+                    <a th:href="@{/board/review/detail/{id}(id=${reviewForm.boardId})}" class="btn" style="background-color: #f5f5f5; border: 1px solid var(--border-color); color: var(--text-main); text-decoration: none; padding: 0.8rem 1.5rem; display: inline-block;">
+                        ❌ 수정 취소
+                    </a>
+                </div>
+                
+                <div style="background: #f8d7da; padding: 0.5rem; font-size: 0.8rem; color: #721c24;">
+                    현재 로그인 계정 ID: <strong th:text="${#authentication.name}">로그인ID</strong> <br>
+                    게시글 작성자 ID: <strong th:text="*{userName}">작성자ID</strong>
+                </div>
+
+                <div style="display: flex; gap: 0.5rem;">
+                    <button type="submit" class="btn btn-cancel" style="background-color: var(--color-accent); color: white; padding: 0.8rem 1.5rem; font-weight: bold; cursor: pointer;">
+                        💾 수정 완료
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </main>
+
+</body>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+</html>

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api")
-public class ReviewApiController {
+public class ReviewApiController { // 역할: 네이버 api 사용요청 처리
     
     private final String CLIENT_ID ="rfulAKUI_G_GhOE7CIgi";
     private final String CLIENT_SECRET ="XPl1EGqljQ";

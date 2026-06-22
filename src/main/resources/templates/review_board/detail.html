@@ -8,91 +8,103 @@
     <link rel="stylesheet" th:href="@{/css/review_common.css}">
     <link rel="stylesheet" th:href="@{/css/review_detail.css}">
 </head>
+
+<div th:replace="~{layout/header :: header}"></div>
+
 <body>
 
-    <header class="gray-box text-center mb-4">
-        <h2>헤더</h2>
-    </header>
+    <main>
+        <div class="detail-container">
+            
+            <div class="category-path">
+                카테고리: <span th:text="${detail.category1}">대분류</span> &gt; <span th:text="${detail.category2}">소분류</span>
+            </div>
 
-    <div class="container layout-container">
-        
-        <div class="mb-3 text-muted">
-            <span>카테고리: </span>
-            <strong th:text="${detail.category1}">대분류</strong> &gt; 
-            <strong th:text="${detail.category2}">소분류</strong>
-        </div>
-
-        <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h4 class="mb-0" th:text="${detail.title}">작성 제목 위치</h4>
-                <div class="text-muted small">
-                    조회수 <span th:text="${detail.viewCnt}">0</span> | 
-                    댓글 수 <span th:text="${detail.replyCnt}">0</span> | 
-                    좋아요 수 <span th:text="${detail.likeCnt}">0</span>
+            <div class="detail-header">
+                <div class="detail-title-row">
+                    <h2 class="detail-title" th:text="${detail.title}">작성 제목 위치</h2>
+                </div>
+                <div class="detail-meta-row">
+                    <div>
+                        작성자: <strong th:text="${detail.nickName}">작성자 닉네임</strong>
+                        <span style="margin: 0 0.5rem; color: var(--border-color);">|</span>
+                        등록일: <span th:text="${#temporals.format(detail.createdAt, 'yyyy-MM-dd HH:mm')}">2026-06-19</span>
+                    </div>
+                    <div class="stats-group">
+                        <span>조회수 <strong th:text="${detail.viewCnt}">0</strong></span>
+                        <span>댓글 수 <strong th:text="${detail.replyCnt}">0</strong></span>
+                        <span>좋아요 수 <strong th:text="${detail.likeCnt}">0</strong></span>
+                    </div>
                 </div>
             </div>
-            <div class="card-body d-flex justify-content-between align-items-center bg-light py-2">
+
+            <div class="product-info-card">
                 <div>
-                    작성자: <strong th:text="${detail.userNickname}">작성자 닉네임</strong>
+                    <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.3rem;">리뷰 대상</span>
+                    <span class="product-name" th:text="${detail.productName}">제품명 정보</span>
                 </div>
-                <div class="text-muted small">
-                    등록일: <span th:text="${#temporals.format(detail.createdAt, 'yyyy-MM-dd HH:mm')}">2026-06-19</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="row bg-light p-3 border rounded mb-4 g-3 align-items-center">
-            <div class="col-md-2 fw-bold text-secondary">리뷰 대상</div>
-            <div class="col-md-3">
-                제품명: <strong th:text="${detail.productName}">제품명 정보</strong>
-            </div>
-            <div class="col-md-7 text-end">
-                <img th:if="${detail.productImage}" th:src="${detail.productImage}" alt="제품 사진" class="product-img border">
-                <span th:unless="${detail.productImage}" class="text-muted small">제품 사진 없음</span>
-            </div>
-        </div>
-
-        <div class="content-area mb-4">
-            <div class="fw-bold mb-3 text-secondary">작성 내용</div>
-            <p style="white-space: pre-wrap;" th:text="${detail.content}">여기에 작성 내용 본문이 출력됩니다.</p>
-            
-            <hr class="my-4">
-            
-            <div class="row g-2">
-                <div class="col-6 text-center bg-white p-2 border rounded">
-                    <span class="text-muted small d-block mb-2">업로드한 이미지1</span>
-                    <div class="bg-light py-5 text-muted">이미지 영역 (추후 구현)</div>
-                </div>
-                <div class="col-6 text-center bg-white p-2 border rounded">
-                    <span class="text-muted small d-block mb-2">업로드한 이미지2</span>
-                    <div class="bg-light py-5 text-muted">이미지 영역 (추후 구현)</div>
+                <div class="product-image-wrapper">
+                    <img th:if="${detail.productImage}" th:src="${detail.productImage}" alt="제품 사진">
+                    <span th:unless="${detail.productImage}" style="font-size: 0.8rem; color: var(--text-muted);">사진 없음</span>
                 </div>
             </div>
-        </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <a th:href="${detail.productLink}" target="_blank" class="btn btn-outline-primary btn-sm">
-                    🔗 제품 링크(클릭하면 연결되도록)
-                </a>
+            <div class="detail-content-body" th:text="${detail.content}">
+                후기 내용
             </div>
-            <div>
-                <button class="btn btn-danger btn-sm">❤️ 좋아요 누르는 쪽</button>
+
+            <div class="attached-images-grid" th:if="${detail.attachedFiles != null and !detail.attachedFiles.isEmpty()}">
+    
+                <div class="image-item-box" th:each="file, iterStat : ${detail.attachedFiles}">
+                    <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;" 
+                        th:text="'업로드한 이미지' + ${iterStat.count}">
+                        업로드한 이미지1
+                    </span>
+                    
+                    <img th:src="@{/upload/review/{name}(name=${file.savedName})}" 
+                        th:alt="${file.originalName}"
+                        style="width: 100%; height: auto; object-fit: cover; border-radius: 4px; display: block;">
+                </div>
+
             </div>
-        </div>
 
-        <div class="gray-box mb-4">
-            <h5>댓글 란</h5>
-            <div class="bg-white p-3 rounded border text-muted small">
-                등록된 댓글이 없습니다. 첫 댓글을 남겨보세요!
+            <div class="detail-actions-row">
+                <div>
+                    <a th:href="${detail.productLink}" target="_blank" class="btn btn-link-out">
+                        🔗 제품 쇼핑몰 바로가기
+                    </a>
+                </div>
+                
+                <div style="background: #f8d7da; padding: 0.5rem; font-size: 0.8rem; color: #721c24;">
+                    현재 로그인 계정 ID: <strong th:text="${#authentication.name}">로그인ID</strong> <br>
+                    게시글 작성자 ID: <strong th:text="${detail.userName}">작성자ID</strong>
+                </div>
+
+                <div style="display: fles; gap: 0.5rem;">
+                    <a th:if="${#authentication.name == detail.userName}"
+                        th:href="@{/board/review/edit/{id}(id=${detail.boardId})}"
+                        class="btn btn-cancel" style="padding: 0.8rem 1.5rem;">
+                        ✏️ 수정하기
+                    </a>
+                
+
+                
+                    <button type="button" class="btn btn-like">❤️ 좋아요</button>
+                </div>
             </div>
+
+            <div class="comment-section">
+                <h5 style="font-weight: 800; font-size: 0.95rem; color: var(--text-main); margin-bottom: 1rem;">댓글</h5>
+                <div class="comment-empty-box">
+                    등록된 댓글이 없습니다. 첫 댓글을 남겨보세요!
+                </div>
+            </div>
+
         </div>
-
-    </div>
-
-    <footer class="gray-box text-center mt-5">
-        <p class="mb-0">푸터</p>
-    </footer>
+    </main>
 
 </body>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
 </html>

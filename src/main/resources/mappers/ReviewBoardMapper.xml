@@ -78,5 +78,19 @@
             WHERE m.board_id = #{boardId}
     </select>
 
-
+    <select id="selectFilesByBoardId" 
+            parameterType="long" 
+            resultType="com.miles.beauminity.vo.MasterBoardFileVO">
+        SELECT 
+            board_id,
+            file_id,
+            original_name,
+            saved_name,
+            file_path,
+            file_type,
+            file_size
+        FROM board_file
+        where board_id = #{boardId}
+    </select>
+            
 </mapper>

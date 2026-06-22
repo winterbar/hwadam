@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.miles.beauminity.mapper.MasterBoardFileMapper;
 import com.miles.beauminity.mapper.MasterBoardMapper;
+import com.miles.beauminity.mapper.MemberMapper;
 import com.miles.beauminity.mapper.ReviewBoardMapper;
 import com.miles.beauminity.util.MasterFileUploadUtil;
 import com.miles.beauminity.vo.MasterBoardFileVO;
@@ -26,10 +27,11 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewBoardMapper reviewBoardMapper; 
     private final MasterBoardMapper masterBoardMapper;
     private final MasterBoardFileMapper masterBoardFileMapper;
+    
   
+    // 역할: 후기 게시판 등록요청 서비스 처리
     @Override
     @Transactional(rollbackFor = Exception.class) // 여러 데이블의 데이터 정보 무결성을 위해 트랜잭션 어노테이션 필수 부여
-    // 역할: 후기 게시판 등록요청 서비스 처리
     public boolean registerReviewPost(ReviewBoardVO reviewBoardVO) {
         try {
             // 1. 공용 마스터 VO 변환 및 데이터 세팅
@@ -84,19 +86,27 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     
-    @Override
     // 역할: 후기게시판 게시글 전체보기 요청 서비스 처리
+    @Override
     public List<ReviewBoardVO> getReviewBoardList() {
 
             return reviewBoardMapper.selectReviewBoardList(); 
     }
 
-    @Override
     // 역할: 후기게시판 게시글 상세보기 요청 서비스 처리
+    @Override
     public ReviewBoardVO getReviewBoardDetail(Long boardId) {
+        // 1. 기존의 게시글 본문 텍스트 데이터 조회
+        ReviewBoardVO detail = reviewBoardMapper.selectReviewBoardDetail(boardId);
 
-        return reviewBoardMapper.selectReviewBoardDetail(boardId);
+        if (detail != null) {
+            // 2. 해당 게시글의 첨부파일 목록 조회 후 VO에 적재
+            List<MasterBoardFileVO> fileList = reviewBoardMapper.selectFilesByBoardId(boardId);
+            detail.setAttachedFiles(fileList);
+        }
+        return detail;
         
     }
 
+   
 }
