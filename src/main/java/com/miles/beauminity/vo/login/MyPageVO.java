@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class MyPageVO {
     private MemberVO member;
+    private MyPageFileVO profile;
     private String gradeName;
     private long reviewCnt;
     private long qnaCnt;
