@@ -18,7 +18,11 @@ public class FeedVO {
     private String savedName;
     private String filePath;
     private String tagName;
+    private String infoLink;
     private List<String> feedTagList;
     private List<String> feedFileList;
+    private String skinType;
+    private String personalColor;
+    private String nickname;
 
 }

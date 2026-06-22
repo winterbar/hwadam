@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     renderEditFeedContentAndLink();
     initEditImageArea();
+    initEditTagArea();
+    initEditFormValidation();
 
+    // 본문 + 정보공유 링크 분리해서 수정 input에 넣기
     function renderEditFeedContentAndLink() {
         const form = document.querySelector('form');
 
@@ -55,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
         linkInput.value = linkText;
     }
 
+    // 이미지 추가/삭제 + 대표 이미지 미리보기
     function initEditImageArea() {
         const imageList = document.getElementById('current-image-list');
         const fileInput = document.getElementById('fileInput');
@@ -67,15 +71,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!imageList || !fileInput || !addBtn) return;
 
-        // 처음 화면 들어왔을 때 기존 사진 기준으로 대표 이미지 세팅
         updateImageState();
 
-        // + 이미지 추가 버튼 누르면 파일 선택창 열기
         addBtn.addEventListener('click', function () {
             fileInput.click();
         });
 
-        // 파일 선택하면 새 이미지 미리보기 추가
         fileInput.addEventListener('change', function () {
             const selectedFiles = Array.from(fileInput.files);
 
@@ -103,7 +104,6 @@ document.addEventListener('DOMContentLoaded', function () {
             updateImageState();
         });
 
-        // 삭제 버튼 클릭 처리
         imageList.addEventListener('click', function (event) {
             const deleteBtn = event.target.closest('.current-image-delete-btn');
 
@@ -113,7 +113,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (!imageBox) return;
 
-            // 기존 이미지라면 삭제할 이미지 이름을 hidden으로 따로 보냄
             if (imageBox.dataset.imageType === 'existing') {
                 const savedName = imageBox.dataset.savedName;
 
@@ -132,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function updateImageState() {
             const imageBoxes = getImageBoxes();
+            const previewBox = document.getElementById('main-preview-box');
 
             imageBoxes.forEach(function (box) {
                 box.classList.remove('is-main');
@@ -141,45 +141,43 @@ document.addEventListener('DOMContentLoaded', function () {
                 countEl.textContent = imageBoxes.length + ' / ' + MAX_IMAGE_COUNT;
             }
 
-           if (imageBoxes.length === 0) {
-    const previewBox = document.getElementById('main-preview-box');
+            if (imageBoxes.length === 0) {
+                if (previewBox) {
+                    previewBox.classList.remove('has-image');
+                    previewBox.classList.remove('preview-filled');
+                }
 
-    if (previewBox) {
-        previewBox.classList.remove('has-image');
-    }
+                if (previewImage) {
+                    previewImage.removeAttribute('src');
+                    previewImage.style.display = 'none';
+                }
 
-    if (previewImage) {
-        previewImage.removeAttribute('src');
-        previewImage.style.display = 'none';
-    }
+                if (previewText) {
+                    previewText.style.display = 'flex';
+                    previewText.textContent = '대표 이미지 미리보기';
+                }
 
-    if (previewText) {
-        previewText.style.display = 'flex';
-        previewText.textContent = '대표 이미지 미리보기';
-    }
+                return;
+            }
 
-    return;
-}
+            if (previewBox) {
+                previewBox.classList.add('has-image');
+                previewBox.classList.add('preview-filled');
+            }
 
-            const previewBox = document.getElementById('main-preview-box');
+            const mainBox = imageBoxes[0];
+            mainBox.classList.add('is-main');
 
-if (previewBox) {
-    previewBox.classList.add('has-image');
-}
+            const mainImg = mainBox.querySelector('img');
 
-const mainBox = imageBoxes[0];
-mainBox.classList.add('is-main');
+            if (mainImg && previewImage) {
+                previewImage.src = mainImg.src;
+                previewImage.style.display = 'block';
+            }
 
-const mainImg = mainBox.querySelector('img');
-
-if (mainImg && previewImage) {
-    previewImage.src = mainImg.src;
-    previewImage.style.display = 'block';
-}
-
-if (previewText) {
-    previewText.style.display = 'none';
-}
+            if (previewText) {
+                previewText.style.display = 'none';
+            }
         }
 
         function addNewImageBox(file) {
@@ -216,5 +214,163 @@ if (previewText) {
 
             form.appendChild(input);
         }
+    }
+
+    // 태그 추가/삭제 기능
+    function initEditTagArea() {
+        const tagInput = document.getElementById('tagInput');
+        const tagAddBtn = document.querySelector('.tag-add-btn');
+        const tagList = document.getElementById('tag-list');
+        const tagCount = document.querySelector('.tag-count');
+
+        const MAX_TAG_COUNT = 5;
+
+        if (!tagInput || !tagAddBtn || !tagList) return;
+
+        normalizeExistingTagInputs();
+        updateTagCount();
+
+        tagAddBtn.addEventListener('click', function () {
+            addTag();
+        });
+
+        tagInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                addTag();
+            }
+        });
+
+        tagList.addEventListener('click', function (event) {
+            const deleteBtn = event.target.closest('.tag-delete-btn');
+
+            if (!deleteBtn) return;
+
+            const tagChip = deleteBtn.closest('.tag-chip');
+
+            if (!tagChip) return;
+
+            tagChip.remove();
+            updateTagCount();
+        });
+
+        function addTag() {
+            let tagName = tagInput.value.trim();
+
+            if (!tagName) {
+                alert('해시태그를 입력해주세요.');
+                return;
+            }
+
+            tagName = tagName.replace('#', '').trim();
+
+            if (!tagName) {
+                alert('해시태그를 입력해주세요.');
+                return;
+            }
+
+            const currentTags = getCurrentTags();
+
+            if (currentTags.length >= MAX_TAG_COUNT) {
+                alert('해시태그는 최대 5개까지 입력할 수 있습니다.');
+                return;
+            }
+
+            if (currentTags.includes(tagName)) {
+                alert('이미 등록된 해시태그입니다.');
+                tagInput.value = '';
+                return;
+            }
+
+            const tagChip = document.createElement('span');
+            tagChip.className = 'tag-chip';
+            tagChip.dataset.tag = tagName;
+
+            const tagText = document.createElement('span');
+            tagText.textContent = '#' + tagName;
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.className = 'tag-delete-btn';
+            deleteBtn.dataset.tagName = tagName;
+            deleteBtn.textContent = '×';
+
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'tagNames';
+            hiddenInput.value = tagName;
+
+            tagChip.appendChild(tagText);
+            tagChip.appendChild(deleteBtn);
+            tagChip.appendChild(hiddenInput);
+
+            tagList.appendChild(tagChip);
+
+            tagInput.value = '';
+            updateTagCount();
+        }
+
+        function getCurrentTags() {
+            return Array.from(tagList.querySelectorAll('.tag-chip'))
+                .map(function (chip) {
+                    return chip.dataset.tag ? chip.dataset.tag.trim() : '';
+                })
+                .filter(function (tag) {
+                    return tag !== '';
+                });
+        }
+
+        function updateTagCount() {
+            const count = tagList.querySelectorAll('.tag-chip').length;
+
+            if (tagCount) {
+                tagCount.textContent = count + ' / ' + MAX_TAG_COUNT;
+            }
+        }
+
+        function normalizeExistingTagInputs() {
+            const tagChips = tagList.querySelectorAll('.tag-chip');
+
+            tagChips.forEach(function (chip) {
+                const tagName = chip.dataset.tag ? chip.dataset.tag.trim() : '';
+                const hiddenInput = chip.querySelector('input[type="hidden"]');
+
+                if (hiddenInput) {
+                    hiddenInput.name = 'tagNames';
+                    hiddenInput.value = tagName;
+                }
+            });
+        }
+    }
+
+    // 수정 완료 전 이미지/태그 개수 검사
+    function initEditFormValidation() {
+        const form = document.querySelector('form');
+        const imageList = document.getElementById('current-image-list');
+        const tagList = document.getElementById('tag-list');
+
+        if (!form) return;
+
+        form.addEventListener('submit', function (event) {
+            const imageCount = imageList
+                ? imageList.querySelectorAll('.current-image').length
+                : 0;
+
+            const tagCount = tagList
+                ? tagList.querySelectorAll('.tag-chip').length
+                : 0;
+
+            if (imageCount < 1 || imageCount > 5) {
+                event.preventDefault();
+                alert('사진은 1개 이상 5개 이하로 등록해주세요.');
+                return;
+            }
+
+            if (tagCount < 3 || tagCount > 5) {
+                event.preventDefault();
+                alert('해시태그는 3개 이상 5개 이하로 입력해주세요.');
+                return;
+            }
+        });
     }
 });
