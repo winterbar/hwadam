@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BOTD 수정</title>
 
-    <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}" />
-    <link
-      rel="stylesheet"
-      href="/css/feed_edit.css"
-      th:href="@{/css/feed_edit.css}"
+    <link rel="stylesheet" th:href="@{/css/common/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/feed/feed_edit.css}"
     />
   </head>
 
@@ -21,10 +18,10 @@
         <div class="write-head">
           <div class="write-title">
             <h1>✎ BOTD 수정</h1>
-            <span
-              >사진, 본문, 링크, 해시태그를 원하는 분위기에 맞게 다시
-              다듬어보세요.</span
-            >
+            <span>
+              사진, 본문, 링크, 해시태그를 원하는 분위기에 맞게 다시
+              다듬어보세요.
+            </span>
           </div>
 
           <button
@@ -82,10 +79,12 @@
                   ×
                 </button>
 
+                <!-- 중요: 이 영역은 form 밖이라 form 속성으로 연결해야 서버로 넘어감 -->
                 <input
                   type="hidden"
                   name="existingImages"
                   th:value="${savedName}"
+                  form="feedEditForm"
                 />
               </div>
             </div>
@@ -94,11 +93,18 @@
           <!-- 오른쪽 수정 폼 영역 -->
           <section class="form-card">
             <form
-              th:action="@{/feed/{feedId}/edit(feedId=${feed.feedId})}"
+              id="feedEditForm"
               method="post"
               enctype="multipart/form-data"
               th:data-content="${feed.feedContent}"
             >
+              <input
+                type="hidden"
+                th:if="${_csrf != null}"
+                th:name="${_csrf.parameterName}"
+                th:value="${_csrf.token}"
+              />
+
               <div class="form-group">
                 <label class="form-label">피드 이미지</label>
 
@@ -178,7 +184,7 @@
                     th:each="tagName : ${feed.feedTagList}"
                     th:data-tag="${tagName}"
                   >
-                    <span th:text="'#' + ${tagName}"> #태그 </span>
+                    <span th:text="'#' + ${tagName}">#태그</span>
 
                     <button
                       type="button"
@@ -188,9 +194,10 @@
                       ×
                     </button>
 
+                    <!-- 수정 시 서버에서 tagNames로 받기 위해 이름 통일 -->
                     <input
                       type="hidden"
-                      name="existingTags"
+                      name="tagNames"
                       th:value="${tagName}"
                     />
                   </span>
@@ -211,7 +218,7 @@
                   취소
                 </button>
 
-                <button type="submit" class="submit">등록</button>
+                <button type="submit" class="submit">수정 완료</button>
               </div>
             </form>
           </section>
@@ -219,6 +226,6 @@
       </div>
     </main>
 
-    <script th:src="@{/js/feed_edit.js}"></script>
+    <script th:src="@{/js/feed/feed_edit.js}"></script>
   </body>
 </html>

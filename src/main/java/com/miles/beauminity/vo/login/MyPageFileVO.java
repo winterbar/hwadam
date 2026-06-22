@@ -9,5 +9,5 @@ public class MyPageFileVO {
     private String savedName;
     private String filePath;
     private String fileType;
-    private String fileSize;
+    private int fileSize;
 }
