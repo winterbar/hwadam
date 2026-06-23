@@ -1,5 +1,7 @@
 package com.miles.beauminity.service.review_board;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -101,11 +103,89 @@ public class ReviewServiceImpl implements ReviewService {
 
         if (detail != null) {
             // 2. 해당 게시글의 첨부파일 목록 조회 후 VO에 적재
-            List<MasterBoardFileVO> fileList = reviewBoardMapper.selectFilesByBoardId(boardId);
+            List<MasterBoardFileVO> fileList = masterBoardFileMapper.getBoardFileById(boardId);
             detail.setAttachedFiles(fileList);
         }
         return detail;
         
+    }
+
+    @Override
+    @Transactional
+    public void updateReviewBoard(ReviewBoardVO reviewForm) {// 등록 요청시 보낸 파라미터가 담긴 것이 reviewForm
+
+        MasterBoardVO masterBoardVO = new MasterBoardVO();
+        masterBoardVO.setBoardId(reviewForm.getBoardId());
+        masterBoardVO.setTitle(reviewForm.getTitle());
+        masterBoardVO.setContent(reviewForm.getContent());
+
+        // 1. 게시글의 기본 정보(제목, 내용 등) 우선 업데이트
+        masterBoardMapper.updateBoard(masterBoardVO);
+
+        List<MultipartFile> newFiles = reviewForm.getReviewFiles(); 
+        List<Long> oldFileIds = reviewForm.getExistingFileIds();  
+
+        // 파일 가공 및 c드라이브 삭제/교체 로직 진행
+        if (newFiles != null && oldFileIds != null) {
+
+            String uploadPath = "C:/upload/review";
+
+            for (int i = 0; i<newFiles.size(); i++) {
+                MultipartFile newFile = newFiles.get(i);
+
+                // i번째 파일 선택창에 새로운 사진이 업로드된 경우에만 스왑(교체) 진행
+                if (newFile != null && !newFile.isEmpty()) {
+                    Long targetFileId = oldFileIds.get(i);
+
+                    //1. DB에서 기존 파일의 정보 조회
+                    List<MasterBoardFileVO> boardFileList = masterBoardFileMapper.getBoardFileById(reviewForm.getBoardId());
+
+                    MasterBoardFileVO oldFileInfo = null;
+                    // 2. 가져온 파일 목록 중에서 '현재 파일 선택창(i번째)'에 해당하는 실제 file_id 데이터 매칭하기
+                    if (boardFileList != null) {
+                        for (MasterBoardFileVO fileVO : boardFileList) {
+                            //boardFileList 안의 file_id가 화면에서 넘어온 기존 file_id와 일치하는지 비교
+                            if (fileVO.getFileId().equals(targetFileId)) {
+                                oldFileInfo = fileVO;
+                                break; 
+                            }
+                        }
+                    }
+
+                    // 3. 매칭되는 기존 파일 정보가 존재할 때만 교체(삭제 및 업데이트) 작업 진행
+                    if (oldFileInfo != null) {
+                        // 3-1 C드라이브 실제 경로에서 기존 물리 파일 삭제
+                        // uploadPath("C:/upload/review") 뒤에 슬래시(/)를 붙여 경로를 완성한다.
+                        File oldPhysicalFile = new File(uploadPath + "/" + oldFileInfo.getSavedName());
+                        if (oldPhysicalFile.exists()) {
+                            oldPhysicalFile.delete();
+                        }
+                        
+                        // 3-2 새로 업로드된 신규 파일 정보 가공 (UUID 생성)
+                        String originalName = newFile.getOriginalFilename();
+                        String savedName = java.util.UUID.randomUUID().toString() + "_" + originalName;
+                        
+                        try {
+                            // C드라이브에 새 물리 파일 저장
+                            File saveFile =new File(uploadPath + "/" + savedName);
+                            newFile.transferTo(saveFile);
+
+                            // 3-3. 기존 파일 정보 객체(oldFileInfo)에 신규 파일 데이터 세팅
+                            oldFileInfo.setOriginalName(originalName);
+                            oldFileInfo.setSavedName(savedName);
+                            oldFileInfo.setFileSize((int) newFile.getSize()); // int 타입 변환
+                            // 3-4. 매퍼를 호출하여 DB의 board_file 테이블 정보 UPDATE 수행
+                            reviewBoardMapper.updateReviewBoardFile(oldFileInfo);
+                        } catch (IOException e) {
+                            // 파일 쓰기 중 오류 발생 시 트랜잭션 롤백을 유도하기 위해 예외 던지기
+                            throw new RuntimeException("물리 파일 저장 중 오류 발생. file_id:" + targetFileId, e);
+                        }
+                    } 
+                    
+                }
+            }
+        }
+
     }
 
    

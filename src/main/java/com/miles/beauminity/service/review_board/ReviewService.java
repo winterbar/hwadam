@@ -15,6 +15,9 @@ public interface ReviewService { // 역할: 후기 게시판에 대한 서비스
     // 후기 게시판 목록에서 게시글 상세조회 명세
     ReviewBoardVO getReviewBoardDetail(Long boardId);
 
+    // 후기 게시판 게시글의 수정 요청 명세
+    void updateReviewBoard(ReviewBoardVO reviewForm);
+
 
         
 }

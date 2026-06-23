@@ -15,4 +15,5 @@ public interface MasterBoardFileMapper {
     // READ1 - 특정 게시글의 파일 전체조회
     public List<MasterBoardFileVO> getBoardFileById(Long id);
 
+
 }
