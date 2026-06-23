@@ -7,11 +7,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.miles.beauminity.mapper.board.MasterBoardFileMapper;
 import com.miles.beauminity.mapper.board.MasterBoardMapper;
+import com.miles.beauminity.mapper.qna_board.QnaBoardMapper;
 import com.miles.beauminity.util.MasterFileUploadUtil;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.board.TypeOffsetVO;
+import com.miles.beauminity.vo.qna_board.QnaBoardVO;
 
 import lombok.AllArgsConstructor;
 
@@ -25,10 +27,11 @@ public class QnaServiceImpl implements QnaService {
     // 매퍼를 객체로 불러와줍니다.
     private MasterBoardMapper masterBoardMapper;
     private MasterBoardFileMapper masterBoardFileMapper;
+    private QnaBoardMapper qnaBoardMapper;
 
     // 게시글 등록 
     @Override
-    public void insertBoard(MasterBoardVO masterBoardVO, MultipartFile[] files) {
+    public void insertBoard(MasterBoardVO masterBoardVO, MultipartFile[] files, String category) {
         
         // 일단 게시글부터 게시.
         System.out.println("전:" + masterBoardVO.getBoardId());
@@ -49,10 +52,27 @@ public class QnaServiceImpl implements QnaService {
             masterBoardFileMapper.insertFile(f);
         }
 
-        //
+        //Qna 정보를 저장
+        QnaBoardVO qnaBoardVO = new QnaBoardVO();
+        qnaBoardVO.setBoardId(boardId);
+
+        if (category.equals("beginner"))
+            qnaBoardVO.setCategory("입문");
+
+        else if (category.equals("compare"))
+            qnaBoardVO.setCategory("비교");
+
+        else if (category.equals("help"))
+            qnaBoardVO.setCategory("도움요청");
+
+        else
+            qnaBoardVO.setCategory("기타");
+
+        qnaBoardMapper.insertQna(qnaBoardVO);
+
     }
 
-    // 게시글 전체조회
+    // 게시글 전체조회 
     @Override
     public List<MasterBoardVO> getTypeBoard(String type, PageVO pageVO) {
 
@@ -63,6 +83,42 @@ public class QnaServiceImpl implements QnaService {
         typeOffsetVO.setType(type);
         typeOffsetVO.setOffset(pageVO.getOffset());
         typeOffsetVO.setSize(pageVO.getSize());
+
+        return masterBoardMapper.getTypeBoard(typeOffsetVO);
+    }
+
+    // 게시글 카테고리별 전체조회
+    @Override
+    public List<MasterBoardVO> getQnaBoardByCategory(String type, PageVO pageVO, String category){
+
+        TypeOffsetVO typeOffsetVO = new TypeOffsetVO();
+
+        typeOffsetVO.setType(type);
+        typeOffsetVO.setOffset(pageVO.getOffset());
+        typeOffsetVO.setSize(pageVO.getSize());
+        
+        if (category.equals("beginner")){
+            typeOffsetVO.setCategory("입문");
+            System.out.println("현재상태: "+typeOffsetVO.toString());
+            return qnaBoardMapper.selectQnaByCategory(typeOffsetVO);
+        }
+        else if (category.equals("compare")){
+            typeOffsetVO.setCategory("비교");
+            System.out.println("현재상태: "+typeOffsetVO.toString());
+
+            return qnaBoardMapper.selectQnaByCategory(typeOffsetVO);
+        }
+        else if (category.equals("help")){
+            typeOffsetVO.setCategory("도움요청");
+            System.out.println("현재상태: "+typeOffsetVO.toString());
+
+            return qnaBoardMapper.selectQnaByCategory(typeOffsetVO);
+        }
+        else if (category.equals("etc")){
+            typeOffsetVO.setCategory("기타");
+            System.out.println("현재상태: "+typeOffsetVO.toString());
+            return qnaBoardMapper.selectQnaByCategory(typeOffsetVO);
+        }
 
         return masterBoardMapper.getTypeBoard(typeOffsetVO);
     }
@@ -101,9 +157,48 @@ public class QnaServiceImpl implements QnaService {
     }
 
     // 게시글 수 조회
+    @Override
     public int getTypeBoardCount(String type) {
         return masterBoardMapper.getTypeBoardCount(type);
     }
+
+    // 카테고리별 게시글 수 조회
+    @Override
+    public int getQnaCountByCategory(String type, String category) {
+
+        System.out.println("카테고리: "+category);
+        
+        TypeOffsetVO typeOffsetVO = new TypeOffsetVO();
+
+        typeOffsetVO.setType(type);
+        if (category.equals("beginner")){
+            typeOffsetVO.setCategory("입문");
+            System.out.println("현재상태: "+typeOffsetVO.toString());
+            return qnaBoardMapper.getQnaCountByCategory(typeOffsetVO);
+        }
+        else if (category.equals("compare")){
+            typeOffsetVO.setCategory("비교");
+            System.out.println("현재상태: "+typeOffsetVO.toString());
+
+            return qnaBoardMapper.getQnaCountByCategory(typeOffsetVO);
+        }
+        else if (category.equals("help")){
+            typeOffsetVO.setCategory("도움요청");
+            System.out.println("현재상태: "+typeOffsetVO.toString());
+
+            return qnaBoardMapper.getQnaCountByCategory(typeOffsetVO);
+        }
+        else if (category.equals("etc")){
+            typeOffsetVO.setCategory("기타");
+            System.out.println("현재상태: "+typeOffsetVO.toString());
+            return qnaBoardMapper.getQnaCountByCategory(typeOffsetVO);
+        }
+
+        return masterBoardMapper.getTypeBoardCount(type);
+    }
+
+    
+
 
     
 
