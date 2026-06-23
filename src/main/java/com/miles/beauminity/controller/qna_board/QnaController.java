@@ -43,6 +43,8 @@ public class QnaController {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
         String username = authentication.getName();
+
+        System.out.println("현재 로그인한 회원: "+username);
         
         return username;
     }
@@ -77,6 +79,10 @@ public class QnaController {
     // 질문 게시글 작성
     @GetMapping("/board/qna/write")
     public String getQnaWrite() {
+
+        if (getUsername().equals("anonymousUser"))
+            return "redirect:/login";
+
         return "qna_board/write";
     }
 
@@ -85,7 +91,7 @@ public class QnaController {
     public String postQna(@ModelAttribute MasterBoardVO masterBoardVO
         , @RequestParam("category") String category, @RequestParam("files") MultipartFile[] files) {
         
-            System.out.println(category);
+        System.out.println("카테고리: "+category);
         masterBoardVO.setBoardType("qna");
 
         // 로그인 중인 회원의 아이디를 저장 
@@ -101,8 +107,8 @@ public class QnaController {
         // vo에 모든 값이 잘 들어갔나? 테스트 해봅니다.
         System.out.println(masterBoardVO.toString());
 
-        // 모든 값이 잘 들어가는 것을 확인했기 때문에 이제 서비스의 메서드로 넘기겠습니다.
-        qnaService.insertBoard(masterBoardVO, files);
+        // 모든 값이 잘 들어가는 것을 확인했기 때문에 이제 서비스의 메서드로 넘기겠습니다. 한꺼번에 넘기는 것으로.
+        qnaService.insertBoard(masterBoardVO, files, category);
         
         return "redirect:/board/qna";
     }
@@ -140,6 +146,9 @@ public class QnaController {
     // 게시글 수정 링크
     @GetMapping("/board/qna/edit/{id}")
     public String getQnaEdit(@PathVariable("id") Long id, Model model) {
+
+        if (getUsername().equals("anonymousUser"))
+            return "redirect:/login";
 
         // 일단 수정을 할 게시글부터 가져옵니다. 겟 원보드 나와라.
 

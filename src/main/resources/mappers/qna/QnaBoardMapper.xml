@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.miles.beauminity.mapper.qna_board.QnaBoardMapper">
+
+    <!-- 게시글에 정보 등록 -->
+    <insert id="insertQna"
+                parameterType="com.miles.beauminity.vo.qna_board.QnaBoardVO">
+        INSERT INTO qna_board
+        (board_id, category)
+        VALUES (#{boardId}, #{category})
+    </insert>
+
+    <!-- 조인해서 비교하고 가져온다 -->
+    <select id="selectQnaByCategory"
+            parameterType="com.miles.beauminity.vo.board.TypeOffsetVO"
+            resultType="com.miles.beauminity.vo.board.MasterBoardVO">
+        SELECT *
+            FROM master_board m
+            INNER JOIN
+            qna_board q
+            ON m.board_id = q.board_id
+            WHERE q.category=#{category} AND m.board_type = #{type} AND deleted = 0
+            ORDER BY m.board_id DESC
+            LIMIT #{offset}, #{size}
+    </select>
+
+    <!-- 게시글 수 확인 -->
+    <select id="getQnaCountByCategory"
+            parameterType="com.miles.beauminity.vo.board.TypeOffsetVO"
+            resultType="Int">
+        SELECT COUNT(*)
+            FROM master_board m
+            INNER JOIN
+            qna_board q
+            ON m.board_id = q.board_id
+            WHERE q.category=#{category} AND m.board_type = #{type} AND deleted = 0
+    </select>
+</mapper>
