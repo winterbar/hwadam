@@ -78,6 +78,10 @@
                         <span class="info-label">가입일</span>
                         <span class="info-value" th:text="${#temporals.format(memberInfo.member.signedAt, 'yyyy.MM.dd')}">가입일</span>
                     </div>
+                    <div class="info-item">
+                        <span class="info-label">생년월일</span>
+                        <span class="info-value"  th:text="${memberInfo.member.birthday}">생년월일</span>
+                    </div>
                 </div>
 
                 <div class="info-group-title">뷰티 정보</div>
@@ -95,16 +99,20 @@
             </div>
 
             <div class="action-buttons">
-                <a th:href="@{/mypage/edit}" class="btn-mypage btn-edit">회원정보 수정</a>
-                <a th:href="@{/mypage/withdraw}" class="btn-mypage btn-withdraw">회원탈퇴</a>
+                <div class="top-buttons">
+                    <button type="button" class="btn-mypage btn-highlight" 
+                            onclick="openPasswordModal('/mypage/edit/info')">회원정보 수정</button>
+                    <button type="button" class="btn-mypage btn-highlight" 
+                            onclick="openPasswordModal('/mypage/edit/pw')">비밀번호 변경</button>
+                </div>
+                <a th:href="@{/mypage/withdraw}" class="btn-mypage btn-edit">회원탈퇴</a>
             </div>
-
         </div>
     </main>
 
     <div th:replace="~{layout/footer :: footerFragment}"></div>
 
-    <div id="profileModal">
+    <div id="profileModal" class="modal">
         <div class="modal-content">
             <h3>프로필 사진 변경</h3>
             <p class="modal-info-text">5MB 이하의 이미지 파일만 등록 가능합니다.</p>
@@ -116,9 +124,8 @@
                     <input type="file" name="profile" id="fileInput" accept="image/*" style="display:none;">
                 </div>
                 
-                <div id="fileInfo">
-                    파일명: <span id="fileName"></span><br>
-                    파일크기: <span id="fileSize"></span>
+                <div id="fileInfo" style="display:none;">
+                    <span id="fileName"></span> (<span id="fileSize"></span>)
                 </div>
 
                 <div class="modal-btns">
@@ -129,6 +136,33 @@
         </div>
     </div>
 
+    <div id="passwordConfirmModal" class="modal">
+        <div class="modal-content">
+            <h3>비밀번호 확인</h3>
+            <form id="passwordForm" method="post" th:action="@{/mypage/chkpw}">
+                <input type="password" name="password" class="modal-input" placeholder="비밀번호 입력" required>
+                <div id="passwordError" class="error-msg">비밀번호가 일치하지 않습니다.</div>
+                <input type="hidden" name="path" id="path">
+                <div class="modal-btns">
+                    <button type="submit" class="btn-save">확인</button>
+                    <button type="button" onclick="closePasswordModal()" class="btn-cancel">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="toast" class="toast"></div>
+
     <script th:src="@{/js/mypage/info.js}"></script>
+
+    <!-- 회원 정보 수정 및 비밀번호 성공 여부 출력 -->
+    <script th:inline="javascript">
+        const serverMsg = [[${msg}]];
+        console.log("서버에게 받은 메시지" + serverMsg);
+        if (serverMsg) {
+            showToast(serverMsg);
+        }
+    </script>
+
 </body>
 </html>

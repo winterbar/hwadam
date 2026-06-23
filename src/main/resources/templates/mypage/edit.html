@@ -4,119 +4,7 @@
     <meta charset="UTF-8">
     <title>beauminity : 내정보 수정</title>
     <link rel="stylesheet" th:href="@{/css/common/main.css}">
-    <style>
-        .edit-main {
-            display: flex;
-            justify-content: center;
-            padding: 2rem 1rem;
-        }
-
-        .edit-container {
-            width: 100%;
-            max-width: 550px;
-            background: #ffffff;
-            padding: 2rem;
-            border: 1px solid #e2e2e2;
-            border-radius: 12px;
-        }
-
-        .edit-page-title {
-            margin: 0 0 1.5rem 0;
-            font-size: 1.4rem;
-            color: #333;
-        }
-
-        .edit-group-title {
-            font-size: 0.95rem;
-            font-weight: 800;
-            color: #333333;
-            margin: 1.5rem 0 1rem 0;
-            border-bottom: 1px solid #e2e2e2;
-            padding-bottom: 0.5rem;
-        }
-
-        .edit-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .edit-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .edit-item.full-width {
-            grid-column: span 2;
-        }
-
-        .edit-label {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #888888;
-        }
-
-        .edit-input {
-            width: 100%;
-            padding: 0.7rem;
-            border: 1px solid #e2e2e2;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            outline: none;
-            box-sizing: border-box;
-        }
-
-        .edit-input:focus {
-            border-color: #FA6E68;
-        }
-
-        .input-readonly {
-            background-color: #f9f9f9;
-            color: #999;
-            cursor: not-allowed;
-        }
-
-        .gender-group {
-            display: flex;
-            gap: 1rem;
-            padding-top: 0.7rem;
-            font-size: 0.95rem;
-        }
-
-        .action-btns {
-            margin-top: 2rem;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn-submit {
-            flex: 1;
-            padding: 0.9rem;
-            background-color: #FA6E68;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .btn-cancel {
-            flex: 1;
-            padding: 0.9rem;
-            background-color: #f0f0f0;
-            color: #555;
-            border: none;
-            border-radius: 6px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .edit-input:invalid {
-            border-color: #FA6E68;
-            background-color: #fff1f0;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/mypage/edit.css}">
 </head>
 <body>
 
@@ -126,7 +14,7 @@
         <div class="edit-container">
             <h2 class="edit-page-title">내정보 수정</h2>
             
-            <form th:action="@{/mypage/edit}" method="post">
+            <form th:action="@{/mypage/edit/info}" method="post">
                 <div class="edit-group-title">기본 정보</div>
                 <div class="edit-grid">
                     <div class="edit-item">
@@ -148,20 +36,23 @@
                             <label><input type="radio" name="gender" value="여" th:checked="${memberInfo.member.gender == '여'}"> 여</label>
                         </div>
                     </div>
-                    <div class="edit-item full-width">
+                    <div class="edit-item">
                         <span class="edit-label">이메일</span>
                         <input type="email" name="email" th:value="${memberInfo.member.email}" 
                             class="edit-input" required 
                             pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-                            placeholder="010-1234-5678">
+                            placeholder="example@naver.com">
                     </div>
-
-                    <div class="edit-item full-width">
+                    <div class="edit-item">
                         <span class="edit-label">전화번호</span>
                         <input type="tel" name="phone" th:value="${memberInfo.member.phone}" 
                             class="edit-input" required
                             pattern="01[016789]-?[0-9]{3,4}-?[0-9]{4}"
-                            placeholder="example@naver.com">
+                            placeholder="010-1234-5678">
+                    </div>
+                    <div class="edit-item full-width">
+                        <span class="edit-label">생년월일</span>
+                        <input type="date" name="birthday" th:value="${memberInfo.member.birthday}" class="edit-input" required>
                     </div>
                 </div>
 
@@ -187,7 +78,7 @@
 
                 <div class="action-btns">
                     <button type="submit" class="btn-submit">저장하기</button>
-                    <button type="button" class="btn-cancel" onclick="history.back()">취소</button>
+                    <button type="button" class="btn-cancel" th:onclick="|location.href='@{/mypage}'|">취소</button>
                 </div>
             </form>
         </div>

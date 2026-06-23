@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Beauminity - 피드</title>
 
+    <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}" />
+    <meta
+      th:if="${_csrf != null}"
+      name="_csrf_header"
+      th:content="${_csrf.headerName}"
+    />
+
     <link rel="stylesheet" th:href="@{/css/feed/feed.css}" />
     <link rel="stylesheet" th:href="@{/css/common/main.css}" />
 
@@ -142,7 +149,7 @@
       }
 
       .feed-like-btn.is-liked .feed-like-icon {
-        color: #111;
+        color: #111 !important;
       }
 
       .feed-comment-box {
@@ -260,13 +267,13 @@
                     <div class="feed-profile-tags">
                       <span
                         class="feed-profile-tag skin"
-                        th:text="${feed.skinType}"
+                        th:text="${feed.skinType != null ? feed.skinType : '피부타입'}"
                       >
                         피부타입
                       </span>
                       <span
                         class="feed-profile-tag color"
-                        th:text="${feed.personalColor}"
+                        th:text="${feed.personalColor != null ? feed.personalColor : '퍼스널컬러'}"
                       >
                         퍼스널컬러
                       </span>
@@ -324,10 +331,16 @@
                     <button
                       type="button"
                       class="feed-like-btn"
-                      data-liked="false"
+                      th:classappend="${feed.liked != null and feed.liked} ? ' is-liked' : ''"
+                      th:data-liked="${feed.liked != null ? feed.liked : false}"
                       th:data-like-count="${feed.likeCnt != null ? feed.likeCnt : 0}"
                     >
-                      <span class="feed-like-icon">♡</span>
+                      <span
+                        class="feed-like-icon"
+                        th:text="${feed.liked != null and feed.liked} ? '♥' : '♡'"
+                      >
+                        ♡
+                      </span>
                     </button>
 
                     <button

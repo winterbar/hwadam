@@ -5,6 +5,7 @@
 
 <mapper namespace="com.miles.beauminity.mapper.login.MemberProfileMapper">
 
+    <!-- 새로 가입한 회원의 프로필 사진 정보 최초 등록 -->
     <insert id="insertMemberProfile"
             parameterType="String">
 
@@ -13,6 +14,7 @@
 
     </insert>
 
+    <!-- 회원이 변경한 프로필 사진 이미지에 대한 정보 저장 -->
     <update id="updateMemberProfile"
             parameterType="com.miles.beauminity.vo.login.MyPageFileVO">
 
@@ -27,6 +29,7 @@
     
     </update>
 
+    <!-- 회원이 기본 프로필 사진으로 변경에 기존 프로필 사진 이미지 정보 삭제 -->
     <update id="resetMemberProfile"
             parameterType="String">
 
@@ -41,6 +44,7 @@
 
     </update>
 
+    <!-- 프로필 사진 이미지 정보 검색-->
     <select id="findMemberProfile"
             parameterType="String"
             resultType="com.miles.beauminity.vo.login.MyPageFileVO">

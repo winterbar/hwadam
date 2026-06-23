@@ -13,8 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.miles.beauminity.security.CustomUserDetails;
 import com.miles.beauminity.service.review_board.ReviewService;
+import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
 
 
 
@@ -88,7 +93,7 @@ public class ReviewController { // 역할: 후기 게시판에 대한 사용자�
         return "redirect:/board/review";  // 등록 완료 후 후기 게시판 목록 페이지로 리다이렉트 처리
     }
     
-    // 후기 게시판 리뷰 작성글 수정 요청 처리
+    // 후기 게시판 리뷰 작성글 수정 페이지 요청 처리
     @GetMapping("/board/review/edit/{boardId}")
     public String editReviewDetailPage(@PathVariable ("boardId") Long boardId,Principal principal, Model model) {
 
@@ -101,12 +106,31 @@ public class ReviewController { // 역할: 후기 게시판에 대한 사용자�
             return "redirect:/board/review/detail/" + boardId + "?error=unauthorized";
         }
 
+        List<MasterBoardFileVO> files = detail.getAttachedFiles();
+
         // 검증 통과한 사용자(게시글 작성한 본인)일 때만 수정 폼 화면으로 이동시키기
+        model.addAttribute("fileList", files);
         model.addAttribute("reviewForm",detail);
     
         
 
         return "review_board/edit"; // 수정 화면 HTML 파일명
+    }
+    
+    // 후기 게시판 리뷰 작성글 수정 요청 처리
+    @PostMapping("/board/review/edit/{id}")
+    public String reviewEditUpdate(
+            @PathVariable("id") Long id,
+            @ModelAttribute("reviewForm") ReviewBoardVO reviewForm) {
+
+        System.out.println("컨트롤러 진입 성공");
+        System.out.println("수정 대상 게시글 ID (path): " + id);
+        System.out.println("VO에서 꺼낸 boardId: " + reviewForm.getBoardId());
+
+        // 서비스 레이어로 파일 배열 정보와 게시글 수정 정보 토스
+        reviewService.updateReviewBoard(reviewForm);
+
+        return "redirect:/board/review/detail/" + id;
     }
     
 

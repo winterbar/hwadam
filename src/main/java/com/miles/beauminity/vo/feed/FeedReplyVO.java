@@ -10,4 +10,6 @@ public class FeedReplyVO {
     private String replyContent;
     private int likeCnt;
     private boolean deleted;
+    private String nickname;
+    private int replyCnt;
 }

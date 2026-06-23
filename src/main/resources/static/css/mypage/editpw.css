@@ -1,0 +1,105 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    font-family: sans-serif;
+}
+
+.pw-change-main {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1rem;
+}
+
+.pw-change-container {
+    width: 100%;
+    max-width: 450px;
+    background: #ffffff;
+    padding: 2.5rem;
+    border: 1px solid #e2e2e2;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.pw-change-title {
+    margin: 0 0 2rem 0;
+    font-size: 1.5rem;
+    color: #222;
+    text-align: center;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+}
+
+.label-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.input-field:focus {
+    border-color: #FA6E68;
+    outline: none;
+}
+
+.validation-msg {
+    font-size: 0.8rem;
+    height: 1rem;
+    margin-top: 0.2rem;
+    display: none;
+}
+
+.msg-match {
+    color: #27ae60;
+    display: block;
+}
+
+.msg-mismatch {
+    color: #FA6E68;
+    display: block;
+}
+
+.btn-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.btn {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.submit-btn {
+    background-color: #FA6E68;
+    color: white;
+}
+
+.submit-btn:disabled {
+    background-color: #d1d1d1;
+    cursor: not-allowed;
+}
+
+.cancel-btn {
+    background-color: #f0f0f0;
+    color: #555;
+}

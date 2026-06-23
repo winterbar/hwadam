@@ -40,6 +40,12 @@ public class MemberServiceImpl implements MemberService {
             return false;
         }
     }
+    
+    // 사용자가 입력한 비밀번호가 일치하는지 확인
+    @Override
+    public boolean findPassword(String username, String password) {
+        return passwordEncoder.matches(password, memberMapper.findPasswordById(username));
+    }
 
     // 새로운 회원 정보를 등록 (회원가입)
     // member 테이블엔 회원 정보, member_profile에는 프로필 사진 정보
@@ -65,6 +71,24 @@ public class MemberServiceImpl implements MemberService {
     private String convertLowerId(String username) {
         String converted_username = username.trim().toLowerCase();
         return converted_username;
+    }
+
+    // 사용자의 회원 정보 수정
+    @Override
+    public boolean updateMember(MemberVO memberVO) {
+        int updated = memberMapper.updateMember(memberVO);
+        return updated > 0;
+    }
+
+    // 사용자의 계정 비밀번호 수정
+    @Override
+    public boolean updatePassword(MemberVO memberVO) {
+        // 변경할 패스워드 암호화
+        if(memberVO.getPassword() != null) {
+            memberVO.setPassword(passwordEncoder.encode(memberVO.getPassword()));
+        }
+        int updated = memberMapper.updatePassword(memberVO);
+        return updated > 0;
     }
 
     // 사용자의 프로필 사진 수정
