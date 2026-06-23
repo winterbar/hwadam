@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>beauminity : 비밀번호 변경</title>
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage/editpw.css}">
+</head>
+<body>
+
+    <div th:replace="~{layout/header :: headerFragment}"></div>
+
+    <main class="pw-change-main">
+        <div class="pw-change-container">
+            <h2 class="pw-change-title">비밀번호 변경</h2>
+            
+            <form id="pwChangeForm" th:action="@{/mypage/edit/pw}" method="post">
+                
+                <div class="input-group">
+                    <span class="label-text">새 비밀번호</span>
+                    <input type="password" id="newPw" name="password" class="input-field" placeholder="새 비밀번호 입력" required>
+                </div>
+
+                <div class="input-group">
+                    <span class="label-text">비밀번호 확인</span>
+                    <input type="password" id="confirmPw" name="confirmPassword" class="input-field" placeholder="비밀번호 재입력" required>
+                    <div id="msg" class="validation-msg"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" id="saveBtn" class="btn submit-btn" disabled>변경하기</button>
+                    <button type="button" class="btn cancel-btn" th:onclick="|location.href='@{/mypage}'|">취소</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <div th:replace="~{layout/footer :: footerFragment}"></div>
+
+    <script th:src="@{/js/mypage/editpw.js}"></script>
+
+</body>
+</html>

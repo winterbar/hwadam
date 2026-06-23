@@ -26,6 +26,17 @@
         WHERE username = #{username}
     
     </select>
+
+    <!-- 회원의 비밀번호 검색 -->
+    <select id="findPasswordById"
+            parameterType="String"
+            resultType="String">
+
+        SELECT password
+        FROM member
+        WHERE username = #{username}
+
+    </select>
     
     <!-- 회원의 등급 이름 검색 -->
     <select id="findGradeName"
@@ -69,5 +80,34 @@
         )
 
     </insert>
+    
+    <!-- 회원 정보를 수정 (비밀번호 미포함) -->
+    <update id="updateMember"
+            parameterType="com.miles.beauminity.vo.login.MemberVO">
+
+        UPDATE member
+        SET
+            nickname = #{nickname},
+            name = #{name},
+            birthday = #{birthday},
+            gender = #{gender},
+            email = #{email},
+            phone = #{phone},
+            skin_type = #{skinType},
+            personal_color = #{personalColor}
+        WHERE username = #{username}
+
+    </update>
+
+    <!-- 비밀번호 수정 -->
+    <update id="updatePassword"
+            parameterType="com.miles.beauminity.vo.login.MemberVO">
+
+        UPDATE member
+        SET
+            password = #{password}
+        WHERE username = #{username}
+
+    </update>
 
 </mapper>
