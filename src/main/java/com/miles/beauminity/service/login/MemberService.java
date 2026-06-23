@@ -9,7 +9,10 @@ import com.miles.beauminity.vo.login.MyPageVO;
 public interface MemberService {
     public boolean findMember(String username);
     public void registerMember(MemberVO memberVO);
+    public boolean updateMember(MemberVO memberVO);
+    public boolean updatePassword(MemberVO memberVO);
     public MyPageVO getMemberInfo(String username);
     public void updateMemberProfile(CustomUserDetails loginMember, MultipartFile file);
     public void resetMemberProfile(String username);
+    public boolean findPassword(String username, String password);
 }

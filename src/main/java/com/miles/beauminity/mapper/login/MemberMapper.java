@@ -8,6 +8,9 @@ import com.miles.beauminity.vo.login.MemberVO;
 public interface MemberMapper {
     public long findMemberById(String username);
     public void insertMember(MemberVO memberVO);
+    public int updateMember(MemberVO memberVO);
+    public int updatePassword(MemberVO memberVO);
     public MemberVO findLoginId(String username);
     public String findGradeName(String gradeId);
+    public String findPasswordById(String username);
 }
