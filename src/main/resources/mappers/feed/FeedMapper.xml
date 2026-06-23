@@ -13,7 +13,6 @@
         insert into feed (
             username,
             feed_content,
-            like_cnt,
             reply_cnt,
             created_at,
             edited_at,
@@ -22,7 +21,6 @@
         values (
             #{username},
             #{feedContent},
-            #{likeCnt},
             #{replyCnt},
             NOW(),
             NOW(),
@@ -31,23 +29,54 @@
     </insert>
     <!-- 피드 내용 전체 가져오기-->
     <select id="getFeedList"
-            parameterType="com.miles.beauminity.vo.feed.FeedVO"
-            resultType="com.miles.beauminity.vo.feed.FeedVO">
-        select feed_id, 
-               f.username, 
-               feed_content,
-               like_cnt,
-               reply_cnt,
-               created_at,
-               nickname,
-               skin_type,
-               personal_color
+        parameterType="string"
+        resultType="com.miles.beauminity.vo.feed.FeedVO">
 
-        from feed f
-        join member m
-            on f.username = m.username
-        where deleted=0
-        order by created_at desc
+    select
+        f.feed_id,
+        f.username,
+        f.feed_content,
+        f.created_at,
+        m.nickname,
+        m.skin_type,
+        m.personal_color,
+        count(fl_all.like_id) AS likeCnt,
+        
+        case
+            when fl_me.like_id is null then false
+            else true
+        end as liked
+
+    from feed f
+
+    join member m
+        on f.username = m.username
+
+    left join feed_reply fr
+        on f.feed_id = fr.feed_id
+
+    left join feed_like fl_all
+        on f.feed_id = fl_all.feed_id
+
+    left join feed_like fl_me
+        on f.feed_id = fl_me.feed_id
+       and fl_me.username = #{username}
+
+    where f.deleted = 0 and m.deleted=0
+
+    group by
+        f.feed_id,
+        f.username,
+        f.feed_content,
+        f.created_at,
+        f.deleted,
+        m.nickname,
+        m.skin_type,
+        m.personal_color,
+        fl_me.like_id
+
+    order by f.feed_id desc
+
     </select>
     
     <!-- 특정 피드 데이터 불러오기-->
@@ -83,6 +112,42 @@
         set feed_content = #{feedContent}
         where feed_id=#{feedId}
     </update>
+    
+    <!-- 좋아요 짝수번 클릭 시 제거 -->
+    <delete id="cancleLikeCnt"
+            parameterType="com.miles.beauminity.vo.feed.FeedLikeVO">
+        delete from feed_like 
+        where feed_id=#{feedId} and username=#{username}
+    </delete>
+
+     <!-- 좋아요 홀수번 클릭 시 증가-->
+    <insert id="increaseLikeCnt"
+            parameterType="com.miles.beauminity.vo.feed.FeedLikeVO"
+            keyProperty="likeId">
+
+        insert into feed_like(
+            like_id,
+            feed_id,
+            username
+        )
+        values (
+            #{likeId},
+            #{feedId},
+            #{username}
+        )
+    </insert>
+
+    
+    <!-- 좋아요 개수 가져오기 -->
+    <select id="getLikeCnt"
+            parameterType="long"
+            resultType="int">
+        select count(*)
+        from feed_like
+        where feed_id=#{feedId}
+    </select>
+
+    <!-- 댓글 DB에 저장 -->
     <insert id="postReply"
             parameterType="com.miles.beauminity.vo.feed.FeedReplyVO">
         insert into feed_reply(
@@ -90,7 +155,6 @@
             feed_id,
             username,
             reply_content,
-            like_cnt,
             deleted
         )
         values(
@@ -98,9 +162,31 @@
             #{feedId},
             #{username},
             #{replyContent},
-            #{likeCnt},
             #{deleted}
         )
     </insert>
+    <select id="getReply"
+            parameterType="com.miles.beauminity.vo.feed.FeedReplyVO"
+            resultType="com.miles.beauminity.vo.feed.FeedReplyVO">
+        select m.nickname, fr.reply_content
+        from feed_reply fr
+        join member m
+        on fr.username = m.username 
+        where fr.feed_id=#{feedId}
+            and fr.deleted=0
+            and m.deleted=0
+        order by fr.reply_id asc
+    </select>
+    <select id="getFeedReplyList"
+            parameterType="long"
+            resultType="com.miles.beauminity.vo.feed.FeedReplyVO">
+        select m.nickname, fr.reply_content
+        from feed_reply fr
+        join member m
+            on fr.username = m.username
+        where fr.deleted=0
+            and m.deleted=0
+        order by fr.reply_id asc
+    </select>
 
 </mapper>

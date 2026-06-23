@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/common/main.css}">
     <link rel="stylesheet" th:href="@{/css/review_board/review_common.css}">
     <link rel="stylesheet" th:href="@{/css/review_board/review_detail.css}">
-    <link rel="stylesheet" th:href="@{/css/review_board/reivew_edit.css}">
+    <link rel="stylesheet" th:href="@{/css/review_board/review_edit.css}">
 
 </head>
 
@@ -16,7 +16,11 @@
 <body>
 
     <main>
-        <form th:action="@{/board/review/edit/{id}(id=${reviewForm.boardId})}" th:object="${reviewForm}" method="post" class="detail-container">
+        <form th:action="@{/board/review/edit/{id}(id=${reviewForm.boardId})}" 
+            th:object="${reviewForm}" 
+            method="post"
+            enctype="multipart/form-data" 
+            class="detail-container">
             
             <input type="hidden" th:field="*{boardId}" />
 
@@ -25,8 +29,8 @@
             </div>
 
             <div class="detail-header">
-                <div class="detail-title-row" style="margin-bottom: 1rem;">
-                    <input type="text" th:field="*{title}" class="edit-input-text" style="font-weight: bold; font-size: 1.4rem;" placeholder="제목을 입력하세요." required />
+                <div class="detail-title-row" style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+                    <input type="text" th:field="*{title}" class="borderless-input" style="font-weight: bold; font-size: 1.6rem;" placeholder="제목을 입력하세요." required />
                 </div>
                 <div class="detail-meta-row">
                     <div>
@@ -48,19 +52,33 @@
                 </div>
             </div>
 
+
             <div style="margin-bottom: 2rem;">
                 <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.5rem;">리뷰 내용 수정</label>
-                <textarea th:field="*{content}" class="edit-textarea" placeholder="솔직한 실사용 후기를 작성해 주세요." required></textarea>
+                <textarea th:field="*{content}" class="borderless-input edit-textarea-custom" placeholder="솔직한 실사용 후기를 작성해 주세요." required></textarea>
             </div>
 
             <div class="attached-images-grid" style="margin-bottom: 2.5rem;">
-                <div class="image-item-box">
-                    <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">업로드한 이미지1</span>
-                    <div style="color: var(--text-muted); padding: 2rem 0; font-size: 0.85rem; font-weight: 600;">이미지 변경 기능 (추후 구현)</div>
-                </div>
-                <div class="image-item-box">
-                    <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">업로드한 이미지2</span>
-                    <div style="color: var(--text-muted); padding: 2rem 0; font-size: 0.85rem; font-weight: 600;">이미지 변경 기능 (추후 구현)</div>
+                <div class="image-item-box drop-zone" 
+                    th:each="file, status : ${fileList}"
+                    style="margin-bottom: 1.5rem;
+                    border: 1px solid var(--border-color);
+                    padding: 1rem; border-radius: 6px; position: relative;">
+                    <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem; font-weight: bold;">
+                        기존 업로드 이미지 <span th:text="${status.count}">1</span>
+                    </span>
+                    
+                    <div class="current-image-preview" style="width: 150px; height: 150px; border: 1px solid #eee; overflow: hidden; margin-bottom: 0.5rem; background-color: #f9f9f9; display: flex; align-items: center; justify-content: center;">
+                        <img th:src="@{/upload/review/{name}(name=${file.savedName})}" alt="기존 이미지" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+
+                    <input type="hidden" name="existingFileIds" th:value="${file.fileId}" />
+
+                    <input type="file" name="reviewFiles" class="file-input" accept="image/*" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;" />
+                    
+                    <div class="drop-zone-text" style="color: #888; font-size: 0.75rem; margin-top: 0.3rem;">
+                        ※ 이 이미지를 변경하려면 새 파일을 선택하거나 **여기에 이미지를 드래그하세요.**
+                    </div>
                 </div>
             </div>
 
@@ -91,3 +109,59 @@
 <div th:replace="~{layout/footer :: footer}"></div>
 
 </html>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 페이지 내 모든 drop-zone 요소를 수집
+        const dropZones =document.querySelectorAll('.image-item-box.drop-zone');
+
+        dropZones.forEach(zone => {
+            const fileInput = zone.querySelector('.file-input');
+
+            // 1. 브라우저 기본 이벤트(파일 열기) 방지 루틴 통합
+            ['dragenter','dragover','dragleave','drop'].forEach(eventName => {
+                zone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, false);
+            });
+
+            // 2. 드래그 오버 시 시각적 효과 부여
+            ['dragenter','dragover'].forEach(eventName => {
+                zone.addEventListener(eventName, () => {
+                    zone.classList.add('drag-over');
+                }, false);
+            })
+
+            // 3. 드래그 이탈/종류 시 시각적 효과 제거
+            ['dragleave','drop'].forEach(eventName => {
+                zone.addEventListener(eventName, () => {
+                    zone.classList.remove('drag-over');
+                }, false);
+            })
+
+            // 4. 드롭 이벤트 발생 시 파일 데이터 가공 및 인풋 이식
+            zone.addEventListener('drop', (e) => {
+                const dt = e.dataTraansfer;
+                const files = dt.files;
+
+               if (files && files.length > 0) {
+                    // 이미지 파일 확장자만 허용 검증
+                    if (files[0].type.startsWith('image/')) {
+                        
+                        // 핵심: input 태그의 files 속성에 드롭된 파일 객체 이식
+                        fileInput.files = files;
+
+                        // (옵션) 선택한 파일이 바뀐 것을 사용자가 알 수 있도록 화면에 파일명 표시 또는 예시 동작 호출
+                        const textNode = zone.querySelector('.drop-zone-text');
+                        textNode.innerHTML = `<span style="color:blue; font-weight:bold;">선택된 파일: ${files[0].name}</span>`;
+                        
+                        // 기존에 정의된 브라우저 기본 input 디자인 규칙에 따라 파일 선택창 우측 문구도 동기화됩니다.
+                    } else {
+                        alert("이미지 파일만 업로드 가능합니다.");
+                    }
+                }
+            })
+        })
+    })
+</script>

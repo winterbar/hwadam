@@ -1,7 +1,9 @@
 package com.miles.beauminity.controller.feed;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,14 +11,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.miles.beauminity.mapper.feed.FeedMapper;
 import com.miles.beauminity.service.feed.FeedService;
+import com.miles.beauminity.vo.feed.FeedLikeVO;
 import com.miles.beauminity.vo.feed.FeedReplyVO;
 import com.miles.beauminity.vo.feed.FeedVO;
 
 import lombok.AllArgsConstructor;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @AllArgsConstructor
@@ -25,11 +31,17 @@ public class FeedController {
 
     // 피드 버튼 눌렀을때 화면 호출
     @GetMapping("/feed")
-    public String getMainFeed(Model model) {
+    public String getMainFeed(Model model, Principal principal) {
+        String username = null;
+        if (principal != null) {
+            username = principal.getName();
+        }
+
         // 작성된 피드 리스트로 가져와서 화면 띄우기
-        List<FeedVO> feedList = feedService.getFeedList();
+        List<FeedVO> feedList = feedService.getFeedList(username);
         // 저장되어있는 전체 태그 리스트로 가져와서 화면 띄우기
         List<String> tagList = feedService.getTagNameList();
+
         model.addAttribute("tagList", tagList);
         model.addAttribute("feedList", feedList);
 
@@ -100,13 +112,31 @@ public class FeedController {
         return "redirect:/feed";
     }
 
+    // 작성한 댓글 DB에 저장
     @PostMapping("/feed/{feedId}/reply")
-    public String postReply(@PathVariable("feedId") Long feedId, FeedReplyVO feedReplyVO,
+    @ResponseBody
+    public List<FeedReplyVO> postReply(@PathVariable("feedId") Long feedId, FeedReplyVO feedReplyVO,
             Principal principal) {
         String username = principal.getName();
         feedReplyVO.setUsername(username);
         feedReplyVO.setFeedId(feedId);
-        feedService.postReply(feedReplyVO);
-        return "redirect:/feed";
+
+        return feedService.getFeedReply(feedReplyVO);
     }
+
+    @PostMapping("/feed/{feedId}/like")
+    @ResponseBody // 메서드 반환 값을 http 응답 본문에 직접 담아 클라이언트 전송
+    public int getFeedLike(@PathVariable("feedId") Long feedId,
+            FeedLikeVO feedLikeVO,
+            @RequestParam("liked") boolean liked,
+            Principal principal) {
+        String username = principal.getName();
+        feedLikeVO.setUsername(username);
+        feedLikeVO.setFeedId(feedId);
+
+        // 좋아요 개수 가져오기
+        int like_cnt = feedService.getFeedLike(liked, feedLikeVO);
+        return like_cnt;
+    }
+
 }

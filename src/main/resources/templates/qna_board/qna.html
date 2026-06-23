@@ -25,10 +25,12 @@
                 
                 <div class="board-utility">
                     <div class="filter-group">
-                        <select name="status" id="filter-status">
-                            <option value="all">전체 상태</option>
-                            <option value="pending">답변 대기</option>
-                            <option value="resolved">답변 완료</option>
+                        <select id="filter-status" name="category" required>
+                            <option value="all" selected>전체보기</option>
+                            <option value="beginner">입문</option>
+                            <option value="compare">비교</option>
+                            <option value="help">도움요청</option>
+                            <option value="etc">기타</option>
                         </select>
                         <select name="sort" id="filter-sort">
                             <option value="latest">최신순</option>
@@ -48,7 +50,7 @@
                             <th class="col-hits">조회</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="board-list-container">
                         <tr th:each="qna, stat : ${qnaS}">
                             <td class="col-num" th:text="${qna.boardId}"></td>
                             <td class="col-product" style="color: var(--color-accent); font-weight: 800;">[답변대기]</td>
@@ -99,7 +101,7 @@
                 </table>
 
                 <div class="board-footer">
-                    <div class="pagination">
+                    <div class="pagination" id="pagination-container">
                         <li>
                             <a th:if="${pageVO.prev}" th:href="@{qna(page=${pageVO.startPage-1})}">←</a>
                         </li>
@@ -135,4 +137,5 @@
     <div th:replace="~{layout/footer :: footerFragment}"></div>
 
 </body>
+<script th:src="@{/js/qna/qna_filter.js}"></script>
 </html>
