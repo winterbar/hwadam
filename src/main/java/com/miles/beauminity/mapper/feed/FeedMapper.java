@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.miles.beauminity.vo.feed.FeedLikeVO;
 import com.miles.beauminity.vo.feed.FeedReplyVO;
 import com.miles.beauminity.vo.feed.FeedVO;
 
@@ -11,11 +12,13 @@ import com.miles.beauminity.vo.feed.FeedVO;
 public interface FeedMapper {
     void postFeed(FeedVO feedVO);
 
-    List<FeedVO> getFeedList();
+    List<FeedVO> getFeedList(String username);
 
     List<String> getFeedTagList(Long feedId);
 
     List<String> getFeedFileList(Long feedId);
+
+    List<String> getFeedReplyList(Long feedId);
 
     FeedVO loadFeedData(Long feedId);
 
@@ -28,4 +31,12 @@ public interface FeedMapper {
     void updateFeed(FeedVO feedVO);
 
     void postReply(FeedReplyVO feedReplyVO);
+
+    void cancleLikeCnt(FeedLikeVO feedLikeVO);
+
+    void increaseLikeCnt(FeedLikeVO feedLikeVO);
+
+    int getLikeCnt(FeedLikeVO feedLikeVO);
+
+    List<FeedReplyVO> getReply(FeedReplyVO feedReplyVO);
 }

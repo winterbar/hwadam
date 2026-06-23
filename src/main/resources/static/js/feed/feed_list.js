@@ -10,12 +10,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const csrfToken = document.querySelector('meta[name="_csrf"]');
         const csrfHeader = document.querySelector('meta[name="_csrf_header"]');
 
-        const headers = {
-            'Content-Type': 'application/json'
-        };
+        const headers = {};
 
         if (csrfToken && csrfHeader) {
-            headers[csrfHeader.getAttribute('content')] = csrfToken.getAttribute('content');
+            headers[csrfHeader.getAttribute('content')] =
+                csrfToken.getAttribute('content');
         }
 
         return headers;
@@ -257,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // 좋아요 버튼 기능 - 서버 요청 + 하트 변경 + 카운트 변경
+    // 좋아요 버튼 기능
     function initLikeButtons() {
         document.querySelectorAll('.feed-like-btn').forEach(function (button) {
             const icon = button.querySelector('.feed-like-icon');
@@ -269,10 +268,23 @@ document.addEventListener('DOMContentLoaded', function () {
             let liked = button.dataset.liked === 'true';
             let count = Number(button.dataset.likeCount || 0);
 
+            if (Number.isNaN(count)) {
+                count = 0;
+            }
+
             applyLikeUI(liked, count);
 
             button.addEventListener('click', function () {
                 if (isRequesting) return;
+
+                const loginUsername = document.body.dataset.loginUsername
+                    ? document.body.dataset.loginUsername.trim()
+                    : '';
+
+                if (!loginUsername || loginUsername === 'anonymousUser') {
+                    alert('로그인 후 좋아요를 누를 수 있습니다.');
+                    return;
+                }
 
                 const feedId = card ? card.dataset.feedId : null;
 
@@ -281,9 +293,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
                 }
 
+                const currentLiked = button.dataset.liked === 'true';
+
                 isRequesting = true;
 
-                fetch('/feed/' + feedId + '/like', {
+                fetch('/feed/' + feedId + '/like?liked=' + currentLiked, {
                     method: 'POST',
                     headers: getCsrfHeaders()
                 })
@@ -298,13 +312,19 @@ document.addEventListener('DOMContentLoaded', function () {
                             throw new Error('like request failed');
                         }
 
-                        return response.json();
+                        return response.text();
                     })
-                    .then(function (data) {
-                        const serverLiked = data.liked === true || data.liked === 'true';
-                        const serverLikeCount = Number(data.likeCount || 0);
+                    .then(function (likeCountText) {
+                        const newLikeCount = Number(likeCountText);
 
-                        applyLikeUI(serverLiked, serverLikeCount);
+                        if (Number.isNaN(newLikeCount)) {
+                            alert('좋아요 개수를 제대로 받아오지 못했습니다.');
+                            return;
+                        }
+
+                        const newLiked = !currentLiked;
+
+                        applyLikeUI(newLiked, newLikeCount);
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -315,6 +335,10 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             function applyLikeUI(isLiked, likeCount) {
+                if (Number.isNaN(likeCount)) {
+                    likeCount = 0;
+                }
+
                 button.dataset.liked = isLiked ? 'true' : 'false';
                 button.dataset.likeCount = likeCount;
 
@@ -341,49 +365,181 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // 댓글 영역 열고 닫기 기능
-    function initCommentArea() {
-        document.querySelectorAll('.feed-card').forEach(function (card) {
-            const commentToggleBtn = card.querySelector('.feed-comment-toggle-btn');
-            const commentBox = card.querySelector('.feed-comment-box');
-            const commentListBtn = card.querySelector('.feed-comment-count');
-            const commentList = card.querySelector('.feed-comment-list');
+    // 댓글 영역 열고 닫기 + 댓글 작성 후 화면에 바로 추가
+    // 댓글 영역 열고 닫기 + 빈 댓글 방지
+// 댓글 영역 열고 닫기 + 댓글 작성 후 새로고침 없이 댓글 목록 갱신
+function initCommentArea() {
+    document.querySelectorAll('.feed-card').forEach(function (card) {
+        const commentToggleBtn = card.querySelector('.feed-comment-toggle-btn');
+        const commentBox = card.querySelector('.feed-comment-box');
+        const commentListBtn = card.querySelector('.feed-comment-count');
+        const commentList = card.querySelector('.feed-comment-list');
+        const commentForm = card.querySelector('.feed-comment-form');
+        const commentInput = commentForm ? commentForm.querySelector('input[name="replyContent"]') : null;
 
-            const commentCount = Number(
-                commentListBtn ? commentListBtn.dataset.commentCount || 0 : 0
-            );
+        let commentCount = Number(
+            commentListBtn ? commentListBtn.dataset.commentCount || 0 : 0
+        );
 
-            if (commentListBtn) {
+        if (Number.isNaN(commentCount)) {
+            commentCount = 0;
+        }
+
+        updateCommentCountText(false);
+
+        if (commentBox) {
+            commentBox.style.display = 'none';
+        }
+
+        if (commentList) {
+            commentList.style.display = 'none';
+        }
+
+        if (commentToggleBtn && commentBox) {
+            commentToggleBtn.addEventListener('click', function () {
+                const isOpen = commentBox.style.display === 'flex';
+                commentBox.style.display = isOpen ? 'none' : 'flex';
+
+                if (!isOpen && commentInput) {
+                    commentInput.focus();
+                }
+            });
+        }
+
+        if (commentListBtn && commentList) {
+            commentListBtn.addEventListener('click', function () {
+                const isOpen = commentList.style.display === 'block';
+
+                commentList.style.display = isOpen ? 'none' : 'block';
+                updateCommentCountText(!isOpen);
+            });
+        }
+
+        if (commentForm && commentInput) {
+            commentForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const loginUsername = document.body.dataset.loginUsername
+                    ? document.body.dataset.loginUsername.trim()
+                    : '';
+
+                if (!loginUsername || loginUsername === 'anonymousUser') {
+                    alert('로그인 후 댓글을 작성할 수 있습니다.');
+                    return;
+                }
+
+                const value = commentInput.value.trim();
+
+                if (!value) {
+                    alert('댓글 내용을 입력해주세요.');
+                    commentInput.focus();
+                    return;
+                }
+
+                const action = commentForm.getAttribute('action');
+
+                if (!action) {
+                    alert('댓글 등록 주소를 찾을 수 없습니다.');
+                    return;
+                }
+
+                const formData = new FormData(commentForm);
+
+                fetch(action, {
+                    method: 'POST',
+                    headers: getCsrfHeaders(),
+                    body: formData
+                })
+                    .then(function (response) {
+                        if (response.status === 401 || response.status === 403) {
+                            alert('로그인 후 댓글을 작성할 수 있습니다.');
+                            throw new Error('login required');
+                        }
+
+                        if (!response.ok) {
+                            alert('댓글 등록 중 오류가 발생했습니다.');
+                            throw new Error('reply request failed');
+                        }
+
+                        return response.json();
+                    })
+                    .then(function (replyList) {
+                        renderReplyList(replyList);
+
+                        commentInput.value = '';
+
+                        commentCount = Array.isArray(replyList) ? replyList.length : 0;
+
+                        if (commentListBtn) {
+                            commentListBtn.dataset.commentCount = commentCount;
+                        }
+
+                        if (commentList) {
+                            commentList.style.display = 'block';
+                        }
+
+                        updateCommentCountText(true);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            });
+        }
+
+        function renderReplyList(replyList) {
+            if (!commentList) return;
+
+            commentList.innerHTML = '';
+
+            if (!Array.isArray(replyList) || replyList.length === 0) {
+                const emptyItem = document.createElement('div');
+                emptyItem.className = 'feed-comment-item feed-comment-empty';
+
+                const emptyText = document.createElement('span');
+                emptyText.textContent = '아직 등록된 댓글이 없습니다.';
+
+                emptyItem.appendChild(emptyText);
+                commentList.appendChild(emptyItem);
+
+                return;
+            }
+
+            replyList.forEach(function (reply) {
+                const commentItem = document.createElement('div');
+                commentItem.className = 'feed-comment-item';
+
+                const writerEl = document.createElement('strong');
+                writerEl.className = 'feed-comment-writer';
+
+                const writerName = reply.nickname && reply.nickname.trim() !== ''
+                    ? reply.nickname
+                    : reply.username;
+
+                writerEl.textContent = writerName || '회원';
+
+                const contentEl = document.createElement('span');
+                contentEl.className = 'feed-comment-content';
+                contentEl.textContent = reply.replyContent || '';
+
+                commentItem.appendChild(writerEl);
+                commentItem.appendChild(document.createTextNode(' '));
+                commentItem.appendChild(contentEl);
+
+                commentList.appendChild(commentItem);
+            });
+        }
+
+        function updateCommentCountText(isOpen) {
+            if (!commentListBtn) return;
+
+            if (isOpen) {
+                commentListBtn.textContent = '댓글 접기';
+            } else {
                 commentListBtn.textContent = '댓글 ' + commentCount + '개 모두 보기';
             }
-
-            if (commentBox) {
-                commentBox.style.display = 'none';
-            }
-
-            if (commentList) {
-                commentList.style.display = 'none';
-            }
-
-            if (commentToggleBtn && commentBox) {
-                commentToggleBtn.addEventListener('click', function () {
-                    const isOpen = commentBox.style.display === 'flex';
-                    commentBox.style.display = isOpen ? 'none' : 'flex';
-                });
-            }
-
-            if (commentListBtn && commentList) {
-                commentListBtn.addEventListener('click', function () {
-                    const isOpen = commentList.style.display === 'block';
-
-                    commentList.style.display = isOpen ? 'none' : 'block';
-                    commentListBtn.textContent = isOpen
-                        ? '댓글 ' + commentCount + '개 모두 보기'
-                        : '댓글 접기';
-                });
-            }
-        });
-    }
+        }
+    });
+}
 
     // 피드 안에 해시태그 버튼 클릭 기능
     function initHashtagButtons() {
@@ -554,5 +710,4 @@ document.addEventListener('DOMContentLoaded', function () {
             applyFilter(event.target.dataset.tag);
         });
     }
-    
 });

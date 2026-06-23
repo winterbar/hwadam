@@ -11,6 +11,7 @@ import com.miles.beauminity.mapper.feed.FeedMapper;
 import com.miles.beauminity.mapper.feed.TagMapper;
 import com.miles.beauminity.util.FileUploadUtil;
 import com.miles.beauminity.vo.feed.FeedFileVO;
+import com.miles.beauminity.vo.feed.FeedLikeVO;
 import com.miles.beauminity.vo.feed.FeedReplyVO;
 import com.miles.beauminity.vo.feed.FeedVO;
 import com.miles.beauminity.vo.feed.TagVO;
@@ -57,8 +58,8 @@ public class FeedServiceImpl implements FeedService {
 
     // 작성된 피드 가져오기
     @Override
-    public List<FeedVO> getFeedList() {
-        List<FeedVO> feedList = feedMapper.getFeedList();
+    public List<FeedVO> getFeedList(String username) {
+        List<FeedVO> feedList = feedMapper.getFeedList(username);
         // 특정 피드에 작성된 해시태그 가져오기
         // 피드 전체 길이 만큼 반복
         for (FeedVO feed : feedList) {
@@ -66,6 +67,8 @@ public class FeedServiceImpl implements FeedService {
             List<String> feedTagList = tagMapper.getFeedTagList(feed.getFeedId());
             // 특정 피드 아이디에 해당하는 사진 가져와서 리스트로 저장
             List<String> feedFileList = feedFileMapper.getFeedFileList(feed.getFeedId());
+            List<String> feedReplyList = feedMapper.getFeedReplyList(feed.getFeedId());
+            feed.setFeedReplyList(feedReplyList);
             feed.setFeedFileList(feedFileList);
             feed.setFeedTagList(feedTagList);
         }
@@ -150,8 +153,22 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public void postReply(FeedReplyVO feedReplyVO) {
+    public int getFeedLike(Boolean liked, FeedLikeVO feedLikeVO) {
+        if (liked) {
+            // 좋아요 누르고 한번 더 누를 경우
+            feedMapper.cancleLikeCnt(feedLikeVO);
+        } else {
+            // 좋아요 한번 눌렀을 경우
+            feedMapper.increaseLikeCnt(feedLikeVO);
+        }
+        return feedMapper.getLikeCnt(feedLikeVO);
+
+    }
+
+    @Override
+    public List<FeedReplyVO> getFeedReply(FeedReplyVO feedReplyVO) {
         feedMapper.postReply(feedReplyVO);
+        return feedMapper.getReply(feedReplyVO);
     }
 
 }
