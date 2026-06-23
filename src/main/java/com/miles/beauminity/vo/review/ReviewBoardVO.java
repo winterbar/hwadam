@@ -35,7 +35,10 @@ public class ReviewBoardVO {
     private String category2;                   // 소분류
 
     // 다수의 파일 수신용 (DB 입력용)
-    private List<MultipartFile> reviewFiles;       // 이미지 첨부 파일
+    private List<MultipartFile> reviewFiles;       // 이미지 첨부 파일  html name="reviewFiles"와 매칭
+
+    // 수정 시 화면에서 넘어올 기존 파일 Id 목록 수신용     html name="existingFileIds"와 매칭
+    private List<Long> existingFileIds;
 
     // 컨트롤러에 넘길 파일 목록 (화면 출력용)
     private List<MasterBoardFileVO> attachedFiles;

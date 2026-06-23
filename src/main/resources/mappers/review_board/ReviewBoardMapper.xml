@@ -78,19 +78,19 @@
             WHERE m.board_id = #{boardId}
     </select>
 
-    <select id="selectFilesByBoardId" 
-            parameterType="long" 
-            resultType="com.miles.beauminity.vo.board.MasterBoardFileVO">
-        SELECT 
-            board_id,
-            file_id,
-            original_name,
-            saved_name,
-            file_path,
-            file_type,
-            file_size
-        FROM board_file
-        where board_id = #{boardId}
-    </select>
+    <update id="updateReviewBoardFile" 
+            parameterType="com.miles.beauminity.vo.board.MasterBoardFileVO">
+        UPDATE board_file
+        SET
+            original_name = #{originalName},
+            saved_name = #{savedName},
+            file_path = #{filePath},
+            file_type = #{fileType},
+            file_size = #{fileSize}
+        WHERE
+            file_id = #{fileId}
+    </update>
+
+ 
             
 </mapper>
