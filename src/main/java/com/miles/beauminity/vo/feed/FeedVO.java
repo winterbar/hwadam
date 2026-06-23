@@ -21,8 +21,10 @@ public class FeedVO {
     private String infoLink;
     private List<String> feedTagList;
     private List<String> feedFileList;
+    private List<String> feedReplyList;
     private String skinType;
     private String personalColor;
     private String nickname;
+    private boolean liked;
 
 }
