@@ -58,18 +58,19 @@
                                 <td class="col-category" th:text="${board.category1} + '/' + ${board.category2}"></td>
                                 <td>
                                     <a th:href="@{/board/review/detail/{id}(id=${board.boardId})}" 
-                                       class="col-title" 
-                                       th:text="${board.title}"
-                                       style="display: block; font-weight: bold; margin-bottom: 4px;">
-                                       올리브영 세일 때 쟁여야 할 지성 선크림 3종 솔직 비교
+                                    class="col-title" 
+                                    style="display: inline-block; font-weight: bold; margin-bottom: 4px; vertical-align: middle;">
+                                        
+                                        <span th:text="${board.title}">올리브영 세일 때 쟁여야 할 지성 선크림 3종 솔직 비교</span>
+                                        
+                                        <span class="reply-count" th:text="'[' + ${board.replyCnt} + ']'" style="color: #ff4d4f; margin-left: 5px;">[0]</span>
+                                        
                                     </a>
+                                    
                                     <span class="selected-product-name" 
                                         th:text="'선택 제품: ' + ${board.productName}"
                                         style="font-size: 0.85em; color: #666; display: block; margin-bottom: 6px;">
                                     </span>
-                                    <span class="rating-stars">★★★★★</span>
-                                    <span style="font-size: 0.85em; color: #666; margin-left: 8px;">댓글 수</span>
-                                    <span class="reply-count" th:text="'[' + ${board.replyCnt} + ']'">[0]</span>
                                 </td>
                                 <td class="col-writer" th:text="${board.nickName}">올영단골</td>
                                 <td class="col-date" th:text="${#temporals.format(board.createdAt, 'MM-dd')}">06-15</td>

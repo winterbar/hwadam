@@ -23,11 +23,13 @@
                     </div>
                     <div class="edit-item">
                         <span class="edit-label">닉네임</span>
-                        <input type="text" name="nickname" th:value="${memberInfo.member.nickname}" class="edit-input" placeholder="이름 (10자 이하)" required>
+                        <input type="text" name="nickname" th:value="${memberInfo.member.nickname}" class="edit-input"
+                               maxlength="12" placeholder="닉네임 (12자 이하)" required>
                     </div>
                     <div class="edit-item">
                         <span class="edit-label">이름</span>
-                        <input type="text" name="name" th:value="${memberInfo.member.name}" class="edit-input" placeholder="닉네임 (12자 이하)" required>
+                        <input type="text" name="name" th:value="${memberInfo.member.name}" class="edit-input"
+                                maxlength="10" placeholder="이름 (10자 이하)" required>
                     </div>
                     <div class="edit-item">
                         <span class="edit-label">성별</span>

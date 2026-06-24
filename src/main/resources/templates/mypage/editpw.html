@@ -18,12 +18,14 @@
                 
                 <div class="input-group">
                     <span class="label-text">새 비밀번호</span>
-                    <input type="password" id="newPw" name="password" class="input-field" placeholder="새 비밀번호 입력" required>
+                    <input type="password" id="newPw" name="password" class="input-field"
+                            minlength="8" placeholder="새 비밀번호 입력 (8자 이상)" required>
                 </div>
 
                 <div class="input-group">
                     <span class="label-text">비밀번호 확인</span>
-                    <input type="password" id="confirmPw" name="confirmPassword" class="input-field" placeholder="비밀번호 재입력" required>
+                    <input type="password" id="confirmPw" name="confirmPassword" class="input-field"
+                            minlength="8" placeholder="비밀번호 재입력" required>
                     <div id="msg" class="validation-msg"></div>
                 </div>
 

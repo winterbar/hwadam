@@ -3,6 +3,7 @@ package com.miles.beauminity.controller.review_board;
 import java.security.Principal;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +16,9 @@ import com.miles.beauminity.security.CustomUserDetails;
 import com.miles.beauminity.service.review_board.ReviewService;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
+
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 
 
@@ -132,6 +132,25 @@ public class ReviewController { // 역할: 후기 게시판에 대한 사용자�
 
         return "redirect:/board/review/detail/" + id;
     }
+
+    // 후기 게시판 리뷰 작성글 삭제 요청 처리
+    @PostMapping("/board/review/delete/{boardId}")
+    public String deleteReview(@PathVariable("boardId") Long boardId, Principal principal ) {
+        
+        // 1. 서비스 호출을 통해 후기 상세 데이터 가져오기 (작성자 ID 확인용)
+        ReviewBoardVO detail = reviewService.getReviewBoardDetail(boardId);
+
+        // 2. 비로그인 상태이거나 로그인한 ID와 게시글 작성자 Id가 다를 경우 권한 에러 처리
+        if (principal == null || !principal.getName().equals(detail.getUserName())) {
+            // 비동기 fetch 통신이므로 redirect가 아닌 403 Forbidden 상태코드를 보냅니다.
+            return "redirect:/error/403";
+        }
+        // 3. 검증 통과한 사용자(게시글 작성한 본인)일 때만 실제 삭제 서비스 호출
+        reviewService.delectReviewBoard(boardId); // 실제 DB에서 글을 지우는 서비스
+
+        return "redirect:/board/review";
+    }
+    
     
 
 }

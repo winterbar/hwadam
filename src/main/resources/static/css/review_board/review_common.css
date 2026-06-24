@@ -103,6 +103,7 @@
     font-size: 0.9rem;
     border-bottom: 1px solid var(--border-row);
     transition: border-color 0.3s;
+    vertical-align: middle;
 }
 
 .board-table tr:hover td {
@@ -112,7 +113,13 @@
 /* 리스트 내부 컬럼별 너비 및 세부 스타일 */
 .col-num { width: 60px; text-align: center; color: var(--text-muted); font-size: 0.8rem; }
 .col-product { width: 120px; font-weight: 700; color: var(--text-dark-muted); }
-.col-title { font-weight: 600; color: var(--text-main); }
+.col-title { 
+    font-weight: 600; 
+    color: var(--text-main); 
+    display: inline-flex;     /* 👈 블록 처리를 해제하고 글자 흐름 유지 */
+    align-items: baseline;      /* 👈 제목 글자와 빨간 댓글수가 정확히 수평을 이루게 함 */
+    vertical-align: middle;
+}
 .col-title:hover { color: var(--color-accent); }
 .col-writer { width: 110px; font-weight: 500; }
 .col-date { width: 90px; color: var(--text-muted); font-size: 0.8rem; text-align: center; }
@@ -122,7 +129,10 @@
     font-size: 0.8rem;
     font-weight: 700;
     color: var(--color-accent);
-    margin-left: 0.3rem;
+    margin-left: 0.5rem;      /* 👈 제목 글자와 너무 붙지 않게 여백 조정 */
+    display: inline-block;
+    line-height: normal;           /* 👈 폰트 고유의 텍스트 상하 공백을 없애서 삐뚤어짐 방지 */
+    vertical-align: normal;
 }
 
 .rating-stars {

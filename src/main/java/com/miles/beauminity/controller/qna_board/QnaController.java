@@ -20,6 +20,7 @@ import com.miles.beauminity.service.qna_board.QnaService;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
+import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 
 import lombok.AllArgsConstructor;
 
@@ -68,7 +69,10 @@ public class QnaController {
         pageVO.pageInfo(count);
 
         // 파라미터 여러개는 페이징 적용 이후에 고려해보는 걸로. 
-        List<MasterBoardVO> qnaBoardList=qnaService.getTypeBoard(type, pageVO);
+        List<QnaBoardCompleteVO> qnaBoardList=qnaService.getTypeBoard(type, pageVO);
+
+        for(QnaBoardCompleteVO q : qnaBoardList )
+            System.out.println(q.toString());
 
         model.addAttribute("qnaS", qnaBoardList);
         model.addAttribute("pageVO", pageVO);
@@ -124,8 +128,11 @@ public class QnaController {
 
         System.out.println(qna.toString());
 
+        String nickname = qnaService.getNicknameByBoardId(id);
+
         model.addAttribute("qna", qna);
         model.addAttribute("flist", qnaFiles);
+        model.addAttribute("nickname", nickname);
 
 
         return "qna_board/detail";

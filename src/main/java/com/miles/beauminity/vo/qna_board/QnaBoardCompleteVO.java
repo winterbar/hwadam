@@ -1,23 +1,17 @@
-package com.miles.beauminity.vo.board;
+package com.miles.beauminity.vo.qna_board;
 
 import java.time.LocalDateTime;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
-@NoArgsConstructor
-
-// 게시판 공용 VO
-public class MasterBoardVO {
+public class QnaBoardCompleteVO {
     private Long boardId;
-    private String username;
+    private String nickname;
     private String boardType;
     private String title;
     private String content;
@@ -27,4 +21,6 @@ public class MasterBoardVO {
     private int replyCnt;
     private int likeCnt;
     private boolean deleted;
+    private String category;
+    
 }

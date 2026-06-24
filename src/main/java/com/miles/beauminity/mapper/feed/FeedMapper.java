@@ -14,12 +14,6 @@ public interface FeedMapper {
 
     List<FeedVO> getFeedList(String username);
 
-    List<String> getFeedTagList(Long feedId);
-
-    List<String> getFeedFileList(Long feedId);
-
-    List<String> getFeedReplyList(Long feedId);
-
     FeedVO loadFeedData(Long feedId);
 
     FeedVO loadTagData(Long feedId);
@@ -30,13 +24,10 @@ public interface FeedMapper {
 
     void updateFeed(FeedVO feedVO);
 
-    void postReply(FeedReplyVO feedReplyVO);
-
     void cancleLikeCnt(FeedLikeVO feedLikeVO);
 
     void increaseLikeCnt(FeedLikeVO feedLikeVO);
 
     int getLikeCnt(FeedLikeVO feedLikeVO);
 
-    List<FeedReplyVO> getReply(FeedReplyVO feedReplyVO);
 }

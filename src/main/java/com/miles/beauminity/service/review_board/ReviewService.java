@@ -18,6 +18,9 @@ public interface ReviewService { // 역할: 후기 게시판에 대한 서비스
     // 후기 게시판 게시글의 수정 요청 명세
     void updateReviewBoard(ReviewBoardVO reviewForm);
 
+    // 후기 게시글 삭제 명세
+    void delectReviewBoard(Long boardId);
+
 
         
 }
