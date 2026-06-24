@@ -115,11 +115,14 @@ public class FeedController {
     // 작성한 댓글 DB에 저장
     @PostMapping("/feed/{feedId}/reply")
     @ResponseBody
-    public List<FeedReplyVO> postReply(@PathVariable("feedId") Long feedId, FeedReplyVO feedReplyVO,
+    public List<FeedReplyVO> postReply(@PathVariable("feedId") Long feedId,
+            FeedReplyVO feedReplyVO,
+            @RequestParam(value = "parentsReplyId", required = false) Long parentsReplyId,
             Principal principal) {
         String username = principal.getName();
         feedReplyVO.setUsername(username);
         feedReplyVO.setFeedId(feedId);
+        feedReplyVO.setParentsReplyId(parentsReplyId);
 
         return feedService.getFeedReply(feedReplyVO);
     }
