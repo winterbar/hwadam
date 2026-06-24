@@ -1,5 +1,6 @@
 package com.miles.beauminity.service.qna_board;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.board.TypeOffsetVO;
+import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardVO;
 
 import lombok.AllArgsConstructor;
@@ -56,17 +58,7 @@ public class QnaServiceImpl implements QnaService {
         QnaBoardVO qnaBoardVO = new QnaBoardVO();
         qnaBoardVO.setBoardId(boardId);
 
-        if (category.equals("beginner"))
-            qnaBoardVO.setCategory("입문");
-
-        else if (category.equals("compare"))
-            qnaBoardVO.setCategory("비교");
-
-        else if (category.equals("help"))
-            qnaBoardVO.setCategory("도움요청");
-
-        else
-            qnaBoardVO.setCategory("기타");
+        qnaBoardVO.setCategory(category);
 
         qnaBoardMapper.insertQna(qnaBoardVO);
 
@@ -74,53 +66,68 @@ public class QnaServiceImpl implements QnaService {
 
     // 게시글 전체조회 
     @Override
-    public List<MasterBoardVO> getTypeBoard(String type, PageVO pageVO) {
+    public List<QnaBoardCompleteVO> getTypeBoard(String type, PageVO pageVO) {
 
         System.out.println(type);
 
         TypeOffsetVO typeOffsetVO = new TypeOffsetVO();
-
         typeOffsetVO.setType(type);
         typeOffsetVO.setOffset(pageVO.getOffset());
         typeOffsetVO.setSize(pageVO.getSize());
 
-        return masterBoardMapper.getTypeBoard(typeOffsetVO);
+        List<MasterBoardVO> qnaList = masterBoardMapper.getTypeBoard(typeOffsetVO);
+
+        List<QnaBoardCompleteVO> finalList = new ArrayList<>();
+        for(MasterBoardVO q : qnaList){
+            QnaBoardCompleteVO nQ = new QnaBoardCompleteVO();
+            nQ.setBoardId(q.getBoardId());
+            nQ.setNickname(masterBoardMapper.getNicknameByBoardId(q.getBoardId()));
+            nQ.setTitle(q.getTitle());
+            nQ.setCreatedAt(q.getCreatedAt());
+            nQ.setViewCnt(q.getViewCnt());
+            nQ.setReplyCnt(q.getReplyCnt());
+            nQ.setCategory(qnaBoardMapper.getCategoryById(q.getBoardId()));
+            finalList.add(nQ);
+        }
+
+        return finalList;
     }
 
     // 게시글 카테고리별 전체조회
     @Override
-    public List<MasterBoardVO> getQnaBoardByCategory(String type, PageVO pageVO, String category){
+    public List<QnaBoardCompleteVO> getQnaBoardByCategory(String type, PageVO pageVO, String category){
 
         TypeOffsetVO typeOffsetVO = new TypeOffsetVO();
 
         typeOffsetVO.setType(type);
         typeOffsetVO.setOffset(pageVO.getOffset());
         typeOffsetVO.setSize(pageVO.getSize());
+
+        List<MasterBoardVO> qnaList = new ArrayList<>();
         
-        if (category.equals("beginner")){
-            typeOffsetVO.setCategory("입문");
-            System.out.println("현재상태: "+typeOffsetVO.toString());
-            return qnaBoardMapper.selectQnaByCategory(typeOffsetVO);
+        if (category.equals("전체보기")){
+            qnaList = masterBoardMapper.getTypeBoard(typeOffsetVO);
         }
-        else if (category.equals("compare")){
-            typeOffsetVO.setCategory("비교");
+        else{
+            typeOffsetVO.setCategory(category);
             System.out.println("현재상태: "+typeOffsetVO.toString());
+            qnaList = qnaBoardMapper.selectQnaByCategory(typeOffsetVO);
+        }
+        List<QnaBoardCompleteVO> finalList = new ArrayList<>();
 
-            return qnaBoardMapper.selectQnaByCategory(typeOffsetVO);
-        }
-        else if (category.equals("help")){
-            typeOffsetVO.setCategory("도움요청");
-            System.out.println("현재상태: "+typeOffsetVO.toString());
-
-            return qnaBoardMapper.selectQnaByCategory(typeOffsetVO);
-        }
-        else if (category.equals("etc")){
-            typeOffsetVO.setCategory("기타");
-            System.out.println("현재상태: "+typeOffsetVO.toString());
-            return qnaBoardMapper.selectQnaByCategory(typeOffsetVO);
+        for(MasterBoardVO q : qnaList){
+            QnaBoardCompleteVO nQ = new QnaBoardCompleteVO();
+            nQ.setBoardId(q.getBoardId());
+            nQ.setNickname(masterBoardMapper.getNicknameByBoardId(q.getBoardId()));
+            nQ.setTitle(q.getTitle());
+            nQ.setCreatedAt(q.getCreatedAt());
+            nQ.setViewCnt(q.getViewCnt());
+            nQ.setReplyCnt(q.getReplyCnt());
+            nQ.setCategory(qnaBoardMapper.getCategoryById(q.getBoardId()));
+            finalList.add(nQ);
         }
 
-        return masterBoardMapper.getTypeBoard(typeOffsetVO);
+        return finalList;
     }
 
     // 게시글 상세조회
@@ -171,30 +178,21 @@ public class QnaServiceImpl implements QnaService {
         TypeOffsetVO typeOffsetVO = new TypeOffsetVO();
 
         typeOffsetVO.setType(type);
-        if (category.equals("beginner")){
-            typeOffsetVO.setCategory("입문");
-            System.out.println("현재상태: "+typeOffsetVO.toString());
-            return qnaBoardMapper.getQnaCountByCategory(typeOffsetVO);
+        if (category.equals("전체보기")){
+            return masterBoardMapper.getTypeBoardCount(type);
         }
-        else if (category.equals("compare")){
-            typeOffsetVO.setCategory("비교");
-            System.out.println("현재상태: "+typeOffsetVO.toString());
-
-            return qnaBoardMapper.getQnaCountByCategory(typeOffsetVO);
-        }
-        else if (category.equals("help")){
-            typeOffsetVO.setCategory("도움요청");
-            System.out.println("현재상태: "+typeOffsetVO.toString());
-
-            return qnaBoardMapper.getQnaCountByCategory(typeOffsetVO);
-        }
-        else if (category.equals("etc")){
-            typeOffsetVO.setCategory("기타");
+        else{
+            typeOffsetVO.setCategory(category);
             System.out.println("현재상태: "+typeOffsetVO.toString());
             return qnaBoardMapper.getQnaCountByCategory(typeOffsetVO);
         }
 
-        return masterBoardMapper.getTypeBoardCount(type);
+        
+    }
+
+    @Override
+    public String getNicknameByBoardId(Long id) {
+        return masterBoardMapper.getNicknameByBoardId(id);
     }
 
     
