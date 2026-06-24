@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>beauminity : 회원탈퇴</title>
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage/withdraw.css}">
+</head>
+<body>
+
+    <div th:replace="~{layout/header :: headerFragment}"></div>
+
+    <div class="withdraw-container">
+        <h2 class="withdraw-title">회원 탈퇴</h2>
+
+        <div class="withdraw-intro">
+            <p class="main-desc">정말로 Beauminity를 탈퇴하시겠습니까?</p>
+            <p class="sub-desc">탈퇴 시 아래의 정보들이 삭제됩니다.</p>
+        </div>
+
+        <div class="withdraw-warning">
+            <ul class="delete-list">
+                <li>- 회원 정보 및 등급 정보</li>
+                <li>- 등록된 모든 게시글</li>
+                <li>- 작성된 모든 댓글</li>
+                <li>- 등록된 모든 피드</li>
+            </ul>
+        </div>
+
+        <p class="withdraw-bottom-guide">해당 정보는 모두 삭제되며 다시 복구할 수 없습니다.</p>
+
+        <form th:action="@{/mypage/withdraw}" method="post" id="withdrawForm">
+            <div class="withdraw-form-group">
+                <label>탈퇴 사유</label>
+                <p class="withdraw-guide">탈퇴하시는 사유와 개선사항을 적어주세요.<br>
+                    저희 서비스가 발전하는 데 큰 도움이 됩니다.</p>
+                <select name="reason" class="withdraw-input" required>
+                    <option value="low_usage">사용 빈도가 낮음</option>
+                    <option value="inconvenient">서비스 이용이 불편함</option>
+                    <option value="lack_of_content">콘텐츠가 부족함</option>
+                    <option value="moved_to_other">다른 서비스 이용</option>
+                    <option value="account_cleanup">계정 정리</option>
+                    <option value="no_longer_interested">더 이상 필요 없음</option>
+                    <option value="other">기타</option>
+                </select>
+            </div>
+
+            <div class="withdraw-form-group">
+                <label>개선 사항</label>
+                <textarea name="improvement" class="withdraw-input"
+                placeholder="개선사항을 적어주시고 탈퇴 사유가 '기타'라면 사유도 적어주세요. (200자 이하)"
+                maxlength="200" rows="3" required></textarea>
+            </div>
+
+            <div class="withdraw-form-group">
+                <label>비밀번호 확인</label>
+                <p class="withdraw-guide" style="margin-top: 8px;">본인 확인을 위해 비밀번호를 입력해주세요.</p>
+                <input type="password" name="password" class="withdraw-input" placeholder="비밀번호 입력" required>
+                <p th:if="${isChecked == false}" class="withdraw-error-text">
+                    비밀번호가 일치하지 않습니다.
+                </p>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn-withdraw-confirm">탈퇴하기</button>
+                <a th:href="@{/mypage}" class="btn-withdraw-cancel">취소</a>
+            </div>
+        </form>
+    </div>
+
+    <div th:replace="~{layout/footer :: footerFragment}"></div>
+
+</body>
+</html>

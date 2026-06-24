@@ -1,9 +1,13 @@
 package com.miles.beauminity.service.login;
 
 import java.io.File;
+import java.net.Authenticator;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +18,7 @@ import com.miles.beauminity.mapper.feed.FeedMapper;
 import com.miles.beauminity.mapper.login.MemberMapper;
 import com.miles.beauminity.mapper.login.MemberProfileMapper;
 import com.miles.beauminity.security.CustomUserDetails;
+import com.miles.beauminity.security.CustomUserDetailsService;
 import com.miles.beauminity.util.MemberFileUtil;
 import com.miles.beauminity.vo.login.MemberVO;
 import com.miles.beauminity.vo.login.MyPageFileVO;
@@ -30,6 +35,7 @@ public class MemberServiceImpl implements MemberService {
     private final MasterBoardMapper MasterBoardMapper;
     private final FeedMapper feedMapper;
     private final PasswordEncoder passwordEncoder;
+    private final CustomUserDetailsService customUserDetailsService;
 
     // 사용자가 입력한 아이디로 가입된 계정이 있는지 확인
     @Override
@@ -77,6 +83,23 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean updateMember(MemberVO memberVO) {
         int updated = memberMapper.updateMember(memberVO);
+
+        /// 마이페이지에서 닉네임을 수정하면 로그인 상태창에선 변경되지 않는 문제 발생
+        /// 해결 방법 : 로그인할 때 인증 정보를 변경된 내용으로 갱신하는 것으로 해결
+        // 기존의 인증 정보 가져오기
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        // 수정된 회원 정보를 반영한 새로운 CustomUserDetails 생성
+        CustomUserDetails updatedUser =
+            (CustomUserDetails) customUserDetailsService.loadUserByUsername(auth.getName());
+        // 새로 생성한 CustomUserDetails를 바탕으로 한 새로운 인증 토큰 생성
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(
+            updatedUser,
+            auth.getCredentials(),
+            updatedUser.getAuthorities()
+        );
+        // SecurityContext에 새로운 인증 토큰 등록
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+
         return updated > 0;
     }
 

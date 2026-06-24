@@ -14,60 +14,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.miles.beauminity.security.CustomUserDetails;
 import com.miles.beauminity.service.login.MemberService;
+import com.miles.beauminity.vo.login.FeedbackVO;
 import com.miles.beauminity.vo.login.MemberVO;
 
 import lombok.RequiredArgsConstructor;
+
 
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
-
-    // 회원가입 페이지 요청
-    @GetMapping("/register")
-    public String getRegisterPage() {
-        return "login/register";
-    }
-
-    // 아이디/비밀번호 찾기 페이지 요청
-    @GetMapping("/find")
-    public String getFindPage() {
-        return "login/find";
-    }
-
-    // 마이페이지 요청
-    @GetMapping("/mypage")
-    public String getMyPage(@AuthenticationPrincipal CustomUserDetails loginMember, Model model) {
-        if(loginMember == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("memberInfo",
-            memberService.getMemberInfo(loginMember.getUsername())
-        );
-        return "mypage/info";
-    }
-    
-    // 회원정보 수정 페이지 요청
-    @GetMapping("/mypage/edit/info")
-    public String getMyPageInfoEdit(@AuthenticationPrincipal CustomUserDetails loginMember,
-                                    Model model) {
-        if(loginMember == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("memberInfo",
-            memberService.getMemberInfo(loginMember.getUsername())
-        );
-        return "mypage/edit";
-    }
-
-    // 비밀번호 변경 페이지 요청
-    @GetMapping("/mypage/edit/pw")
-    public String getPasswordEdit() {
-        return "mypage/editpw";
-    }
-    
-    /* --------------------------구분선------------------------------- */
 
     // 회원 정보 수정 요청
     @PostMapping("/mypage/edit/info")
@@ -118,6 +75,15 @@ public class MemberController {
         model.addAttribute("username", memberVO.getUsername());
         model.addAttribute("name", memberVO.getName());
         return "login/register-success";
+    }
+
+    // 회원탈퇴 요청
+    @PostMapping("/mypage/withdraw")
+    public String withdrawMember(@ModelAttribute FeedbackVO feedbackVO,
+                                @RequestParam("password") String password) {
+        // 여기에 비밀번호 유효성 검사랑 피드백 테이블 튜플 삽입
+        // 그리고 각 테이블 deleted 업데이트, username을 #deleted로 바꾸기
+        return null;
     }
     
     // 아이디 중복 체크 요청

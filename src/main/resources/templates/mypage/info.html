@@ -75,12 +75,12 @@
                         <span class="info-value" th:text="${memberInfo.member.phone}">전화번호</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">가입일</span>
-                        <span class="info-value" th:text="${#temporals.format(memberInfo.member.signedAt, 'yyyy.MM.dd')}">가입일</span>
-                    </div>
-                    <div class="info-item">
                         <span class="info-label">생년월일</span>
                         <span class="info-value"  th:text="${memberInfo.member.birthday}">생년월일</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">가입일</span>
+                        <span class="info-value" th:text="${#temporals.format(memberInfo.member.signedAt, 'yyyy-MM-dd')}">가입일</span>
                     </div>
                 </div>
 
@@ -105,7 +105,8 @@
                     <button type="button" class="btn-mypage btn-highlight" 
                             onclick="openPasswordModal('/mypage/edit/pw')">비밀번호 변경</button>
                 </div>
-                <a th:href="@{/mypage/withdraw}" class="btn-mypage btn-edit">회원탈퇴</a>
+                    <button type="button"  class="btn-mypage btn-edit"
+                            onclick="openPasswordModal('/mypage/withdraw')">회원탈퇴</button>
             </div>
         </div>
     </main>
@@ -158,7 +159,6 @@
     <!-- 회원 정보 수정 및 비밀번호 성공 여부 출력 -->
     <script th:inline="javascript">
         const serverMsg = [[${msg}]];
-        console.log("서버에게 받은 메시지" + serverMsg);
         if (serverMsg) {
             showToast(serverMsg);
         }
