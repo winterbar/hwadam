@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.miles.beauminity.service.qna_board.QnaService;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
+import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 
 import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/board")
-public class QnaListController {
+public class QnaApiController {
     private QnaService qnaService;
 
     @GetMapping("/filter")
@@ -34,11 +35,19 @@ public class QnaListController {
         int count = qnaService.getQnaCountByCategory(type, category); 
         pageVO.pageInfo(count);
 
-        List<MasterBoardVO> filteredList = qnaService.getQnaBoardByCategory(type, pageVO, category);
+        System.out.println("페이지 정보:"+ pageVO.toString());
+
+        List<QnaBoardCompleteVO> filteredList = qnaService.getQnaBoardByCategory(type, pageVO, category);
         
         result.put("list", filteredList);
         result.put("pageInfo", pageVO);
 
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/likeCheck")
+    public String getMethodName(@RequestParam String param) {
+        return new String();
+    }
+    
 }

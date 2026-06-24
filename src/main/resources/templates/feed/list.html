@@ -154,6 +154,7 @@
 
       .feed-comment-box {
         width: 100%;
+        margin-top: 10px;
       }
 
       .feed-comment-form {
@@ -163,7 +164,7 @@
         gap: 8px;
       }
 
-      .feed-comment-form input {
+      .feed-comment-form input[type="text"] {
         flex: 1;
         height: 42px;
         box-sizing: border-box;
@@ -179,6 +180,307 @@
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+      }
+
+      .feed-comment-list {
+        width: 100%;
+        margin-top: 10px;
+        box-sizing: border-box;
+      }
+
+      .feed-comment-item {
+        width: 100%;
+        margin-bottom: 8px;
+        box-sizing: border-box;
+      }
+
+      .feed-comment-bubble {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #f8f6f2;
+        border-radius: 14px;
+        padding: 10px 14px;
+        box-sizing: border-box;
+        cursor: pointer;
+      }
+
+      .feed-comment-bubble:hover {
+        background: #f3f0ea;
+      }
+
+      .feed-comment-avatar {
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        border-radius: 50%;
+        background: #f8dfe3;
+        color: #7a7680;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 800;
+        flex-shrink: 0;
+      }
+
+      .feed-comment-main {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        overflow: hidden;
+      }
+
+      .feed-comment-writer {
+        font-size: 13px;
+        font-weight: 900;
+        color: #222222;
+        flex-shrink: 0;
+      }
+
+      .feed-comment-content {
+        font-size: 13px;
+        font-weight: 500;
+        color: #5f6b7a;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .feed-comment-empty {
+        width: 100%;
+        padding: 12px;
+        color: #999999;
+        font-size: 13px;
+        text-align: center;
+        border: 1px dashed #e5e5e5;
+        border-radius: 12px;
+        box-sizing: border-box;
+      }
+
+      /* 대댓글: 부모댓글 바로 아래로 내려가는 구조 */
+      .comment-child-list {
+        width: 100%;
+        margin: 6px 0 0 0;
+        padding-left: 42px;
+        box-sizing: border-box;
+      }
+
+      .comment-child-list:empty {
+        display: none;
+      }
+
+      .comment-child-item {
+        position: relative;
+        width: 100%;
+        margin-top: 7px;
+        padding-left: 18px;
+        box-sizing: border-box;
+      }
+
+      /* 아래로 내려와 꺾이는 화살표 느낌 */
+      .comment-child-item::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: -7px;
+        width: 14px;
+        height: 24px;
+        border-left: 2px solid #ded8cf;
+        border-bottom: 2px solid #ded8cf;
+        border-bottom-left-radius: 8px;
+        box-sizing: border-box;
+      }
+
+      .comment-child-bubble {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #fbfaf7;
+        border-radius: 12px;
+        padding: 8px 10px;
+        box-sizing: border-box;
+        cursor: pointer;
+      }
+
+      .comment-child-bubble:hover {
+        background: #f3f0ea;
+      }
+
+      .comment-child-avatar {
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+        border-radius: 50%;
+        background: #fff0ee;
+        color: #7a7680;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: 900;
+        flex-shrink: 0;
+      }
+
+      .comment-child-main {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        overflow: hidden;
+      }
+
+      .comment-child-writer {
+        font-size: 12px;
+        font-weight: 900;
+        color: #222222;
+        flex-shrink: 0;
+      }
+
+      .comment-child-content {
+        font-size: 12px;
+        font-weight: 500;
+        color: #5f6b7a;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .comment-more-wrap {
+        position: relative;
+        display: none;
+        margin-left: auto;
+        flex-shrink: 0;
+      }
+
+      .comment-more-btn {
+        width: 24px;
+        height: 24px;
+        border: none;
+        background: transparent;
+        color: #8f8f8f;
+        font-size: 17px;
+        font-weight: 800;
+        cursor: pointer;
+        border-radius: 50%;
+        line-height: 1;
+        padding: 0;
+      }
+
+      .comment-more-btn:hover {
+        background: #eeeeee;
+        color: #333333;
+      }
+
+      .comment-more-menu {
+        display: none;
+        position: absolute;
+        top: 28px;
+        right: 0;
+        min-width: 90px;
+        background: #ffffff;
+        border: 1px solid #ececec;
+        border-radius: 10px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+        padding: 6px;
+        z-index: 50;
+      }
+
+      .comment-more-menu.is-open {
+        display: block;
+      }
+
+      .comment-menu-item {
+        width: 100%;
+        border: none;
+        background: transparent;
+        text-align: left;
+        padding: 8px 10px;
+        font-size: 12px;
+        font-weight: 700;
+        border-radius: 8px;
+        cursor: pointer;
+        color: #333333;
+      }
+
+      .comment-menu-item:hover {
+        background: #f7f7f7;
+      }
+
+      .comment-menu-item.danger {
+        color: #e05d56;
+      }
+
+      .comment-menu-item.danger:hover {
+        background: #fff1ef;
+      }
+
+      .comment-reply-target {
+        display: none;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+        width: 100%;
+        margin-bottom: 8px;
+        padding: 9px 12px;
+        border-radius: 12px;
+        background: #fafafa;
+        border: 1px solid #eeeeee;
+        box-sizing: border-box;
+      }
+
+      .comment-reply-target.is-active {
+        display: flex;
+      }
+
+      .comment-reply-target-text {
+        flex: 1;
+        min-width: 0;
+        font-size: 12px;
+        line-height: 1.4;
+        color: #666666;
+      }
+
+      .comment-reply-target-writer {
+        font-weight: 900;
+        color: #111111;
+      }
+
+      .comment-reply-target-content {
+        display: block;
+        margin-top: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .comment-reply-cancel-btn {
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        background: #fff0ee;
+        color: #fa6e68;
+        font-size: 16px;
+        font-weight: 900;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .comment-reply-cancel-btn:hover {
+        background: #fa6e68;
+        color: #ffffff;
       }
     </style>
   </head>
@@ -254,7 +556,12 @@
             >
               <div class="feed-card-top feed-profile-header">
                 <div class="feed-profile-left">
-                  <div class="feed-profile-avatar">O</div>
+                  <div class="feed-profile-avatar">
+                    <span
+                      th:text="${feed.nickname != null and feed.nickname != '' ? #strings.substring(feed.nickname, 0, 1) : 'O'}"
+                      >O</span
+                    >
+                  </div>
 
                   <div class="feed-profile-info">
                     <div
@@ -399,17 +706,155 @@
                 </button>
 
                 <div class="feed-comment-list">
-                  <div class="feed-comment-item">
+                  <div
+                    class="feed-comment-item feed-comment-empty"
+                    th:if="${feed.feedReplyList == null or #lists.isEmpty(feed.feedReplyList)}"
+                  >
                     <span>아직 등록된 댓글이 없습니다.</span>
+                  </div>
+
+                  <!-- 부모 댓글만 출력 -->
+                  <div
+                    class="feed-comment-item"
+                    th:if="${feed.feedReplyList != null and reply.parentsReplyId == null}"
+                    th:each="reply : ${feed.feedReplyList}"
+                    th:data-reply-id="${reply.replyId}"
+                    th:data-username="${reply.username}"
+                  >
+                    <div class="feed-comment-bubble">
+                      <div class="feed-comment-avatar">
+                        <span
+                          th:text="${reply.nickname != null and reply.nickname != '' ? #strings.substring(reply.nickname, 0, 1) : '회'}"
+                          >회</span
+                        >
+                      </div>
+
+                      <div class="feed-comment-main">
+                        <strong
+                          class="feed-comment-writer"
+                          th:text="${reply.nickname != null and reply.nickname != '' ? reply.nickname : reply.username}"
+                        >
+                          닉네임
+                        </strong>
+
+                        <span
+                          class="feed-comment-content"
+                          th:text="${reply.replyContent}"
+                        >
+                          댓글 내용
+                        </span>
+                      </div>
+
+                      <div
+                        class="comment-more-wrap"
+                        th:if="${#authentication.name == reply.username}"
+                      >
+                        <button type="button" class="comment-more-btn">
+                          ···
+                        </button>
+
+                        <div class="comment-more-menu">
+                          <button
+                            type="button"
+                            class="comment-menu-item comment-edit-btn"
+                          >
+                            수정하기
+                          </button>
+                          <button
+                            type="button"
+                            class="comment-menu-item danger comment-delete-btn"
+                          >
+                            삭제하기
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 해당 부모댓글의 대댓글 -->
+                    <div class="comment-child-list">
+                      <div
+                        class="comment-child-item"
+                        th:each="child : ${feed.feedReplyList}"
+                        th:if="${child.parentsReplyId != null and child.parentsReplyId == reply.replyId}"
+                        th:data-reply-id="${child.replyId}"
+                        th:data-username="${child.username}"
+                      >
+                        <div class="comment-child-bubble">
+                          <div class="comment-child-avatar">
+                            <span
+                              th:text="${child.nickname != null and child.nickname != '' ? #strings.substring(child.nickname, 0, 1) : '회'}"
+                              >회</span
+                            >
+                          </div>
+
+                          <div class="comment-child-main">
+                            <strong
+                              class="comment-child-writer"
+                              th:text="${child.nickname != null and child.nickname != '' ? child.nickname : child.username}"
+                            >
+                              닉네임
+                            </strong>
+
+                            <span
+                              class="comment-child-content"
+                              th:text="${child.replyContent}"
+                            >
+                              대댓글 내용
+                            </span>
+                          </div>
+
+                          <div
+                            class="comment-more-wrap"
+                            th:if="${#authentication.name == child.username}"
+                          >
+                            <button type="button" class="comment-more-btn">
+                              ···
+                            </button>
+
+                            <div class="comment-more-menu">
+                              <button
+                                type="button"
+                                class="comment-menu-item comment-edit-btn"
+                              >
+                                수정하기
+                              </button>
+                              <button
+                                type="button"
+                                class="comment-menu-item danger comment-delete-btn"
+                              >
+                                삭제하기
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <div class="feed-comment-box">
+                  <div class="comment-reply-target">
+                    <div class="comment-reply-target-text">
+                      <span class="comment-reply-target-writer"></span>님에게
+                      답글 남기는 중
+                      <span class="comment-reply-target-content"></span>
+                    </div>
+                    <button type="button" class="comment-reply-cancel-btn">
+                      ×
+                    </button>
+                  </div>
+
                   <form
                     class="feed-comment-form"
                     th:action="@{/feed/{feedId}/reply(feedId=${feed.feedId})}"
                     method="post"
                   >
+                    <input
+                      type="hidden"
+                      name="parentsReplyId"
+                      class="reply-parent-id-input"
+                      value=""
+                    />
                     <input
                       type="text"
                       name="replyContent"

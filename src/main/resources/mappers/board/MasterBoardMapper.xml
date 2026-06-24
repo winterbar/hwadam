@@ -96,4 +96,15 @@
 
     </select>
 
+    <!-- 닉네임 조회 -->
+    <select id="getNicknameByBoardId"
+            parameterType="Long"
+            resultType="String">
+        SELECT nickname
+        FROM member
+        WHERE username = (SELECT username
+                            FROM master_board
+                            WHERE board_id = #{value})
+    </select>
+
 </mapper>

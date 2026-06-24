@@ -22,6 +22,7 @@ public class ReviewBoardVO {
     private String title;                       // 후기 등록 폼은 리뷰 제목
     private String content;                     // 후기 등록 폼은 리뷰 내용
     private LocalDateTime createdAt;
+    private LocalDateTime editedAt;
 
     private long viewCnt;
     private long likeCnt;

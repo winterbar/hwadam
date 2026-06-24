@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.miles.beauminity.mapper.board.MasterBoardFileMapper;
 import com.miles.beauminity.mapper.board.MasterBoardMapper;
-import com.miles.beauminity.mapper.login.MemberMapper;
+
 import com.miles.beauminity.mapper.review_board.ReviewBoardMapper;
 import com.miles.beauminity.util.MasterFileUploadUtil;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
@@ -110,6 +110,7 @@ public class ReviewServiceImpl implements ReviewService {
         
     }
 
+    // 역할: 후기게시판 게시글 수정 요청 서비스 처리
     @Override
     @Transactional
     public void updateReviewBoard(ReviewBoardVO reviewForm) {// 등록 요청시 보낸 파라미터가 담긴 것이 reviewForm
@@ -186,6 +187,58 @@ public class ReviewServiceImpl implements ReviewService {
             }
         }
 
+    }
+
+    // 역할: 후기 게시판 작성글 삭제 요청
+    @Override
+    @Transactional
+    public void delectReviewBoard(Long BoardId) {
+        // 1. master_board 에 deleted 컬럼 0으로 업데이트
+        masterBoardMapper.deleteBoard(BoardId);
+
+        // 2. board_file 테이블에서 해당 board_id로 등록된 파일 목록 조회
+        List<MasterBoardFileVO> fileList = masterBoardFileMapper.getBoardFileById(BoardId);
+
+        //첨부된 파일이 존재할 경우에만 이동 로직 수행
+        if (fileList != null && !fileList.isEmpty()) {
+            
+            // 격리할 디렉토리 경로 정의
+            String deletedDirPath = "C:/deleted/review/";
+            File deletedDir = new File(deletedDirPath);
+
+            // C:/deleted/review/ 폴더가 없을 경우 안전하게 자동 생성
+            if (!deletedDir.exists()) {
+                deletedDir.mkdirs();
+            }
+
+            // 3. 반복문을 돌며 파일 물리 이동 및 DB 경로 업데이트 수행
+            for (MasterBoardFileVO fileVO : fileList) {
+
+                // 기존 파일의 실제 전체 경로 객체 생성 (예: C:/upload/review/uuid_파일명.png)
+                File srcFile = new File(fileVO.getFilePath());
+
+                // 파일이 실제로 디스크에 존재하는지 검증 후 진행
+                if (srcFile.exists()) {
+                    // 새 격리 폴더 경로 문자열 생성 (C:/deleted/review/ +저장된 파일명)
+                    String newFilePath = deletedDirPath + fileVO.getSavedName();
+                    File targetFile = new File(newFilePath);
+
+                    // 실제 C드라이브 내의 파일을 격리 폴더로 이동 (성공 시 true 반환)
+                    boolean isMoved = srcFile.renameTo(targetFile);
+
+                    if (isMoved) {
+                        // 파일 이동 성공 시, VO 객체의 파일 경로를 새 격리 경로로 변경
+                        fileVO.setFilePath(newFilePath);
+
+                        // DB 테이블(board_file)의 file_path 컬럼 업데이트 쿼리 실행
+                        reviewBoardMapper.updateReviewBoardFile(fileVO);
+                    }
+                }
+            }
+
+        }
+
+    
     }
 
    

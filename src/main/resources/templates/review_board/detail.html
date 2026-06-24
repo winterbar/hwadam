@@ -29,6 +29,7 @@
                         작성자: <strong th:text="${detail.nickName}">작성자 닉네임</strong>
                         <span style="margin: 0 0.5rem; color: var(--border-color);">|</span>
                         등록일: <span th:text="${#temporals.format(detail.createdAt, 'yyyy-MM-dd HH:mm')}">2026-06-19</span>
+                        수정일: <span th:text="${detail.editedAt != null} ? ${#temporals.format(detail.editedAt, 'yyyy-MM-dd HH:mm')} : '수정 안 됨'"></span>
                     </div>
                     <div class="stats-group">
                         <span>조회수 <strong th:text="${detail.viewCnt}">0</strong></span>
@@ -80,15 +81,22 @@
                     게시글 작성자 ID: <strong th:text="${detail.userName}">작성자ID</strong>
                 </div>
 
-                <div style="display: fles; gap: 0.5rem;">
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+    
                     <a th:if="${#authentication.name == detail.userName}"
-                        th:href="@{/board/review/edit/{id}(id=${detail.boardId})}"
-                        class="btn btn-cancel" style="padding: 0.8rem 1.5rem;">
+                    th:href="@{/board/review/edit/{id}(id=${detail.boardId})}"
+                    class="btn btn-cancel" style="padding: 0.8rem 1.5rem;">
                         ✏️ 수정하기
                     </a>
-                
-
-                
+                    
+                    <button th:if="${#authentication.name == detail.userName}" 
+                            type="button" 
+                            class="delete-btn" 
+                            style="padding: 0.8rem 1.5rem;" 
+                            th:onclick="confirmDelete([[${detail.boardId}]])">
+                        🗑️ 삭제하기
+                    </button>
+                    
                     <button type="button" class="btn btn-like">❤️ 좋아요</button>
                 </div>
             </div>
@@ -108,3 +116,25 @@
 <div th:replace="~{layout/footer :: footer}"></div>
 
 </html>
+
+<script>
+    function confirmDelete(boardId) {
+        // 1. 안내창 띄우기 
+        if (confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
+            // 2. 예(확인)을 누르면 삭제를 처리할 벡엔드 URL로 요청을 보냄
+            // 폼을 동적으로 생성해서 Post로 보내거나, 아래처럼 비동기 fetch를 사용
+            fetch(`/board/review/delete/${boardId}`,{
+                method: "POST"
+            })
+            .then(response => {
+                if(response.ok) {
+                    alert("게시글이 성공적으로 삭제되었습니다.")
+                    location.href = "/board/review/list"; // 삭제 후 목록으로 이동
+                } else {
+                    alret("삭제 권한이 없거나 오류가 발생했습니다.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    }
+</script>

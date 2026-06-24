@@ -5,7 +5,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const filterInner = document.getElementById('feed-filter-inner');
     const feedEmpty = document.getElementById('feed-empty');
 
-    // CSRF 토큰 가져오기
+    function getLoginUsername() {
+        return document.body.dataset.loginUsername
+            ? document.body.dataset.loginUsername.trim()
+            : '';
+    }
+
     function getCsrfHeaders() {
         const csrfToken = document.querySelector('meta[name="_csrf"]');
         const csrfHeader = document.querySelector('meta[name="_csrf_header"]');
@@ -20,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return headers;
     }
 
-    // 화면에 출력된 해시태그 필터 버튼 중 중복된 버튼을 제거하는 기능
     function removeDuplicateTagButtons() {
         const tagButtons = document.querySelectorAll('.feed-tag-btn');
         const seenTags = new Set();
@@ -40,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // 피드 본문 + 정보공유 링크 출력 기능
     function renderFeedContentAndLink() {
         const feedCards = document.querySelectorAll('.feed-card');
 
@@ -103,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // 피드 이미지 출력 기능
     function renderFeedImages() {
         const feedCards = document.querySelectorAll('.feed-card');
 
@@ -206,7 +208,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // 해시태그 필터 열고 닫는 기능
     function toggleFeedFilter() {
         if (!filterInner) return;
 
@@ -235,7 +236,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // 해시태그 필터 적용 기능
     function applyFilter(selectedTag) {
         const feedCards = document.querySelectorAll('.feed-card');
         let visibleCount = 0;
@@ -256,7 +256,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // 좋아요 버튼 기능
     function initLikeButtons() {
         document.querySelectorAll('.feed-like-btn').forEach(function (button) {
             const icon = button.querySelector('.feed-like-icon');
@@ -277,9 +276,7 @@ document.addEventListener('DOMContentLoaded', function () {
             button.addEventListener('click', function () {
                 if (isRequesting) return;
 
-                const loginUsername = document.body.dataset.loginUsername
-                    ? document.body.dataset.loginUsername.trim()
-                    : '';
+                const loginUsername = getLoginUsername();
 
                 if (!loginUsername || loginUsername === 'anonymousUser') {
                     alert('로그인 후 좋아요를 누를 수 있습니다.');
@@ -365,183 +362,609 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // 댓글 영역 열고 닫기 + 댓글 작성 후 화면에 바로 추가
-    // 댓글 영역 열고 닫기 + 빈 댓글 방지
-// 댓글 영역 열고 닫기 + 댓글 작성 후 새로고침 없이 댓글 목록 갱신
-function initCommentArea() {
-    document.querySelectorAll('.feed-card').forEach(function (card) {
-        const commentToggleBtn = card.querySelector('.feed-comment-toggle-btn');
-        const commentBox = card.querySelector('.feed-comment-box');
-        const commentListBtn = card.querySelector('.feed-comment-count');
-        const commentList = card.querySelector('.feed-comment-list');
-        const commentForm = card.querySelector('.feed-comment-form');
-        const commentInput = commentForm ? commentForm.querySelector('input[name="replyContent"]') : null;
+    function initCommentArea() {
+        document.querySelectorAll('.feed-card').forEach(function (card) {
+            const commentToggleBtn = card.querySelector('.feed-comment-toggle-btn');
+            const commentBox = card.querySelector('.feed-comment-box');
+            const commentListBtn = card.querySelector('.feed-comment-count');
+            const commentList = card.querySelector('.feed-comment-list');
+            const commentForm = card.querySelector('.feed-comment-form');
+            const commentInput = commentForm ? commentForm.querySelector('input[name="replyContent"]') : null;
+            const parentInput = commentForm ? commentForm.querySelector('.reply-parent-id-input') : null;
+            const replyTarget = card.querySelector('.comment-reply-target');
+            const replyTargetWriter = card.querySelector('.comment-reply-target-writer');
+            const replyTargetContent = card.querySelector('.comment-reply-target-content');
+            const replyCancelBtn = card.querySelector('.comment-reply-cancel-btn');
 
-        let commentCount = Number(
-            commentListBtn ? commentListBtn.dataset.commentCount || 0 : 0
-        );
+            let commentCount = Number(
+                commentListBtn ? commentListBtn.dataset.commentCount || 0 : 0
+            );
 
-        if (Number.isNaN(commentCount)) {
-            commentCount = 0;
-        }
+            if (Number.isNaN(commentCount)) {
+                commentCount = 0;
+            }
 
-        updateCommentCountText(false);
+            normalizeInitialReplyList();
+            updateCommentCountText(false);
 
-        if (commentBox) {
-            commentBox.style.display = 'none';
-        }
+            if (commentBox) {
+                commentBox.style.display = 'none';
+            }
 
-        if (commentList) {
-            commentList.style.display = 'none';
-        }
+            if (commentList) {
+                commentList.style.display = 'none';
+            }
 
-        if (commentToggleBtn && commentBox) {
-            commentToggleBtn.addEventListener('click', function () {
-                const isOpen = commentBox.style.display === 'flex';
-                commentBox.style.display = isOpen ? 'none' : 'flex';
+            if (commentToggleBtn && commentBox) {
+                commentToggleBtn.addEventListener('click', function () {
+                    const isOpen = commentBox.style.display === 'block';
+                    commentBox.style.display = isOpen ? 'none' : 'block';
 
-                if (!isOpen && commentInput) {
-                    commentInput.focus();
-                }
-            });
-        }
+                    if (!isOpen && commentInput) {
+                        commentInput.focus();
+                    }
+                });
+            }
 
-        if (commentListBtn && commentList) {
-            commentListBtn.addEventListener('click', function () {
-                const isOpen = commentList.style.display === 'block';
+            if (commentListBtn && commentList) {
+                commentListBtn.addEventListener('click', function () {
+                    const isOpen = commentList.style.display === 'block';
 
-                commentList.style.display = isOpen ? 'none' : 'block';
-                updateCommentCountText(!isOpen);
-            });
-        }
+                    commentList.style.display = isOpen ? 'none' : 'block';
+                    updateCommentCountText(!isOpen);
+                });
+            }
 
-        if (commentForm && commentInput) {
-            commentForm.addEventListener('submit', function (event) {
-                event.preventDefault();
+            if (replyCancelBtn) {
+                replyCancelBtn.addEventListener('click', function () {
+                    clearReplyTarget();
+                });
+            }
 
-                const loginUsername = document.body.dataset.loginUsername
-                    ? document.body.dataset.loginUsername.trim()
-                    : '';
+            if (commentForm && commentInput) {
+                commentForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
 
-                if (!loginUsername || loginUsername === 'anonymousUser') {
-                    alert('로그인 후 댓글을 작성할 수 있습니다.');
+                    const loginUsername = getLoginUsername();
+
+                    if (!loginUsername || loginUsername === 'anonymousUser') {
+                        alert('로그인 후 댓글을 작성할 수 있습니다.');
+                        return;
+                    }
+
+                    const value = commentInput.value.trim();
+
+                    if (!value) {
+                        alert('댓글 내용을 입력해주세요.');
+                        commentInput.focus();
+                        return;
+                    }
+
+                    const action = commentForm.getAttribute('action');
+
+                    if (!action) {
+                        alert('댓글 등록 주소를 찾을 수 없습니다.');
+                        return;
+                    }
+
+                    const formData = new FormData(commentForm);
+
+                    fetch(action, {
+                        method: 'POST',
+                        headers: getCsrfHeaders(),
+                        body: formData
+                    })
+                        .then(function (response) {
+                            if (response.status === 401 || response.status === 403) {
+                                alert('로그인 후 댓글을 작성할 수 있습니다.');
+                                throw new Error('login required');
+                            }
+
+                            if (!response.ok) {
+                                alert('댓글은 최대 100자까지만 작성 가능합니다.');
+                                throw new Error('reply request failed');
+                            }
+
+                            return response.json();
+                        })
+                        .then(function (replyList) {
+                            renderReplyList(replyList);
+
+                            commentInput.value = '';
+                            clearReplyTarget();
+
+                            commentCount = Array.isArray(replyList)
+                                ? replyList.filter(function (reply) {
+                                    return !reply.parentsReplyId;
+                                }).length
+                                : 0;
+
+                            if (commentListBtn) {
+                                commentListBtn.dataset.commentCount = commentCount;
+                            }
+
+                            if (commentList) {
+                                commentList.style.display = 'block';
+                            }
+
+                            updateCommentCountText(true);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                });
+            }
+
+            if (commentList) {
+                commentList.addEventListener('click', function (event) {
+                    const moreBtn = event.target.closest('.comment-more-btn');
+                    const editBtn = event.target.closest('.comment-edit-btn');
+                    const deleteBtn = event.target.closest('.comment-delete-btn');
+                    const commentBubble = event.target.closest('.feed-comment-bubble, .comment-child-bubble');
+
+                    if (moreBtn) {
+                        event.stopPropagation();
+
+                        const menuWrap = moreBtn.closest('.comment-more-wrap');
+                        const menu = menuWrap ? menuWrap.querySelector('.comment-more-menu') : null;
+
+                        if (!menu) return;
+
+                        document.querySelectorAll('.comment-more-menu').forEach(function (item) {
+                            if (item !== menu) {
+                                item.classList.remove('is-open');
+                            }
+                        });
+
+                        menu.classList.toggle('is-open');
+                        return;
+                    }
+
+                    if (editBtn) {
+                        event.stopPropagation();
+                        handleCommentEdit(editBtn);
+                        return;
+                    }
+
+                    if (deleteBtn) {
+                        event.stopPropagation();
+                        handleCommentDelete(deleteBtn);
+                        return;
+                    }
+
+                    if (commentBubble) {
+                        event.stopPropagation();
+
+                        const commentItem = event.target.closest('[data-reply-id]');
+
+                        if (commentItem && !commentItem.classList.contains('feed-comment-empty')) {
+                            setReplyTarget(commentItem);
+                        }
+                    }
+                });
+            }
+
+            function normalizeInitialReplyList() {
+                if (!commentList) return;
+
+                const items = Array.from(
+                    commentList.querySelectorAll('.feed-comment-item:not(.feed-comment-empty)')
+                );
+
+                if (items.length === 0) {
                     return;
                 }
 
-                const value = commentInput.value.trim();
+                const replyList = items.map(function (item) {
+                    const writerEl = item.querySelector('.feed-comment-writer');
+                    const contentEl = item.querySelector('.feed-comment-content');
 
-                if (!value) {
+                    return {
+                        replyId: item.dataset.replyId || '',
+                        username: item.dataset.username || '',
+                        nickname: item.dataset.nickname || (writerEl ? writerEl.textContent.trim() : ''),
+                        replyContent: item.dataset.replyContent || (contentEl ? contentEl.textContent.trim() : ''),
+                        parentsReplyId: item.dataset.parentsReplyId || ''
+                    };
+                });
+
+                renderReplyList(replyList);
+            }
+
+            function applyCommentOwnerMenus() {
+                const loginUsername = getLoginUsername();
+
+                if (!commentList) return;
+
+                commentList.querySelectorAll('[data-username]').forEach(function (item) {
+                    const writerUsername = item.dataset.username
+                        ? item.dataset.username.trim()
+                        : '';
+
+                    const moreWrap = item.querySelector('.comment-more-wrap');
+
+                    if (!moreWrap) return;
+
+                    if (loginUsername && writerUsername && loginUsername === writerUsername) {
+                        moreWrap.style.display = 'block';
+                    } else {
+                        moreWrap.style.display = 'none';
+                    }
+                });
+            }
+
+            function setReplyTarget(commentItem) {
+                if (!replyTarget || !parentInput || !commentInput) return;
+
+                const replyId = commentItem.dataset.replyId || '';
+                const writerEl = commentItem.querySelector('.feed-comment-writer, .comment-child-writer');
+                const contentEl = commentItem.querySelector('.feed-comment-content, .comment-child-content');
+
+                const writer = writerEl ? writerEl.textContent.trim() : '회원';
+                const content = contentEl ? contentEl.textContent.trim() : '';
+
+                parentInput.value = replyId;
+
+                if (replyTargetWriter) {
+                    replyTargetWriter.textContent = writer;
+                }
+
+                if (replyTargetContent) {
+                    replyTargetContent.textContent = content;
+                }
+
+                replyTarget.classList.add('is-active');
+
+                if (commentBox) {
+                    commentBox.style.display = 'block';
+                }
+
+                commentInput.placeholder = writer + '님에게 답글 달기...';
+                commentInput.focus();
+            }
+
+            function clearReplyTarget() {
+                if (parentInput) {
+                    parentInput.value = '';
+                }
+
+                if (replyTarget) {
+                    replyTarget.classList.remove('is-active');
+                }
+
+                if (replyTargetWriter) {
+                    replyTargetWriter.textContent = '';
+                }
+
+                if (replyTargetContent) {
+                    replyTargetContent.textContent = '';
+                }
+
+                if (commentInput) {
+                    commentInput.placeholder = '댓글 달기...';
+                }
+            }
+
+            function renderReplyList(replyList) {
+                if (!commentList) return;
+
+                commentList.innerHTML = '';
+
+                if (!Array.isArray(replyList) || replyList.length === 0) {
+                    const emptyItem = document.createElement('div');
+                    emptyItem.className = 'feed-comment-item feed-comment-empty';
+
+                    const emptyText = document.createElement('span');
+                    emptyText.textContent = '아직 등록된 댓글이 없습니다.';
+
+                    emptyItem.appendChild(emptyText);
+                    commentList.appendChild(emptyItem);
+
+                    return;
+                }
+
+                const replyMap = {};
+                const rootReplies = [];
+
+                replyList.forEach(function (reply) {
+                    reply.children = [];
+                    replyMap[String(reply.replyId)] = reply;
+                });
+
+                replyList.forEach(function (reply) {
+                    const parentId = reply.parentsReplyId;
+
+                    if (parentId && replyMap[String(parentId)]) {
+                        replyMap[String(parentId)].children.push(reply);
+                    } else {
+                        rootReplies.push(reply);
+                    }
+                });
+
+                rootReplies.forEach(function (reply) {
+                    const commentItem = createCommentItem(reply);
+                    commentList.appendChild(commentItem);
+                });
+
+                applyCommentOwnerMenus();
+            }
+
+            function createCommentItem(reply) {
+                const commentItem = document.createElement('div');
+                commentItem.className = 'feed-comment-item';
+
+                if (reply.replyId) {
+                    commentItem.dataset.replyId = reply.replyId;
+                }
+
+                if (reply.username) {
+                    commentItem.dataset.username = reply.username;
+                }
+
+                const bubble = document.createElement('div');
+                bubble.className = 'feed-comment-bubble';
+
+                const avatar = document.createElement('div');
+                avatar.className = 'feed-comment-avatar';
+
+                const writerName = reply.nickname && reply.nickname.trim() !== ''
+                    ? reply.nickname
+                    : reply.username;
+
+                avatar.textContent = writerName ? writerName.substring(0, 1) : '회';
+
+                const main = document.createElement('div');
+                main.className = 'feed-comment-main';
+
+                const writer = document.createElement('strong');
+                writer.className = 'feed-comment-writer';
+                writer.textContent = writerName || '회원';
+
+                const content = document.createElement('span');
+                content.className = 'feed-comment-content';
+                content.textContent = reply.replyContent || '';
+
+                main.appendChild(writer);
+                main.appendChild(content);
+
+                const moreWrap = createCommentMoreWrap();
+
+                bubble.appendChild(avatar);
+                bubble.appendChild(main);
+                bubble.appendChild(moreWrap);
+
+                const childList = document.createElement('div');
+                childList.className = 'comment-child-list';
+
+                if (Array.isArray(reply.children) && reply.children.length > 0) {
+                    reply.children.forEach(function (childReply) {
+                        childList.appendChild(createChildReplyItem(childReply));
+                    });
+                }
+
+                commentItem.appendChild(bubble);
+                commentItem.appendChild(childList);
+
+                return commentItem;
+            }
+
+            function createChildReplyItem(reply) {
+                const childItem = document.createElement('div');
+                childItem.className = 'comment-child-item';
+
+                if (reply.replyId) {
+                    childItem.dataset.replyId = reply.replyId;
+                }
+
+                if (reply.username) {
+                    childItem.dataset.username = reply.username;
+                }
+
+                const writerName = reply.nickname && reply.nickname.trim() !== ''
+                    ? reply.nickname
+                    : reply.username;
+
+                const bubble = document.createElement('div');
+                bubble.className = 'comment-child-bubble';
+
+                const avatar = document.createElement('div');
+                avatar.className = 'comment-child-avatar';
+                avatar.textContent = writerName ? writerName.substring(0, 1) : '회';
+
+                const main = document.createElement('div');
+                main.className = 'comment-child-main';
+
+                const writer = document.createElement('strong');
+                writer.className = 'comment-child-writer';
+                writer.textContent = writerName || '회원';
+
+                const content = document.createElement('span');
+                content.className = 'comment-child-content';
+                content.textContent = reply.replyContent || '';
+
+                main.appendChild(writer);
+                main.appendChild(content);
+
+                const moreWrap = createCommentMoreWrap();
+
+                bubble.appendChild(avatar);
+                bubble.appendChild(main);
+                bubble.appendChild(moreWrap);
+
+                const childList = document.createElement('div');
+                childList.className = 'comment-child-list';
+
+                if (Array.isArray(reply.children) && reply.children.length > 0) {
+                    reply.children.forEach(function (childReply) {
+                        childList.appendChild(createChildReplyItem(childReply));
+                    });
+                }
+
+                childItem.appendChild(bubble);
+                childItem.appendChild(childList);
+
+                return childItem;
+            }
+
+            function createCommentMoreWrap() {
+                const moreWrap = document.createElement('div');
+                moreWrap.className = 'comment-more-wrap';
+
+                const moreBtn = document.createElement('button');
+                moreBtn.type = 'button';
+                moreBtn.className = 'comment-more-btn';
+                moreBtn.textContent = '···';
+
+                const menu = document.createElement('div');
+                menu.className = 'comment-more-menu';
+
+                const editBtn = document.createElement('button');
+                editBtn.type = 'button';
+                editBtn.className = 'comment-menu-item comment-edit-btn';
+                editBtn.textContent = '수정하기';
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.type = 'button';
+                deleteBtn.className = 'comment-menu-item danger comment-delete-btn';
+                deleteBtn.textContent = '삭제하기';
+
+                menu.appendChild(editBtn);
+                menu.appendChild(deleteBtn);
+
+                moreWrap.appendChild(moreBtn);
+                moreWrap.appendChild(menu);
+
+                return moreWrap;
+            }
+
+            function handleCommentEdit(editBtn) {
+                const commentItem = editBtn.closest('[data-reply-id]');
+
+                if (!commentItem) return;
+
+                const replyId = commentItem.dataset.replyId;
+                const contentEl = commentItem.querySelector('.feed-comment-content, .comment-child-content');
+
+                if (!replyId) {
+                    alert('댓글 번호를 찾을 수 없습니다.');
+                    return;
+                }
+
+                if (!contentEl) return;
+
+                const currentContent = contentEl.textContent.trim();
+                const newContent = prompt('댓글을 수정해주세요.', currentContent);
+
+                if (newContent === null) return;
+
+                const trimmedContent = newContent.trim();
+
+                if (!trimmedContent) {
                     alert('댓글 내용을 입력해주세요.');
-                    commentInput.focus();
                     return;
                 }
 
-                const action = commentForm.getAttribute('action');
+                const formData = new FormData();
+                formData.append('replyContent', trimmedContent);
 
-                if (!action) {
-                    alert('댓글 등록 주소를 찾을 수 없습니다.');
-                    return;
-                }
-
-                const formData = new FormData(commentForm);
-
-                fetch(action, {
+                fetch('/feed/reply/' + replyId + '/edit', {
                     method: 'POST',
                     headers: getCsrfHeaders(),
                     body: formData
                 })
                     .then(function (response) {
                         if (response.status === 401 || response.status === 403) {
-                            alert('로그인 후 댓글을 작성할 수 있습니다.');
-                            throw new Error('login required');
+                            alert('본인이 작성한 댓글만 수정할 수 있습니다.');
+                            throw new Error('forbidden');
                         }
 
                         if (!response.ok) {
-                            alert('댓글 등록 중 오류가 발생했습니다.');
-                            throw new Error('reply request failed');
+                            alert('댓글 수정 중 오류가 발생했습니다.');
+                            throw new Error('reply edit failed');
                         }
 
-                        return response.json();
+                        contentEl.textContent = trimmedContent;
+
+                        document.querySelectorAll('.comment-more-menu').forEach(function (menu) {
+                            menu.classList.remove('is-open');
+                        });
                     })
-                    .then(function (replyList) {
-                        renderReplyList(replyList);
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
 
-                        commentInput.value = '';
+            function handleCommentDelete(deleteBtn) {
+                const commentItem = deleteBtn.closest('[data-reply-id]');
 
-                        commentCount = Array.isArray(replyList) ? replyList.length : 0;
+                if (!commentItem) return;
+
+                const replyId = commentItem.dataset.replyId;
+
+                if (!replyId) {
+                    alert('댓글 번호를 찾을 수 없습니다.');
+                    return;
+                }
+
+                const isDelete = confirm('댓글을 삭제하시겠습니까?');
+
+                if (!isDelete) return;
+
+                fetch('/feed/reply/' + replyId + '/delete', {
+                    method: 'POST',
+                    headers: getCsrfHeaders()
+                })
+                    .then(function (response) {
+                        if (response.status === 401 || response.status === 403) {
+                            alert('본인이 작성한 댓글만 삭제할 수 있습니다.');
+                            throw new Error('forbidden');
+                        }
+
+                        if (!response.ok) {
+                            alert('댓글 삭제 중 오류가 발생했습니다.');
+                            throw new Error('reply delete failed');
+                        }
+
+                        if (commentItem.classList.contains('feed-comment-item')) {
+                            commentCount = Math.max(commentCount - 1, 0);
+                        }
+
+                        commentItem.remove();
 
                         if (commentListBtn) {
                             commentListBtn.dataset.commentCount = commentCount;
                         }
 
-                        if (commentList) {
-                            commentList.style.display = 'block';
-                        }
-
                         updateCommentCountText(true);
+
+                        if (commentCount === 0 && commentList) {
+                            const emptyItem = document.createElement('div');
+                            emptyItem.className = 'feed-comment-item feed-comment-empty';
+
+                            const emptyText = document.createElement('span');
+                            emptyText.textContent = '아직 등록된 댓글이 없습니다.';
+
+                            emptyItem.appendChild(emptyText);
+                            commentList.appendChild(emptyItem);
+                        }
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
-            });
-        }
-
-        function renderReplyList(replyList) {
-            if (!commentList) return;
-
-            commentList.innerHTML = '';
-
-            if (!Array.isArray(replyList) || replyList.length === 0) {
-                const emptyItem = document.createElement('div');
-                emptyItem.className = 'feed-comment-item feed-comment-empty';
-
-                const emptyText = document.createElement('span');
-                emptyText.textContent = '아직 등록된 댓글이 없습니다.';
-
-                emptyItem.appendChild(emptyText);
-                commentList.appendChild(emptyItem);
-
-                return;
             }
 
-            replyList.forEach(function (reply) {
-                const commentItem = document.createElement('div');
-                commentItem.className = 'feed-comment-item';
+            function updateCommentCountText(isOpen) {
+                if (!commentListBtn) return;
 
-                const writerEl = document.createElement('strong');
-                writerEl.className = 'feed-comment-writer';
-
-                const writerName = reply.nickname && reply.nickname.trim() !== ''
-                    ? reply.nickname
-                    : reply.username;
-
-                writerEl.textContent = writerName || '회원';
-
-                const contentEl = document.createElement('span');
-                contentEl.className = 'feed-comment-content';
-                contentEl.textContent = reply.replyContent || '';
-
-                commentItem.appendChild(writerEl);
-                commentItem.appendChild(document.createTextNode(' '));
-                commentItem.appendChild(contentEl);
-
-                commentList.appendChild(commentItem);
-            });
-        }
-
-        function updateCommentCountText(isOpen) {
-            if (!commentListBtn) return;
-
-            if (isOpen) {
-                commentListBtn.textContent = '댓글 접기';
-            } else {
-                commentListBtn.textContent = '댓글 ' + commentCount + '개 모두 보기';
+                if (isOpen) {
+                    commentListBtn.textContent = '댓글 접기';
+                } else {
+                    commentListBtn.textContent = '댓글 ' + commentCount + '개 모두 보기';
+                }
             }
-        }
-    });
-}
+        });
+    }
 
-    // 피드 안에 해시태그 버튼 클릭 기능
     function initHashtagButtons() {
         document.querySelectorAll('.feed-hashtag-btn').forEach(function (button) {
             button.addEventListener('click', function () {
@@ -572,13 +995,10 @@ function initCommentArea() {
         });
     }
 
-    // 로그인한 사용자와 게시글 작성자가 같은지 확인
     function isOwner(card) {
         if (!card) return false;
 
-        const loginUsername = document.body.dataset.loginUsername
-            ? document.body.dataset.loginUsername.trim()
-            : '';
+        const loginUsername = getLoginUsername();
 
         const feedUsername = card.dataset.username
             ? card.dataset.username.trim()
@@ -591,7 +1011,6 @@ function initCommentArea() {
         return loginUsername === feedUsername;
     }
 
-    // 본인 게시글이 아니면 ... 메뉴 자체 숨기기
     function initOwnerMoreMenus() {
         document.querySelectorAll('.feed-card').forEach(function (card) {
             const moreWrap = card.querySelector('.feed-more-wrap');
@@ -606,7 +1025,6 @@ function initCommentArea() {
         });
     }
 
-    // 점 3개 피드 메뉴 기능
     function initMoreMenu() {
         document.querySelectorAll('.feed-more-btn').forEach(function (button) {
             button.addEventListener('click', function (event) {
@@ -636,6 +1054,10 @@ function initCommentArea() {
             document.querySelectorAll('.feed-more-menu').forEach(function (menu) {
                 menu.classList.remove('is-open');
             });
+
+            document.querySelectorAll('.comment-more-menu').forEach(function (menu) {
+                menu.classList.remove('is-open');
+            });
         });
 
         document.querySelectorAll('.feed-menu-item').forEach(function (btn) {
@@ -656,7 +1078,6 @@ function initCommentArea() {
                     return;
                 }
 
-                // 삭제하기 버튼
                 if (btn.classList.contains('danger')) {
                     const isDelete = confirm('해당 피드를 삭제하시겠습니까?');
 
@@ -668,7 +1089,6 @@ function initCommentArea() {
                     return;
                 }
 
-                // 수정하기 버튼
                 if (btn.classList.contains('edit-btn')) {
                     location.href = '/feed/' + feedId + '/edit';
                 }
@@ -676,7 +1096,6 @@ function initCommentArea() {
         });
     }
 
-    // 피드 페이지 처음 열릴 때 실행
     removeDuplicateTagButtons();
     renderFeedContentAndLink();
     renderFeedImages();
@@ -686,7 +1105,6 @@ function initCommentArea() {
     initOwnerMoreMenus();
     initMoreMenu();
 
-    // 상단 해시태그 필터 클릭 시
     if (filterSummary) {
         filterSummary.addEventListener('click', toggleFeedFilter);
 

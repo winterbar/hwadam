@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.miles.beauminity.mapper.feed.FeedFileMapper;
 import com.miles.beauminity.mapper.feed.FeedMapper;
+import com.miles.beauminity.mapper.feed.FeedReplyMapper;
 import com.miles.beauminity.mapper.feed.TagMapper;
 import com.miles.beauminity.util.FileUploadUtil;
 import com.miles.beauminity.vo.feed.FeedFileVO;
@@ -25,6 +26,7 @@ public class FeedServiceImpl implements FeedService {
     private final FeedMapper feedMapper;
     private final FeedFileMapper feedFileMapper;
     private final TagMapper tagMapper;
+    private final FeedReplyMapper feedReplyMapper;
 
     @Override
     public void postFeed(FeedVO feedVO, MultipartFile[] files, List<String> tagNames) {
@@ -67,10 +69,13 @@ public class FeedServiceImpl implements FeedService {
             List<String> feedTagList = tagMapper.getFeedTagList(feed.getFeedId());
             // 특정 피드 아이디에 해당하는 사진 가져와서 리스트로 저장
             List<String> feedFileList = feedFileMapper.getFeedFileList(feed.getFeedId());
-            List<String> feedReplyList = feedMapper.getFeedReplyList(feed.getFeedId());
-            feed.setFeedReplyList(feedReplyList);
+            List<String> feedReplyList = feedReplyMapper.getFeedReplyList(feed.getFeedId());
+
             feed.setFeedFileList(feedFileList);
             feed.setFeedTagList(feedTagList);
+            feed.setFeedReplyList(feedReplyList);
+            feed.setReplyCnt(feedReplyList.size());
+
         }
 
         return feedList;
@@ -167,8 +172,8 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     public List<FeedReplyVO> getFeedReply(FeedReplyVO feedReplyVO) {
-        feedMapper.postReply(feedReplyVO);
-        return feedMapper.getReply(feedReplyVO);
+        feedReplyMapper.postReply(feedReplyVO);
+        return feedReplyMapper.getReply(feedReplyVO);
     }
 
 }

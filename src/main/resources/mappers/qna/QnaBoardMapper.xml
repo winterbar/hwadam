@@ -38,4 +38,13 @@
             ON m.board_id = q.board_id
             WHERE q.category=#{category} AND m.board_type = #{type} AND deleted = 0
     </select>
+
+    <!-- 카테고리만 따로... 더 좋은 방법 없을까? -->
+    <select id="getCategoryById"
+            parameterType="Long"
+            resultType="String">
+        SELECT category
+            FROM qna_board
+            WHERE board_id=#{value}       
+    </select>
 </mapper>
