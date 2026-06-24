@@ -81,6 +81,38 @@
     margin-bottom: 1.2rem;
 }
 
+.post-like-section {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 25px;
+    margin-bottom: 20px;
+}
+
+/* 박스를 없앤 심플 버튼 스타일 */
+.btn-like {
+    background: none;
+    border: none;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px; /* 하트와 숫자 사이 간격 */
+    font-size: 15px;
+    color: #333333; /* 기본 숫자 색상 */
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+/* 하트 아이콘 기본 스타일 (필요 시 크기 조절) */
+.btn-like .like-icon {
+    font-size: 18px;
+    transition: transform 0.2s ease;
+}
+
+/* 클릭 시 아주 살짝 눌리는 느낌 */
+.btn-like-simple:active {
+    transform: scale(0.95);
+}
+
 /* 3. 하단 버튼 컨트롤 영역 */
 .post-actions {
     display: flex;

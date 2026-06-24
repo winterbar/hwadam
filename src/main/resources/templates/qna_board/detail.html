@@ -21,7 +21,7 @@
                 
                 <div class="post-meta-info">
                     <div class="meta-left">
-                        <span class="meta-author" th:text="${qna.username}"></span>
+                        <span class="meta-author" th:text="|${nickname} (${qna.username})|"></span>
                         <span class="meta-divider">|</span>
                         <span class="meta-date" th:text="${qna.title}"></span>
                     </div>
@@ -67,6 +67,13 @@
                 </div>
             </div>
         </div>
+
+        <div class="post-like-section">
+                <button type="button" class="btn-like" id="btnLike">
+                    <span class="like-icon" id="like-icon">♡</span>
+                    <span class="like-count" th:text="${qna.likeCnt}">0</span>
+                </button>
+            </div>
 
             <div class="post-actions">
                 <div class="action-left">
@@ -154,3 +161,4 @@
 </body>
 </html>
 <script th:src="@{/js/qna/qna_delete.js}"></script>
+<script th:src="@{/js/qna/qna_like.js}"></script>
