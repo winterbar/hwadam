@@ -52,9 +52,6 @@
     join member m
         on f.username = m.username
 
-    left join feed_reply fr
-        on f.feed_id = fr.feed_id
-
     left join feed_like fl_all
         on f.feed_id = fl_all.feed_id
 
@@ -147,46 +144,5 @@
         where feed_id=#{feedId}
     </select>
 
-    <!-- 댓글 DB에 저장 -->
-    <insert id="postReply"
-            parameterType="com.miles.beauminity.vo.feed.FeedReplyVO">
-        insert into feed_reply(
-            reply_id,
-            feed_id,
-            username,
-            reply_content,
-            deleted
-        )
-        values(
-            #{replyId},
-            #{feedId},
-            #{username},
-            #{replyContent},
-            #{deleted}
-        )
-    </insert>
-    <select id="getReply"
-            parameterType="com.miles.beauminity.vo.feed.FeedReplyVO"
-            resultType="com.miles.beauminity.vo.feed.FeedReplyVO">
-        select m.nickname, fr.reply_content
-        from feed_reply fr
-        join member m
-        on fr.username = m.username 
-        where fr.feed_id=#{feedId}
-            and fr.deleted=0
-            and m.deleted=0
-        order by fr.reply_id asc
-    </select>
-    <select id="getFeedReplyList"
-            parameterType="long"
-            resultType="com.miles.beauminity.vo.feed.FeedReplyVO">
-        select m.nickname, fr.reply_content
-        from feed_reply fr
-        join member m
-            on fr.username = m.username
-        where fr.deleted=0
-            and m.deleted=0
-        order by fr.reply_id asc
-    </select>
 
 </mapper>
