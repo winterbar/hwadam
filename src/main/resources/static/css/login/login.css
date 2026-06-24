@@ -141,3 +141,10 @@ body {
     text-align: left;      
     font-weight: 500;
 }
+
+#id-validation-msg {
+    display: none; /* 기본적으로 숨김 */
+    color: #FA6E68;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
