@@ -36,5 +36,8 @@ public interface MasterBoardMapper {
     // SELECT2 - 게시판별 게시글 수 조회
     int getTypeBoardCount(String type);
 
+    // SELECT3 - 닉네임 검색
+    public String getNicknameByBoardId(Long id);
+
 }
 
