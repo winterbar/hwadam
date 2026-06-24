@@ -1,473 +1,562 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Beauminity - 피드 작성</title>
-    <link rel="stylesheet" th:href="@{/css/feed/feed_write.css}">
-    <link rel="stylesheet" th:href="@{/css/common/main.css}">
-</head>
-<body>
+    <link rel="stylesheet" th:href="@{/css/feed/feed_write.css}" />
+    <link rel="stylesheet" th:href="@{/css/common/main.css}" />
 
-<header th:replace="~{layout/header :: header}"></header>
+    <style>
+      .limit-count-text {
+        margin-top: 6px;
+        text-align: right;
+        font-size: 13px;
+        color: #7f8fa6;
+      }
+    </style>
+  </head>
+  <body>
+    <header th:replace="~{layout/header :: header}"></header>
 
-<main class="write-main">
-    <section class="dashboard-section">
-
+    <main class="write-main">
+      <section class="dashboard-section">
         <div class="section-header">
-            <h2>
-                ✎ BOTD 작성
-                <span>오늘의 뷰티 기록을 사진과 해시태그로 간단하게 공유해보세요.</span>
-            </h2>
-            <a th:href="@{/feed}" class="more-link">피드로 돌아가기</a>
+          <h2>
+            ✎ BOTD 작성
+            <span
+              >오늘의 뷰티 기록을 사진과 해시태그로 간단하게 공유해보세요.</span
+            >
+          </h2>
+          <a th:href="@{/feed}" class="more-link">피드로 돌아가기</a>
         </div>
 
         <div class="write-guide">
-            <strong>작성 예시</strong> · 사진 1장 이상, 해시태그 3개 이상 5개 이하,
-            정보공유 게시글 링크는 선택사항이지만 입력 시 링크 형식으로 작성해야 해요.
+          <strong>작성 예시</strong> · 사진 1장 이상, 해시태그 3개 이상 5개
+          이하, 본문과 정보공유 링크는 각각 100자 이내로 작성해주세요.
         </div>
 
         <div class="write-layout">
-
-            <!-- 이미지 미리보기 영역 -->
-            <div class="upload-preview-card">
-                <div class="upload-preview-box" id="imagePreviewBox">
-                    <span>이미지 미리보기</span>
-                </div>
-
-                <div class="upload-preview-info">
-                    <strong>대표 사진 미리보기</strong>
-                    <p>처음 선택한 사진이 해당 피드의 대표 이미지로 설정됩니다.</p>
-                </div>
+          <!-- 이미지 미리보기 영역 -->
+          <div class="upload-preview-card">
+            <div class="upload-preview-box" id="imagePreviewBox">
+              <span>이미지 미리보기</span>
             </div>
 
+            <div class="upload-preview-info">
+              <strong>대표 사진 미리보기</strong>
+              <p>처음 선택한 사진이 해당 피드의 대표 이미지로 설정됩니다.</p>
+            </div>
+          </div>
 
-            <!-- 피드 작성 폼 -->
-            <form class="write-form-card"
-                  id="feedWriteForm"
-                  th:action="@{/feed/write}"
-                  method="post"
-                  enctype="multipart/form-data">
+          <!-- 피드 작성 폼 -->
+          <form
+            class="write-form-card"
+            id="feedWriteForm"
+            th:action="@{/feed/write}"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <!-- Spring Security CSRF 사용 시 필요 -->
+            <input
+              type="hidden"
+              th:if="${_csrf != null}"
+              th:name="${_csrf.parameterName}"
+              th:value="${_csrf.token}"
+            />
 
-                <!-- Spring Security CSRF 사용 시 필요 -->
-                <input type="hidden"
-                       th:if="${_csrf != null}"
-                       th:name="${_csrf.parameterName}"
-                       th:value="${_csrf.token}">
+            <!-- 피드 이미지 -->
+            <div class="form-group">
+              <label>피드 이미지</label>
 
-                <!-- 피드 이미지 -->
-                <div class="form-group">
-                    <label>피드 이미지</label>
+              <div class="file-area" id="dropZone">
+                <p>이미지를 드래그 하세요</p>
+                <p>또는</p>
 
-                    <div class="file-area" id="dropZone">
-                        <p>이미지를 드래그 하세요</p>
-                        <p>또는</p>
+                <input
+                  type="file"
+                  id="fileInput"
+                  name="files"
+                  accept="image/*"
+                  multiple
+                  hidden
+                />
 
-                        <input type="file"
-                               id="fileInput"
-                               name="files"
-                               accept="image/*"
-                               multiple
-                               hidden>
+                <button
+                  type="button"
+                  onclick="document.getElementById('fileInput').click()"
+                >
+                  + 이미지 추가
+                </button>
+              </div>
 
-                        <button type="button"
-                                onclick="document.getElementById('fileInput').click()">
-                            + 이미지 추가
-                        </button>
-                    </div>
+              <div id="fileCountText" class="file-count-text">0 / 5</div>
 
-                    <div id="fileCountText" class="file-count-text">0 / 5</div>
+              <!-- 여러 이미지 미리보기 -->
+              <div id="previewList" class="preview-list"></div>
 
-                    <!-- 여러 이미지 미리보기 -->
-                    <div id="previewList" class="preview-list"></div>
+              <!-- 파일명 목록 -->
+              <div id="fileList" class="file-list"></div>
+            </div>
 
-                    <!-- 파일명 목록 -->
-                    <div id="fileList" class="file-list"></div>
-                </div>
+            <!-- 본문 -->
+            <div class="form-group">
+              <label for="feed-content">본문</label>
+              <textarea
+                id="feed-content"
+                name="feedContent"
+                class="form-textarea"
+                maxlength="200"
+                placeholder="오늘 사용한 제품, 사용감, 지속력, 피부 타입별 팁 등을 자유롭게 적어주세요."
+              ></textarea>
 
-                <!-- 본문 -->
-                <div class="form-group">
-                    <label for="feed-content">본문</label>
-                    <textarea id="feed-content"
-                              name="feedContent"
-                              class="form-textarea"
-                              placeholder="오늘 사용한 제품, 사용감, 지속력, 피부 타입별 팁 등을 자유롭게 적어주세요."></textarea>
-                </div>
+              <p class="tag-help-text">
+                본문은 최대 200자까지 입력할 수 있습니다.
+              </p>
 
-                <!-- 정보 공유 게시판 링크 -->
-                <div class="form-group">
-                    <label for="info-link">정보 공유 게시판 링크</label>
-                    <input id="info-link"
-                           name="feedContent"
-                           class="form-input"
-                           type="url"
-                           placeholder="예: https://example.com/boards/1">
-                    <p class="tag-help-text">
-                        선택사항입니다. 입력할 경우 https:// 로 시작하는 링크 형식이어야 합니다.
-                    </p>
-                </div>
+              <div id="contentCountText" class="limit-count-text">0 / 200</div>
+            </div>
 
-                <!-- 해시태그 -->
-                <div class="form-group">
-                    <label for="feed-tags">해시태그</label>
+            <!-- 정보 공유 게시판 링크 -->
+            <div class="form-group">
+              <label for="info-link">정보 공유 게시판 링크</label>
+              <input
+                id="info-link"
+                name="feedContent"
+                class="form-input"
+                type="url"
+                maxlength="100"
+                placeholder="예: https://example.com/boards/1"
+              />
 
-                    <div class="tag-input-wrap">
-                        <input id="feed-tags"
-                               class="form-input tag-input"
-                               type="text"
-                               placeholder="예: 톤업크림 입력 후 Enter">
+              <p class="tag-help-text">
+                선택사항입니다. 입력할 경우 https:// 로 시작하는 링크 형식이어야
+                합니다.
+              </p>
 
-                        <button type="button"
-                                name="tagNames"
-                                class="tag-add-btn"
-                                id="tag-add-btn">
-                            등록
-                        </button>
-                    </div>
+              <div id="linkCountText" class="limit-count-text">0 / 100</div>
+            </div>
 
-                    <p class="tag-help-text">
-                        해시태그는 최소 3개 이상, 최대 5개 이하로 입력해주세요.
-                    </p>
+            <!-- 해시태그 -->
+            <div class="form-group">
+              <label for="feed-tags">해시태그</label>
 
-                    <div id="tagCountText" class="tag-count-text">0 / 5</div>
+              <div class="tag-input-wrap">
+                <input
+                  id="feed-tags"
+                  class="form-input tag-input"
+                  type="text"
+                  placeholder="예: 톤업크림 입력 후 Enter"
+                />
 
-                    <div class="tag-preview-list" id="tag-preview-list"></div>
-                    <div id="tag-hidden-area"></div>
-                </div>
+                <button type="button" class="tag-add-btn" id="tag-add-btn">
+                  등록
+                </button>
+              </div>
 
-                <!-- 버튼 영역 -->
-                <div class="write-actions">
-                    <button type="button"
-                            class="btn-cancel"
-                            onclick="location.href='/feed'">
-                        취소
-                    </button>
+              <p class="tag-help-text">
+                해시태그는 최소 3개 이상, 최대 5개 이하로 입력해주세요.
+              </p>
 
-                    <button type="submit"
-                            class="btn-submit">
-                        등록하기
-                    </button>
-                </div>
+              <div id="tagCountText" class="tag-count-text">0 / 5</div>
 
-            </form>
+              <div class="tag-preview-list" id="tag-preview-list"></div>
+              <div id="tag-hidden-area"></div>
+            </div>
 
+            <!-- 버튼 영역 -->
+            <div class="write-actions">
+              <button
+                type="button"
+                class="btn-cancel"
+                onclick="location.href = '/feed'"
+              >
+                취소
+              </button>
+
+              <button type="submit" class="btn-submit">등록하기</button>
+            </div>
+          </form>
         </div>
-    </section>
-</main>
+      </section>
+    </main>
 
-<footer th:replace="~{layout/footer :: footer}"></footer>
+    <footer th:replace="~{layout/footer :: footer}"></footer>
 
-<script th:inline="javascript">
-    document.addEventListener('DOMContentLoaded', function () {
-
+    <script th:inline="javascript">
+      document.addEventListener("DOMContentLoaded", function () {
         /* ===============================
            이미지 여러 장 업로드 / 미리보기 / 삭제
         =============================== */
-        const feedWriteForm = document.getElementById('feedWriteForm');
-        const fileInput = document.getElementById('fileInput');
-        const dropZone = document.getElementById('dropZone');
-        const imagePreviewBox = document.getElementById('imagePreviewBox');
-        const previewList = document.getElementById('previewList');
-        const fileList = document.getElementById('fileList');
-        const fileCountText = document.getElementById('fileCountText');
+        const feedWriteForm = document.getElementById("feedWriteForm");
+        const fileInput = document.getElementById("fileInput");
+        const dropZone = document.getElementById("dropZone");
+        const imagePreviewBox = document.getElementById("imagePreviewBox");
+        const previewList = document.getElementById("previewList");
+        const fileList = document.getElementById("fileList");
+        const fileCountText = document.getElementById("fileCountText");
 
         const MAX_FILE_COUNT = 5;
         let selectedFiles = [];
 
         function isImageFile(file) {
-            return file && file.type.startsWith('image/');
+          return file && file.type.startsWith("image/");
         }
 
         function syncFileInput() {
-            const dataTransfer = new DataTransfer();
+          const dataTransfer = new DataTransfer();
 
-            selectedFiles.forEach(function (file) {
-                dataTransfer.items.add(file);
-            });
+          selectedFiles.forEach(function (file) {
+            dataTransfer.items.add(file);
+          });
 
-            fileInput.files = dataTransfer.files;
+          fileInput.files = dataTransfer.files;
         }
 
         function renderFiles() {
-            previewList.innerHTML = '';
-            fileList.innerHTML = '';
-            fileCountText.textContent = selectedFiles.length + ' / ' + MAX_FILE_COUNT;
+          previewList.innerHTML = "";
+          fileList.innerHTML = "";
+          fileCountText.textContent =
+            selectedFiles.length + " / " + MAX_FILE_COUNT;
 
-            if (selectedFiles.length === 0) {
-                imagePreviewBox.innerHTML = '<span>이미지 미리보기</span>';
-                syncFileInput();
-                return;
-            }
+          if (selectedFiles.length === 0) {
+            imagePreviewBox.innerHTML = "<span>이미지 미리보기</span>";
+            syncFileInput();
+            return;
+          }
 
-            selectedFiles.forEach(function (file, index) {
-                const reader = new FileReader();
+          selectedFiles.forEach(function (file, index) {
+            const reader = new FileReader();
 
-                reader.onload = function (event) {
-                    const previewItem = document.createElement('div');
-                    previewItem.className = 'preview-item';
+            reader.onload = function (event) {
+              const previewItem = document.createElement("div");
+              previewItem.className = "preview-item";
 
-                    previewItem.innerHTML = `
+              previewItem.innerHTML = `
                         <img src="${event.target.result}" alt="이미지 미리보기">
                         <button type="button" class="preview-remove-btn" data-index="${index}">×</button>
                     `;
 
-                    previewList.appendChild(previewItem);
+              previewList.appendChild(previewItem);
 
-                    if (index === 0) {
-                        imagePreviewBox.innerHTML = `
+              if (index === 0) {
+                imagePreviewBox.innerHTML = `
                             <img src="${event.target.result}"
                                  alt="대표 이미지 미리보기"
                                  style="width:100%; height:100%; object-fit:cover;">
                         `;
-                    }
-                };
+              }
+            };
 
-                reader.readAsDataURL(file);
+            reader.readAsDataURL(file);
 
-                const fileName = document.createElement('p');
-                fileName.textContent = (index + 1) + '. ' + file.name;
-                fileList.appendChild(fileName);
-            });
+            const fileName = document.createElement("p");
+            fileName.textContent = index + 1 + ". " + file.name;
+            fileList.appendChild(fileName);
+          });
 
-            syncFileInput();
+          syncFileInput();
         }
 
         function addFiles(files) {
-            const incomingFiles = Array.from(files);
+          const incomingFiles = Array.from(files);
 
-            for (const file of incomingFiles) {
-                if (!isImageFile(file)) {
-                    alert('이미지 파일만 업로드할 수 있어요.');
-                    continue;
-                }
-
-                if (selectedFiles.length >= MAX_FILE_COUNT) {
-                    alert('이미지는 최대 5개까지 업로드할 수 있어요.');
-                    break;
-                }
-
-                selectedFiles.push(file);
+          for (const file of incomingFiles) {
+            if (!isImageFile(file)) {
+              alert("이미지 파일만 업로드할 수 있어요.");
+              continue;
             }
 
-            renderFiles();
+            if (selectedFiles.length >= MAX_FILE_COUNT) {
+              alert("이미지는 최대 5개까지 업로드할 수 있어요.");
+              break;
+            }
+
+            selectedFiles.push(file);
+          }
+
+          renderFiles();
         }
 
         if (fileInput) {
-            fileInput.addEventListener('change', function () {
-                addFiles(fileInput.files);
-            });
+          fileInput.addEventListener("change", function () {
+            addFiles(fileInput.files);
+          });
         }
 
         if (dropZone) {
-            dropZone.addEventListener('dragover', function (event) {
-                event.preventDefault();
-                dropZone.classList.add('dragover');
-            });
+          dropZone.addEventListener("dragover", function (event) {
+            event.preventDefault();
+            dropZone.classList.add("dragover");
+          });
 
-            dropZone.addEventListener('dragleave', function () {
-                dropZone.classList.remove('dragover');
-            });
+          dropZone.addEventListener("dragleave", function () {
+            dropZone.classList.remove("dragover");
+          });
 
-            dropZone.addEventListener('drop', function (event) {
-                event.preventDefault();
-                dropZone.classList.remove('dragover');
+          dropZone.addEventListener("drop", function (event) {
+            event.preventDefault();
+            dropZone.classList.remove("dragover");
 
-                addFiles(event.dataTransfer.files);
-            });
+            addFiles(event.dataTransfer.files);
+          });
         }
 
-        previewList.addEventListener('click', function (event) {
-            if (!event.target.classList.contains('preview-remove-btn')) return;
+        previewList.addEventListener("click", function (event) {
+          if (!event.target.classList.contains("preview-remove-btn")) return;
 
-            const removeIndex = Number(event.target.dataset.index);
+          const removeIndex = Number(event.target.dataset.index);
 
-            selectedFiles.splice(removeIndex, 1);
-            renderFiles();
+          selectedFiles.splice(removeIndex, 1);
+          renderFiles();
         });
 
+        /* ===============================
+           본문 / 링크 100자 제한
+        =============================== */
+        const feedContentInput = document.getElementById("feed-content");
+        const infoLinkInput = document.getElementById("info-link");
+        const contentCountText = document.getElementById("contentCountText");
+        const linkCountText = document.getElementById("linkCountText");
+
+        const MAX_CONTENT_LENGTH = 200;
+        const MAX_LINK_LENGTH = 100;
+
+        function updateContentCountText() {
+          if (!feedContentInput || !contentCountText) return;
+
+          contentCountText.textContent =
+            feedContentInput.value.length + " / " + MAX_CONTENT_LENGTH;
+        }
+
+        function updateLinkCountText() {
+          if (!infoLinkInput || !linkCountText) return;
+
+          linkCountText.textContent =
+            infoLinkInput.value.length + " / " + MAX_LINK_LENGTH;
+        }
+
+        if (feedContentInput) {
+          feedContentInput.addEventListener("input", updateContentCountText);
+        }
+
+        if (infoLinkInput) {
+          infoLinkInput.addEventListener("input", updateLinkCountText);
+        }
+
+        updateContentCountText();
+        updateLinkCountText();
 
         /* ===============================
            해시태그 칩 추가 / 삭제
         =============================== */
-        const tagInput = document.getElementById('feed-tags');
-        const tagAddBtn = document.getElementById('tag-add-btn');
-        const tagPreviewList = document.getElementById('tag-preview-list');
-        const tagHiddenArea = document.getElementById('tag-hidden-area');
-        const tagCountText = document.getElementById('tagCountText');
+        const tagInput = document.getElementById("feed-tags");
+        const tagAddBtn = document.getElementById("tag-add-btn");
+        const tagPreviewList = document.getElementById("tag-preview-list");
+        const tagHiddenArea = document.getElementById("tag-hidden-area");
+        const tagCountText = document.getElementById("tagCountText");
 
         const MIN_TAG_COUNT = 3;
         const MAX_TAG_COUNT = 5;
 
         function normalizeTag(value) {
-            return value.trim().replace(/^#+/, '');
+          return value.trim().replace(/^#+/, "");
         }
 
         function getTagCount() {
-            return tagPreviewList.querySelectorAll('.tag-chip').length;
+          if (!tagPreviewList) return 0;
+          return tagPreviewList.querySelectorAll(".tag-chip").length;
         }
 
         function updateTagCountText() {
-            tagCountText.textContent = getTagCount() + ' / ' + MAX_TAG_COUNT;
+          if (!tagCountText) return;
+          tagCountText.textContent = getTagCount() + " / " + MAX_TAG_COUNT;
         }
 
         function refreshHiddenTags() {
-            tagHiddenArea.innerHTML = '';
+          if (!tagHiddenArea || !tagPreviewList) return;
 
-            const chips = tagPreviewList.querySelectorAll('.tag-chip');
+          tagHiddenArea.innerHTML = "";
 
-            chips.forEach(function (chip) {
-                const hiddenInput = document.createElement('input');
-                hiddenInput.type = 'hidden';
-                hiddenInput.name = 'tagNames';
-                hiddenInput.value = chip.dataset.tag;
+          const chips = tagPreviewList.querySelectorAll(".tag-chip");
 
-                tagHiddenArea.appendChild(hiddenInput);
-            });
+          chips.forEach(function (chip) {
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "tagNames";
+            hiddenInput.value = chip.dataset.tag;
 
-            updateTagCountText();
+            tagHiddenArea.appendChild(hiddenInput);
+          });
+
+          updateTagCountText();
         }
 
         function addTag() {
-            const tagName = normalizeTag(tagInput.value);
+          if (!tagInput || !tagPreviewList) return;
 
-            if (!tagName) return;
+          const tagName = normalizeTag(tagInput.value);
 
-            const currentTagCount = getTagCount();
+          if (!tagName) {
+            tagInput.focus();
+            return;
+          }
 
-            if (currentTagCount >= MAX_TAG_COUNT) {
-                alert('해시태그는 최대 5개까지만 등록할 수 있어요.');
-                tagInput.value = '';
-                return;
-            }
+          const currentTagCount = getTagCount();
 
-            const existingTags = Array.from(tagPreviewList.querySelectorAll('.tag-chip'))
-                .map(function (chip) {
-                    return chip.dataset.tag;
-                });
+          if (currentTagCount >= MAX_TAG_COUNT) {
+            alert("해시태그는 최대 5개까지만 등록할 수 있어요.");
+            tagInput.value = "";
+            tagInput.focus();
+            return;
+          }
 
-            if (existingTags.includes(tagName)) {
-                alert('이미 등록된 해시태그예요.');
-                tagInput.value = '';
-                return;
-            }
+          const existingTags = Array.from(
+            tagPreviewList.querySelectorAll(".tag-chip"),
+          ).map(function (chip) {
+            return chip.dataset.tag;
+          });
 
-            const chip = document.createElement('button');
-            chip.type = 'button';
-            chip.className = 'tag-chip';
-            chip.dataset.tag = tagName;
-            chip.innerHTML = `#${tagName} <span>×</span>`;
+          if (existingTags.includes(tagName)) {
+            alert("이미 등록된 해시태그예요.");
+            tagInput.value = "";
+            tagInput.focus();
+            return;
+          }
 
-            chip.addEventListener('click', function () {
-                chip.remove();
-                refreshHiddenTags();
-            });
+          const chip = document.createElement("button");
+          chip.type = "button";
+          chip.className = "tag-chip";
+          chip.dataset.tag = tagName;
+          chip.innerHTML = `#${tagName} <span>×</span>`;
 
-            tagPreviewList.appendChild(chip);
-            tagInput.value = '';
-
+          chip.addEventListener("click", function () {
+            chip.remove();
             refreshHiddenTags();
+          });
+
+          tagPreviewList.appendChild(chip);
+          tagInput.value = "";
+          tagInput.focus();
+
+          refreshHiddenTags();
         }
 
         if (tagAddBtn && tagInput && tagPreviewList && tagHiddenArea) {
-            tagAddBtn.addEventListener('click', addTag);
+          tagAddBtn.addEventListener("click", addTag);
 
-            tagInput.addEventListener('keydown', function (event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    addTag();
-                }
-            });
+          tagInput.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              addTag();
+            }
+          });
         }
 
         updateTagCountText();
 
-
         /* ===============================
            링크 형식 검사
         =============================== */
-        const infoLinkInput = document.getElementById('info-link');
-
         function isValidUrl(value) {
-            if (!value) return true;
+          if (!value) return true;
 
-            try {
-                const url = new URL(value);
-                return url.protocol === 'http:' || url.protocol === 'https:';
-            } catch (error) {
-                return false;
-            }
+          try {
+            const url = new URL(value);
+            return url.protocol === "http:" || url.protocol === "https:";
+          } catch (error) {
+            return false;
+          }
         }
-
 
         /* ===============================
            최종 제출 검사
         =============================== */
         if (feedWriteForm) {
-            feedWriteForm.addEventListener('submit', function (event) {
+          feedWriteForm.addEventListener("submit", function (event) {
+            if (selectedFiles.length < 1) {
+              event.preventDefault();
+              alert("피드 이미지는 최소 1개 이상 등록해야 해요.");
+              return;
+            }
 
-                if (selectedFiles.length < 1) {
-                    event.preventDefault();
-                    alert('피드 이미지는 최소 1개 이상 등록해야 해요.');
-                    return;
-                }
+            if (selectedFiles.length > MAX_FILE_COUNT) {
+              event.preventDefault();
+              alert("피드 이미지는 최대 5개까지 등록할 수 있어요.");
+              return;
+            }
 
-                if (selectedFiles.length > MAX_FILE_COUNT) {
-                    event.preventDefault();
-                    alert('피드 이미지는 최대 5개까지 등록할 수 있어요.');
-                    return;
-                }
+            const contentValue = feedContentInput
+              ? feedContentInput.value.trim()
+              : "";
 
-                const infoLinkValue = infoLinkInput.value.trim();
+            if (contentValue.length > MAX_CONTENT_LENGTH) {
+              event.preventDefault();
+              alert("본문은 최대 100자까지 입력할 수 있어요.");
+              feedContentInput.focus();
+              return;
+            }
 
-                if (infoLinkValue && !isValidUrl(infoLinkValue)) {
-                    event.preventDefault();
-                    alert('정보공유 게시판 링크는 https:// 로 시작하는 링크 형식으로 입력해주세요.');
-                    infoLinkInput.focus();
-                    return;
-                }
+            const infoLinkValue = infoLinkInput
+              ? infoLinkInput.value.trim()
+              : "";
 
-                const tagCount = getTagCount();
+            if (infoLinkValue.length > MAX_LINK_LENGTH) {
+              event.preventDefault();
+              alert("정보공유 게시판 링크는 최대 100자까지 입력할 수 있어요.");
+              infoLinkInput.focus();
+              return;
+            }
 
-                if (tagCount < MIN_TAG_COUNT) {
-                    event.preventDefault();
-                    alert('해시태그는 최소 3개 이상 입력해야 해요.');
-                    tagInput.focus();
-                    return;
-                }
+            if (infoLinkValue && !isValidUrl(infoLinkValue)) {
+              event.preventDefault();
+              alert(
+                "정보공유 게시판 링크는 https:// 로 시작하는 링크 형식으로 입력해주세요.",
+              );
+              infoLinkInput.focus();
+              return;
+            }
 
-                if (tagCount > MAX_TAG_COUNT) {
-                    event.preventDefault();
-                    alert('해시태그는 최대 5개까지만 입력할 수 있어요.');
-                    return;
-                }
+            const tagCount = getTagCount();
 
-                syncFileInput();
-                refreshHiddenTags();
-            });
+            if (tagCount < MIN_TAG_COUNT) {
+              event.preventDefault();
+              alert("해시태그는 최소 3개 이상 입력해야 해요.");
+              tagInput.focus();
+              return;
+            }
+
+            if (tagCount > MAX_TAG_COUNT) {
+              event.preventDefault();
+              alert("해시태그는 최대 5개까지만 입력할 수 있어요.");
+              return;
+            }
+
+            syncFileInput();
+            refreshHiddenTags();
+          });
         }
-
 
         /* ===============================
            다크모드 버튼
         =============================== */
-        const themeBtn = document.getElementById('btn-theme-toggle');
-        const iconIndicator = document.getElementById('icon-theme-indicator');
+        const themeBtn = document.getElementById("btn-theme-toggle");
+        const iconIndicator = document.getElementById("icon-theme-indicator");
 
         if (themeBtn && iconIndicator) {
-            themeBtn.addEventListener('click', function () {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
+          themeBtn.addEventListener("click", function () {
+            const currentTheme =
+              document.documentElement.getAttribute("data-theme");
 
-                if (currentTheme === 'dark') {
-                    document.documentElement.removeAttribute('data-theme');
-                    iconIndicator.innerText = '🌙';
-                } else {
-                    document.documentElement.setAttribute('data-theme', 'dark');
-                    iconIndicator.innerText = '☀️';
-                }
-            });
+            if (currentTheme === "dark") {
+              document.documentElement.removeAttribute("data-theme");
+              iconIndicator.innerText = "🌙";
+            } else {
+              document.documentElement.setAttribute("data-theme", "dark");
+              iconIndicator.innerText = "☀️";
+            }
+          });
         }
-
-    });
-</script>
-
-</body>
+      });
+    </script>
+  </body>
 </html>
