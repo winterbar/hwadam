@@ -25,6 +25,8 @@ public interface ReviewBoardMapper {
     // 특정 게시글의 첨부파일 파일명 목록만 가져오는 메서드
     List<MasterBoardFileVO> selectFilesByBoardId(Long boardId);
 
-    // 파일 정보 수정 메서드
+    // 파일 정보 수정 메서드 [추후 공용 Mapper에 update 생기면 갈이끼울 예정]
     void updateReviewBoardFile(MasterBoardFileVO fileVO);
+
+
 }

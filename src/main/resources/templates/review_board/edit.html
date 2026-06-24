@@ -131,37 +131,45 @@
                 zone.addEventListener(eventName, () => {
                     zone.classList.add('drag-over');
                 }, false);
-            })
+            });
 
             // 3. 드래그 이탈/종류 시 시각적 효과 제거
             ['dragleave','drop'].forEach(eventName => {
                 zone.addEventListener(eventName, () => {
                     zone.classList.remove('drag-over');
                 }, false);
-            })
+            });
 
             // 4. 드롭 이벤트 발생 시 파일 데이터 가공 및 인풋 이식
             zone.addEventListener('drop', (e) => {
-                const dt = e.dataTraansfer;
+                const dt = e.dataTransfer;
                 const files = dt.files;
 
                if (files && files.length > 0) {
                     // 이미지 파일 확장자만 허용 검증
                     if (files[0].type.startsWith('image/')) {
                         
-                        // 핵심: input 태그의 files 속성에 드롭된 파일 객체 이식
+                        // 1) input 태그의 files 속성에 드롭된 파일 객체 고정 이식
                         fileInput.files = files;
 
-                        // (옵션) 선택한 파일이 바뀐 것을 사용자가 알 수 있도록 화면에 파일명 표시 또는 예시 동작 호출
+                        // 💡 [수정 2] 브라우저 메모리에 가상 이미지 URL 생성하기
+                        const newImgUrl = URL.createObjectURL(files[0]);
+
+                        // 💡 [수정 3] 현재 박스 내에 있는 <img> 태그를 찾아 src 주소를 새로 만든 가상 주소로 변경
+                        const previewImg = zone.querySelector('.current-image-preview img');
+                        if (previewImg) {
+                            previewImg.src = newImgUrl;
+                        }
+
+                        // 2) 텍스트 안내 문구 업데이트
                         const textNode = zone.querySelector('.drop-zone-text');
-                        textNode.innerHTML = `<span style="color:blue; font-weight:bold;">선택된 파일: ${files[0].name}</span>`;
+                        textNode.innerHTML = `<span style="color: #007bff; font-weight: bold;">교체 예정: ${files[0].name}</span>`;
                         
-                        // 기존에 정의된 브라우저 기본 input 디자인 규칙에 따라 파일 선택창 우측 문구도 동기화됩니다.
                     } else {
                         alert("이미지 파일만 업로드 가능합니다.");
                     }
                 }
-            })
-        })
-    })
+            });
+        });
+    });
 </script>

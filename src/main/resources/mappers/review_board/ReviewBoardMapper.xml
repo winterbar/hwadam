@@ -49,7 +49,7 @@
         FROM master_board m
         INNER JOIN review_board r on m.board_id = r.board_id
         INNER JOIN member mem on m.username = mem.username 
-        WHERE m.board_type = 'REVIEW'
+        WHERE m.board_type = 'review' AND m.deleted = 0
         ORDER BY m.board_id desc;
     </select>
 

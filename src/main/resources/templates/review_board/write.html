@@ -20,7 +20,7 @@
                 <h2>후기 등록하기</h2>
             </div>
 
-            <form th:action="@{/board/review/write}" method="post" enctype="multipart/form-data">
+            <form id="reviewForm" th:action="@{/board/review/write}" method="post" enctype="multipart/form-data">
                 
                 <input type="hidden" id="mainCategory" name="category1">
                 <input type="hidden" id="subCategory" name="category2">
@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="apiSearch">네이버 상품 검색 연동</label>
+                        <label for="apiSearch">리뷰상품 검색</label>
                         <div class="search-input-group">
                             <input type="text" id="apiSearch" class="form-control" placeholder="검색어를 입력하세요.">
                             <button type="button" class="btn-search" onclick="openSearchModal()">검색</button>
@@ -82,7 +82,7 @@
 
                 <div class="form-actions">
                     <button type="button" class="btn btn-cancel" th:onclick="|location.href='@{/board/review}'|">취소</button>
-                    <button type="submit" class="btn btn-submit">등록 완료</button>
+                    <button type="button" class="btn btn-submit" onclick="submitReviewForm()">등록 완료</button>
                 </div>
 
             </form>
@@ -92,7 +92,7 @@
     <div id="searchModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>네이버 상품 검색 결과</h3>
+                <h3>검색 결과</h3>
                 <button type="button" class="modal-close-btn" onclick="closeSearchModal()">&times;</button>
             </div>
             <div id="modalResultList" class="modal-body">
@@ -104,7 +104,40 @@
 
     <script>
         // 전역 파일 배열 객체 선언 (드롭과 클릭 추가 파일들을 누적해서 관리하기 위함)
-        let globalFiles = [];
+        let globalFiles = [];  
+
+        // 등록 버튼 클릭 시 리뷰 대상 및 필수 데이터 검증 함수
+        function submitReviewForm() {
+            const targetTitle = document.getElementById("targetTitle");
+            const title = document.getElementById("title");
+            const content = document.getElementById("content");
+            const form = document.getElementById("reviewForm");
+
+            // 1. 리뷰 대상(제품) 선택 여부 검증
+            if (!targetTitle.value || targetTitle.value.trim() === "") {
+                alert("리뷰 대상을 선택해주세요.");
+                document.getElementById("apiSearch").focus();
+                return false;
+            }
+
+            // 2. 제목 입력 여부 검증
+            if (!title.value || title.value.trim() === "") {
+                alert("리뷰 제목을 입력해주세요.");
+                title.focus();
+                return false;
+            }
+
+            // 3. 내용 입력 여부 검증
+            if (!content.value || content.value.trim() === "") {
+                alert("리뷰 내용을 입력해주세요.");
+                content.focus();
+                return false;
+            }
+
+            // 모든 검증 통과 시 서버로 제출
+            form.submit();
+
+        }
 
 
         // 검색 버튼 클릭 시 작동하는 함수 (모달 열기 및 가상 검색 결과 출력)
@@ -128,11 +161,13 @@
                     modalBody.innerHTML = ''; // 기존 검색 초기화
 
                     // 네이버 쇼핑 API 결과 데이터 구조는 'items'라는 배열 안에 담겨서 옵니다.
-                    const items = data.items;
+                    const allItems = data.items;
+
+                    // category1 필드가 '화장품/미용'인 데이터만 필터링하여 상속 유도
+                    const items = allItems ? allItems.filter(item => item.category1 === '화장품/미용') : [];
 
                     if (!items || items.length === 0){
-                        modalBody.innerHTML = '<p style="padding: 1rem; text-align: center;"> 검색 결과가 없습니다.</p>';
-                        document.getElementById('searchModal').style.display = 'flex';
+                        alert("화장품/미용 관련 키워드를 검색하셔야 합니다.");
                         return;
                     }
                     
