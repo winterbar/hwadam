@@ -70,8 +70,8 @@
 
         <div class="post-like-section">
                 <button type="button" class="btn-like" id="btnLike">
-                    <span class="like-icon" id="like-icon">♡</span>
-                    <span class="like-count" th:text="${qna.likeCnt}">0</span>
+                    <span class="like-icon" id="like-icon" th:data-id="${qna.boardId}">♡</span>
+                    <span class="like-count" id="like-count" th:data-id="${likecnt}" th:text="${likecnt}"></span>
                 </button>
             </div>
 

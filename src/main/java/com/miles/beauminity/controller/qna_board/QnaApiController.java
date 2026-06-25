@@ -5,17 +5,23 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.miles.beauminity.service.qna_board.QnaService;
-import com.miles.beauminity.vo.board.MasterBoardVO;
+import com.miles.beauminity.vo.board.MasterBoardLikeVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -23,6 +29,18 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/api/board")
 public class QnaApiController {
     private QnaService qnaService;
+
+    public String getUsername(){
+    
+        // 멤버 정보 가져오기
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        String username = authentication.getName();
+
+        System.out.println("현재 로그인한 회원: "+username);
+        
+        return username;
+    }
 
     @GetMapping("/filter")
     public ResponseEntity<Map<String, Object>> filterBoard(@RequestParam(
@@ -45,9 +63,68 @@ public class QnaApiController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/likeCheck")
-    public String getMethodName(@RequestParam String param) {
-        return new String();
+    // 좋아요 불러오기
+    @GetMapping("/{boardId}/like-check")
+    public ResponseEntity<Map<String, Object>> likeStatus(
+        @PathVariable("boardId") Long id) {
+
+        Map<String, Object> result = new HashMap<>();
+
+        String username = getUsername();
+
+        if(username == null){
+            result.put("isLikeOn", false);
+            return ResponseEntity.ok(result);
+        }
+
+        boolean isLikeON = qnaService.isLikeON(id, username);
+
+        result.put("isLikeOn", isLikeON);
+
+        return ResponseEntity.ok(result);
+    }
+    
+
+    // 좋아요 누르면
+    @PostMapping("/{boardId}/toggle-like")
+    public ResponseEntity<Map<String, Object>> toggleLike(
+        @PathVariable("boardId") Long id) {
+
+        Map<String, Object> result = new HashMap<>();
+
+        String username = getUsername();
+
+        if (username == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        MasterBoardLikeVO masterBoardLikeVO = new MasterBoardLikeVO();
+        masterBoardLikeVO.setBoardId(id);
+        masterBoardLikeVO.setUsername(username);
+
+        boolean isLikeONBefore = qnaService.isLikeON(id, username);
+
+        // 클릭했을 때 좋아요 없으면 좋아요 추가
+        if(!isLikeONBefore){
+            
+            qnaService.insertLike(masterBoardLikeVO);
+        }
+        // 클릭했을 때 좋아요 있으면 좋아요 취소
+        else{
+            qnaService.deleteLike(masterBoardLikeVO);
+        }
+
+        // 변경된 상태 한 번 더 저장
+        boolean isLikeONAfter = qnaService.isLikeON(id, username);
+
+        // 좋아요 개수 저장
+        int likeCnt = qnaService.getLikeCount(id);
+
+        // 전송
+        result.put("isLikeOn", isLikeONAfter);
+        result.put("likeCount", likeCnt);
+
+        return ResponseEntity.ok(result);
     }
     
 }

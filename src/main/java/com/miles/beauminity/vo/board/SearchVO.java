@@ -1,0 +1,15 @@
+package com.miles.beauminity.vo.board;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class SearchVO {
+    private int size;
+    private int offset;
+    private String type;
+    private String str;
+}
