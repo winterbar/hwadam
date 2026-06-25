@@ -13,4 +13,5 @@ public class FeedReplyVO {
     private boolean deleted;
     private String nickname;
     private int replyCnt;
+    private String parentNickname;
 }
