@@ -120,6 +120,11 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        // 드래그 앤 드롭으로 등록된 파일을 할당
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInput.files = dataTransfer.files;
+
         // 등록한 이미지 파일 정보 출력
         document.getElementById('fileName').textContent = file.name;
         document.getElementById('fileSize').textContent = (file.size / 1024 / 1024).toFixed(2) + " MB";

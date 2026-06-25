@@ -108,10 +108,7 @@
     transition: transform 0.2s ease;
 }
 
-/* 클릭 시 아주 살짝 눌리는 느낌 */
-.btn-like-simple:active {
-    transform: scale(0.95);
-}
+
 
 /* 3. 하단 버튼 컨트롤 영역 */
 .post-actions {
