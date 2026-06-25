@@ -31,14 +31,13 @@ public class SecurityConfig {
                 .requestMatchers("/", "/login",
                     "/register", "/chkid-dup/{username}", "/find",
                     "/css/**", "/images/**", "/js/**",
-                    // 개발용 지울거임 나중에
-                    "/board/**", "/feed/**", "/api/**", "/upload/**"
+                    "/board/review", "/api/**", "/upload/**"
                 ) // 클라이언트 요청이 이것과 일치한다면
                 .permitAll() // 접근을 허가
                 .requestMatchers(
                     "/board/review/**",
-                    "/board/qna/**",
-                    "/infoshare/**", "/feed/**", "/mypage/**"
+                    "/board/qna/**", "/board/infoshare/**",
+                    "/feed/**", "/mypage/**"
                 ).hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated() // 위에서 허가하지 않은 요청은 인가와 인증을 받음
             )
