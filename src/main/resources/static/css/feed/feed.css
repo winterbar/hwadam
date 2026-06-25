@@ -938,7 +938,7 @@ main {
 }
 
 .feed-card-caption {
-    margin: 0 0 12px;
+    margin: -10px 0 12px;
     font-size: 14px;
     line-height: 1.7;
     color: #333;
@@ -946,16 +946,24 @@ main {
 }
 
 .feed-info-link {
-    display: inline-flex;
-    align-items: center;
-    margin-bottom: 12px;
-    padding: 8px 12px;
-    border-radius: 999px;
-    background: #fff7e0;
-    color: #5a4300;
-    font-size: 13px;
-    font-weight: 700;
-    text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+  padding: 10px 16px;   /* 버튼 안쪽 여백 키움 */
+  min-height: 34px;     /* 버튼 높이 키움 */
+
+  border-radius: 0px;
+  background: #fff7e0;
+  color: #5a4300;
+  font-size: 14px;      /* 글자 크기 키움 */
+  font-weight: 800;
+  text-decoration: none;
+
+  position: relative !important;
+  top: -10px !important;
+  box-sizing: border-box;
 }
 
 .feed-info-link:hover {
@@ -1032,6 +1040,7 @@ main {
 /* 사진 오른쪽 위 1/1 표시 */
 .feed-card-image {
     position: relative;
+
 }
 
 .feed-photo-badge {
@@ -1204,10 +1213,10 @@ main {
     top: 12px;
     right: 12px;
     min-width: 46px;
-    height: 26px;
+    height: 30px;
     padding: 0 9px;
-    border-radius: 4px;
-    background-color: rgba(33, 37, 41, 0.62);
+    border-radius: 0px;
+    background-color: rgba(33, 37, 41, 0.3);
     color: #ffffff;
     font-size: 12px;
     font-weight: 800;
@@ -1222,7 +1231,7 @@ main {
     top: 50%;
     transform: translateY(-50%);
     width: 34px;
-    height: 46px;
+    height: 36px;
     border: none;
     border-radius: 4px;
     background-color: rgba(33, 37, 41, 0.32);
@@ -1234,6 +1243,8 @@ main {
     display: none;
     align-items: center;
     justify-content: center;
+    padding-bottom: 10px !important; 
+    box-sizing: border-box !important;
 }
 
 .feed-photo-arrow:hover {
@@ -2051,3 +2062,822 @@ main {
   align-items: center;
   justify-content: center;
 }
+.feed-created-date {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        padding: 15px 18px 0 18px;
+        box-sizing: border-box;
+        background: #ffffff;
+      }
+
+      .feed-created-date span {
+        font-size: 12px;
+        font-weight: 600;
+        color: #9a9a9a;
+        line-height: 1;
+      }
+
+      .feed-like-btn.is-liked .feed-like-icon {
+        color: #111 !important;
+      }
+
+      .feed-comment-box {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .feed-comment-form {
+        width: 100%;
+        display: flex;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .feed-comment-form input[type="text"] {
+        flex: 1;
+        height: 42px;
+        box-sizing: border-box;
+        border-radius: 2px !important;
+      }
+
+      .feed-comment-form .comment-submit-btn {
+        height: 42px;
+        min-width: 58px;
+        padding: 0 16px;
+        border-radius: 2px !important;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .feed-comment-list {
+        width: 100% !important;
+        margin-top: 10px !important;
+        margin-right: 0 !important;
+        box-sizing: border-box !important;
+      }
+
+      .feed-comment-item {
+        width: 100% !important;
+        display: block !important;
+        margin-bottom: 10px !important;
+        box-sizing: border-box !important;
+      }
+
+      .feed-comment-bubble {
+        width: 100% !important;
+        min-height: 52px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        background: #fff !important;
+
+        padding: 10px 14px !important;
+        box-sizing: border-box !important;
+        cursor: pointer !important;
+        background: #fdfaf5 !important; /* 은은한 블록 배경 */
+        padding: 16px;
+      }
+
+      .feed-comment-bubble:hover {
+        background: #f3f0ea !important;
+      }
+
+      .feed-comment-avatar {
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        border-radius: 50% !important;
+        background: #f8dfe3 !important;
+        color: #7a7680 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 12px !important;
+        font-weight: 800 !important;
+        flex-shrink: 0 !important;
+      }
+
+      .feed-comment-main {
+        flex: 1 !important;
+        min-width: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        overflow: hidden !important;
+      }
+
+      .feed-comment-writer {
+        font-size: 13px !important;
+        font-weight: 900 !important;
+        color: #222222 !important;
+        flex-shrink: 0 !important;
+      }
+
+      .feed-comment-content {
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        color: #5f6b7a !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+
+      .feed-comment-empty {
+        width: 100%;
+        padding: 12px;
+        color: #999999;
+        font-size: 13px;
+        text-align: center;
+        border: 1px dashed #e5e5e5;
+        border-radius: 12px;
+        box-sizing: border-box;
+      }
+
+      .comment-child-list {
+        width: 100% !important;
+        display: block !important;
+        margin: 7px 0 0 0 !important;
+        padding-left: 24px !important;
+        box-sizing: border-box !important;
+        border-left: none !important;
+      }
+
+      .comment-child-list:empty {
+        display: none !important;
+      }
+
+      .comment-child-bubble {
+        width: 100% !important;
+        min-height: 46px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        background: #fff !important;
+
+        padding: 8px 10px !important;
+        box-sizing: border-box !important;
+        cursor: pointer !important;
+        background: #fdfaf5 !important; /* 은은한 블록 배경 */
+
+        padding: 16px;
+      }
+
+      .comment-child-bubble:hover {
+        background: #f3f0ea !important;
+      }
+
+      .comment-child-avatar {
+        width: 24px !important;
+        height: 24px !important;
+        min-width: 24px !important;
+        border-radius: 50% !important;
+        background: #fff0ee !important;
+        color: #7a7680 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 10px !important;
+        font-weight: 900 !important;
+        flex-shrink: 0 !important;
+      }
+
+      .comment-child-main {
+        flex: 1 !important;
+        min-width: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 7px !important;
+        overflow: hidden !important;
+      }
+
+      .comment-child-writer {
+        font-size: 12px !important;
+        font-weight: 900 !important;
+        color: #222222 !important;
+        flex-shrink: 0 !important;
+      }
+
+      .comment-child-content {
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        color: #5f6b7a !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+
+      .comment-more-wrap {
+        position: relative !important;
+        display: none;
+        margin-left: auto !important;
+        flex-shrink: 0 !important;
+      }
+
+      .comment-more-btn {
+        width: 24px !important;
+        height: 24px !important;
+        border: none !important;
+        background: transparent !important;
+        color: #8f8f8f !important;
+        font-size: 17px !important;
+        font-weight: 800 !important;
+        cursor: pointer !important;
+        border-radius: 50% !important;
+        line-height: 1 !important;
+        padding: 0 !important;
+      }
+
+      .comment-more-btn:hover {
+        background: #eeeeee !important;
+        color: #333333 !important;
+      }
+
+      .comment-more-menu {
+        display: none;
+        position: absolute;
+        top: 28px;
+        right: 0;
+        min-width: 90px;
+        background: #ffffff;
+        border: 1px solid #ececec;
+        border-radius: 10px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+        padding: 6px;
+        z-index: 50;
+      }
+
+      .comment-more-menu.is-open {
+        display: block;
+      }
+
+      .comment-menu-item {
+        width: 100%;
+        border: none;
+        background: transparent;
+        text-align: left;
+        padding: 8px 10px;
+        font-size: 12px;
+        font-weight: 700;
+        border-radius: 8px;
+        cursor: pointer;
+        color: #333333;
+      }
+
+      .comment-menu-item:hover {
+        background: #f7f7f7;
+      }
+
+      .comment-menu-item.danger {
+        color: #e05d56;
+      }
+
+      .comment-menu-item.danger:hover {
+        background: #fff1ef;
+      }
+
+      .comment-reply-target {
+        display: none;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+        width: 100%;
+        margin-bottom: 8px;
+        padding: 9px 12px;
+        border-radius: 12px;
+        background: #fafafa;
+        border: 1px solid #eeeeee;
+        box-sizing: border-box;
+      }
+
+      .comment-reply-target.is-active {
+        display: flex;
+      }
+
+      .comment-reply-target-text {
+        flex: 1;
+        min-width: 0;
+        font-size: 12px;
+        line-height: 1.4;
+        color: #666666;
+      }
+
+      .comment-reply-target-writer {
+        font-weight: 900;
+        color: #111111;
+      }
+
+      .comment-reply-target-content {
+        display: block;
+        margin-top: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      
+      .comment-mention {
+        color: #fa6e68 !important;
+        text-decoration: underline !important;
+        text-underline-offset: 3px !important;
+        font-weight: 900 !important;
+        margin-right: 4px !important;
+      }
+
+      .comment-reply-target-writer {
+        color: #fa6e68 !important;
+        text-decoration: underline !important;
+        text-underline-offset: 3px !important;
+        font-weight: 900 !important;
+      }
+      /* 대댓글 안에 또 대댓글 목록이 생겨도 더 이상 안쪽으로 밀리지 않게 고정 */
+      .comment-child-item .comment-child-list {
+        width: 100% !important;
+        margin: 7px 0 0 0 !important;
+        padding-left: 0 !important;
+        border-left: none !important;
+      }
+
+      /* 대대댓글도 대댓글과 같은 위치 */
+      .comment-child-item .comment-child-item {
+        padding-left: 0 !important;
+      }
+
+      /* @닉네임 표시 */
+      .comment-mention {
+        color: #fa6e68 !important;
+        font-weight: 900 !important;
+        margin-right: 4px !important;
+        cursor: pointer !important;
+      }
+
+      /* 댓글이 길어져도 피드 카드가 옆으로 늘어나지 않게 */
+      .feed-comment-main,
+      .comment-child-main {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+      }
+
+      /* 부모 댓글 내용 줄바꿈 */
+      .feed-comment-content {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        line-height: 1.5 !important;
+      }
+
+      /* 대댓글 내용 줄바꿈 */
+      .comment-child-content {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        line-height: 1.5 !important;
+      }
+
+      /* 댓글 상자 자체도 옆으로 안 커지게 */
+      .feed-comment-bubble,
+      .comment-child-bubble {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      /* 답글 목록 숨김: 기존 display:block !important보다 강하게 */
+      .feed-comment-item > .comment-child-list.is-collapsed {
+        display: none !important;
+      }
+
+      /* 답글 더보기 버튼 예쁘게 */
+      .comment-child-toggle-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+
+        margin: 8px 0 2px 42px !important;
+        padding: 0 !important;
+
+        border: none !important;
+        outline: none !important;
+        background: transparent !important;
+
+        color: #7b7166 !important;
+        font-size: 12px !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+
+        cursor: pointer !important;
+        appearance: none !important;
+        -webkit-appearance: none !important;
+      }
+
+      /* 앞에 짧은 선 */
+      .comment-child-toggle-btn::before {
+        content: "";
+        width: 24px;
+        height: 1.5px;
+        background: #d8d0c5;
+        display: inline-block;
+      }
+
+      /* hover */
+      .comment-child-toggle-btn:hover {
+        color: #fa6e68 !important;
+        background: transparent !important;
+      }
+
+      /* 답글 펼친 상태 */
+      .comment-child-toggle-btn.is-open {
+        color: #fa6e68 !important;
+      }
+
+      .comment-child-toggle-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        margin: 8px 0 2px 42px !important;
+        padding: 0 !important;
+        border: none !important;
+        outline: none !important;
+        background: transparent !important;
+        color: #7b7166 !important;
+        font-size: 12px !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+        cursor: pointer !important;
+        appearance: none !important;
+        -webkit-appearance: none !important;
+      }
+
+      .comment-child-toggle-btn::before {
+        content: "";
+        width: 24px;
+        height: 1.5px;
+        background: #d8d0c5;
+        display: inline-block;
+      }
+
+      .comment-child-toggle-btn:hover,
+      .comment-child-toggle-btn.is-open {
+        color: #fa6e68 !important;
+        background: transparent !important;
+      }
+
+      .feed-comment-item > .comment-child-list {
+        overflow: hidden !important;
+      }
+
+      .comment-child-toggle-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        margin: 8px 0 2px 42px !important;
+        padding: 0 !important;
+        border: none !important;
+        outline: none !important;
+        background: transparent !important;
+        color: #7b7166 !important;
+        font-size: 12px !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+        cursor: pointer !important;
+        appearance: none !important;
+        -webkit-appearance: none !important;
+      }
+
+      .comment-child-toggle-btn::before {
+        content: "";
+        width: 24px;
+        height: 1.5px;
+        background: #d8d0c5;
+        display: inline-block;
+      }
+
+      .comment-child-toggle-btn:hover,
+      .comment-child-toggle-btn.is-open {
+        color: #fa6e68 !important;
+        background: transparent !important;
+      }
+
+      .feed-card-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 8px;
+      }
+
+      .action-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .feed-like-btn,
+      .feed-comment-toggle-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        cursor: pointer !important;
+        line-height: 1 !important;
+      }
+
+      .feed-like-icon,
+      .feed-comment-icon {
+        font-size: 25px !important;
+        line-height: 1 !important;
+        margin-top: -21px !important;
+      }
+
+      .feed-like-count,
+      .feed-comment-action-count {
+        font-size: 20px !important;
+        font-weight: 100px !important;
+        color: #555555 !important;
+        line-height: 1 !important;
+        margin-top: -21px !important;
+      }
+
+      .feed-like-btn.is-liked .feed-like-icon {
+        color: #111111 !important;
+      }
+
+      /* 좋아요/댓글/정보공유 영역 높이 고정 */
+      .feed-card-actions {
+        min-height: 30px !important;
+        display: flex !important;
+        align-items: center !important;
+        margin-top: 8px !important;
+        margin-bottom: 10px !important;
+      }
+
+      /* 아이콘 줄 */
+      .action-left {
+        min-height: 30px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+      }
+
+      /* 정보공유 버튼이 있을 때도 세로 높이 튀지 않게 */
+      .feed-share-link {
+        height: 26px !important;
+        display: inline-flex;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 10px !important;
+        margin: 0 !important;
+        line-height: 1 !important;
+        box-sizing: border-box !important;
+      }
+
+      /* 피드 내용 위치 통일 */
+      .feed-card-caption {
+        margin-top: 0 !important;
+        margin-bottom: 10px !important;
+        line-height: 1.5 !important;
+      }
+
+      /* 해시태그 위치도 일정하게 */
+      .feed-card-tags {
+        margin-top: 8px !important;
+      }
+
+      /* 피드 본문이 길어져도 카드가 옆으로 늘어나지 않게 */
+      .feed-card-caption {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        line-height: 1.5 !important;
+      }
+
+      /* JS로 들어가는 실제 피드 내용 */
+      .js-caption-text {
+        display: inline !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        line-height: 1.5 !important;
+      }
+      .feed-card-caption {
+        width: 100% !important;
+        max-width: 100% !important;
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        line-height: 1.6 !important;
+        box-sizing: border-box !important;
+      }
+
+      .js-caption-text {
+        display: block !important;
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        line-height: 1.6 !important;
+      }
+
+      .feed-card-caption {
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: none !important;
+        overflow: visible !important;
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        line-height: 0.3 !important;
+        margin-top: 4px !important;
+        margin-bottom: 6px !important;
+        box-sizing: border-box !important;
+        display: block !important;
+      }
+
+      .js-caption-text {
+        display: block !important;
+        width: 100% !important;
+        max-height: none !important;
+        overflow: visible !important;
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        line-height: 1.35 !important;
+      }
+
+      .comment-more-wrap {
+        position: relative !important;
+        display: none !important; /* 기본적으론 숨김 */
+        margin-left: auto !important; /* 오른쪽 끝으로 밀기 */
+        flex-shrink: 0 !important; /* 레이아웃 찌그러짐 방지 */
+        overflow: visible !important; /* 🌟 팝업이 밖으로 삐져나갈 수 있게 허용 */
+        z-index: 50 !important;
+      }
+
+      .comment-more-wrap.is-owner {
+        display: block !important;
+      }
+
+      /* ===== 대댓글 ... 메뉴 최종 ===== */
+
+      /* 대댓글 영역에서 메뉴 잘리지 않게 */
+      .comment-child-list,
+      .comment-child-item,
+      .comment-child-bubble {
+        overflow: visible !important;
+      }
+
+      /* 대댓글 하나하나 위치 기준 */
+      .comment-child-item {
+        position: relative !important;
+      }
+
+      /* 대댓글 안의 ... */
+      .comment-child-item .comment-more-wrap {
+        position: relative !important;
+        display: none !important;
+        margin-left: auto !important;
+        flex-shrink: 0 !important;
+        z-index: 1000 !important;
+      }
+
+      /* 내 대댓글일 때만 ... 보이기 */
+      .comment-child-item .comment-more-wrap.is-owner {
+        display: block !important;
+      }
+
+      /* 대댓글 수정/삭제 메뉴 */
+      .comment-child-item .comment-more-menu {
+        display: none;
+        position: absolute !important;
+        top: 26px !important;
+        right: 0 !important;
+        min-width: 96px !important;
+
+        background: #ffffff !important;
+        border: 1px solid #ececec !important;
+        border-radius: 10px !important;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14) !important;
+        padding: 6px !important;
+      }
+
+      /* ===== 대댓글 메뉴 최종 해결 ===== */
+
+      /* 메뉴가 잘리지 않게 */
+      .feed-comment-list,
+      .feed-comment-item,
+      .comment-child-list,
+      .comment-child-item {
+        overflow: visible !important;
+      }
+
+      /* 기본 대댓글 */
+      .comment-child-item {
+        position: relative !important;
+        z-index: 1 !important;
+      }
+
+      /* 메뉴 열린 대댓글만 맨 앞으로 */
+      .comment-child-item.menu-open {
+        z-index: 999999 !important;
+      }
+
+      /* 대댓글 ... */
+      .comment-child-item .comment-more-wrap {
+        position: relative !important;
+        z-index: 999999 !important;
+      }
+
+      /* 대댓글 수정/삭제 메뉴 */
+      .comment-child-item .comment-more-menu {
+        position: absolute !important;
+        top: 26px !important;
+        bottom: auto !important;
+        right: 0 !important;
+
+        display: none;
+        min-width: 96px !important;
+        background: #fff !important;
+        border: 1px solid #ececec !important;
+        border-radius: 10px !important;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14) !important;
+        padding: 6px !important;
+        z-index: 999999 !important;
+      }
+
+      /* 열렸을 때 */
+      .comment-child-item .comment-more-menu.is-open {
+        display: block !important;
+      }
+
+      /* 답글 남기는 중 박스 글자 길어질 때 줄바꿈 */
+      .comment-reply-target {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+      }
+
+      .comment-reply-target-writer,
+      .comment-reply-target-content {
+        max-width: 100% !important;
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        line-height: 1.35 !important;
+      }
+
+      /* 아래 글 내용 부분 */
+      .comment-reply-target-content {
+        display: block !important;
+        margin-top: 4px !important;
+        color: #777 !important;
+      }
+
+      /* 답글 박스 내부가 옆으로 밀리지 않게 */
+      .comment-reply-target * {
+        min-width: 0 !important;
+      }
+
+.comment-reply-cancel-btn {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #999 !important;
+
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+}
+
+.comment-reply-cancel-btn:hover {
+  background: transparent !important;
+  color: #FA6E68 !important;
+}
+.comment-reply-target-writer::before {
+  content: "@" !important;
+}
+
