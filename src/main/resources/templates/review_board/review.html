@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beauminity : 후기 게시판</title>
+    <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
     <link rel="stylesheet" th:href="@{/css/common/main.css}">
     <link rel="stylesheet" th:href="@{/css/review_board/review_common.css}">
     
@@ -22,7 +23,7 @@
                 <section class="board-section">
                     <div class="section-header">
                         <h2>후기 게시판 <span>협찬 무관, 유저들의 리얼한 실사용 데이터입니다.</span></h2>
-                        <button class="write-btn" th:onclick="|location.href='@{/board/review/write}'|">리뷰 쓰기</button>
+                        <button class="write-btn" th:onclick="|location.href='@{/board/review/write}'|">후기 작성</button>
                     </div>
                     
                     <div class="board-utility">
@@ -101,7 +102,7 @@
 
             </div> 
             <div style="width: 300px; flex-shrink: 0;">
-                <div th:replace="~{layout/aside :: sidebarFragment}"></div>
+                
             </div>
 
         </div> 

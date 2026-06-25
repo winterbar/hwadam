@@ -66,7 +66,7 @@ public class ReviewServiceImpl implements ReviewService {
                 MultipartFile[] filesArray = fileList.toArray(new MultipartFile[0]);
 
                 // 3. static 매서드 다이렉트 호출 -> 디스크 저장 후 파일 정보 VO 리스트 리턴
-                List<MasterBoardFileVO> savedFileList = MasterFileUploadUtil.saveFiles(filesArray, uploadPath);
+                List<MasterBoardFileVO> savedFileList = MasterFileUploadUtil.saveFiles(filesArray, uploadPath);  // -> 여기서 saved_name + original_name 로직 수행
 
                 // 4. 반환된 파일 리스트를 루프 돌며 board_file 테이블에 순차 insert
                 for (MasterBoardFileVO fileVO : savedFileList) {
@@ -203,7 +203,7 @@ public class ReviewServiceImpl implements ReviewService {
         if (fileList != null && !fileList.isEmpty()) {
             
             // 격리할 디렉토리 경로 정의
-            String deletedDirPath = "C:/deleted/review/";
+            String deletedDirPath = "C:/deleted/review";
             File deletedDir = new File(deletedDirPath);
 
             // C:/deleted/review/ 폴더가 없을 경우 안전하게 자동 생성
@@ -215,16 +215,24 @@ public class ReviewServiceImpl implements ReviewService {
             for (MasterBoardFileVO fileVO : fileList) {
 
                 // 기존 파일의 실제 전체 경로 객체 생성 (예: C:/upload/review/uuid_파일명.png)
-                File srcFile = new File(fileVO.getFilePath());
+                File srcFilePath = new File(fileVO.getFilePath() + "/" + fileVO.getSavedName());
+
+                // System.out.println("==================================================");
+                // System.out.println("검사 중인 파일 ID: " + fileVO.getFileId());
+                // System.out.println("자바가 가리키는 원본 경로: " + fileVO.getFilePath());
+                // System.out.println("실제 하드디스크에 파일이 존재합니까?: " + srcFilePath.exists());
 
                 // 파일이 실제로 디스크에 존재하는지 검증 후 진행
-                if (srcFile.exists()) {
-                    // 새 격리 폴더 경로 문자열 생성 (C:/deleted/review/ +저장된 파일명)
-                    String newFilePath = deletedDirPath + fileVO.getSavedName();
+                if (srcFilePath.exists()) {
+                    // 새 격리 폴더 경로 문자열 생성 (C:/deleted/review_board)
+                    String newFilePath = deletedDirPath + "/" + fileVO.getSavedName();
                     File targetFile = new File(newFilePath);
 
                     // 실제 C드라이브 내의 파일을 격리 폴더로 이동 (성공 시 true 반환)
-                    boolean isMoved = srcFile.renameTo(targetFile);
+                    boolean isMoved = srcFilePath.renameTo(targetFile);
+
+                    // System.out.println("이동 타겟 경로:" + newFilePath);
+                    // System.out.println("물리적 파일 이동 결과(ismoved):" + isMoved);
 
                     if (isMoved) {
                         // 파일 이동 성공 시, VO 객체의 파일 경로를 새 격리 경로로 변경
@@ -232,6 +240,8 @@ public class ReviewServiceImpl implements ReviewService {
 
                         // DB 테이블(board_file)의 file_path 컬럼 업데이트 쿼리 실행
                         reviewBoardMapper.updateReviewBoardFile(fileVO);
+                    }else {
+                        // System.out.println("파일 이동 실패 (renameTO가 false를 반환함");
                     }
                 }
             }
