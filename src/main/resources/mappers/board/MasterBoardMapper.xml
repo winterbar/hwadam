@@ -107,4 +107,39 @@
                             WHERE board_id = #{value})
     </select>
 
+    <!-- 게시글 검색 -->
+    <select id="getSearchBoard" 
+        parameterType="com.miles.beauminity.vo.board.SearchVO"
+        resultType="com.miles.beauminity.vo.board.MasterBoardVO">
+        SELECT *
+        FROM master_board
+        WHERE board_type = #{type} AND (title LIKE CONCAT('%', #{str}, '%') OR content LIKE CONCAT('%', #{str}, '%')) AND deleted = 0
+        ORDER BY board_id DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <!-- 게시글 검색 :: 제목-->
+    <select id="getSearchBoardByTitle" 
+        parameterType="com.miles.beauminity.vo.board.SearchVO"
+        resultType="com.miles.beauminity.vo.board.MasterBoardVO">
+        SELECT *
+        FROM master_board
+        WHERE board_type = #{type} AND title LIKE CONCAT('%', #{str}, '%') AND deleted = 0
+        ORDER BY board_id DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <!-- 게시글 검색 :: 내용-->
+    <select id="getSearchBoardByContent" 
+        parameterType="com.miles.beauminity.vo.board.SearchVO"
+        resultType="com.miles.beauminity.vo.board.MasterBoardVO">
+        SELECT *
+        FROM master_board
+        WHERE board_type = #{type} AND content LIKE CONCAT('%', #{str}, '%') AND deleted = 0
+        ORDER BY board_id DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    
+
 </mapper>

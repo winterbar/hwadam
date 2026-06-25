@@ -7,12 +7,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.miles.beauminity.mapper.board.MasterBoardFileMapper;
+import com.miles.beauminity.mapper.board.MasterBoardLikeMapper;
 import com.miles.beauminity.mapper.board.MasterBoardMapper;
 import com.miles.beauminity.mapper.qna_board.QnaBoardMapper;
 import com.miles.beauminity.util.MasterFileUploadUtil;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
+import com.miles.beauminity.vo.board.MasterBoardLikeVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
+import com.miles.beauminity.vo.board.SearchVO;
 import com.miles.beauminity.vo.board.TypeOffsetVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardVO;
@@ -29,7 +32,9 @@ public class QnaServiceImpl implements QnaService {
     // 매퍼를 객체로 불러와줍니다.
     private MasterBoardMapper masterBoardMapper;
     private MasterBoardFileMapper masterBoardFileMapper;
+    private MasterBoardLikeMapper masterBoardLikeMapper;
     private QnaBoardMapper qnaBoardMapper;
+    
 
     // 게시글 등록 
     @Override
@@ -194,6 +199,77 @@ public class QnaServiceImpl implements QnaService {
     public String getNicknameByBoardId(Long id) {
         return masterBoardMapper.getNicknameByBoardId(id);
     }
+
+    // 좋아요를 집어넣는다.
+    @Override
+    public void insertLike(MasterBoardLikeVO masterBoardLikeVO) {
+        masterBoardLikeMapper.insertLike(masterBoardLikeVO);
+    }
+
+    @Override
+    public boolean isLikeON(Long id, String username) {
+
+        MasterBoardLikeVO masterBoardLikeVO = new MasterBoardLikeVO();
+        masterBoardLikeVO.setBoardId(id);
+        masterBoardLikeVO.setUsername(username);
+
+        if(masterBoardLikeMapper.isLikeON(masterBoardLikeVO).isEmpty())
+            return false;
+        else
+            return true;
+
+    }
+
+    @Override
+    public void deleteLike(MasterBoardLikeVO masterBoardLikeVO) {
+        masterBoardLikeMapper.deleteLike(masterBoardLikeVO);
+    }
+
+    @Override
+    public int getLikeCount(Long id) {
+        return masterBoardLikeMapper.getLikeCount(id);
+    }
+
+    
+    @Override
+    public List<QnaBoardCompleteVO> getSearchBoard(String type, String str, PageVO pageVO) {
+        
+        System.out.println(type);
+
+        SearchVO searchVO = new SearchVO();
+        searchVO.setType(type);
+        searchVO.setOffset(pageVO.getOffset());
+        searchVO.setSize(pageVO.getSize());
+        searchVO.setStr(str);
+
+        List<MasterBoardVO> qnaList = masterBoardMapper.getSearchBoard(searchVO);
+
+        List<QnaBoardCompleteVO> finalList = new ArrayList<>();
+        for(MasterBoardVO q : qnaList){
+            QnaBoardCompleteVO nQ = new QnaBoardCompleteVO();
+            nQ.setBoardId(q.getBoardId());
+            nQ.setNickname(masterBoardMapper.getNicknameByBoardId(q.getBoardId()));
+            nQ.setTitle(q.getTitle());
+            nQ.setCreatedAt(q.getCreatedAt());
+            nQ.setViewCnt(q.getViewCnt());
+            nQ.setReplyCnt(q.getReplyCnt());
+            nQ.setCategory(qnaBoardMapper.getCategoryById(q.getBoardId()));
+
+            System.out.println("검색된 게시글 정보: "+ nQ.toString());
+
+            finalList.add(nQ);
+        }
+
+        return finalList;
+    }
+
+    
+
+    
+
+    
+
+    
 
     
 
