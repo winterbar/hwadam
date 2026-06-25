@@ -25,6 +25,5 @@ public class MasterBoardVO {
     private LocalDateTime editedAt;
     private int viewCnt;
     private int replyCnt;
-    private int likeCnt;
     private boolean deleted;
 }

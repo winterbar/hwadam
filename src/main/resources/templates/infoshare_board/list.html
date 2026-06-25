@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beauminity - 정보공유 게시판</title>
+    <title>Beauminity : 정보공유 게시판</title>
+    <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
     <link rel="stylesheet" th:href="@{/css/common/main.css}">
     <link rel="stylesheet" th:href="@{/css/common/board.css}">
+    <link rel="stylesheet" th:href="@{/css/infoshare_board/list.css}">
 </head>
 <body>
 
-    <div th:replace="~{fragments/header :: headerFragment}"></div>
+    <div th:replace="~{layout/header :: headerFragment}"></div>
 
     <main>
 
@@ -17,15 +19,16 @@
             
             <section class="board-section">
                 <div class="section-header">
-                    <h2>정보공유 게시판 <span>유용한 그루밍 팁, 성분 분석 정보, 트렌드를 공유하는 공간입니다.</span></h2>
-                    <button class="write-btn" th:onclick="|location.href='@{/board/info/write}'|">글쓰기</button>
+                    <h2>정보공유 게시판 <span>성분 분석, 나만 아는 꿀팁 다양한 정보를 공유해 보세요!</span></h2>
+                    <button class="write-btn" th:onclick="|location.href='@{/board/infoshare/write}'|">작성하기</button>
                 </div>
                 
                 <div class="board-utility">
                     <div class="filter-group">
                         <select name="category" id="filter-category">
-                            <option value="all">모든 카테고리</option>
+                            <option value="all">모두</option>
                             <option value="tip">팁/노하우</option>
+                            <option value="menual">사용법</option>
                             <option value="analysis">성분분석</option>
                             <option value="recommend">제품추천</option>
                         </select>
@@ -109,53 +112,17 @@
                             <option value="title">제목</option>
                             <option value="writer">작성자</option>
                         </select>
-                        <input type="text" placeholder="검색하고 싶은 정보나 키워드를 입력하세요.">
+                        <input type="text" placeholder="궁금한 단어를 입력하세요.">
                         <button class="search-btn">검색</button>
                     </div>
                 </div>
             </section>
 
         </div>
-
-        <aside class="right-sidebar">
-            <div class="sidebar-ranking">
-                <h4>👑 주간 멤버 랭킹</h4>
-                <ul class="ranking-list">
-                    <li class="ranking-item">
-                        <span class="rank-user"><span class="rank-num">1</span> 그루밍마스터</span>
-                        <span class="rank-points">4,250 p</span>
-                    </li>
-                    <li class="ranking-item">
-                        <span class="rank-user"><span class="rank-num">2</span> 훈훈스킨</span>
-                        <span class="rank-points">3,980 p</span>
-                    </li>
-                    <li class="ranking-item">
-                        <span class="rank-user"><span class="rank-num">3</span> 올영단골</span>
-                        <span class="rank-points">3,410 p</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="sidebar-login-link-box">
-                <div class="login-link-title">
-                    더 다양한 그루밍 팁을 보려면<br><span>Beauminity</span>에 로그인하세요!
-                </div>
-                <button class="sidebar-move-login-btn" th:onclick="|location.href='@{/login}'|">로그인하러 가기</button>
-                <div class="login-link-sub">
-                    <a th:href="@{/register}">회원가입</a> | <a th:href="@{/find-account}">계정 찾기</a>
-                </div>
-            </div>
-
-            <a th:href="@{/chatbot}" class="sidebar-chatbot-banner">
-                <span class="banner-top-tag">AI COUNSELING</span>
-                <div class="banner-title">맞춤형 관리, 어려울 땐<br><span>그루밍 AI 챗봇</span>에게</div>
-                <div class="banner-desc">실시간 스킨케어 진단 받기</div>
-            </a>
-        </aside>
-
+        
     </main>
 
-    <div th:replace="~{fragments/footer :: footerFragment}"></div>
+    <div th:replace="~{layout/footer :: footerFragment}"></div>
 
 </body>
 </html>

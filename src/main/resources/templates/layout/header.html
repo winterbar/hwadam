@@ -1,10 +1,11 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <link rel="stylesheet" th:href="@{/css/common/main.css}" />
-    <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}" />
-  </head>
-  <body>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+</head>
+<body>
+
     <header th:fragment="headerFragment">
       <div class="header-container">
         <div class="logo">
@@ -41,16 +42,17 @@
         </div>
       </div>
 
-      <div class="nav-bar">
-        <div class="nav-container">
-          <nav>
-            <ul>
-              <li><a th:href="@{/board/review}">후기 게시판</a></li>
-              <li><a th:href="@{/board/qna}">질문 게시판</a></li>
-              <li><a th:href="@{/board/info}">정보공유 게시판</a></li>
-              <li><a th:href="@{/feed}">피드</a></li>
-            </ul>
-          </nav>
+        <div class="nav-bar">
+            <div class="nav-container">
+                <nav>
+                    <ul>
+                        <li><a th:href="@{/board/review}">후기 게시판</a></li>
+                        <li><a th:href="@{/board/qna}">질문 게시판</a></li>
+                        <li><a th:href="@{/board/infoshare}">정보공유 게시판</a></li>
+                        <li><a th:href="@{/feed}">피드</a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
       </div>
     </header>

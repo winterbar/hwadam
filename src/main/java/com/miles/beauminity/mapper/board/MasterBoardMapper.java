@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.miles.beauminity.vo.board.MasterBoardVO;
+import com.miles.beauminity.vo.board.SearchVO;
 import com.miles.beauminity.vo.board.TypeOffsetVO;
 
 // 게시글용 매퍼
@@ -38,6 +39,15 @@ public interface MasterBoardMapper {
 
     // SELECT3 - 닉네임 검색
     public String getNicknameByBoardId(Long id);
+
+    // SELECT4 - 게시글 검색
+    public List<MasterBoardVO> getSearchBoard(SearchVO searchVO);
+
+    // SELECT5 - 게시글 검색:: 제목
+    public List<MasterBoardVO> getSearchBoardByTitle(SearchVO searchVO);
+
+    // SELECT6 - 게시글 검색:: 내용
+    public List<MasterBoardVO> getSearchBoardByContent(SearchVO searchVO);
 
 }
 

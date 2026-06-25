@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -133,6 +135,7 @@ public class QnaController {
         model.addAttribute("qna", qna);
         model.addAttribute("flist", qnaFiles);
         model.addAttribute("nickname", nickname);
+        model.addAttribute("likecnt", qnaService.getLikeCount(id));
 
 
         return "qna_board/detail";
@@ -203,6 +206,35 @@ public class QnaController {
                         "inline; filename=\"" + filename + "\"")
                 .body(resource);
     }
+
+    // 게시글 검색 메서드
+    @PostMapping("/search")
+    public String getSearchBoard(@RequestParam("searchStr") String str, @ModelAttribute PageVO pageVO, Model model) {
+        
+        // 게시판 종류 설정
+        String type = "qna";
+
+        System.out.println("page: "+pageVO.getPage());
+        System.out.println("offset: "+pageVO.getOffset());
+
+        // 전체 게시글수 확인
+        int count = qnaService.getTypeBoardCount(type); 
+        System.out.println("게시글의 수:" + count);
+        pageVO.pageInfo(count);
+
+        // 파라미터 여러개는 페이징 적용 이후에 고려해보는 걸로. 
+        List<QnaBoardCompleteVO> qnaBoardList=qnaService.getSearchBoard(type, str, pageVO);
+
+        for(QnaBoardCompleteVO q : qnaBoardList )
+            System.out.println(q.toString());
+
+        model.addAttribute("qnaS", qnaBoardList);
+        model.addAttribute("pageVO", pageVO);
+
+        
+        return "redirect:/board/qna";
+    }
+    
     
 
     

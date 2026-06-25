@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
+import com.miles.beauminity.vo.board.MasterBoardLikeVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.board.TypeOffsetVO;
@@ -35,5 +36,15 @@ public interface QnaService {
     int getQnaCountByCategory(String type, String category);
 
     String getNicknameByBoardId(Long id);
+
+    void insertLike(MasterBoardLikeVO masterBoardLikeVO);
+
+    boolean isLikeON(Long id, String username);
+
+    void deleteLike(MasterBoardLikeVO masterBoardLikeVO);
+
+    int getLikeCount(Long id);
+
+    List<QnaBoardCompleteVO> getSearchBoard(String type, String str, PageVO pageVO);
     
 }
