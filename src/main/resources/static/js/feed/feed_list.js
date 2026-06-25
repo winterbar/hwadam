@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function () {
     const filterBar = document.getElementById('feed-filter-bar');
     const filterSummary = document.getElementById('feed-filter-summary');
@@ -48,61 +49,35 @@ document.addEventListener('DOMContentLoaded', function () {
         const feedCards = document.querySelectorAll('.feed-card');
 
         feedCards.forEach(function (card) {
-            const rawContent = card.dataset.content
-                ? card.dataset.content.trim()
-                : '';
-
             const captionTextEl = card.querySelector('.js-caption-text');
             const link = card.querySelector('.feed-share-link');
 
             if (!captionTextEl || !link) return;
 
+            const rawContent = captionTextEl.textContent
+                ? captionTextEl.textContent
+                : (card.dataset.content ? card.dataset.content : '');
+
             link.style.display = 'none';
 
-            if (!rawContent) return;
+            if (!rawContent.trim()) return;
 
-            let contentText = '';
-            let linkText = '';
+            const urlRegex = /(https?:\/\/[^\s]+)/;
+            const urlMatch = rawContent.match(urlRegex);
 
-            function isLink(text) {
-                if (!text) return false;
+            let contentText = rawContent;
 
-                const value = text.trim().toLowerCase();
+            if (urlMatch) {
+                const linkText = urlMatch[0];
 
-                return value.startsWith('http://') || value.startsWith('https://');
-            }
+                contentText = rawContent.replace(linkText, '').trim();
+                contentText = contentText.replace(/,\s*$/, '').trim();
 
-            if (rawContent.includes(',')) {
-                const parts = rawContent.split(',');
-
-                const first = parts[0] ? parts[0].trim() : '';
-                const second = parts.length > 1 ? parts.slice(1).join(',').trim() : '';
-
-                if (isLink(first)) {
-                    linkText = first;
-                } else {
-                    contentText = first;
-                }
-
-                if (isLink(second)) {
-                    linkText = second;
-                }
-            } else {
-                if (isLink(rawContent)) {
-                    linkText = rawContent;
-                } else {
-                    contentText = rawContent;
-                }
-            }
-
-            if (contentText) {
-                captionTextEl.textContent = ' ' + contentText;
-            }
-
-            if (linkText) {
                 link.href = linkText;
                 link.style.display = 'inline-flex';
             }
+
+            captionTextEl.textContent = contentText.replace(/,\s*$/, '').trim();
         });
     }
 
@@ -367,6 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const commentToggleBtn = card.querySelector('.feed-comment-toggle-btn');
             const commentBox = card.querySelector('.feed-comment-box');
             const commentListBtn = card.querySelector('.feed-comment-count');
+            const actionCommentCount = card.querySelector('.feed-comment-action-count');
             const commentList = card.querySelector('.feed-comment-list');
             const commentForm = card.querySelector('.feed-comment-form');
             const commentInput = commentForm ? commentForm.querySelector('input[name="replyContent"]') : null;
@@ -384,8 +360,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 commentCount = 0;
             }
 
-            normalizeInitialReplyList();
+            enhanceServerRenderedMentions();
             updateCommentCountText(false);
+            applyCommentOwnerMenus();
+            setupReplyMoreButtons();
 
             if (commentBox) {
                 commentBox.style.display = 'none';
@@ -449,6 +427,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const formData = new FormData(commentForm);
 
+                    let submitContent = commentInput.value.trim(); formData.set('replyContent', submitContent);
+
+                    formData.set('replyContent', submitContent);
+
                     fetch(action, {
                         method: 'POST',
                         headers: getCsrfHeaders(),
@@ -461,23 +443,20 @@ document.addEventListener('DOMContentLoaded', function () {
                             }
 
                             if (!response.ok) {
-                                alert('댓글은 최대 100자까지만 작성 가능합니다.');
+                                alert('댓글 등록 중 오류가 발생했습니다.');
                                 throw new Error('reply request failed');
                             }
 
                             return response.json();
                         })
                         .then(function (replyList) {
+                            
                             renderReplyList(replyList);
 
                             commentInput.value = '';
                             clearReplyTarget();
 
-                            commentCount = Array.isArray(replyList)
-                                ? replyList.filter(function (reply) {
-                                    return !reply.parentsReplyId;
-                                }).length
-                                : 0;
+                            commentCount = Array.isArray(replyList) ? replyList.length : 0;
 
                             if (commentListBtn) {
                                 commentListBtn.dataset.commentCount = commentCount;
@@ -497,6 +476,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (commentList) {
                 commentList.addEventListener('click', function (event) {
+                    const mentionEl = event.target.closest('.comment-mention');
+
+                    if (mentionEl) {
+                        event.stopPropagation();
+                        moveToMentionTarget(mentionEl);
+                        return;
+                    }
+
                     const moreBtn = event.target.closest('.comment-more-btn');
                     const editBtn = event.target.closest('.comment-edit-btn');
                     const deleteBtn = event.target.closest('.comment-delete-btn');
@@ -507,16 +494,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         const menuWrap = moreBtn.closest('.comment-more-wrap');
                         const menu = menuWrap ? menuWrap.querySelector('.comment-more-menu') : null;
+                        const commentItem = moreBtn.closest('.feed-comment-item, .comment-child-item');
 
                         if (!menu) return;
 
-                        document.querySelectorAll('.comment-more-menu').forEach(function (item) {
-                            if (item !== menu) {
-                                item.classList.remove('is-open');
+                        const alreadyOpen = menu.classList.contains('is-open');
+
+                        document.querySelectorAll('.comment-more-menu.is-open').forEach(function (openMenu) {
+                            openMenu.classList.remove('is-open');
+
+                            const openedItem = openMenu.closest('.feed-comment-item, .comment-child-item');
+
+                            if (openedItem) {
+                                openedItem.classList.remove('menu-open');
                             }
                         });
 
-                        menu.classList.toggle('is-open');
+                        if (!alreadyOpen) {
+                            menu.classList.add('is-open');
+
+                            if (commentItem) {
+                                commentItem.classList.add('menu-open');
+                            }
+                        } else {
+                            menu.classList.remove('is-open');
+
+                            if (commentItem) {
+                                commentItem.classList.remove('menu-open');
+                            }
+                        }
+
                         return;
                     }
 
@@ -544,66 +551,53 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
-            function normalizeInitialReplyList() {
-                if (!commentList) return;
-
-                const items = Array.from(
-                    commentList.querySelectorAll('.feed-comment-item:not(.feed-comment-empty)')
-                );
-
-                if (items.length === 0) {
-                    return;
-                }
-
-                const replyList = items.map(function (item) {
-                    const writerEl = item.querySelector('.feed-comment-writer');
-                    const contentEl = item.querySelector('.feed-comment-content');
-
-                    return {
-                        replyId: item.dataset.replyId || '',
-                        username: item.dataset.username || '',
-                        nickname: item.dataset.nickname || (writerEl ? writerEl.textContent.trim() : ''),
-                        replyContent: item.dataset.replyContent || (contentEl ? contentEl.textContent.trim() : ''),
-                        parentsReplyId: item.dataset.parentsReplyId || ''
-                    };
-                });
-
-                renderReplyList(replyList);
-            }
-
             function applyCommentOwnerMenus() {
                 const loginUsername = getLoginUsername();
 
                 if (!commentList) return;
 
-                commentList.querySelectorAll('[data-username]').forEach(function (item) {
-                    const writerUsername = item.dataset.username
-                        ? item.dataset.username.trim()
-                        : '';
+                commentList
+                    .querySelectorAll('.feed-comment-item, .comment-child-item')
+                    .forEach(function (item) {
+                        if (item.classList.contains('feed-comment-empty')) return;
 
-                    const moreWrap = item.querySelector('.comment-more-wrap');
+                        const writerUsername = item.dataset.username
+                            ? item.dataset.username.trim()
+                            : '';
 
-                    if (!moreWrap) return;
+                        const bubble = item.querySelector('.feed-comment-bubble, .comment-child-bubble');
+                        const moreWrap = bubble ? bubble.querySelector('.comment-more-wrap') : null;
 
-                    if (loginUsername && writerUsername && loginUsername === writerUsername) {
-                        moreWrap.style.display = 'block';
-                    } else {
-                        moreWrap.style.display = 'none';
-                    }
-                });
+                        if (!moreWrap) return;
+
+                        if (
+                            loginUsername &&
+                            loginUsername !== 'anonymousUser' &&
+                            writerUsername &&
+                            loginUsername === writerUsername
+                        ) {
+                            moreWrap.classList.add('is-owner');
+                        } else {
+                            moreWrap.classList.remove('is-owner');
+                        }
+                    });
             }
 
             function setReplyTarget(commentItem) {
                 if (!replyTarget || !parentInput || !commentInput) return;
 
                 const replyId = commentItem.dataset.replyId || '';
+                const rootItem = commentItem.closest('.feed-comment-item');
+                const rootReplyId = rootItem ? rootItem.dataset.replyId : replyId;
+
                 const writerEl = commentItem.querySelector('.feed-comment-writer, .comment-child-writer');
                 const contentEl = commentItem.querySelector('.feed-comment-content, .comment-child-content');
 
-                const writer = writerEl ? writerEl.textContent.trim() : '회원';
+                const writer = commentItem.dataset.nickname || (writerEl ? writerEl.textContent.trim() : '회원');
                 const content = contentEl ? contentEl.textContent.trim() : '';
 
                 parentInput.value = replyId;
+                commentInput.dataset.mentionNickname = writer;
 
                 if (replyTargetWriter) {
                     replyTargetWriter.textContent = writer;
@@ -642,7 +636,64 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (commentInput) {
                     commentInput.placeholder = '댓글 달기...';
+                    delete commentInput.dataset.mentionNickname;
                 }
+            }
+
+            function setupReplyMoreButtons() {
+                if (!commentList) return;
+
+                commentList.querySelectorAll('.feed-comment-item').forEach(function (commentItem) {
+                    const childList = Array.from(commentItem.children).find(function (child) {
+                        return child.classList && child.classList.contains('comment-child-list');
+                    });
+
+                    if (!childList) return;
+
+                    const childItems = Array.from(childList.children).filter(function (child) {
+                        return child.classList && child.classList.contains('comment-child-item');
+                    });
+
+                    const childCount = childItems.length;
+
+                    const oldBtn = Array.from(commentItem.children).find(function (child) {
+                        return child.classList && child.classList.contains('comment-child-toggle-btn');
+                    });
+
+                    if (oldBtn) {
+                        oldBtn.remove();
+                    }
+
+                    if (childCount === 0) {
+                        childList.style.setProperty('display', 'none', 'important');
+                        return;
+                    }
+
+                    childList.style.setProperty('display', 'none', 'important');
+
+                    const toggleBtn = document.createElement('button');
+                    toggleBtn.type = 'button';
+                    toggleBtn.className = 'comment-child-toggle-btn';
+                    toggleBtn.textContent = '답글 ' + childCount + '개 더 보기';
+
+                    commentItem.insertBefore(toggleBtn, childList);
+
+                    toggleBtn.addEventListener('click', function (event) {
+                        event.stopPropagation();
+
+                        const isClosed = childList.style.display === 'none';
+
+                        if (isClosed) {
+                            childList.style.setProperty('display', 'block', 'important');
+                            toggleBtn.classList.add('is-open');
+                            toggleBtn.textContent = '답글 숨기기';
+                        } else {
+                            childList.style.setProperty('display', 'none', 'important');
+                            toggleBtn.classList.remove('is-open');
+                            toggleBtn.textContent = '답글 ' + childCount + '개 보기';
+                        }
+                    });
+                });
             }
 
             function renderReplyList(replyList) {
@@ -671,11 +722,32 @@ document.addEventListener('DOMContentLoaded', function () {
                     replyMap[String(reply.replyId)] = reply;
                 });
 
-                replyList.forEach(function (reply) {
-                    const parentId = reply.parentsReplyId;
+                function findRootReply(reply) {
+                    let current = reply;
+                    let safetyCount = 0;
 
-                    if (parentId && replyMap[String(parentId)]) {
-                        replyMap[String(parentId)].children.push(reply);
+                    while (
+                        current.parentsReplyId &&
+                        replyMap[String(current.parentsReplyId)] &&
+                        safetyCount < 20
+                    ) {
+                        current = replyMap[String(current.parentsReplyId)];
+                        safetyCount++;
+                    }
+
+                    return current;
+                }
+
+                replyList.forEach(function (reply) {
+                    if (!reply.parentsReplyId) {
+                        rootReplies.push(reply);
+                        return;
+                    }
+
+                    const rootReply = findRootReply(reply);
+
+                    if (rootReply && rootReply.replyId !== reply.replyId) {
+                        rootReply.children.push(reply);
                     } else {
                         rootReplies.push(reply);
                     }
@@ -687,6 +759,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 applyCommentOwnerMenus();
+                setupReplyMoreButtons();
             }
 
             function createCommentItem(reply) {
@@ -701,16 +774,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     commentItem.dataset.username = reply.username;
                 }
 
+                const writerName = reply.nickname && reply.nickname.trim() !== ''
+                    ? reply.nickname
+                    : reply.username;
+
+                if (writerName) {
+                    commentItem.dataset.nickname = writerName;
+                }
+
                 const bubble = document.createElement('div');
                 bubble.className = 'feed-comment-bubble';
 
                 const avatar = document.createElement('div');
                 avatar.className = 'feed-comment-avatar';
-
-                const writerName = reply.nickname && reply.nickname.trim() !== ''
-                    ? reply.nickname
-                    : reply.username;
-
                 avatar.textContent = writerName ? writerName.substring(0, 1) : '회';
 
                 const main = document.createElement('div');
@@ -722,16 +798,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const content = document.createElement('span');
                 content.className = 'feed-comment-content';
-                content.textContent = reply.replyContent || '';
+           
+appendReplyContent(
+    content,
+    reply.replyContent || reply.reply_content || '',
+    reply.parentNickname || reply.parent_nickname || '',
+    reply.parentsReplyId || reply.parents_reply_id || ''
+);
+
+
 
                 main.appendChild(writer);
                 main.appendChild(content);
 
-                const moreWrap = createCommentMoreWrap();
-
                 bubble.appendChild(avatar);
                 bubble.appendChild(main);
-                bubble.appendChild(moreWrap);
+                bubble.appendChild(createCommentMoreWrap());
 
                 const childList = document.createElement('div');
                 childList.className = 'comment-child-list';
@@ -764,6 +846,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     ? reply.nickname
                     : reply.username;
 
+                if (writerName) {
+                    childItem.dataset.nickname = writerName;
+                }
+
                 const bubble = document.createElement('div');
                 bubble.className = 'comment-child-bubble';
 
@@ -780,30 +866,95 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const content = document.createElement('span');
                 content.className = 'comment-child-content';
-                content.textContent = reply.replyContent || '';
+                appendReplyContent(content, reply.replyContent || '');
 
                 main.appendChild(writer);
                 main.appendChild(content);
 
-                const moreWrap = createCommentMoreWrap();
-
                 bubble.appendChild(avatar);
                 bubble.appendChild(main);
-                bubble.appendChild(moreWrap);
-
-                const childList = document.createElement('div');
-                childList.className = 'comment-child-list';
-
-                if (Array.isArray(reply.children) && reply.children.length > 0) {
-                    reply.children.forEach(function (childReply) {
-                        childList.appendChild(createChildReplyItem(childReply));
-                    });
-                }
+                bubble.appendChild(createCommentMoreWrap());
 
                 childItem.appendChild(bubble);
-                childItem.appendChild(childList);
 
                 return childItem;
+            }
+
+           
+function appendReplyContent(contentEl, text, parentNickname, parentReplyId) {
+    const value = text || '';
+
+    if (parentNickname && parentReplyId) {
+        const mention = document.createElement('span');
+        mention.className = 'comment-mention';
+        mention.textContent = '@' + parentNickname;
+        mention.dataset.targetReplyId = parentReplyId;
+
+        contentEl.appendChild(mention);
+        contentEl.appendChild(document.createTextNode(' ' + value));
+        return;
+    }
+
+    contentEl.textContent = value;
+}
+
+
+
+            function enhanceServerRenderedMentions() {
+                if (!commentList) return;
+
+                const contentEls = commentList.querySelectorAll('.feed-comment-content, .comment-child-content');
+
+                contentEls.forEach(function (contentEl) {
+                    const value = contentEl.textContent.trim();
+
+                    if (!value.startsWith('@')) return;
+                    if (contentEl.querySelector('.comment-mention')) return;
+
+                    contentEl.innerHTML = '';
+                    appendReplyContent(contentEl, value);
+                });
+            }
+
+            function moveToMentionTarget(mentionEl) {
+                if (!commentList || !mentionEl) return;
+
+                const mentionName = mentionEl.textContent
+                    ? mentionEl.textContent.replace('@', '').trim()
+                    : '';
+
+                if (!mentionName) return;
+
+                const writers = commentList.querySelectorAll('.feed-comment-writer, .comment-child-writer');
+
+                let targetWriter = null;
+
+                writers.forEach(function (writer) {
+                    if (targetWriter) return;
+
+                    const writerText = writer.textContent ? writer.textContent.trim() : '';
+
+                    if (writerText === mentionName) {
+                        targetWriter = writer;
+                    }
+                });
+
+                if (!targetWriter) return;
+
+                const targetItem = targetWriter.closest('.feed-comment-item, .comment-child-item');
+
+                if (!targetItem) return;
+
+                targetItem.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+
+                targetItem.classList.add('comment-focus-highlight');
+
+                setTimeout(function () {
+                    targetItem.classList.remove('comment-focus-highlight');
+                }, 1200);
             }
 
             function createCommentMoreWrap() {
@@ -888,6 +1039,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         document.querySelectorAll('.comment-more-menu').forEach(function (menu) {
                             menu.classList.remove('is-open');
                         });
+
+                        document.querySelectorAll('.feed-comment-item.menu-open, .comment-child-item.menu-open').forEach(function (item) {
+                            item.classList.remove('menu-open');
+                        });
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -925,9 +1080,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             throw new Error('reply delete failed');
                         }
 
-                        if (commentItem.classList.contains('feed-comment-item')) {
-                            commentCount = Math.max(commentCount - 1, 0);
-                        }
+                        commentCount = Math.max(commentCount - 1, 0);
 
                         commentItem.remove();
 
@@ -954,6 +1107,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             function updateCommentCountText(isOpen) {
+                if (actionCommentCount) {
+                    actionCommentCount.textContent = commentCount;
+                }
+
                 if (!commentListBtn) return;
 
                 if (isOpen) {
@@ -1058,6 +1215,10 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('.comment-more-menu').forEach(function (menu) {
                 menu.classList.remove('is-open');
             });
+
+            document.querySelectorAll('.feed-comment-item.menu-open, .comment-child-item.menu-open').forEach(function (item) {
+                item.classList.remove('menu-open');
+            });
         });
 
         document.querySelectorAll('.feed-menu-item').forEach(function (btn) {
@@ -1128,4 +1289,178 @@ document.addEventListener('DOMContentLoaded', function () {
             applyFilter(event.target.dataset.tag);
         });
     }
+
+/* ===== 댓글/대댓글 ... 메뉴 화면 위로 띄우기 최종 해결 ===== */
+/* 위치: feed_list.js 맨 마지막 }); 바로 위에 붙여넣기 */
+
+(function fixCommentMenuFloating() {
+    const style = document.createElement('style');
+    style.textContent = `
+        .floating-comment-menu {
+            position: fixed !important;
+            display: none;
+            min-width: 96px !important;
+            background: #ffffff !important;
+            border: 1px solid #ececec !important;
+            border-radius: 10px !important;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18) !important;
+            padding: 6px !important;
+            z-index: 2147483647 !important;
+        }
+
+        .floating-comment-menu.is-open {
+            display: block !important;
+        }
+
+        .floating-comment-menu button {
+            display: block !important;
+            width: 100% !important;
+            padding: 8px 10px !important;
+            border: 0 !important;
+            background: #fff !important;
+            text-align: left !important;
+            font-size: 13px !important;
+            cursor: pointer !important;
+            border-radius: 7px !important;
+            color: #222 !important;
+        }
+
+        .floating-comment-menu button:hover {
+            background: #f7f7f7 !important;
+        }
+
+        .floating-comment-menu button.danger {
+            color: #e44747 !important;
+        }
+    `;
+    document.head.appendChild(style);
+
+    const floatingMenu = document.createElement('div');
+    floatingMenu.className = 'floating-comment-menu';
+
+    const editButton = document.createElement('button');
+    editButton.type = 'button';
+    editButton.textContent = '수정하기';
+    editButton.className = 'floating-comment-edit-btn';
+
+    const deleteButton = document.createElement('button');
+    deleteButton.type = 'button';
+    deleteButton.textContent = '삭제하기';
+    deleteButton.className = 'floating-comment-delete-btn danger';
+
+    floatingMenu.appendChild(editButton);
+    floatingMenu.appendChild(deleteButton);
+    document.body.appendChild(floatingMenu);
+
+    let currentMoreWrap = null;
+
+    function closeFloatingMenu() {
+        floatingMenu.classList.remove('is-open');
+        currentMoreWrap = null;
+    }
+
+    document.addEventListener('click', function (event) {
+        const moreBtn = event.target.closest('.comment-more-btn');
+
+        if (moreBtn) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+
+            const moreWrap = moreBtn.closest('.comment-more-wrap');
+            const originalMenu = moreWrap ? moreWrap.querySelector('.comment-more-menu') : null;
+
+            if (!moreWrap || !originalMenu) return;
+
+            const rect = moreBtn.getBoundingClientRect();
+
+            floatingMenu.style.top = (rect.bottom + 6) + 'px';
+            floatingMenu.style.left = 'auto';
+            floatingMenu.style.right = (window.innerWidth - rect.right) + 'px';
+
+            currentMoreWrap = moreWrap;
+
+            document.querySelectorAll('.comment-more-menu').forEach(function (menu) {
+                menu.classList.remove('is-open');
+            });
+
+            floatingMenu.classList.add('is-open');
+            return;
+        }
+
+        if (event.target.closest('.floating-comment-menu')) {
+            event.stopPropagation();
+            return;
+        }
+
+        closeFloatingMenu();
+    }, true);
+
+    editButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!currentMoreWrap) return;
+
+        const originalEditBtn = currentMoreWrap.querySelector('.comment-edit-btn');
+
+        if (originalEditBtn) {
+            originalEditBtn.click();
+        }
+
+        closeFloatingMenu();
+    });
+
+    deleteButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!currentMoreWrap) return;
+
+        const originalDeleteBtn = currentMoreWrap.querySelector('.comment-delete-btn');
+
+        if (originalDeleteBtn) {
+            originalDeleteBtn.click();
+        }
+
+        closeFloatingMenu();
+    });
+
+    window.addEventListener('scroll', closeFloatingMenu);
+    window.addEventListener('resize', closeFloatingMenu);
+})();
+
+function moveToMentionTarget(mentionEl) {
+    if (!commentList || !mentionEl) return;
+
+    const targetReplyId = mentionEl.dataset.targetReplyId;
+
+    if (!targetReplyId) return;
+
+    const targetItem = commentList.querySelector('[data-reply-id="' + targetReplyId + '"]');
+
+    if (!targetItem) return;
+
+    const childList = targetItem.closest('.comment-child-list');
+
+    if (childList) {
+        childList.style.setProperty('display', 'block', 'important');
+    }
+
+    targetItem.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+    });
+
+    targetItem.classList.add('comment-focus-highlight');
+
+    setTimeout(function () {
+        targetItem.classList.remove('comment-focus-highlight');
+    }, 1200);
+}
+
+
+
+
 });
+

@@ -31,27 +31,51 @@
     <select id="getReply"
             parameterType="com.miles.beauminity.vo.feed.FeedReplyVO"
             resultType="com.miles.beauminity.vo.feed.FeedReplyVO">
-        select m.nickname, fr.reply_content,fr.reply_id,fr.parents_reply_id
-        from feed_reply fr
-        join member m
-        on fr.username = m.username 
-        where fr.feed_id=#{feedId}
-            and fr.deleted=0
-            and m.deleted=0
-        order by fr.reply_id asc
+
+SELECT
+    r.reply_id AS replyId,
+    r.feed_id AS feedId,
+    r.username AS username,
+    m.nickname AS nickname,
+    r.reply_content AS replyContent,
+    r.parents_reply_id AS parentsReplyId,
+    parent_member.nickname AS parentNickname
+FROM feed_reply r
+JOIN member m
+    ON r.username = m.username
+LEFT JOIN feed_reply parent_reply
+    ON r.parents_reply_id = parent_reply.reply_id
+LEFT JOIN member parent_member
+    ON parent_reply.username = parent_member.username
+WHERE r.feed_id = #{feedId}
+ORDER BY r.reply_id ASC
+
+
     </select>
 
     <!--댓글 리스트 가져오기-->
     <select id="getFeedReplyList"
             parameterType="long"
             resultType="com.miles.beauminity.vo.feed.FeedReplyVO">
-        select m.nickname, fr.reply_content,fr.reply_id
-        from feed_reply fr
-        join member m
-            on fr.username = m.username
-        where fr.feed_id=#{feedId}
-            and fr.deleted=0
-            and m.deleted=0
-        order by fr.reply_id asc
+
+SELECT
+    r.reply_id AS replyId,
+    r.feed_id AS feedId,
+    r.username AS username,
+    m.nickname AS nickname,
+    r.reply_content AS replyContent,
+    r.parents_reply_id AS parentsReplyId,
+    parent_member.nickname AS parentNickname
+FROM feed_reply r
+JOIN member m
+    ON r.username = m.username
+LEFT JOIN feed_reply parent_reply
+    ON r.parents_reply_id = parent_reply.reply_id
+LEFT JOIN member parent_member
+    ON parent_reply.username = parent_member.username
+WHERE r.feed_id = #{feedId}
+ORDER BY r.reply_id ASC
+
+
     </select>
 </mapper>

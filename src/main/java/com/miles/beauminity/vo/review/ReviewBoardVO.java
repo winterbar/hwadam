@@ -25,7 +25,6 @@ public class ReviewBoardVO {
     private LocalDateTime editedAt;
 
     private long viewCnt;
-    private long likeCnt;
     private long replyCnt;
 
     // 후기 전용 데이터 (review_board에 넣게 위한 변수들)
