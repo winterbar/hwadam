@@ -6,6 +6,7 @@
     <title th:text="${qna.title} + ' - BEAUMINITY'"></title>
     <link rel="stylesheet" th:href="@{/css/common/main.css}">
     <link rel="stylesheet" th:href="@{/css/qna_board/qna_detail.css}">
+    <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
 </head>
 <body>
 
@@ -79,10 +80,9 @@
                 <div class="action-left">
                     <a th:href="@{/board/qna}" class="btn btn-list">목록으로</a>
                 </div>
-                <div class="action-right">
+                <div class="action-right" id="action-field" th:data-id="${qna.boardId}">
                     <a th:href="@{|/board/qna/edit/${qna.boardId}|}" class="btn btn-modify">수정</a>
                     <button type="submit" class="btn btn-delete" th:onclick="|deleteBoard(${qna.boardId})|" style="display: inline;">삭제</button>
-                    
                 </div>
             </div>
         </section>
@@ -162,3 +162,4 @@
 </html>
 <script th:src="@{/js/qna/qna_delete.js}"></script>
 <script th:src="@{/js/qna/qna_like.js}"></script>
+<script th:src="@{/js/qna/qna_check_id.js}"></script>

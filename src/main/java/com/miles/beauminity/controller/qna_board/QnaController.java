@@ -208,17 +208,16 @@ public class QnaController {
     }
 
     // 게시글 검색 메서드
-    @PostMapping("/search")
+    @PostMapping("/board/qna/search")
     public String getSearchBoard(@RequestParam("searchStr") String str, @ModelAttribute PageVO pageVO, Model model) {
         
+        System.out.println("현재 검색어: "+str);
+
         // 게시판 종류 설정
         String type = "qna";
 
-        System.out.println("page: "+pageVO.getPage());
-        System.out.println("offset: "+pageVO.getOffset());
-
         // 전체 게시글수 확인
-        int count = qnaService.getTypeBoardCount(type); 
+        int count = qnaService.getCountSearchBoardByTitle(type, str); 
         System.out.println("게시글의 수:" + count);
         pageVO.pageInfo(count);
 
@@ -232,7 +231,7 @@ public class QnaController {
         model.addAttribute("pageVO", pageVO);
 
         
-        return "redirect:/board/qna";
+        return "/qna_board/qna";
     }
     
     
