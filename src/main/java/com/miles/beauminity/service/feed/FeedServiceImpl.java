@@ -173,7 +173,18 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public List<FeedReplyVO> getFeedReply(FeedReplyVO feedReplyVO) {
         feedReplyMapper.postReply(feedReplyVO);
-        return feedReplyMapper.getReply(feedReplyVO);
+        feedReplyMapper.increaseReply(feedReplyVO);
+        return feedReplyMapper.getReply(feedReplyVO.getFeedId());
     }
 
+    @Override
+    public List<FeedReplyVO> updateReply(FeedReplyVO feedReplyVO) {
+        feedReplyMapper.updateReply(feedReplyVO);
+        return feedReplyMapper.getReply(feedReplyVO.getFeedId());
+    }
+
+    @Override
+    public void deleteReply(Long replyId) {
+        feedReplyMapper.deleteReply(replyId);
+    }
 }

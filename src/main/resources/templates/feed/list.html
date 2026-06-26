@@ -318,16 +318,6 @@
                         0
                       </span>
                     </button>
-
-                    <a
-                      class="feed-info-link feed-share-link"
-                      href="#"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style="display: none"
-                    >
-                      정보 공유 바로가기 ↗
-                    </a>
                   </div>
                 </div>
 
@@ -353,7 +343,7 @@
                   class="feed-comment-count"
                   th:data-comment-count="${feed.replyCnt != null ? feed.replyCnt : 0}"
                 >
-                  댓글 0개 모두 보기
+                  댓글 모두 보기
                 </button>
 
                 <div class="feed-comment-list">
@@ -370,6 +360,7 @@
                     th:each="reply : ${feed.feedReplyList}"
                     th:data-reply-id="${reply.replyId}"
                     th:data-root-reply-id="${reply.replyId}"
+                    th:data-reply-content="${reply.replyContent}"
                     th:data-username="${reply.username}"
                     th:data-nickname="${reply.nickname != null and reply.nickname != '' ? reply.nickname : reply.username}"
                   >
@@ -377,8 +368,7 @@
                       <div class="feed-comment-avatar">
                         <span
                           th:text="${reply.nickname != null and reply.nickname != '' ? #strings.substring(reply.nickname, 0, 1) : '회'}"
-                          >회</span
-                        >
+                        ></span>
                       </div>
 
                       <div class="feed-comment-main">
@@ -392,9 +382,7 @@
                         <span
                           class="feed-comment-content"
                           th:text="${reply.replyContent}"
-                        >
-                          댓글 내용
-                        </span>
+                        ></span>
                       </div>
 
                       <div class="comment-more-wrap">
@@ -426,6 +414,9 @@
                         th:if="${child.parentsReplyId != null and child.parentsReplyId == reply.replyId}"
                         th:data-reply-id="${child.replyId}"
                         th:data-root-reply-id="${reply.replyId}"
+                        th:data-parents-reply-id="${child.parentsReplyId}"
+                        th:data-parent-nickname="${child.parentNickname}"
+                        th:data-reply-content="${child.replyContent}"
                         th:data-username="${child.username}"
                         th:data-nickname="${child.nickname != null and child.nickname != '' ? child.nickname : child.username}"
                       >
@@ -445,16 +436,7 @@
                               닉네임
                             </strong>
 
-                            <span class="comment-child-content">
-                              <span
-                                class="comment-mention"
-                                th:if="${child.parentNickname != null}"
-                                th:text="'@' + ${child.parentNickname}"
-                                th:data-target-reply-id="${child.parentsReplyId}"
-                              >
-                              </span>
-                              <span th:text="${child.replyContent}"></span>
-                            </span>
+                            <span class="comment-child-content"></span>
                           </div>
 
                           <div class="comment-more-wrap">

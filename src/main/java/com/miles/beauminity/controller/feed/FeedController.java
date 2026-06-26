@@ -21,6 +21,8 @@ import com.miles.beauminity.vo.feed.FeedReplyVO;
 import com.miles.beauminity.vo.feed.FeedVO;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -123,7 +125,6 @@ public class FeedController {
         feedReplyVO.setUsername(username);
         feedReplyVO.setFeedId(feedId);
         feedReplyVO.setParentsReplyId(parentsReplyId);
-
         return feedService.getFeedReply(feedReplyVO);
     }
 
@@ -138,9 +139,26 @@ public class FeedController {
         feedLikeVO.setFeedId(feedId);
 
         // 좋아요 개수 가져오기
-        int like_cnt = feedService.getFeedLike(liked, feedLikeVO);
-        return like_cnt;
+        int likeCnt = feedService.getFeedLike(liked, feedLikeVO);
+        return likeCnt;
     }
-    // @PostMapping("/feed/reply/{replyId}/edit")
+
+    @PostMapping("/feed/reply/{replyId}/edit")
+    @ResponseBody
+    public List<FeedReplyVO> updateReply(@PathVariable("replyId") Long replyId,
+            String replyContent,
+            FeedReplyVO feedReplyVO) {
+        feedReplyVO.setReplyId(replyId);
+        feedReplyVO.setReplyContent(replyContent);
+
+        return feedService.updateReply(feedReplyVO);
+    }
+
+    @PostMapping("/feed/reply/{replyId}/delete")
+    public String getMethodName(@PathVariable("replyId") Long replyId) {
+        feedService.deleteReply(replyId);
+        return "redirect:feed/list";
+
+    }
 
 }

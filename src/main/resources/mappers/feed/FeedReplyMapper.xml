@@ -1,81 +1,46 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.miles.beauminity.mapper.feed.FeedReplyMapper">
 
 
     <!-- 댓글 DB에 저장 -->
     <insert id="postReply"
-            parameterType="com.miles.beauminity.vo.feed.FeedReplyVO"
-            useGeneratedKeys="true"
-            keyProperty="replyId">
-        insert into feed_reply (
-            feed_id,
-            username,
-            reply_content,
-            deleted,
-            parents_reply_id
-        )
-        values(
-            #{feedId},
-            #{username},
-            #{replyContent},
-            #{deleted},
-            #{parentsReplyId}
-        )
-    </insert>
-
-    <!--피드에 해당하는 댓글 가져오기-->
+        parameterType="com.miles.beauminity.vo.feed.FeedReplyVO"
+        useGeneratedKeys="true"
+        keyProperty="replyId"> INSERT INTO feed_reply ( feed_id, username, reply_content, deleted,
+        parents_reply_id ) VALUES( #{feedId}, #{username}, #{replyContent}, #{deleted},
+        #{parentsReplyId} ) </insert>
+    <update id="increaseReply"
+        parameterType="com.miles.beauminity.vo.feed.FeedReplyVO"> update feed set reply_cnt =
+        reply_cnt +1 where feed_id=#{feedId} </update>
+    <!--피드에
+    해당하는 댓글 가져오기-->
     <select id="getReply"
-            parameterType="com.miles.beauminity.vo.feed.FeedReplyVO"
-            resultType="com.miles.beauminity.vo.feed.FeedReplyVO">
+        parameterType="com.miles.beauminity.vo.feed.FeedReplyVO"
+        resultType="com.miles.beauminity.vo.feed.FeedReplyVO"> SELECT r.reply_id, r.feed_id,
+        r.username, m.nickname, r.reply_content, r.parents_reply_id, parent_member.nickname as
+        parentNickname FROM feed_reply r JOIN member m ON r.username = m.username LEFT JOIN
+        feed_reply parent_reply ON r.parents_reply_id = parent_reply.reply_id LEFT JOIN member
+        parent_member ON parent_reply.username = parent_member.username WHERE r.feed_id = #{feedId}
+        ORDER BY r.reply_id ASC </select>
 
-SELECT
-    r.reply_id AS replyId,
-    r.feed_id AS feedId,
-    r.username AS username,
-    m.nickname AS nickname,
-    r.reply_content AS replyContent,
-    r.parents_reply_id AS parentsReplyId,
-    parent_member.nickname AS parentNickname
-FROM feed_reply r
-JOIN member m
-    ON r.username = m.username
-LEFT JOIN feed_reply parent_reply
-    ON r.parents_reply_id = parent_reply.reply_id
-LEFT JOIN member parent_member
-    ON parent_reply.username = parent_member.username
-WHERE r.feed_id = #{feedId}
-ORDER BY r.reply_id ASC
-
-
-    </select>
-
-    <!--댓글 리스트 가져오기-->
+    <!--댓글
+    리스트 가져오기-->
     <select id="getFeedReplyList"
-            parameterType="long"
-            resultType="com.miles.beauminity.vo.feed.FeedReplyVO">
+        parameterType="long"
+        resultType="com.miles.beauminity.vo.feed.FeedReplyVO"> SELECT r.reply_id, r.feed_id,
+        r.username, m.nickname, r.reply_content, r.parents_reply_id, parent_member.nickname as
+        parentNickname FROM feed_reply r JOIN member m ON r.username = m.username LEFT JOIN
+        feed_reply parent_reply ON r.parents_reply_id = parent_reply.reply_id LEFT JOIN member
+        parent_member ON parent_reply.username = parent_member.username WHERE r.feed_id = #{feedId}
+        ORDER BY r.reply_id ASC </select>
+    <update id="updateReply"
+        parameterType="com.miles.beauminity.vo.feed.FeedReplyVO"> update feed_reply set
+        reply_content=#{replyContent} where reply_id=#{replyId} </update>
 
-SELECT
-    r.reply_id AS replyId,
-    r.feed_id AS feedId,
-    r.username AS username,
-    m.nickname AS nickname,
-    r.reply_content AS replyContent,
-    r.parents_reply_id AS parentsReplyId,
-    parent_member.nickname AS parentNickname
-FROM feed_reply r
-JOIN member m
-    ON r.username = m.username
-LEFT JOIN feed_reply parent_reply
-    ON r.parents_reply_id = parent_reply.reply_id
-LEFT JOIN member parent_member
-    ON parent_reply.username = parent_member.username
-WHERE r.feed_id = #{feedId}
-ORDER BY r.reply_id ASC
+    <update id="deleteReply"
+        parameterType="long"> update feed_reply set deleted=1 where reply_id=#{replyId} </update>
 
 
-    </select>
 </mapper>
