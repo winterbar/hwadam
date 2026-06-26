@@ -2,6 +2,7 @@ package com.miles.beauminity.service.review_board;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import com.miles.beauminity.mapper.review_board.ReviewBoardMapper;
 import com.miles.beauminity.util.MasterFileUploadUtil;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
+import com.miles.beauminity.vo.board.PageVO;
+import com.miles.beauminity.vo.board.TypeOffsetVO;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
 
 import lombok.AllArgsConstructor;
@@ -90,9 +93,36 @@ public class ReviewServiceImpl implements ReviewService {
     
     // 역할: 후기게시판 게시글 전체보기 요청 서비스 처리
     @Override
-    public List<ReviewBoardVO> getReviewBoardList() {
+    public List<ReviewBoardVO> getReviewBoardList(String type, PageVO pageVO) {
+        TypeOffsetVO typeOffsetVO = new TypeOffsetVO();
+        typeOffsetVO.setType(type);
+        typeOffsetVO.setOffset(pageVO.getOffset());
+        typeOffsetVO.setSize(pageVO.getSize());
 
-            return reviewBoardMapper.selectReviewBoardList(); 
+        List <MasterBoardVO> reviewList = masterBoardMapper.getTypeBoard(typeOffsetVO);
+
+        List<ReviewBoardVO> finalList = new ArrayList<>();
+        for(MasterBoardVO r : reviewList) {
+            ReviewBoardVO RBVO = new ReviewBoardVO();
+            RBVO.setBoardId(r.getBoardId());
+            RBVO.setNickName(masterBoardMapper.getNicknameByBoardId(r.getBoardId()));
+            RBVO.setTitle(r.getTitle());
+            RBVO.setCreatedAt(r.getCreatedAt());
+            RBVO.setViewCnt(r.getViewCnt());
+            RBVO.setReplyCnt(r.getReplyCnt());
+
+            RBVO.setProductName(reviewBoardMapper.getProductnameByBoardId(r.getBoardId()));
+        
+            finalList.add(RBVO);
+        } 
+
+        return finalList;
+    }
+
+    // 역할: 후기 게시글 수 조회 요청 서비스 처리
+    @Override
+    public int getTypeBoardCount(String type) {
+        return masterBoardMapper.getTypeBoardCount(type);
     }
 
     // 역할: 후기게시판 게시글 상세보기 요청 서비스 처리

@@ -28,5 +28,7 @@ public interface ReviewBoardMapper {
     // 파일 정보 수정 메서드 [추후 공용 Mapper에 update 생기면 갈이끼울 예정]
     void updateReviewBoardFile(MasterBoardFileVO fileVO);
 
+    String getProductnameByBoardId(Long boardId);
+
 
 }

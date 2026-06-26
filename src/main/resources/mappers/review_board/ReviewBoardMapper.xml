@@ -89,6 +89,15 @@
             file_id = #{fileId}
     </update>
 
+    <select id="getProductnameByBoardId"
+            parameterType="Long"
+            resultType="String">
+            
+        SELECT product_name
+            FROM review_board
+            where board_id={value}
+
+    </select>
  
             
 </mapper>
