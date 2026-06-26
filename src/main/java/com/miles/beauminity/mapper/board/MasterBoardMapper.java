@@ -49,5 +49,10 @@ public interface MasterBoardMapper {
     // SELECT6 - 게시글 검색:: 내용
     public List<MasterBoardVO> getSearchBoardByContent(SearchVO searchVO);
 
+    // SELECT7 - 게시글 작성자 찾기
+    public String getUsernameByBoardId (Long id);
+
+    public int getCountSearchBoardByTitle(SearchVO searchVO);
+
 }
 
