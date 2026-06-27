@@ -213,13 +213,174 @@ main {
     align-items: start;
 }
 
-.main-left-content {
+.sub-container {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.dashboard-section {
+.recommend-grid {
+    display: flex;
+    gap: 30px;
+    padding: 20px;
+    align-items: center;
+}
+
+.cat-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 150px;
+    text-align: center;
+}
+
+.cat-item {
+    padding: 15px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.main-product {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    width: 100%;
+}
+
+.product-card {
+    flex: 0 0 calc(25% - 12px);
+    box-sizing: border-box;
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.product-img {
+    width: 100%;
+    height: 150px;
+    background: #eee;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-name {
+    font-size: 0.9rem;
+    margin: 5px 0;
+}
+
+.product-price {
+    font-weight: bold;
+    color: #ff6b6b;
+}
+
+/* 2단 구성 */
+.sub-content-wrapper {
+    display: grid;
+    grid-template-columns: 1.8fr 1.2fr;
+    gap: 30px;
+    align-items: start;
+    margin-top: 10px;
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-and-service-section {
+    margin-top: 40px;
+    width: 100%;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #FF9A8B, #FFD56B);
+    border-radius: 16px;
+    text-align: center;
+    color: white;
+}
+
+.hero-content {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.hero-logo img {
+    height: 50px;
+    filter: brightness(0) invert(1);
+}
+
+.hero-slogan-main {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 0px;
+}
+
+.hero-logo img {
+    height: 80px;
+    margin-top: 0.5rem;
+}
+
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin: 30px auto 0 auto;
+    width: 100%;
+    max-width: 900px;
+    justify-items: center;
+}
+
+.service-item {
+    width: 100%;
+    background: white;
+    color: #333;
+    padding: 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.service-item:hover {
+    transform: translateY(-5px);
+}
+
+.service-icon-img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.service-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.main-content {
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 4px;
@@ -234,7 +395,6 @@ main {
     align-items: center;
     border-bottom: 2px solid var(--text-main);
     padding-bottom: 1rem;
-    margin-bottom: 1.2rem;
     transition: border-color 0.3s;
 }
 
@@ -264,12 +424,37 @@ main {
 /* 인기 글 목록 테이블 */
 .main-post-table {
     width: 100%;
-    border-collapse: collapse;
     text-align: left;
 }
 
+.post-row { 
+    display: flex; 
+    align-items: center; 
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 5px 5px;
+    border-bottom: 1px solid #f0f0f0; 
+}
+
+.col-cat {
+    width: 90px;
+    color: #000;
+}
+
+.col-title {
+    flex: 1;
+    overflow: hidden;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.col-meta {
+    width: 90px;
+    color: #000;
+}
+
 .main-post-table td {
-    padding: 1.1rem 0.5rem;
+    padding: 1rem 0.5rem;
     font-size: 0.9rem;
     border-bottom: 1px solid var(--border-row);
     transition: border-color 0.3s;
@@ -282,14 +467,15 @@ main {
 .main-post-tag {
     font-size: 0.75rem;
     font-weight: 800;
+    text-align: center;
     color: var(--color-accent);
-    width: 90px;
+    width: 80px;
     display: inline-block;
 }
 
 .main-post-title {
-    font-weight: 600;
-    color: var(--text-main);
+    color: #333;
+    text-decoration: none;
 }
 
 .main-post-title:hover {
@@ -297,32 +483,33 @@ main {
 }
 
 .main-post-replies {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--color-accent);
-    margin-left: 0.3rem;
+    color: #ff6b6b;
+    margin-left: 5px;
+    font-weight: bold;
 }
 
 .main-post-meta {
     font-size: 0.8rem;
     color: var(--text-muted);
-    text-align: right;
+    text-align: center;
+    width: 95px;
 }
 
 /* 오늘의 BOTD 갤러리 */
 .botd-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.2rem;
-    margin-top: 0.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 15px;
 }
 
 .botd-card {
-    border: 1px solid var(--border-botd);
-    border-radius: 4px;
-    overflow: hidden;
-    background-color: var(--bg-botd-card);
-    transition: transform 0.2s, border-color 0.2s, background-color 0.3s;
+    background: transparent;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
 }
 
 .botd-card:hover {
@@ -332,36 +519,35 @@ main {
 
 .botd-img-placeholder {
     width: 100%;
-    height: 160px;
-    background-color: var(--border-botd);
+    height: 180px;
+    background: #e0e0e0;
     display: flex;
-    justify-content: center;
     align-items: center;
-    color: var(--text-muted);
-    font-size: 1.8rem;
-    font-weight: bold;
-    border-bottom: 1px solid var(--border-botd);
-    transition: background-color 0.3s, border-color 0.3s;
+    justify-content: center;
+    margin-bottom: 8px;
+    border-radius: 4px;
 }
 
 .botd-info {
-    padding: 0.9rem;
+    font-size: 0.85rem;
 }
 
-.botd-user {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--text-dark-muted);
-    margin-bottom: 0.3rem;
+.botd-info {
+    width: 100%;
+    margin-top: 8px;
+    font-size: 0.85rem;
 }
 
 .botd-title {
     font-size: 0.85rem;
-    color: var(--text-main);
-    font-weight: 500;
-    white-space: nowrap;
+    color: #333;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    word-break: break-all; 
 }
 
 /* ===================================================
@@ -375,15 +561,16 @@ main {
     top: 0;
 }
 
-.sidebar-ranking {
+.member-ranking {
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 4px;
     padding: 1.2rem;
+    margin-top: 30px;
     transition: background-color 0.3s, border-color 0.3s;
 }
 
-.sidebar-ranking h4 {
+.member-ranking h4 {
     font-size: 0.9rem;
     font-weight: 800;
     margin-bottom: 0.8rem;
