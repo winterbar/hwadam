@@ -166,7 +166,7 @@ public class FeedServiceImpl implements FeedService {
             // 좋아요 한번 눌렀을 경우
             feedMapper.increaseLikeCnt(feedLikeVO);
         }
-        return feedMapper.getLikeCnt(feedLikeVO);
+        return feedMapper.getLikeCnt(feedLikeVO.getFeedId());
 
     }
 

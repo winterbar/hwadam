@@ -157,7 +157,7 @@ public class FeedController {
     @PostMapping("/feed/reply/{replyId}/delete")
     public String getMethodName(@PathVariable("replyId") Long replyId) {
         feedService.deleteReply(replyId);
-        return "redirect:feed/list";
+        return "redirect:/feed/list";
 
     }
 

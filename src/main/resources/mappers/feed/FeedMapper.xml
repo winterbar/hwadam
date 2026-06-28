@@ -14,9 +14,10 @@
     <select id="getFeedList"
         parameterType="string"
         resultType="com.miles.beauminity.vo.feed.FeedVO"> SELECT f.feed_id, f.username,
-        f.feed_content, f.created_at, f.reply_cnt, m.nickname, m.skin_type, m.personal_color,
-        count(fl_all.like_id) AS likeCnt, CASE WHEN fl_me.like_id IS NULL THEN FALSE ELSE true END
-        AS liked FROM feed f JOIN member m ON f.username = m.username LEFT JOIN feed_like fl_all ON
+        f.feed_content, f.created_at, f.reply_cnt, m.nickname, m.skin_type, m.personal_color,mp.saved_name AS profileImage,
+mp.file_path AS profilePath,count(fl_all.like_id) AS likeCnt, CASE WHEN fl_me.like_id IS NULL THEN FALSE ELSE true END
+        AS liked FROM feed f JOIN member m ON f.username = m.username LEFT JOIN member_profile mp
+ON f.username = mp.username LEFT JOIN feed_like fl_all ON
         f.feed_id = fl_all.feed_id LEFT JOIN feed_like fl_me ON f.feed_id = fl_me.feed_id AND
         fl_me.username = #{username} WHERE f.deleted = 0 AND m.deleted=0 GROUP BY f.feed_id,
         f.username, f.feed_content, f.created_at, f.deleted, m.nickname, m.skin_type,
@@ -49,8 +50,8 @@
     <!-- 좋아요 홀수번 클릭 시 증가-->
     <insert id="increaseLikeCnt"
         parameterType="com.miles.beauminity.vo.feed.FeedLikeVO"
-        keyProperty="likeId"> INSERT INTO feed_like( like_id, feed_id, username ) VALUES (
-        #{likeId}, #{feedId}, #{username} ) </insert>
+        keyProperty="likeId"> INSERT INTO feed_like( feed_id, username ) VALUES (
+         #{feedId}, #{username} ) </insert>
 
 
     <!-- 좋아요 개수 가져오기 -->
