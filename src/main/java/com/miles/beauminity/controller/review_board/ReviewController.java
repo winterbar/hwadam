@@ -17,7 +17,7 @@ import com.miles.beauminity.service.review_board.ReviewService;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
-
+import com.miles.beauminity.vo.review.ReviewSearchVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,18 +34,20 @@ public class ReviewController { // 역할: 후기 게시판에 대한 사용자�
     
     // 후기 게시판 페이지 요청 처리
     @GetMapping("/board/review")
-    public String reviewPage(@ModelAttribute PageVO pageVO, Model model) {
+    public String reviewPage(@ModelAttribute PageVO pageVO,
+                             @ModelAttribute ReviewSearchVO searchVO,
+                              Model model) {
         // 1. 서비스 호출을 통해 전체 후기 리스트 데이터 확보
         
         String boardtype = "review";
 
         // 전체 게시글수 확인
-        int count = reviewService.getTypeBoardCount(boardtype); 
+        int count = reviewService.getTypeBoardCount(boardtype, pageVO, searchVO); 
 
         System.out.println("게시글의 수:" + count);
         pageVO.pageInfo(count);
 
-       List<ReviewBoardVO> reviewList = reviewService.getReviewBoardList(boardtype, pageVO);
+       List<ReviewBoardVO> reviewList = reviewService.getReviewBoardList(boardtype, pageVO, searchVO);
 
        for(ReviewBoardVO r : reviewList){
         System.out.println(r.toString());
@@ -54,6 +56,8 @@ public class ReviewController { // 역할: 후기 게시판에 대한 사용자�
         // 2. **타임리프 화면으로 데이터를 "reviewList"라는 열쇠(key)로 배송
         model.addAttribute("reviewList", reviewList);
         model.addAttribute("pageVO",pageVO);
+
+        model.addAttribute("searchVO", searchVO);
 
         return "review_board/review";
     }
