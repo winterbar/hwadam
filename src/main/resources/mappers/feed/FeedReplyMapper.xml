@@ -9,7 +9,7 @@
         parameterType="com.miles.beauminity.vo.feed.FeedReplyVO"
         useGeneratedKeys="true"
         keyProperty="replyId"> INSERT INTO feed_reply ( feed_id, username, reply_content, deleted,
-        parents_reply_id ) VALUES( #{feedId}, #{username}, #{replyContent}, #{deleted},
+        parents_reply_id ) VALUES( #{feedId}, #{username}, #{replyContent}, 0,
         #{parentsReplyId} ) </insert>
     <update id="increaseReply"
         parameterType="com.miles.beauminity.vo.feed.FeedReplyVO"> update feed set reply_cnt =
@@ -18,23 +18,60 @@
     해당하는 댓글 가져오기-->
     <select id="getReply"
         parameterType="com.miles.beauminity.vo.feed.FeedReplyVO"
-        resultType="com.miles.beauminity.vo.feed.FeedReplyVO"> SELECT r.reply_id, r.feed_id,
-        r.username, m.nickname, r.reply_content, r.parents_reply_id, parent_member.nickname as
-        parentNickname FROM feed_reply r JOIN member m ON r.username = m.username LEFT JOIN
-        feed_reply parent_reply ON r.parents_reply_id = parent_reply.reply_id LEFT JOIN member
-        parent_member ON parent_reply.username = parent_member.username WHERE r.feed_id = #{feedId}
-        ORDER BY r.reply_id ASC </select>
+        resultType="com.miles.beauminity.vo.feed.FeedReplyVO">
 
-    <!--댓글
-    리스트 가져오기-->
-    <select id="getFeedReplyList"
+    SELECT
+        r.reply_id AS replyId,
+        r.feed_id AS feedId,
+        r.username AS username,
+        m.nickname AS nickname,
+        r.reply_content AS replyContent,
+        r.parents_reply_id AS parentsReplyId,
+        r.deleted AS deleted,
+        parent_member.nickname AS parentNickname,
+        mp.saved_name AS profileImage
+    FROM feed_reply r
+    JOIN member m
+        ON r.username = m.username
+    LEFT JOIN member_profile mp
+        ON r.username = mp.username
+    LEFT JOIN feed_reply parent_reply
+        ON r.parents_reply_id = parent_reply.reply_id
+    LEFT JOIN member parent_member
+        ON parent_reply.username = parent_member.username
+    WHERE r.feed_id = #{feedId}
+    ORDER BY r.reply_id ASC
+
+</select>
+
+    <!-- 댓글 리스트 가져오기 -->
+<select id="getFeedReplyList"
         parameterType="long"
-        resultType="com.miles.beauminity.vo.feed.FeedReplyVO"> SELECT r.reply_id, r.feed_id,
-        r.username, m.nickname, r.reply_content, r.parents_reply_id, parent_member.nickname as
-        parentNickname FROM feed_reply r JOIN member m ON r.username = m.username LEFT JOIN
-        feed_reply parent_reply ON r.parents_reply_id = parent_reply.reply_id LEFT JOIN member
-        parent_member ON parent_reply.username = parent_member.username WHERE r.feed_id = #{feedId}
-        ORDER BY r.reply_id ASC </select>
+        resultType="com.miles.beauminity.vo.feed.FeedReplyVO">
+
+    SELECT
+        r.reply_id AS replyId,
+        r.feed_id AS feedId,
+        r.username AS username,
+        m.nickname AS nickname,
+        r.reply_content AS replyContent,
+        r.parents_reply_id AS parentsReplyId,
+        r.deleted AS deleted,
+        parent_member.nickname AS parentNickname,
+        mp.saved_name AS profileImage
+    FROM feed_reply r
+    JOIN member m
+        ON r.username = m.username
+    LEFT JOIN member_profile mp
+        ON r.username = mp.username
+    LEFT JOIN feed_reply parent_reply
+        ON r.parents_reply_id = parent_reply.reply_id
+    LEFT JOIN member parent_member
+        ON parent_reply.username = parent_member.username
+    WHERE r.feed_id = #{feedId}
+    ORDER BY r.reply_id ASC
+
+</select>
     <update id="updateReply"
         parameterType="com.miles.beauminity.vo.feed.FeedReplyVO"> update feed_reply set
         reply_content=#{replyContent} where reply_id=#{replyId} </update>
