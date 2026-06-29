@@ -89,6 +89,82 @@
             file_id = #{fileId}
     </update>
 
- 
+    <select id="getProductnameByBoardId"
+            parameterType="Long"
+            resultType="String">
+            
+        SELECT product_name
+            FROM review_board
+            where board_id=#{value}
+
+    </select>
+
+    <select id="getProductCategory1ByBoardId"
+            parameterType="Long"
+            resultType="String">
+        
+        SELECT 
+            category1
+        FROM review_board
+        WHERE board_id = #{value}
+
+    </select>
+    
+    <select id="getProductCategory2ByBoardId"
+        parameterType="Long"
+        resultType="String">
+
+        SELECT category2
+        FROM review_board
+        WHERE board_id = #{value}
+    </select>
+
+    <select id="getTypeBoardCountWithSearch" resultType="int">
+        SELECT COUNT(*) 
+        FROM master_board m
+        INNER JOIN review_board r ON m.board_id = r.board_id
+        WHERE m.board_type = #{type}
+        <if test="search.category1 != null and search.category1 != ''">
+            AND r.category1 = #{search.category1}
+        </if>
+        <if test="search.category2 != null and search.category2 != '' and search.category2 != '전체'">
+            AND r.category2 = #{search.category2}
+        </if>
+    </select>
+
+    <select id="getReviewBoardListWithSearch" 
+            resultType="com.miles.beauminity.vo.review.ReviewBoardVO">
+
+            SELECT 
+                m.board_id AS boardId,
+                m.title AS title,
+                m.created_at AS createdAt,
+                m.view_cnt AS viewCnt,
+                m.reply_cnt AS replyCnt,
+                r.product_name AS productName,
+                r.category1 AS category1,
+                r.category2 AS category2
+            FROM master_board m
+            INNER JOIN review_board r ON m.board_id = r.board_id
+            WHERE m.board_type = #{type}
+            
+            <if test="search.category1 != null and search.category1 != ''">
+                AND r.category1 = #{search.category1}
+            </if>
+            <if test="search.category2 != null and search.category2 != '' and search.category2 != '전체'">
+                AND r.category2 = #{search.category2}
+            </if>
+            
+            <choose>
+                <when test="search.sortType == 'hits'">
+                    ORDER BY m.view_cnt DESC, m.board_id DESC
+                </when>
+                <otherwise>
+                    ORDER BY m.created_at DESC, m.board_id DESC
+                </otherwise>
+            </choose>
+            
+            LIMIT #{pageVO.offset}, #{pageVO.size}
+    </select>
             
 </mapper>

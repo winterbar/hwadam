@@ -263,26 +263,20 @@ public class QnaServiceImpl implements QnaService {
         return finalList;
     }
 
-    
+    @Override
+    public String getUsernameByBoardId(Long id) {
+        return masterBoardMapper.getUsernameByBoardId(id);
+    }
 
-    
+    @Override
+    public int getCountSearchBoardByTitle(String type, String str) {
+        
+        SearchVO searchVO = new SearchVO();
+        searchVO.setType(type);
+        searchVO.setStr(str);
 
-    
-
-    
-
-    
-
-
-    
-
-    
-
-    
-
-
-
-    
+        return masterBoardMapper.getCountSearchBoardByTitle(searchVO);
+    }
 
     
 

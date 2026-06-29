@@ -56,6 +56,25 @@
         line-height: 1 !important;
         flex: 0 0 40px !important;
         box-shadow: 0 3px 8px rgba(250, 110, 104, 0.2) !important;
+        overflow: hidden !important;
+      }
+
+      .feed-profile-avatar img {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+        display: block !important;
+      }
+
+      .feed-profile-avatar .avatar-fallback {
+        width: 100% !important;
+        height: 100% !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #ffffff !important;
+        font-size: 14px !important;
+        font-weight: 900 !important;
       }
 
       .feed-profile-info {
@@ -131,6 +150,11 @@
       .feed-profile-header .feed-more-btn:hover {
         color: #333333 !important;
       }
+
+      .deleted-comment-text {
+        color: #999999;
+        font-style: italic;
+      }
     </style>
   </head>
 
@@ -190,7 +214,15 @@
               피드 작성하기
             </button>
           </div>
+          <div class="feed-sort-select-wrap">
 
+  <select id="feed-sort-select" class="feed-sort-select">
+    <option value="latest">최신순</option>
+    <option value="oldest">오래된순</option>
+    <option value="like">좋아요순</option>
+    <option value="comment">댓글순</option>
+  </select>
+</div>
           <div class="feed-list" id="feed-list-container">
             <article
               class="feed-card"
@@ -206,7 +238,16 @@
               <div class="feed-card-top feed-profile-header">
                 <div class="feed-profile-left">
                   <div class="feed-profile-avatar">
+                    <img
+                      th:if="${feed.profileImage != null and feed.profileImage != ''}"
+                      th:src="@{/upload/profile/{fileName}(fileName=${feed.profileImage})}"
+                      alt="프로필 이미지"
+                      onerror="this.style.display='none'; this.parentElement.querySelector('.avatar-fallback').style.display='flex';"
+                    />
+
                     <span
+                      class="avatar-fallback"
+                      th:style="${feed.profileImage != null and feed.profileImage != '' ? 'display:none;' : 'display:flex;'}"
                       th:text="${feed.nickname != null and feed.nickname != '' ? #strings.substring(feed.nickname, 0, 1) : 'O'}"
                       >O</span
                     >
@@ -285,24 +326,24 @@
                 <div class="feed-card-actions">
                   <div class="action-left">
                     <button
-                      type="button"
-                      class="feed-like-btn"
-                      th:classappend="${feed.liked != null and feed.liked} ? ' is-liked' : ''"
-                      th:data-liked="${feed.liked != null ? feed.liked : false}"
-                      th:data-like-count="${feed.likeCnt != null ? feed.likeCnt : 0}"
-                    >
-                      <span
-                        class="feed-like-icon"
-                        th:text="${feed.liked != null and feed.liked} ? '♥' : '♡'"
-                      >
-                        ♡
-                      </span>
-                      <span
-                        class="feed-like-count"
-                        th:text="${feed.likeCnt != null ? feed.likeCnt : 0}"
-                      >
-                        0
-                      </span>
+  type="button"
+  class="feed-like-btn"
+  th:classappend="${feed.liked != null and feed.liked ? ' is-liked' : ''}"
+  th:attr="data-liked=${feed.liked != null ? feed.liked : false}, data-like-count=${feed.likeCnt != null ? feed.likeCnt : 0}"
+>
+  <span
+    class="feed-like-icon"
+    th:text="${feed.liked != null and feed.liked ? '♥' : '♡'}"
+  >
+    ♡
+  </span>
+  <span
+    class="feed-like-count"
+    th:text="${feed.likeCnt != null ? feed.likeCnt : 0}"
+  >
+    0
+  </span>
+</button>
                     </button>
 
                     <button
@@ -318,16 +359,6 @@
                         0
                       </span>
                     </button>
-
-                    <a
-                      class="feed-info-link feed-share-link"
-                      href="#"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style="display: none"
-                    >
-                      정보 공유 바로가기 ↗
-                    </a>
                   </div>
                 </div>
 
@@ -353,7 +384,7 @@
                   class="feed-comment-count"
                   th:data-comment-count="${feed.replyCnt != null ? feed.replyCnt : 0}"
                 >
-                  댓글 0개 모두 보기
+                  댓글 모두 보기
                 </button>
 
                 <div class="feed-comment-list">
@@ -370,16 +401,24 @@
                     th:each="reply : ${feed.feedReplyList}"
                     th:data-reply-id="${reply.replyId}"
                     th:data-root-reply-id="${reply.replyId}"
+                    th:data-reply-content="${reply.deleted != null and reply.deleted == 1 ? '사용자가 삭제한 댓글입니다.' : reply.replyContent}"
+                    th:data-deleted="${reply.deleted}"
                     th:data-username="${reply.username}"
                     th:data-nickname="${reply.nickname != null and reply.nickname != '' ? reply.nickname : reply.username}"
                   >
                     <div class="feed-comment-bubble">
                       <div class="feed-comment-avatar">
-                        <span
-                          th:text="${reply.nickname != null and reply.nickname != '' ? #strings.substring(reply.nickname, 0, 1) : '회'}"
-                          >회</span
-                        >
-                      </div>
+  <img
+    th:if="${reply.profileImage != null and reply.profileImage != ''}"
+    th:src="@{/upload/profile/{fileName}(fileName=${reply.profileImage})}"
+    alt="프로필 이미지"
+  />
+
+  <span
+    th:if="${reply.profileImage == null or reply.profileImage == ''}"
+    th:text="${reply.nickname != null and reply.nickname != '' ? #strings.substring(reply.nickname, 0, 1) : '회'}"
+  ></span>
+</div>
 
                       <div class="feed-comment-main">
                         <strong
@@ -391,13 +430,15 @@
 
                         <span
                           class="feed-comment-content"
-                          th:text="${reply.replyContent}"
-                        >
-                          댓글 내용
-                        </span>
+                          th:classappend="${reply.deleted != null and reply.deleted == 1 ? ' deleted-comment-text' : ''}"
+                          th:text="${reply.deleted != null and reply.deleted == 1 ? '사용자가 삭제한 댓글입니다.' : reply.replyContent}"
+                        ></span>
                       </div>
 
-                      <div class="comment-more-wrap">
+                      <div
+                        class="comment-more-wrap"
+                        th:if="${reply.deleted == null or reply.deleted != 1}"
+                      >
                         <button type="button" class="comment-more-btn">
                           ···
                         </button>
@@ -426,16 +467,27 @@
                         th:if="${child.parentsReplyId != null and child.parentsReplyId == reply.replyId}"
                         th:data-reply-id="${child.replyId}"
                         th:data-root-reply-id="${reply.replyId}"
+                        th:data-parents-reply-id="${child.parentsReplyId}"
+                        th:data-parent-nickname="${child.parentNickname}"
+                        th:data-reply-content="${child.deleted != null and child.deleted == 1 ? '사용자가 삭제한 댓글입니다.' : child.replyContent}"
+                        th:data-deleted="${child.deleted}"
                         th:data-username="${child.username}"
                         th:data-nickname="${child.nickname != null and child.nickname != '' ? child.nickname : child.username}"
                       >
                         <div class="comment-child-bubble">
                           <div class="comment-child-avatar">
-                            <span
-                              th:text="${child.nickname != null and child.nickname != '' ? #strings.substring(child.nickname, 0, 1) : '회'}"
-                              >회</span
-                            >
-                          </div>
+  <img
+    th:if="${child.profileImage != null and child.profileImage != ''}"
+    th:src="@{/upload/profile/{fileName}(fileName=${child.profileImage})}"
+    alt="프로필 이미지"
+  />
+
+  <span
+    th:if="${child.profileImage == null or child.profileImage == ''}"
+    th:text="${child.nickname != null and child.nickname != '' ? #strings.substring(child.nickname, 0, 1) : '회'}"
+    >회</span
+  >
+</div>
 
                           <div class="comment-child-main">
                             <strong
@@ -445,19 +497,26 @@
                               닉네임
                             </strong>
 
-                            <span class="comment-child-content">
+                            <span
+                              class="comment-child-content"
+                              th:classappend="${child.deleted != null and child.deleted == 1 ? ' deleted-comment-text' : ''}"
+                            >
                               <span
                                 class="comment-mention"
-                                th:if="${child.parentNickname != null}"
+                                th:if="${(child.deleted == null or child.deleted != 1) and child.parentNickname != null and child.parentNickname != ''}"
                                 th:text="'@' + ${child.parentNickname}"
                                 th:data-target-reply-id="${child.parentsReplyId}"
-                              >
-                              </span>
-                              <span th:text="${child.replyContent}"></span>
+                              ></span>
+                              <span
+                                th:text="${child.deleted != null and child.deleted == 1 ? '사용자가 삭제한 댓글입니다.' : child.replyContent}"
+                              ></span>
                             </span>
                           </div>
 
-                          <div class="comment-more-wrap">
+                          <div
+                            class="comment-more-wrap"
+                            th:if="${child.deleted == null or child.deleted != 1}"
+                          >
                             <button type="button" class="comment-more-btn">
                               ···
                             </button>
@@ -531,7 +590,6 @@
         </section>
       </div>
 
-      <aside th:replace="~{layout/aside :: sidebarFragment}"></aside>
     </main>
 
     <footer th:replace="~{layout/footer :: footer}"></footer>

@@ -46,5 +46,9 @@ public interface QnaService {
     int getLikeCount(Long id);
 
     List<QnaBoardCompleteVO> getSearchBoard(String type, String str, PageVO pageVO);
+
+    int getCountSearchBoardByTitle(String type, String str);
+
+    public String getUsernameByBoardId (Long id);
     
 }
