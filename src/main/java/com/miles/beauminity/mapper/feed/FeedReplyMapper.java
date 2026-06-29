@@ -10,8 +10,16 @@ import com.miles.beauminity.vo.feed.FeedReplyVO;
 public interface FeedReplyMapper {
     void postReply(FeedReplyVO feedReplyVO);
 
-    List<FeedReplyVO> getReply(FeedReplyVO feedReplyVO);
+    List<FeedReplyVO> getReply(Long feedReplyVO);
 
     List<String> getFeedReplyList(Long feedId);
+
+    int getReplyCnt(FeedReplyVO feedReplyVO);
+
+    void increaseReply(FeedReplyVO feedReplyVO);
+
+    void updateReply(FeedReplyVO feedReplyVO);
+
+    void deleteReply(Long replyId);
 
 }

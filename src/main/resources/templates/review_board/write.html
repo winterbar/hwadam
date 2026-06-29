@@ -140,7 +140,7 @@
         }
 
 
-        // 검색 버튼 클릭 시 작동하는 함수 (모달 열기 및 가상 검색 결과 출력)
+        // 검색 버튼 클릭 시 작동하는   함수 (모달 열기 및 가상 검색 결과 출력)
         function openSearchModal() {
             const keyword = document.getElementById('apiSearch').value.trim();
             if (!keyword) {
@@ -164,7 +164,7 @@
                     const allItems = data.items;
 
                     // category1 필드가 '화장품/미용'인 데이터만 필터링하여 상속 유도
-                    const items = allItems ? allItems.filter(item => item.category1 === '화장품/미용') : [];
+                    const items = allItems ? allItems.filter(item => item.category1 === '화장품/미용' || item.category1 ==='디지털/가전') : [];
 
                     if (!items || items.length === 0){
                         alert("화장품/미용 관련 키워드를 검색하셔야 합니다.");

@@ -11,75 +11,261 @@
 
     <div th:replace="~{layout/header :: headerFragment}"></div>
 
-    <main>
+    <main class="main-container">
 
-        <div class="main-left-content">
-            
-            <section class="dashboard-section">
+        <section class="hero-and-service-section">
+
+            <div class="hero-content">
+                <h2 class="hero-slogan-main">뷰티의 모든 것을 하나의 플랫폼으로</h2>
+                <div class="hero-logo">
+                    <img th:src="@{/images/common/title2.png}" alt="Beauminity Logo" />
+                </div>
+            </div>
+
+            <div class="service-grid">
+                <a class="service-item">
+                    <img th:src="@{/images/common/icon_review.png}" alt="리뷰" class="service-icon-img">
+                    <div class="service-title">솔직한 리뷰 보기</div>
+                </a>
+                <a class="service-item">
+                    <img th:src="@{/images/common/icon_price.png}" alt="가격비교" class="service-icon-img">
+                    <div class="service-title">제품 가격 비교</div>
+                </a>
+                <a class="service-item">
+                    <img th:src="@{/images/common/icon_map.png}" alt="매장찾기" class="service-icon-img">
+                    <div class="service-title">화장품 매장 찾기</div>
+                </a>
+                <a class="service-item">
+                    <img th:src="@{/images/common/icon_talk.png}" alt="소통" class="service-icon-img">
+                    <div class="service-title">다양한 소통</div>
+                </a>
+            </div>
+
+        </section>
+
+        <div class="sub-content">
+
+            <section class="recommend-section">
                 <div class="section-header">
-                    <h2>🔥 실시간 인기 게시글 <span>현재 커뮤니티에서 가장 핫한 대화 주제들</span></h2>
-                    <a th:href="@{/board/popular}" class="more-link">전체보기</a>
+                    <h2>금주 추천 제품 <span>매주 달라지는 뷰미니티가 추천하는 뷰티 상품</span></h2>
+                </div>
+                <div class="recommend-grid">
+                    <div class="cat-nav">
+                        <div class="cat-item">남성 추천</div>
+                        <div class="cat-item">여성 추천</div>
+                        <div class="cat-item">요즘 핫템</div>
+                    </div>
+
+                    <div class="main-product">
+                        <div class="product-card">
+                            <div class="product-img">이미지</div>
+                            <p class="product-name">촉촉한 선크림</p>
+                            <span class="product-price">12,000원</span>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-img">이미지</div>
+                            <p class="product-name">진정 토너 패드</p>
+                            <span class="product-price">15,000원</span>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-img">이미지</div>
+                            <p class="product-name">클렌징 오일</p>
+                            <span class="product-price">18,000원</span>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-img">이미지</div>
+                            <p class="product-name">비타민 앰플</p>
+                            <span class="product-price">22,000원</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="sub-content-wrapper">
+
+                <div class="left-column">
+                    <div class="popular">
+                        <div class="section-header">
+                            <h2>🔥 실시간 인기글 <span>현재 사용자들이 가장 많이 보는 게시글</span></h2>
+                        </div>
+                        <div class="post-row">
+                            <div class="col-cat">분류</div>
+                            <div class="col-title">제목</div>
+                            <div class="col-meta">조회수</div>
+                        </div>
+                        <table class="main-post-table">
+                            <tbody>
+                                <tr>
+                                    <td><span class="main-post-tag">질문</span></td>
+                                    <td><a href="#" class="main-post-title">면도 후 인그로운 헤어랑 붉은 기 진정 어떻게 하시나요?</a><span class="main-post-replies">29</span></td>
+                                    <td class="main-post-meta">142회</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="main-post-tag">후기</span></td>
+                                    <td><a href="#" class="main-post-title">내돈내산) 올리브영 세일 때 쟁여야 할 지성 선크림 3종 솔직 비교</a><span class="main-post-replies">29</span></td>
+                                    <td class="main-post-meta">611회</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="main-post-tag">질문</span></td>
+                                    <td><a href="#" class="main-post-title">코 주변 블랙헤드 제거용으로 클렌징 오일 유화법 효과 보신 분 계신가요? ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</a><span class="main-post-replies">1045</span></td>
+                                    <td class="main-post-meta">134682</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="main-post-tag">후기</span></td>
+                                    <td><a href="#" class="main-post-title">어성초 클린징폼 한번 사용해봤습니다! 솔직 후기..</a><span class="main-post-replies">26</span></td>
+                                    <td class="main-post-meta">672회</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                
+                    <div class="latest-reviews">
+                        <div class="section-header">
+                            <h2>📝 최신 리뷰 <span>사용자들이 최근 올린 솔직한 리뷰들</span></h2>
+                            <a th:href="@{/board/review}" class="more-link">더보기</a>
+                        </div>
+                        <div class="post-row">
+                            <div class="col-cat">분류</div>
+                            <div class="col-title">제목</div>
+                            <div class="col-meta">조회수</div>
+                        </div>
+                        <table class="main-post-table">
+                            <tbody>
+                                <tr>
+                                    <td><span class="main-post-tag">하이루</span></td>
+                                    <td><a href="#" class="main-post-title">면도 후 인그로운 헤어랑 붉은 기 진정 어떻게 하시나요?</a><span class="main-post-replies">14</span></td>
+                                    <td class="main-post-meta">4442</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="main-post-tag">리뷰</span></td>
+                                    <td><a href="#" class="main-post-title">내돈내산) 올리브영 세일 때 쟁여야 할 지성 선크림 3종 솔직 비교</a><span class="main-post-replies">29</span></td>
+                                    <td class="main-post-meta">611</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="main-post-tag">리뷰</span></td>
+                                    <td><a href="#" class="main-post-title">코 주변 블랙헤드 제거용으로 클렌징 오일 유화법 효과 보신 분 계신가요?</a><span class="main-post-replies">26</span></td>
+                                    <td class="main-post-meta">780</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="main-post-tag">리뷰</span></td>
+                                    <td><a href="#" class="main-post-title">코 주변 블랙헤드 제거용으로 클렌징 오일 유화법 효과 보신 분 계신가요?</a><span class="main-post-replies">26</span></td>
+                                    <td class="main-post-meta">697</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="latest-qna">
+                        <div class="section-header">
+                            <h2>❓ 최근 질문<span>사용자들이 최근 질문한 질문들</span></h2>
+                            <a th:href="@{/board/pna}" class="more-link">더보기</a>
+                        </div>
+                        <div class="post-row">
+                            <div class="col-cat">분류</div>
+                            <div class="col-title">제목</div>
+                            <div class="col-meta">조회수</div>
+                        </div>
+                        <table class="main-post-table">
+                            <tbody>
+                                <tr>
+                                    <td><span class="main-post-tag">질문</span></td>
+                                    <td><a href="#" class="main-post-title">면도 후 인그로운 헤어랑 붉은 기 진정 어떻게 하시나요?</a><span class="main-post-replies">14</span></td>
+                                    <td class="main-post-meta">1926</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="main-post-tag">질문</span></td>
+                                    <td><a href="#" class="main-post-title">내돈내산) 올리브영 세일 때 쟁여야 할 지성 선크림 3종 솔직 비교</a><span class="main-post-replies">29</span></td>
+                                    <td class="main-post-meta">1024</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="main-post-tag">질문</span></td>
+                                    <td><a href="#" class="main-post-title">코 주변 블랙헤드 제거용으로 클렌징 오일 유화법 효과 보신 분 계신가요?</a><span class="main-post-replies">26</span></td>
+                                    <td class="main-post-meta">1024</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="main-post-tag">질문</span></td>
+                                    <td><a href="#" class="main-post-title">코 주변 블랙헤드 제거용으로 클렌징 오일 유화법 효과 보신 분 계신가요?</a><span class="main-post-replies">26</span></td>
+                                    <td class="main-post-meta">999</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 
-                <table class="main-post-table">
-                    <tbody>
-                        <tr>
-                            <td><span class="main-post-tag">[질문]</span></td>
-                            <td><a href="#" class="main-post-title">면도 후 인그로운 헤어랑 붉은 기 진정 어떻게 하시나요?</a><span class="main-post-replies">[14]</span></td>
-                            <td class="main-post-meta">조회 142</td>
-                        </tr>
-                        <tr>
-                            <td><span class="main-post-tag">[후기]</span></td>
-                            <td><a href="#" class="main-post-title">내돈내산) 올리브영 세일 때 쟁여야 할 지성 선크림 3종 솔직 비교</a><span class="main-post-replies">[29]</span></td>
-                            <td class="main-post-meta">조회 611</td>
-                        </tr>
-                        <tr>
-                            <td><span class="main-post-tag">[질문]</span></td>
-                            <td><a href="#" class="main-post-title">코 주변 블랙헤드 제거용으로 클렌징 오일 유화법 효과 보신 분 계신가요?</a><span class="main-post-replies">[26]</span></td>
-                            <td class="main-post-meta">조회 780</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
+                <div class="right-column">
+                    <div class="botd_feed">
+                        <div class="section-header">
+                            <h2>✨ 최신 피드 <span>Beauty Of The Day</span></h2>
+                            <a th:href="@{/feed}" class="more-link">더보기</a>
+                        </div>
 
-            <section class="dashboard-section">
-                <div class="section-header">
-                    <h2>✨ 오늘의 BOTD <span>Beauty Of The Day</span></h2>
-                    <a th:href="@{/feed}" class="more-link">더보기</a>
+                        <div class="botd-grid">
+                            <div class="botd-card">
+                                <div class="botd-img-placeholder">📸</div>
+                                <div class="botd-info">
+                                    <div class="botd-user">@grooming_master</div>
+                                    <div class="botd-title">면접 프리패스용 깔끔 댄디 정석 셋업 메이크업</div>
+                                </div>
+                            </div>
+                            <div class="botd-card">
+                                <div class="botd-img-placeholder">📸</div>
+                                <div class="botd-info">
+                                    <div class="botd-user">@skincare_daily</div>
+                                    <div class="botd-title">여름철 유분기 잡는 보송보송 파데리스 파우더 루틴</div>
+                                </div>
+                            </div>
+                            <div class="botd-card">
+                                <div class="botd-img-placeholder">📸</div>
+                                <div class="botd-info">
+                                    <div class="botd-user">@hello_world</div>
+                                    <div class="botd-title">요즘 남자들이 피부 관리하는 데 필요한 필수 제품?!</div>
+                                </div>
+                            </div>
+                            <div class="botd-card">
+                                <div class="botd-img-placeholder">📸</div>
+                                <div class="botd-info">
+                                    <div class="botd-user">@nice_ootd</div>
+                                    <div class="botd-title">요즘 유행하는 메이크업과 이에 맞는 패션 추천!</div>
+                                </div>
+                            </div>
+                        </div>
+                    <div>
+
+                    <div class="member-ranking">
+                        <h4>👑 주간 멤버 랭킹</h4>
+                        <ul class="ranking-list">
+                            <li class="ranking-item">
+                                <span class="rank-user"><span class="rank-num">1</span> 그루밍마스터</span>
+                                <span class="rank-points">4,250 p</span>
+                            </li>
+                            <li class="ranking-item">
+                                <span class="rank-user"><span class="rank-num">2</span> 훈훈스킨</span>
+                                <span class="rank-points">3,980 p</span>
+                            </li>
+                            <li class="ranking-item">
+                                <span class="rank-user"><span class="rank-num">3</span> 올영단골</span>
+                                <span class="rank-points">3,410 p</span>
+                            </li>
+                            <li class="ranking-item">
+                                <span class="rank-user"><span class="rank-num">4</span> 빚쟁이람보</span>
+                                <span class="rank-points">3,040 p</span>
+                            </li>
+                            <li class="ranking-item">
+                                <span class="rank-user"><span class="rank-num">5</span> 훌라후프</span>
+                                <span class="rank-points">2,940 p</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-
-                <div class="botd-grid">
-                    <div class="botd-card">
-                        <div class="botd-img-placeholder">📸</div>
-                        <div class="botd-info">
-                            <div class="botd-user">@grooming_master</div>
-                            <div class="botd-title">면접 프리패스용 깔끔 댄디 정석 셋업 메이크업</div>
-                        </div>
-                    </div>
-                    <div class="botd-card">
-                        <div class="botd-img-placeholder">📸</div>
-                        <div class="botd-info">
-                            <div class="botd-user">@skincare_daily</div>
-                            <div class="botd-title">여름철 유분기 잡는 보송보송 파데리스 파우더 루틴</div>
-                        </div>
-                    </div>
-                    <div class="botd-card">
-                        <div class="botd-img-placeholder">📸</div>
-                        <div class="botd-info">
-                            <div class="botd-user">@perfume_love</div>
-                            <div class="botd-title">장마철에도 쾌적한 중성적인 시트러스 우디 향수 코디</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
+                
+            </div>
         </div>
-
-        <div th:replace="~{layout/aside :: sidebarFragment}"></div>
 
     </main>
 
     <div th:replace="~{layout/footer :: footerFragment}"></div>
+
+    <script th:src="@{/js/common/index.js}"></script>
 
 </body>
 </html>

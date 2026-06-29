@@ -1,148 +1,63 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.miles.beauminity.mapper.feed.FeedMapper">
-<!--피드 내용 DB 저장-->
+    <!--피드
+    내용 DB 저장-->
     <insert id="postFeed"
-            parameterType="com.miles.beauminity.vo.feed.FeedVO"
-            useGeneratedKeys="true"
-            keyProperty="feedId">
-        
-        insert into feed (
-            username,
-            feed_content,
-            reply_cnt,
-            created_at,
-            edited_at,
-            deleted
-        )
-        values (
-            #{username},
-            #{feedContent},
-            #{replyCnt},
-            NOW(),
-            NOW(),
-            #{deleted}
-        )
-    </insert>
+        parameterType="com.miles.beauminity.vo.feed.FeedVO"
+        useGeneratedKeys="true"
+        keyProperty="feedId"> INSERT INTO feed ( username, feed_content, reply_cnt,created_at,
+        edited_at, deleted ) VALUES ( #{username}, #{feedContent}, #{replyCnt},NOW(), NOW(),
+        #{deleted} ) </insert>
     <!-- 피드 내용 전체 가져오기-->
     <select id="getFeedList"
         parameterType="string"
-        resultType="com.miles.beauminity.vo.feed.FeedVO">
+        resultType="com.miles.beauminity.vo.feed.FeedVO"> SELECT f.feed_id, f.username,
+        f.feed_content, f.created_at, f.reply_cnt, m.nickname, m.skin_type, m.personal_color,mp.saved_name AS profileImage,
+mp.file_path AS profilePath,count(fl_all.like_id) AS likeCnt, CASE WHEN fl_me.like_id IS NULL THEN FALSE ELSE true END
+        AS liked FROM feed f JOIN member m ON f.username = m.username LEFT JOIN member_profile mp
+ON f.username = mp.username LEFT JOIN feed_like fl_all ON
+        f.feed_id = fl_all.feed_id LEFT JOIN feed_like fl_me ON f.feed_id = fl_me.feed_id AND
+        fl_me.username = #{username} WHERE f.deleted = 0 AND m.deleted=0 GROUP BY f.feed_id,
+        f.username, f.feed_content, f.created_at, f.deleted, m.nickname, m.skin_type,
+        m.personal_color, fl_me.like_id ORDER BY f.feed_id DESC </select>
 
-    select
-        f.feed_id,
-        f.username,
-        f.feed_content,
-        f.created_at,
-        m.nickname,
-        m.skin_type,
-        m.personal_color,
-        count(fl_all.like_id) AS likeCnt,
-        
-        case
-            when fl_me.like_id is null then false
-            else true
-        end as liked
-
-    from feed f
-
-    join member m
-        on f.username = m.username
-
-    left join feed_like fl_all
-        on f.feed_id = fl_all.feed_id
-
-    left join feed_like fl_me
-        on f.feed_id = fl_me.feed_id
-       and fl_me.username = #{username}
-
-    where f.deleted = 0 and m.deleted=0
-
-    group by
-        f.feed_id,
-        f.username,
-        f.feed_content,
-        f.created_at,
-        f.deleted,
-        m.nickname,
-        m.skin_type,
-        m.personal_color,
-        fl_me.like_id
-
-    order by f.feed_id desc
-
-    </select>
-    
     <!-- 특정 피드 데이터 불러오기-->
     <select id="loadFeedData"
-            parameterType="long"
-            resultType="com.miles.beauminity.vo.feed.FeedVO">
-        select feed_content
-        from feed 
-        where feed_id = #{feedId}
-    </select>
-    
+        parameterType="long"
+        resultType="com.miles.beauminity.vo.feed.FeedVO"> SELECT feed_content FROM feed WHERE
+        feed_id = #{feedId} </select>
+
     <!-- 회원이 등록한 피드 수 검색 -->
     <select id="countFeed"
-            parameterType="String"
-            resultType="long">
-
-        SELECT count(*)
-        FROM feed
-        WHERE username = #{username} AND deleted = 0
-
-    </select>
-    <!--특정 피드 삭제-->
+        parameterType="String"
+        resultType="long"> SELECT count(*) FROM feed WHERE username = #{username} AND deleted = 0 </select>
+    <!--특정
+    피드 삭제-->
     <update id="deleteFeedId"
-            parameterType="long">
-        update feed
-        set deleted=1
-        where feed_id=#{feedId}
-    </update>
+        parameterType="long"> UPDATE feed SET deleted=1 WHERE feed_id=#{feedId} </update>
     <!-- 피드 내용 수정 -->
     <update id="updateFeed"
-            parameterType="com.miles.beauminity.vo.feed.FeedVO">
-        update feed 
-        set feed_content = #{feedContent}
-        where feed_id=#{feedId}
-    </update>
-    
+        parameterType="com.miles.beauminity.vo.feed.FeedVO"> UPDATE feed SET feed_content =
+        #{feedContent} WHERE feed_id=#{feedId} </update>
+
     <!-- 좋아요 짝수번 클릭 시 제거 -->
     <delete id="cancleLikeCnt"
-            parameterType="com.miles.beauminity.vo.feed.FeedLikeVO">
-        delete from feed_like 
-        where feed_id=#{feedId} and username=#{username}
-    </delete>
+        parameterType="com.miles.beauminity.vo.feed.FeedLikeVO"> DELETE FROM feed_like WHERE
+        feed_id=#{feedId} AND username=#{username} </delete>
 
-     <!-- 좋아요 홀수번 클릭 시 증가-->
+    <!-- 좋아요 홀수번 클릭 시 증가-->
     <insert id="increaseLikeCnt"
-            parameterType="com.miles.beauminity.vo.feed.FeedLikeVO"
-            keyProperty="likeId">
+        parameterType="com.miles.beauminity.vo.feed.FeedLikeVO"
+        keyProperty="likeId"> INSERT INTO feed_like( feed_id, username ) VALUES (
+         #{feedId}, #{username} ) </insert>
 
-        insert into feed_like(
-            like_id,
-            feed_id,
-            username
-        )
-        values (
-            #{likeId},
-            #{feedId},
-            #{username}
-        )
-    </insert>
 
-    
     <!-- 좋아요 개수 가져오기 -->
     <select id="getLikeCnt"
-            parameterType="long"
-            resultType="int">
-        select count(*)
-        from feed_like
-        where feed_id=#{feedId}
-    </select>
+        parameterType="long"
+        resultType="int"> SELECT count(*) FROM feed_like WHERE feed_id=#{feedId} </select>
 
 
 </mapper>

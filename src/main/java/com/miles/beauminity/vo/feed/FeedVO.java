@@ -25,6 +25,8 @@ public class FeedVO {
     private String skinType;
     private String personalColor;
     private String nickname;
-    private boolean liked;
+    private Boolean liked;
+    private String profileImage;
+private String profilePath;
 
 }

@@ -3,9 +3,12 @@ package com.miles.beauminity.mapper.review_board;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
+import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
+import com.miles.beauminity.vo.review.ReviewSearchVO;
 
 @Mapper
 public interface ReviewBoardMapper {
@@ -27,6 +30,25 @@ public interface ReviewBoardMapper {
 
     // 파일 정보 수정 메서드 [추후 공용 Mapper에 update 생기면 갈이끼울 예정]
     void updateReviewBoardFile(MasterBoardFileVO fileVO);
+
+    String getProductnameByBoardId(Long boardId);
+
+    String getProductCategory1ByBoardId(Long boardId);
+
+    String getProductCategory2ByBoardId(Long boardId);
+
+    // 목록 조회 매퍼 선언
+    List<ReviewBoardVO> getReviewBoardListWithSearch(
+        @Param("type") String type,
+        @Param("pageVO") PageVO pageVO,
+        @Param("search") ReviewSearchVO searchVO);
+
+    // 개수 구하기 매퍼 선언
+    int getTypeBoardCountWithSearch(@Param("type") String type, 
+                                    @Param("search") ReviewSearchVO searchVO);
+
+    
+
 
 
 }

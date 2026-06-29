@@ -2,6 +2,7 @@ package com.miles.beauminity.service.review_board;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -15,7 +16,10 @@ import com.miles.beauminity.mapper.review_board.ReviewBoardMapper;
 import com.miles.beauminity.util.MasterFileUploadUtil;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
+import com.miles.beauminity.vo.board.PageVO;
+import com.miles.beauminity.vo.board.TypeOffsetVO;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
+import com.miles.beauminity.vo.review.ReviewSearchVO;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -90,9 +94,31 @@ public class ReviewServiceImpl implements ReviewService {
     
     // 역할: 후기게시판 게시글 전체보기 요청 서비스 처리
     @Override
-    public List<ReviewBoardVO> getReviewBoardList() {
+    public List<ReviewBoardVO> getReviewBoardList(String type, PageVO pageVO, ReviewSearchVO searchVO) {
+        TypeOffsetVO typeOffsetVO = new TypeOffsetVO();
+        typeOffsetVO.setType(type);
+        typeOffsetVO.setOffset(pageVO.getOffset());
+        typeOffsetVO.setSize(pageVO.getSize());
 
-            return reviewBoardMapper.selectReviewBoardList(); 
+        List <ReviewBoardVO> reviewList = reviewBoardMapper.getReviewBoardListWithSearch(
+            type,
+            pageVO,
+            searchVO
+        );
+
+        for(ReviewBoardVO r : reviewList) {
+            r.setNickName(masterBoardMapper.getNicknameByBoardId(r.getBoardId()));
+        } 
+
+        return reviewList;
+    }
+
+    
+
+    // 역할: 후기 게시글 수 조회 요청 서비스 처리
+    @Override
+    public int getTypeBoardCount(String type, PageVO pageVO, ReviewSearchVO searchVO) {
+        return masterBoardMapper.getTypeBoardCount(type);
     }
 
     // 역할: 후기게시판 게시글 상세보기 요청 서비스 처리

@@ -166,14 +166,25 @@ public class FeedServiceImpl implements FeedService {
             // 좋아요 한번 눌렀을 경우
             feedMapper.increaseLikeCnt(feedLikeVO);
         }
-        return feedMapper.getLikeCnt(feedLikeVO);
+        return feedMapper.getLikeCnt(feedLikeVO.getFeedId());
 
     }
 
     @Override
     public List<FeedReplyVO> getFeedReply(FeedReplyVO feedReplyVO) {
         feedReplyMapper.postReply(feedReplyVO);
-        return feedReplyMapper.getReply(feedReplyVO);
+        feedReplyMapper.increaseReply(feedReplyVO);
+        return feedReplyMapper.getReply(feedReplyVO.getFeedId());
     }
 
+    @Override
+    public List<FeedReplyVO> updateReply(FeedReplyVO feedReplyVO) {
+        feedReplyMapper.updateReply(feedReplyVO);
+        return feedReplyMapper.getReply(feedReplyVO.getFeedId());
+    }
+
+    @Override
+    public void deleteReply(Long replyId) {
+        feedReplyMapper.deleteReply(replyId);
+    }
 }
