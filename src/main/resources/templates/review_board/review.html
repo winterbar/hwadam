@@ -22,22 +22,45 @@
                 
                 <section class="board-section">
                     <div class="section-header">
-                        <h2>후기 게시판 <span>협찬 무관, 유저들의 리얼한 실사용 데이터입니다.</span></h2>
-                        <button class="write-btn" th:onclick="|location.href='@{/board/review/write}'|">후기 작성</button>
+                        <h2>리뷰 <span>협찬 무관, 유저들의 리얼한 실사용 데이터입니다.</span></h2>
+                        <button class="write-btn" th:onclick="|location.href='@{/board/review/write}'|">리뷰 작성</button>
                     </div>
                     
                     <div class="board-utility">
-                        <div class="filter-group">
-                            <select name="category" id="filter-category">
-                                <option value="all">모든 카테고리</option>
-                                <option value="skincare">스킨케어</option>
-                                <option value="cleansing">클렌징</option>
-                                <option value="sun-care">선케어</option>
-                            </select>
+                        <div class="filter-group" style="display: flex; gap: 1rem; align-items: center;">
+    
+                            <div class="category-dropdown-wrapper">
+                                <button type="button" class="category-main-btn" id="current-category-label" 
+                                        th:text="${param.category2 != null} ? ${param.category1} + ' > ' + ${param.category2} : '카테고리 선택'">
+                                    카테고리 선택
+                                </button>
+                                <ul class="main-category-list">
+                                    <li class="main-category-item" data-cat1="스킨케어">
+                                        <span class="cat1-name">스킨케어</span>
+                                        <ul class="sub-category-list">
+                                            <li data-cat1="스킨케어" data-cat2="전체">전체 보기</li>
+                                            <li data-cat1="스킨케어" data-cat2="스킨/토너">스킨/토너</li>
+                                            <li data-cat1="스킨케어" data-cat2="로션">로션</li>
+                                            <li data-cat1="스킨케어" data-cat2="에센스">에센스</li>
+                                            <li data-cat1="스킨케어" data-cat2="크림">크림</li>
+                                            <li data-cat1="스킨케어" data-cat2="토너패드">토너패드</li>
+                                        </ul>
+                                    </li>
+                                    
+                                    <li class="main-category-item" data-cat1="클렌징">
+                                        <span class="cat1-name">클렌징</span>
+                                        <ul class="sub-category-list">
+                                            <li data-cat1="클렌징" data-cat2="전체">전체 보기</li>
+                                            <li data-cat1="클렌징" data-cat2="클렌징폼">클렌징폼</li>
+                                            <li data-cat1="클렌징" data-cat2="클렌징오일">클렌징오일</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
                             <select name="sort" id="filter-sort">
-                                <option value="latest">최신순</option>
-                                <option value="rating">평점 높은순</option>
-                                <option value="hits">조회순</option>
+                                <option value="latest" th:selected="${param.sortType == 'latest'}">최신순</option>
+                                <option value="hits" th:selected="${param.sortType == 'hits'}">조회순</option>
                             </select>
                         </div>
                     </div>
@@ -81,22 +104,32 @@
                     </table>
 
                     <div class="board-footer">
-                        <ul class="pagination">
-                            <li><a href="#" class="active">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">➔</a></li>
+                        <ul class="pagination" id="pagination-container">
+                            <li>
+                                <a th:if="${pageVO.prev}" th:href="@{review(page=${pageVO.startPage-1}, category1=${param.category1}, category2=${param.category2}, sortType=${param.sortType})}">←</a>
+                            </li>
+                            <th:block th:each="num : ${#numbers.sequence(pageVO.startPage, pageVO.endPage)}">
+                                <li>
+                                    <a th:href="@{review(page=${num}, category1=${param.category1}, category2=${param.category2}, sortType=${param.sortType})}"
+                                    th:text="${num}"
+                                    th:classappend="${pageVO.page == num} ? 'active'"></a>
+                                </li>
+                            </th:block>
+                            <li>
+                                <a th:if="${pageVO.next}" th:href="@{review(page=${pageVO.endPage+1}, category1=${param.category1}, category2=${param.category2}, sortType=${param.sortType})}">→</a>
+                            </li>
                         </ul>
-
-                        <div class="search-group">
-                            <select name="searchType">
-                                <option value="titleContent">제목+내용</option>
-                                <option value="title">제목</option>
-                                <option value="writer">작성자</option>
-                            </select>
-                            <input type="text" placeholder="검색어를 입력하세요.">
-                            <button class="search-btn">검색</button>
-                        </div>
+                        <form action="/search" method="POST">
+                            <div class="search-group">
+                                <select name="searchType">
+                                    <option value="titleContent">제목+내용</option>
+                                    <option value="title">제목</option>
+                                    <option value="writer">작성자</option>
+                                </select>
+                                <input type="text" name="searchStr" placeholder="궁금한 단어를 입력하세요.">
+                                <button type="submit" class="search-btn">검색</button>
+                            </div>
+                        </form>
                     </div>
                 </section>
 
@@ -112,3 +145,31 @@
 
 </body>
 </html>
+
+<script th:inline="javascript">
+document.addEventListener("DOMContentLoaded", function() {
+    // 1. 소분류 메뉴 클릭 이벤트 리스너 처리
+    const subCategories = document.querySelectorAll(".sub-category-list li");
+    subCategories.forEach(li => {
+        li.addEventListener("click", function() {
+            const cat1 = this.getAttribute("data-cat1");
+            const cat2 = this.getAttribute("data-cat2");
+            const currentSort = document.getElementById("filter-sort").value;
+            
+            // 파라미터를 담아 백엔드 Controller의 매핑 주소로 동적 리다이렉트
+            location.href = `/board/review?page=1&category1=${encodeURIComponent(cat1)}&category2=${encodeURIComponent(cat2)}&sortType=${currentSort}`;
+        });
+    });
+
+    // 2. 최신순/조회순 정렬 변경 이벤트 리스너 처리
+    const sortSelect = document.getElementById("filter-sort");
+    sortSelect.addEventListener("change", function() {
+        // 현재 주소창의 파라미터 상태를 파싱해서 카테고리 값 유지한 채 정렬만 교체
+        const urlParams = new URLSearchParams(window.location.search);
+        const cat1 = urlParams.get("category1") || "";
+        const cat2 = urlParams.get("category2") || "";
+        
+        location.href = `/board/review?page=1&category1=${encodeURIComponent(cat1)}&category2=${encodeURIComponent(cat2)}&sortType=${this.value}`;
+    });
+});
+</script>

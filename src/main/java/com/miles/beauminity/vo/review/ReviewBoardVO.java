@@ -24,6 +24,9 @@ public class ReviewBoardVO {
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
 
+    private boolean deleted;
+    private String category;
+
     private long viewCnt;
     private long replyCnt;
 
