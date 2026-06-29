@@ -27,4 +27,8 @@ public interface FeedService {
 
     List<FeedReplyVO> getFeedReply(FeedReplyVO feedReplyVO);
 
+    List<FeedReplyVO> updateReply(FeedReplyVO feedReplyVO);
+
+    void deleteReply(Long replyId);
+
 }
