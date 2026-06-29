@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.miles.beauminity.service.qna_board.QnaService;
+import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.MasterBoardLikeVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
@@ -126,5 +127,45 @@ public class QnaApiController {
 
         return ResponseEntity.ok(result);
     }
+
+    // 기존 파일 가져오기
+    @GetMapping("/{boardId}/render-file")
+    public ResponseEntity<Map<String, Object>> getMethodName(@PathVariable("boardId") Long id) {
+        
+        Map<String, Object> result = new HashMap<>();
+
+        List<MasterBoardFileVO> files = qnaService.getBoardFileById(id);
+
+        for(MasterBoardFileVO f : files){
+            System.out.println(f.toString());
+        }
+
+        result.put("files", files);
+        
+        return ResponseEntity.ok(result);
+    }
+    
+
+    // 게시글 보호 - 본인 아니면 수정삭제 숨김
+    // 여기에서 가져올 것은 오직 아이디.
+    @GetMapping("/{boardId}/check-id")
+    public ResponseEntity<Map<String, Object>> btnManager(@PathVariable("boardId") Long id) {
+
+        Map<String, Object> result = new HashMap<>();
+
+        String username = getUsername();
+
+        if(username == null){
+            result.put("isLikeOn", false);
+            return ResponseEntity.ok(result);
+        }
+
+        boolean isOwner = username.equals(qnaService.getUsernameByBoardId(id));
+
+        result.put("isOwner", isOwner);
+
+        return ResponseEntity.ok(result);
+    }
+    
     
 }

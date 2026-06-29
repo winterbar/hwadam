@@ -8,6 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/common/main.css}">
     <link rel="stylesheet" th:href="@{/css/common/board.css}">
     <link rel="stylesheet" th:href="@{/css/qna_board/qna_common.css}">
+    <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
 </head>
 <body>
 
@@ -19,7 +20,7 @@
             
             <section class="board-section">
                 <div class="section-header">
-                    <h2>질문 게시판 <span>피부 고민, 성분 분석 등 무엇이든 집단지성으로 해결하세요!</span></h2>
+                    <h2 th:onclick="|location.href='@{/board/qna}'|">질문 게시판 <span>피부 고민, 성분 분석 등 무엇이든 집단지성으로 해결하세요!</span></h2>
                     <button class="write-btn" th:onclick="|location.href='@{/board/qna/write}'|">질문하기</button>
                 </div>
                 
@@ -108,7 +109,7 @@
                         <th:block
                             th:each="num : ${#numbers.sequence(pageVO.startPage, pageVO.endPage)}">
                             <li>
-                                <a th:href="@{qna(page=${num})}"
+                                <a th:href="@{/board/qna(page=${num})}"
                                 th:text="${num}"
                                 th:classappend="${pageVO.page == num} ? 'active'"></a>
                             </li>
@@ -117,7 +118,7 @@
                             <a th:if="${pageVO.next}" th:href="@{qna(page=${pageVO.endPage+1})}">→</a>
                         </li>
                     </ul>
-                    <form action="/search" method="POST">
+                    <form th:action="@{/board/qna/search}" method="POST">
                         <div class="search-group">
                             <select name="searchType">
                                 <option value="titleContent">제목+내용</option>
