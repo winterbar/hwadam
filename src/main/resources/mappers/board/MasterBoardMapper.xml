@@ -129,6 +129,16 @@
         LIMIT #{offset}, #{size}
     </select>
 
+    <!-- 게시글 수 확인 :: 제목-->
+    <select id="getCountSearchBoardByTitle" 
+        parameterType="com.miles.beauminity.vo.board.SearchVO"
+        resultType="Int">
+        SELECT COUNT(*)
+        FROM master_board
+        WHERE board_type = #{type} AND title LIKE CONCAT('%', #{str}, '%') AND deleted = 0
+        ORDER BY board_id DESC
+    </select>
+
     <!-- 게시글 검색 :: 내용-->
     <select id="getSearchBoardByContent" 
         parameterType="com.miles.beauminity.vo.board.SearchVO"
@@ -138,6 +148,16 @@
         WHERE board_type = #{type} AND content LIKE CONCAT('%', #{str}, '%') AND deleted = 0
         ORDER BY board_id DESC
         LIMIT #{offset}, #{size}
+    </select>
+
+    <!-- 게시글 작성자 찾기 -->
+    <select id="getUsernameByBoardId"
+            parameterType="Long"
+            resultType="String">
+            SELECT username
+            FROM master_board
+            WHERE board_id = #{value}
+    
     </select>
 
     
