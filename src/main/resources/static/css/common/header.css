@@ -1,0 +1,70 @@
+header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 7px 3%; 
+}
+
+.logo {
+    padding-top: 5%;
+    width: 128px;
+}
+
+.logo_nav {
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    gap: 170px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+}
+
+nav a {
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+nav a:hover {
+    color: #FFA1C1;
+    cursor: pointer;
+}
+
+.auth-menu {
+    display: flex;
+    gap: 15px;
+}
+
+.auth-menu a {
+    text-decoration: none;
+    color: #000;
+    font-size: 0.9em;
+    border: 1px solid #000;
+    padding: 5px 15px;
+}
+
+.auth-menu a:hover {
+    background: #000;
+    color: #fff;
+}
+
+.auth-menu button{
+    text-decoration: none;
+    background-color: white;
+    color: #000;
+    font-size: 0.9em;
+    border: 1px solid #000;
+    padding: 6px 15px;
+}
+
+.auth-menu button:hover {
+    background: #000;
+    color: #fff;
+}

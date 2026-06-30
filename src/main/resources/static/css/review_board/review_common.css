@@ -234,45 +234,7 @@
     .col-product { width: 90px; font-size: 0.8rem; }
 }
 
-/* ==========================================================================
-   1. 컬러 가이드 및 테마 변수 정의 (CSS Variables)
-   ========================================================================== */
-:root {
-    --bg-main: #F8F9FA;
-    --bg-container: #ffffff;
-    --text-main: #212529;
-    --text-sub: #495057;
-    --text-muted: #868E96;
-    --border-color: #DEE2E6;
-    --border-light: #E9ECEF;
-    --input-bg: #F8F9FA;
-    --input-readonly: #E9ECEF;
-    --modal-overlay: rgba(0, 0, 0, 0.4);
-    --item-hover: #FFFDF7;
 
-    --color-primary: #FACB47;
-    --color-accent: #FA6E68;
-    --color-dark-btn: #212529;
-    --text-btn-light: #ffffff;
-}
-
-body.dark-mode {
-    --bg-main: #121212;
-    --bg-container: #1A1C1E;
-    --text-main: #E3E6E8;
-    --text-sub: #A6ADBB;
-    --text-muted: #626B7A;
-    --border-color: #2A2D35;
-    --border-light: #22252C;
-    --input-bg: #151719;
-    --input-readonly: #111214;
-    --modal-overlay: rgba(0, 0, 0, 0.75);
-    --item-hover: #222630;
-
-    --color-primary: #FACB47;
-    --color-accent: #FA6E68;
-    --color-dark-btn: #2A2D35;
-}
 
 /* ==========================================================================
    2. 기본 스타일 초기화 및 공통 요소
@@ -385,4 +347,89 @@ main {
 .sub-category-list li:hover {
     background-color: #e6f7ff;
     color: #1890ff;
+}
+
+/* 탭 + 칩스 카테고리 필터 스타일 추가 */
+.category-filter-section {
+    background-color: #fff;
+    border: 1px solid #eef0f2;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+/* 1. 대분류 탭 스타일 */
+.tabs-container {
+    display: flex;
+    gap: 10px;
+    border-bottom: 2px solid #f1f3f5;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    overflow-x: auto; /* 모바일/좁은 화면 스크롤 대비 */
+    white-space: nowrap;
+}
+.tabs-container::-webkit-scrollbar { display: none; } /* 스크롤바 숨김 */
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #868e96;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+.tab-btn:hover { color: #212529; }
+
+/* 활성화된 대분류 밑줄 */
+.tab-btn.active {
+    color: #ff4d4f; /* 서비스 포인트 컬러에 맞춤 (댓글 수와 동일색상 예시) */
+    font-weight: 700;
+}
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #ff4d4f;
+}
+
+/* 2. 소분류 칩스 스타일 */
+.chips-container {
+    display: none; /* 기본적으로는 숨김 */
+    gap: 8px;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+/* 대분류가 active 상태인 하위 칩스 그룹만 노출 */
+.chips-container.active {
+    display: flex;
+}
+
+.chip-item {
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #f8f9fa;
+    color: #495057;
+    border-radius: 20px;
+    cursor: pointer;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+.chip-item:hover {
+    background-color: #e9ecef;
+}
+/* 활성화된 소분류 칩 */
+.chip-item.active {
+    background-color: #fff1f2;
+    color: #ff4d4f;
+    border-color: #ff4d4f;
+    font-weight: 600;
 }

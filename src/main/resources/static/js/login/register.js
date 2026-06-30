@@ -1,7 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
     const usernameInput = document.getElementById('username');
     const registerForm = document.querySelector('form');
-    const checkDupBtn = document.querySelector('.input-with-btn .inline-action-btn');
+    const checkDupBtn = document.querySelector('.check-btn');
+    // 비밀번호 표시 버튼
+    const togglePassword = document.getElementById('toggle-password');
+    const password = document.getElementById('password');
+    const eyeIcon = document.getElementById('eyeIcon')
+
+    togglePassword.addEventListener('click', function() {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+
+        if (type === 'password') {
+            eyeIcon.src = '/images/icons/crossed-eye.png';
+        } else {
+            eyeIcon.src = '/images/icons/eye.png';
+        }
+    })
 
     // 아이디 중복 확인 여부 플래그 변수
     let isIdChecked = false;

@@ -13,7 +13,7 @@ import com.miles.beauminity.mapper.board.MasterBoardFileMapper;
 import com.miles.beauminity.mapper.board.MasterBoardMapper;
 
 import com.miles.beauminity.mapper.review_board.ReviewBoardMapper;
-import com.miles.beauminity.util.MasterFileUploadUtil;
+import com.miles.beauminity.util.MasterFileUtil;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
@@ -70,7 +70,7 @@ public class ReviewServiceImpl implements ReviewService {
                 MultipartFile[] filesArray = fileList.toArray(new MultipartFile[0]);
 
                 // 3. static 매서드 다이렉트 호출 -> 디스크 저장 후 파일 정보 VO 리스트 리턴
-                List<MasterBoardFileVO> savedFileList = MasterFileUploadUtil.saveFiles(filesArray, uploadPath);  // -> 여기서 saved_name + original_name 로직 수행
+                List<MasterBoardFileVO> savedFileList = MasterFileUtil.saveFiles(filesArray, uploadPath);  // -> 여기서 saved_name + original_name 로직 수행
 
                 // 4. 반환된 파일 리스트를 루프 돌며 board_file 테이블에 순차 insert
                 for (MasterBoardFileVO fileVO : savedFileList) {

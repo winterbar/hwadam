@@ -22,4 +22,6 @@ public interface QnaBoardMapper {
 
     // 카테고리만 따로 조회
     public String getCategoryById(Long id);
+
+    public void updateQna(QnaBoardVO qnaBoardVO);
 }

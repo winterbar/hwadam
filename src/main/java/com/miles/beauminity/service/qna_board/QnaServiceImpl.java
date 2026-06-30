@@ -10,7 +10,7 @@ import com.miles.beauminity.mapper.board.MasterBoardFileMapper;
 import com.miles.beauminity.mapper.board.MasterBoardLikeMapper;
 import com.miles.beauminity.mapper.board.MasterBoardMapper;
 import com.miles.beauminity.mapper.qna_board.QnaBoardMapper;
-import com.miles.beauminity.util.MasterFileUploadUtil;
+import com.miles.beauminity.util.MasterFileUtil;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.MasterBoardLikeVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
@@ -34,32 +34,31 @@ public class QnaServiceImpl implements QnaService {
     private MasterBoardFileMapper masterBoardFileMapper;
     private MasterBoardLikeMapper masterBoardLikeMapper;
     private QnaBoardMapper qnaBoardMapper;
-    
 
-    // 게시글 등록 
+    // 게시글 등록
     @Override
     public void insertBoard(MasterBoardVO masterBoardVO, MultipartFile[] files, String category) {
-        
+
         // 일단 게시글부터 게시.
         System.out.println("전:" + masterBoardVO.getBoardId());
         masterBoardMapper.insertBoard(masterBoardVO);
         System.out.println("후:" + masterBoardVO.getBoardId());
 
-        // 번호가 잘 들어가는 걸 확인했으니 이제 파일 정보랑 글 번호를 합쳐서 DB에 올려놓아야한다. 
+        // 번호가 잘 들어가는 걸 확인했으니 이제 파일 정보랑 글 번호를 합쳐서 DB에 올려놓아야한다.
         // VO가 필요하겠다. vo 만들러 가자
         // 오늘은 게시만 하고 집 가겠다 수정은 내일 와서 해야지..
 
         Long boardId = masterBoardVO.getBoardId();
-        String uploadPath = "c:/uploads";
-        List<MasterBoardFileVO> fileList = MasterFileUploadUtil.saveFiles(files, uploadPath);
-        for(MasterBoardFileVO f: fileList){
+        String uploadPath = "c:/uploads/qna";
+        List<MasterBoardFileVO> fileList = MasterFileUtil.saveFiles(files, uploadPath);
+        for (MasterBoardFileVO f : fileList) {
             f.setBoardId(boardId);
 
             // 매퍼 적용
             masterBoardFileMapper.insertFile(f);
         }
 
-        //Qna 정보를 저장
+        // Qna 정보를 저장
         QnaBoardVO qnaBoardVO = new QnaBoardVO();
         qnaBoardVO.setBoardId(boardId);
 
@@ -69,7 +68,7 @@ public class QnaServiceImpl implements QnaService {
 
     }
 
-    // 게시글 전체조회 
+    // 게시글 전체조회
     @Override
     public List<QnaBoardCompleteVO> getTypeBoard(String type, PageVO pageVO) {
 
@@ -83,7 +82,7 @@ public class QnaServiceImpl implements QnaService {
         List<MasterBoardVO> qnaList = masterBoardMapper.getTypeBoard(typeOffsetVO);
 
         List<QnaBoardCompleteVO> finalList = new ArrayList<>();
-        for(MasterBoardVO q : qnaList){
+        for (MasterBoardVO q : qnaList) {
             QnaBoardCompleteVO nQ = new QnaBoardCompleteVO();
             nQ.setBoardId(q.getBoardId());
             nQ.setNickname(masterBoardMapper.getNicknameByBoardId(q.getBoardId()));
@@ -100,7 +99,7 @@ public class QnaServiceImpl implements QnaService {
 
     // 게시글 카테고리별 전체조회
     @Override
-    public List<QnaBoardCompleteVO> getQnaBoardByCategory(String type, PageVO pageVO, String category){
+    public List<QnaBoardCompleteVO> getQnaBoardByCategory(String type, PageVO pageVO, String category) {
 
         TypeOffsetVO typeOffsetVO = new TypeOffsetVO();
 
@@ -109,18 +108,17 @@ public class QnaServiceImpl implements QnaService {
         typeOffsetVO.setSize(pageVO.getSize());
 
         List<MasterBoardVO> qnaList = new ArrayList<>();
-        
-        if (category.equals("전체보기")){
+
+        if (category.equals("전체보기")) {
             qnaList = masterBoardMapper.getTypeBoard(typeOffsetVO);
-        }
-        else{
+        } else {
             typeOffsetVO.setCategory(category);
-            System.out.println("현재상태: "+typeOffsetVO.toString());
+            System.out.println("현재상태: " + typeOffsetVO.toString());
             qnaList = qnaBoardMapper.selectQnaByCategory(typeOffsetVO);
         }
         List<QnaBoardCompleteVO> finalList = new ArrayList<>();
 
-        for(MasterBoardVO q : qnaList){
+        for (MasterBoardVO q : qnaList) {
             QnaBoardCompleteVO nQ = new QnaBoardCompleteVO();
             nQ.setBoardId(q.getBoardId());
             nQ.setNickname(masterBoardMapper.getNicknameByBoardId(q.getBoardId()));
@@ -153,7 +151,21 @@ public class QnaServiceImpl implements QnaService {
     // 게시글 삭제
     @Override
     public void deleteBoard(Long id) {
+
+        List<MasterBoardFileVO> fileList = masterBoardFileMapper.getBoardFileById(id);
+        String prevPath = "c:/uploads";
+        String nextPath = "c:/deleted/qna";
+
         masterBoardMapper.deleteBoard(id);
+
+        // 파일 삭제
+        for (MasterBoardFileVO f : fileList) {
+            // 삭제 이전에 삭제할 파일 복사
+            MasterFileUtil.copyFiles(prevPath, f.getSavedName(), nextPath);
+            // 이전 경로에 있던 파일은 삭제
+            MasterFileUtil.deleteFiles(prevPath, f.getSavedName());
+        }
+
     }
 
     // 조회수 증가
@@ -164,8 +176,27 @@ public class QnaServiceImpl implements QnaService {
 
     // 게시글 수정
     @Override
-    public void updateBoard(MasterBoardVO masterBoardVO) {
+    public void updateBoard(MasterBoardVO masterBoardVO, MultipartFile[] files, String category) {
+
         masterBoardMapper.updateBoard(masterBoardVO);
+
+        Long boardId = masterBoardVO.getBoardId();
+        String uploadPath = "c:/uploads/qna";
+        List<MasterBoardFileVO> fileList = MasterFileUtil.saveFiles(files, uploadPath);
+        for (MasterBoardFileVO f : fileList) {
+            f.setBoardId(boardId);
+
+            // 매퍼 적용
+            masterBoardFileMapper.insertFile(f);
+        }
+
+        // Qna정보 저장
+        QnaBoardVO qnaBoardVO = new QnaBoardVO();
+        qnaBoardVO.setBoardId(boardId);
+        qnaBoardVO.setCategory(category);
+
+        qnaBoardMapper.updateQna(qnaBoardVO);
+
     }
 
     // 게시글 수 조회
@@ -178,21 +209,19 @@ public class QnaServiceImpl implements QnaService {
     @Override
     public int getQnaCountByCategory(String type, String category) {
 
-        System.out.println("카테고리: "+category);
-        
+        System.out.println("카테고리: " + category);
+
         TypeOffsetVO typeOffsetVO = new TypeOffsetVO();
 
         typeOffsetVO.setType(type);
-        if (category.equals("전체보기")){
+        if (category.equals("전체보기")) {
             return masterBoardMapper.getTypeBoardCount(type);
-        }
-        else{
+        } else {
             typeOffsetVO.setCategory(category);
-            System.out.println("현재상태: "+typeOffsetVO.toString());
+            System.out.println("현재상태: " + typeOffsetVO.toString());
             return qnaBoardMapper.getQnaCountByCategory(typeOffsetVO);
         }
 
-        
     }
 
     @Override
@@ -213,7 +242,7 @@ public class QnaServiceImpl implements QnaService {
         masterBoardLikeVO.setBoardId(id);
         masterBoardLikeVO.setUsername(username);
 
-        if(masterBoardLikeMapper.isLikeON(masterBoardLikeVO).isEmpty())
+        if (masterBoardLikeMapper.isLikeON(masterBoardLikeVO).isEmpty())
             return false;
         else
             return true;
@@ -230,10 +259,9 @@ public class QnaServiceImpl implements QnaService {
         return masterBoardLikeMapper.getLikeCount(id);
     }
 
-    
     @Override
     public List<QnaBoardCompleteVO> getSearchBoard(String type, String str, PageVO pageVO) {
-        
+
         System.out.println(type);
 
         SearchVO searchVO = new SearchVO();
@@ -245,7 +273,7 @@ public class QnaServiceImpl implements QnaService {
         List<MasterBoardVO> qnaList = masterBoardMapper.getSearchBoard(searchVO);
 
         List<QnaBoardCompleteVO> finalList = new ArrayList<>();
-        for(MasterBoardVO q : qnaList){
+        for (MasterBoardVO q : qnaList) {
             QnaBoardCompleteVO nQ = new QnaBoardCompleteVO();
             nQ.setBoardId(q.getBoardId());
             nQ.setNickname(masterBoardMapper.getNicknameByBoardId(q.getBoardId()));
@@ -255,7 +283,7 @@ public class QnaServiceImpl implements QnaService {
             nQ.setReplyCnt(q.getReplyCnt());
             nQ.setCategory(qnaBoardMapper.getCategoryById(q.getBoardId()));
 
-            System.out.println("검색된 게시글 정보: "+ nQ.toString());
+            System.out.println("검색된 게시글 정보: " + nQ.toString());
 
             finalList.add(nQ);
         }
@@ -270,7 +298,7 @@ public class QnaServiceImpl implements QnaService {
 
     @Override
     public int getCountSearchBoardByTitle(String type, String str) {
-        
+
         SearchVO searchVO = new SearchVO();
         searchVO.setType(type);
         searchVO.setStr(str);
@@ -278,6 +306,19 @@ public class QnaServiceImpl implements QnaService {
         return masterBoardMapper.getCountSearchBoardByTitle(searchVO);
     }
 
-    
+    @Override
+    public void deleteFilesForUpdate(Long id) {
+
+        MasterBoardFileVO getFile = masterBoardFileMapper.getFileById(id);
+
+        String prevPath = "c:/uploads";
+        String nextPath = "c:/deleted/qna";
+
+        // 삭제 이전에 삭제할 파일 복사
+        MasterFileUtil.copyFiles(prevPath, getFile.getSavedName(), nextPath);
+            // 이전 경로에 있던 파일은 삭제
+        MasterFileUtil.deleteFiles(prevPath, getFile.getSavedName());
+    }
+
 
 }

@@ -148,9 +148,12 @@
             INNER JOIN review_board r ON m.board_id = r.board_id
             WHERE m.board_type = #{type}
             
-            <if test="search.category1 != null and search.category1 != ''">
+          
+
+            <if test="search.category1 != null and search.category1 != '' and search.category1 != '전체보기'">
                 AND r.category1 = #{search.category1}
             </if>
+
             <if test="search.category2 != null and search.category2 != '' and search.category2 != '전체'">
                 AND r.category2 = #{search.category2}
             </if>

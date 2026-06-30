@@ -2,40 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
 </head>
-<body>
+  <body>
+
     <header th:fragment="headerFragment">
-      <div class="header-container">
-        <div class="header-left">
-          <div class="logo">
-            <a th:href="@{/}"><img th:src="@{/images/common/title.png}" alt="Beauminity" /></a>
-          </div>
-          <nav class="nav-bar">
-            <ul>
-              <li><a th:href="@{/board/notice}">공지사항</a></li>
-              <li><a th:href="@{/market}">마켓</a></li>
-              <li><a th:href="@{/board/review}">리뷰</a></li>
-              <li><a th:href="@{/board/qna}">질문</a></li>
-              <li><a th:href="@{/feed}">피드</a></li>
-              <li><a th:href="@{/map}">매장찾기</a></li>
-            </ul>
-          </nav>
-        </div>
+      <div class="logo_nav">
+        <a th:href="@{/}"><img th:src="@{/images/common/title.png}"
+          alt="화담 타이틀 이미지" class="logo"></a>
+        <nav>
+          <ul>
+              <li><a th:href="@{/}">홈</a></li>
+              <li><a th:href="@{/store}">스토어</a></li>
+              <li><a th:href="@{/review}">리뷰</a></li>
+              <li><a th:href="@{/community}">커뮤니티</a></li>
+              <li><a th:href="@{/feed}">오늘의 화장</a></li>
+              <li><a th:href="@{/event}">이벤트</a></li>
+          </ul>
+        </nav>
+      </div>
 
-        <div class="auth-menu" sec:authorize="isAnonymous()">
-          <a th:href="@{/login}" class="header-btn header-login-btn">로그인</a>
-          <a th:href="@{/register}" class="header-btn header-register-btn">회원가입</a>
-        </div>
+      <div class="auth-menu" sec:authorize="isAnonymous()">
+        <a th:href="@{/login}">로그인</a>
+        <a th:href="@{/register}">회원가입</a>
+      </div>
 
-        <div class="auth-menu" sec:authorize="isAuthenticated()">
-          <span class="user-nickname" sec:authentication="principal.nickname">닉네임</span>
-          <a th:href="@{/mypage}" class="header-btn header-mypage-btn">마이페이지</a>
-          <form th:action="@{/logout}" method="post" style="display: inline">
-            <button type="submit" class="header-btn header-register-btn">로그아웃</button>
-          </form>
-        </div>
+      <div class="auth-menu" sec:authorize="isAuthenticated()">
+        <a th:href="@{/mypage}">마이페이지</a>
+        <a th:href="@{/cart}">장바구니</a>
+        <form th:action="@{/logout}" method="post">
+          <button type="submit">로그아웃</button>
+        </form>
       </div>
     </header>
+
   </body>
 </html>
