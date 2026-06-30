@@ -45,8 +45,13 @@ public class SecurityConfig {
                 .loginPage("/login") // 인증이 필요한 경우 GET 요청
                 // 클라이언트 요청이 POST 방식에 /login이라면 시큐리티가 인증 받도록 처리
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/") // 로그인 성공 시 요청
+                .defaultSuccessUrl("/", true) // 로그인 성공 시 요청
                 .failureUrl("/login?error") // 로그인 실패 시 요청 (아이디 혹은 비밀번호 틀림)
+            ).logout(logout -> logout
+                .logoutUrl("/logout") // 스프링 시큐리티가 로그아웃 처리
+                .invalidateHttpSession(true) // 서버에 저장된 HttpSession 제거
+                .deleteCookies("JSESSION") // 클라이언트 내 세션 식별 쿠키 삭제
+                .logoutSuccessUrl("/login?logout") // 로그아웃 완료 후 로그인 페이지로 리다이렉트
             );
 
         return http.build();

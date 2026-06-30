@@ -1,84 +1,54 @@
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-.login-main {
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    height: 100%;
-    background-color: #f9f9f9;
-    box-sizing: border-box;
-    padding-top: 100px; 
-}
-.login-container {
-    background: #fff;
-    margin-top: 4%;
-    padding: 40px;
+.success-container {
+    max-width: 400px;
+    margin: 200px auto;
+    padding: 50px 40px;
+    border: 1px solid #eee;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    width: 100%;
-    max-width: 450px;
-    box-sizing: border-box;
     text-align: center;
-}
-.login-header {
-    margin-bottom: 25px;
-}
-.login-logo {
-    width: 100%;
-    max-width: 280px;
-    height: auto;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-.success-content {
-    text-align: center;
+.logo-section {
+    margin-bottom: 30px;
+}
+
+.logo-img {
+    width: 200px;
+}
+
+.message-section p {
+    margin: 8px 0;
+    color: #444;
+    font-size: 1em;
+}
+
+.message-section strong {
+    color: #ff6b9a;
+}
+
+.button-section {
+    margin-top: 30px; 
+    display: flex;
+    justify-content: center;
+}
+
+.start-btn {
     width: 100%;
-    height: auto;
-    padding: 0 10px;
-    margin: 15px auto 0 auto;
-    font-family: inherit;
-    box-sizing: border-box;
-}
-.success-content p {
-    font-size: 15px;
-    color: #333;
-    margin: 0 0 6px 0;
-    line-height: 1.6;
-    font-weight: 500;
-    word-break: keep-all;
-}
-.success-content p.id-info {
-    margin: 0 0 20px 0;
-}
-.success-content p.last-lead {
-    margin: 0 0 25px 0;
-}
-.success-content .highlight-id {
-    color: #FA6E68;
-    font-weight: bold;
-}
-.success-content .bold-name {
-    font-weight: bold;
-}
-.success-content .login-submit-btn {
+    padding: 15px 0;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: background 0.2s;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    text-decoration: none;
-    box-sizing: border-box;
-    font-weight: bold;
-    width: 100%;
-    height: 45px;
-    background-color: #333;
-    color: #fff;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
 }
-.success-content .login-submit-btn:hover {
-    background-color: #444;
+
+.start-btn:hover {
+    background: #333;
 }
