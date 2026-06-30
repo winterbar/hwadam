@@ -24,6 +24,8 @@ import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @AllArgsConstructor
@@ -127,10 +129,10 @@ public class QnaApiController {
 
         return ResponseEntity.ok(result);
     }
-
+     
     // 기존 파일 가져오기
     @GetMapping("/{boardId}/render-file")
-    public ResponseEntity<Map<String, Object>> getMethodName(@PathVariable("boardId") Long id) {
+    public ResponseEntity<Map<String, Object>> getOriginFile(@PathVariable("boardId") Long id) {
         
         Map<String, Object> result = new HashMap<>();
 

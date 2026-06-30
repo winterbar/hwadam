@@ -178,12 +178,22 @@ public class QnaController {
 
     //수정한 거... 보낸다~!
     @PostMapping("/board/qna/update")
-    public String postMethodName(@ModelAttribute MasterBoardVO masterBoardVO) {
+    public String postMethodName(@ModelAttribute MasterBoardVO masterBoardVO,
+                                 @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
+                                 @RequestParam("selectedFiles") MultipartFile[] files,
+                                 String category
+    ) {
         
         // 모든 값이 잘 고쳐졌나 볼게요 
         System.out.println(masterBoardVO.toString());
 
-        qnaService.updateBoard(masterBoardVO);
+        if (deletedFileIds != null) {
+            for (Long fileId : deletedFileIds){
+                qnaService.deleteFilesForUpdate(fileId); 
+            }
+        }
+
+        qnaService.updateBoard(masterBoardVO, files, category);
         
         return "redirect:/board/qna";
     }
