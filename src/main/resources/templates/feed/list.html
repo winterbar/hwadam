@@ -155,6 +155,7 @@
         color: #999999;
         font-style: italic;
       }
+      
     </style>
   </head>
 
@@ -344,7 +345,7 @@
     0
   </span>
 </button>
-                    </button>
+                   
 
                     <button
                       type="button"
@@ -359,8 +360,17 @@
                         0
                       </span>
                     </button>
-                  </div>
-                </div>
+                  <button
+      type="button"
+      class="feed-share-btn"
+      th:data-feed-id="${feed.feedId}"
+    >
+     <span class="feed-share-icon">
+  <img th:src="@{/images/feed/share.png}" alt="공유" />
+</span>
+    </button>
+  </div>
+</div>
 
                 <p class="feed-card-caption">
                   <span
@@ -589,10 +599,47 @@
           </div>
         </section>
       </div>
+      <aside class="feed-right-sidebar">
+        <div class="feed-trend-box">
+          <div class="feed-trend-title">
+            <span>🔥</span>
+            <strong>#해시태그 TOP 5</strong>
+          </div>
 
+          <ol class="feed-trend-list" id="feed-trend-list">
+            <li class="feed-trend-empty">아직 인기 태그가 없습니다.</li>
+          </ol>
+        </div>
+      </aside>
     </main>
+    <!-- 링크 공유 모달 -->
+<div class="share-modal" id="share-modal">
+  <div class="share-modal-box">
+    <div class="share-modal-header">
+      <h3>링크 공유</h3>
+      <button type="button" class="share-modal-close" id="share-modal-close">
+        ×
+      </button>
+    </div>
+
+    <div class="share-modal-body">
+      <input
+        type="text"
+        class="share-url-input"
+        id="share-url-input"
+        readonly
+      />
+      <button type="button" class="share-copy-btn" id="share-copy-btn">
+        복사
+      </button>
+    </div>
+  </div>
+</div>
 
     <footer th:replace="~{layout/footer :: footer}"></footer>
     <script th:src="@{/js/feed/feed_list.js}"></script>
+    <script th:src="@{/js/feed/feed_like.js}"></script>
+    <script th:src="@{/js/feed/feed_reply.js}"></script>
+    <script th:src="@{/js/feed/feed_tag.js}"></script>
   </body>
 </html>
