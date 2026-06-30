@@ -1,17 +1,17 @@
+// 비밀번호 표시 버튼
 document.addEventListener('DOMContentLoaded', function() {
-    const usernameInput = document.getElementById('username');
-    const validationMsg = document.getElementById('id-validation-msg');
-    
-    // 아이디에 영문자, 숫자만 들어오는지 실시간으로 감지
-    usernameInput.addEventListener('input', function () {
-        const value = this.value;
-        const regex = /^[a-zA-Z0-9]*$/;
+    const togglePassword = document.getElementById('toggle-password');
+    const password = document.getElementById('password');
+    const eyeIcon = document.getElementById('eyeIcon')
 
-        if (value.length > 0 && !regex.test(value)) {
-            validationMsg.style.display = 'block';
-            this.value = value.replace(/[^a-zA-Z0-9]/g, '');
+    togglePassword.addEventListener('click', function() {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+
+        if (type === 'password') {
+            eyeIcon.src = '/images/icons/crossed-eye.png';
         } else {
-            validationMsg.style.display = 'none';
+            eyeIcon.src = '/images/icons/eye.png';
         }
-    });
+    })
 });
