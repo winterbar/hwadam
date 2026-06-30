@@ -33,6 +33,14 @@
         WHERE board_id = #{value}
     </select>
 
+    <select id="getFileById"
+            parameterType="Long"
+            resultType="com.miles.beauminity.vo.board.MasterBoardFileVO">
+        SELECT *
+        FROM board_file
+        WHERE file_id = #{value}  
+    </select>
+
     
 
 </mapper>

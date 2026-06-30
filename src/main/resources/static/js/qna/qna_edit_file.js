@@ -1,5 +1,6 @@
 let existingFiles = []; //기존에 있는 파일 담는 배열
 let selectedFiles = []; //새로 넣을 파일 담는 배열
+let deletedFileIds = [] //삭제될 파일 아이디 담는 배열
 
         const fileInput = document.getElementById("file-input");
         const dropZone = document.getElementById("dropZone");
@@ -18,63 +19,11 @@ let selectedFiles = []; //새로 넣을 파일 담는 배열
             .then(data=>{
                 
                 console.log("매핑 성공");
+                existingFiles = data.files;
 
-                    existingFiles = data.files
-
-                    previewList.innerHTML = "";
-                    fileList.innerHTML = "";
-
-                    existingFiles.forEach((file, index) => {
-
-                        // 이미지 파일
-                        if (file.fileType.startsWith("image/")) {
-
-                            const imgUrl = '/download/'+file.savedName;
-
-                            const div = document.createElement("div");
-
-                            div.classList.add("preview-item");
-
-                            div.innerHTML = `
-                                <img src="${imgUrl}">
-                                <button type="button"
-                                        class="remove-btn"
-                                        onclick="removeFile(${index})">
-                                    x
-                                </button>
-                            `;
-
-                            previewList.appendChild(div);
-
-                        } else {
-
-                            // 일반 파일
-
-                            // const div = document.createElement("div");
-
-                            // div.classList.add("file-item");
-
-                            // div.innerHTML = `
-                                // <span class="file-name">
-                                    // ${file.name}
-                                // </span>
-
-                                // <button type="button"
-                                        // class="file-remove-btn"
-                                        // onclick="removeFile(${index})">
-
-                                    // 삭제
-
-                                // </button>
-                            // `;
-
-                            // fileList.appendChild(div);
-
-                            alert("이미지를 올려주세요!");
-                        }
-
-                    });
-            })
+                renderFileItems(); //렌더링 함수 사용.
+     
+            });
             
         });
 
@@ -82,6 +31,7 @@ let selectedFiles = []; //새로 넣을 파일 담는 배열
         fileInput.addEventListener("change", function(e) {
 
             addFiles(e.target.files);
+            fileInput.value = ""; //파일 재선택이 가능하도록
 
         });
 
@@ -116,36 +66,59 @@ let selectedFiles = []; //새로 넣을 파일 담는 배열
 
             for (let file of files) {
 
+                if(!file.type.startsWith("image/")){
+                    alert("이미지만 업로드 가능합니다!");
+                    continue;
+                }
                 selectedFiles.push(file);
-
             }
-
-            syncInput();
-            renderNewFiles();
-        }
-
-        // input 동기화
-        function syncInput() {
-
-            const dataTransfer = new DataTransfer();
-
-            selectedFiles.forEach(file => {
-                dataTransfer.items.add(file);
-            });
-
-            fileInput.files = dataTransfer.files;
+            renderFileItems();
         }
 
         // 새로운 파일 화면에 같이 출력
-        function renderNewFiles() {
+        function renderFileItems() {
+
+            console.log("함수 접근");
 
             previewList.innerHTML = "";
-            fileList.innerHTML = "";
 
-            selectedFiles.forEach((file, index) => {
+            // 기존 파일 렌더링
+            existingFiles.forEach((file, index) => {
 
-                // 이미지 파일
-                if (file.type.startsWith("image/")) {
+                console.log("함수 접근");
+
+                const imgUrl = '/download/'+file.savedName;
+
+                console.log(imgUrl);
+
+                const div = document.createElement("div");
+
+                div.classList.add("preview-item");
+
+                div.innerHTML = `
+                    <img src="${imgUrl}">
+                    <button type="button"
+                            class="remove-btn">
+                        x
+                    </button>
+                `;
+
+                // 파일 삭제
+                div.querySelector(".remove-btn").addEventListener("click", function(){
+                    console.log(file.fileId);
+                    deletedFileIds.push(file.fileId);
+                    existingFiles = existingFiles.filter(f => f!== file);
+                    div.remove();
+                    // 또 패치 써야한다고...?
+
+                    console.log("삭제될 기존 파일 ID 목록:", deletedFileIds);
+                });
+                
+                previewList.appendChild(div);
+
+            });
+
+            selectedFiles.forEach((file) => {
 
                     const imgUrl = URL.createObjectURL(file);
 
@@ -156,51 +129,53 @@ let selectedFiles = []; //새로 넣을 파일 담는 배열
                     div.innerHTML = `
                         <img src="${imgUrl}">
                         <button type="button"
-                                class="remove-btn"
-                                onclick="removeFile(${index})">
+                                class="remove-btn">
                             x
                         </button>
                     `;
 
-                    previewList.appendChild(div);
-
-                } else {
-
-                    // 일반 파일
-
-                    // const div = document.createElement("div");
-
-                    // div.classList.add("file-item");
-
-                    // div.innerHTML = `
-                    //     <span class="file-name">
-                    //         ${file.name}
-                    //     </span>
-
-                        // <button type="button"
-                        //         class="file-remove-btn"
-                        //         onclick="removeFile(${index})">
-
-                            // 삭제
-
-                        // </button>
-                    // `;
-
-                    // fileList.appendChild(div);
-
-                    alert("이미지를 올려주세요!");
-                }
-
+                    // 파일 삭제
+                    div.querySelector(".remove-btn").addEventListener("click", function(){
+                    selectedFiles = selectedFiles.filter(f => f!== file);
+                    div.remove();
+                    console.log("남은 새 파일 목록:", selectedFiles);
+                });
+                previewList.appendChild(div);
             });
 
         }
 
-        // 삭제
-        function removeFile(index) {
+        const updateForm = document.querySelector("form[action*='/board/qna/update']");
 
-            selectedFiles.splice(index, 1);
+        if(updateForm){
 
-            syncInput();
-            renderNewFiles();
+            updateForm.addEventListener("submit", function(e){
+
+                e.preventDefault();
+
+                // 폼이 제출되기 직전에 삭제할 파일 ID들을 hidden input으로
+                deletedFileIds.forEach(id=>{
+                    const hiddenInput = document.createElement("input");
+                    hiddenInput.type = "hidden";
+                    hiddenInput.name = "deletedFileIds";
+                    hiddenInput.value = id;
+
+                    updateForm.appendChild(hiddenInput);
+                });
+
+                const dataTransfer = new DataTransfer();
+                selectedFiles.forEach(file => {
+                    dataTransfer.items.add(file);
+                });
+
+                const fileInputForUpdate = document.getElementById("file-input");
+                fileInputForUpdate.files = dataTransfer.files;
+
+                console.log("동기화된 파일: ", fileInputForUpdate.files)
+
+                updateForm.submit();
+
+            });
 
         }
+        
