@@ -6,57 +6,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 본문 + 정보공유 링크 분리해서 수정 input에 넣기
     function renderEditFeedContentAndLink() {
-        const form = document.querySelector('form');
+    const form = document.querySelector('form');
+    if (!form) return;
 
-        if (!form) return;
+    const contentInput = document.getElementById('editFeedContent');
+    if (!contentInput) return;
 
-        const rawContent = form.dataset.content
-            ? form.dataset.content.trim()
-            : '';
+    const rawContent = form.dataset.content
+        ? form.dataset.content.trim()
+        : '';
 
-        const contentInput = document.getElementById('editFeedContent');
-        const linkInput = document.getElementById('editInfoLink');
+    if (!rawContent) return;
 
-        if (!contentInput || !linkInput) return;
-        if (!rawContent) return;
-
-        let contentText = '';
-        let linkText = '';
-
-        function isLink(text) {
-            if (!text) return false;
-
-            const value = text.trim().toLowerCase();
-
-            return value.startsWith('http://') || value.startsWith('https://');
-        }
-
-        if (rawContent.includes(',')) {
-            const parts = rawContent.split(',');
-
-            const first = parts[0] ? parts[0].trim() : '';
-            const second = parts.length > 1 ? parts.slice(1).join(',').trim() : '';
-
-            if (isLink(first)) {
-                linkText = first;
-            } else {
-                contentText = first;
-            }
-
-            if (isLink(second)) {
-                linkText = second;
-            }
-        } else {
-            if (isLink(rawContent)) {
-                linkText = rawContent;
-            } else {
-                contentText = rawContent;
-            }
-        }
-
-        contentInput.value = contentText;
-        linkInput.value = linkText;
-    }
+    contentInput.value = rawContent;
+}
 
     // 이미지 추가/삭제 + 대표 이미지 미리보기
     function initEditImageArea() {

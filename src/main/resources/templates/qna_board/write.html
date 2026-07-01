@@ -4,22 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beauminity - 글쓰기</title>
-    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+    
     <link rel="stylesheet" th:href="@{/css/qna_board/qna_write.css}">
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/main.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
     <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
 </head>
 <body>
 
-    <header th:replace="~{layout/header :: header}"></header>
+    <header th:replace="~{layout/header :: headerFragment}"></header>
 
     <main>
         <section class="write-container">
             <div class="section-header">
-                <h2> 질문하기 </h2>
-                <a href="beaminity_main_style_feed_botd_clean_linked.html" class="more-link">목록으로 돌아가기</a>
+                <h2>글쓰기</h2>
+                <p class="section-desc">
+                    궁금한 점이나 뷰티 정보를 자유롭게 공유해보세요.
+                </p>
             </div>
 
-            <form th:action="@{/board/qna}" method="POST" enctype="multipart/form-data">
+            <form th:action="@{/community}" method="POST" enctype="multipart/form-data">
                 
                 <div class="form-row-2">
                     <div class="form-group">
@@ -61,7 +66,7 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn btn-cancel" th:onclick="|location.href='@{/board/qna}'|">취소하기</button>
+                    <button type="button" class="btn btn-cancel" th:onclick="|location.href='@{/community}'|">취소하기</button>
                     <button type="submit" class="btn btn-submit">게시하기</button>
                 </div>
 
@@ -69,7 +74,7 @@
         </section>
     </main>
     <script th:src="@{/js/qna/qna_write_file.js}"></script>
-    <footer th:replace="~{layout/footer :: footer}"></footer>
+    <footer th:replace="~{layout/footer :: footerFragment}"></footer>
 
     
 

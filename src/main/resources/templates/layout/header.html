@@ -30,6 +30,8 @@
       <div class="auth-menu" sec:authorize="isAuthenticated()">
         <a th:href="@{/mypage}">마이페이지</a>
         <a th:href="@{/cart}">장바구니</a>
+        <a class="admin-btn" sec:authorize="hasRole('ROLE_ADMIN')"
+            th:href="@{/admin}">관리자모드</a>
         <form th:action="@{/logout}" method="post">
           <button type="submit">로그아웃</button>
         </form>
