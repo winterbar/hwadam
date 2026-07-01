@@ -137,26 +137,38 @@
 
             SELECT 
                 m.board_id AS boardId,
+                mem.nickname AS nickName,
+                mf.file_path AS memberProfilePath,
                 m.title AS title,
+                m.content AS content,
                 m.created_at AS createdAt,
                 m.view_cnt AS viewCnt,
                 m.reply_cnt AS replyCnt,
+                bf.saved_name AS savedName, -- C드라이브에서 불러올 때 사용할 저장된 파일명
                 r.product_name AS productName,
-                r.category1 AS category1,
-                r.category2 AS category2
-            FROM master_board m
+                r.category1, 
+                r.category2
+            FROM member mem 
+            INNER JOIN master_board m ON mem.username = m.username
             INNER JOIN review_board r ON m.board_id = r.board_id
-            WHERE m.board_type = #{type}
+            LEFT JOIN member_profile mf ON mem.username = mf.username
+            LEFT JOIN board_file bf ON bf.file_id = (
+                -- 해당 게시글의 파일들 중 가장 첫 번째 파일 ID 하나만 조회하는 서브쿼리
+                SELECT MIN(file_id) 
+                FROM board_file 
+                WHERE board_id = m.board_id
+            )
+           <where>
+                m.board_type = #{type}
+                <if test="search.category1 != null and search.category1 != '' and search.category1 != '전체보기'">
+                    AND r.category1 = #{search.category1}
+                </if>
+                <if test="search.category2 != null and search.category2 != '' and search.category2 != '전체'">
+                    AND r.category2 = #{search.category2}
+                </if>
+           </where>
             
-          
-
-            <if test="search.category1 != null and search.category1 != '' and search.category1 != '전체보기'">
-                AND r.category1 = #{search.category1}
-            </if>
-
-            <if test="search.category2 != null and search.category2 != '' and search.category2 != '전체'">
-                AND r.category2 = #{search.category2}
-            </if>
+        
             
             <choose>
                 <when test="search.sortType == 'hits'">
