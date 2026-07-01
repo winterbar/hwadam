@@ -30,6 +30,10 @@ public class ReviewBoardVO {
     private long viewCnt;
     private long replyCnt;
 
+    // DB에서 JOIN으로 새로 조회해오는 출력용 필드
+    private String memberProfilePath; // 작성자 프로필 이미지 경로 수신용
+    private String savedName;         // 리뷰 메인에 띄울 C드라이브 저장 파일명 수신용
+
     // 후기 전용 데이터 (review_board에 넣게 위한 변수들)
     private String productName;                 // 후기 등록 폼은 선택된 리뷰 대상
     private String productLink;                 // 선택된 제품 링크
