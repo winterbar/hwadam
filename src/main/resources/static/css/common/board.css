@@ -85,6 +85,7 @@
 /* 후기 게시판 테이블 구조 */
 .board-table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
     text-align: left;
     margin-bottom: 2rem;
@@ -92,7 +93,7 @@
 
 .board-table th {
     padding: 0.8rem 0.5rem;
-    font-size: 0.85rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--text-muted);
     border-bottom: 1px solid var(--border-color);
@@ -114,9 +115,16 @@
 .col-product { width: 120px; font-weight: 700; color: var(--text-dark-muted); }
 .col-title { font-weight: 600; color: var(--text-main); }
 .col-title:hover { color: var(--color-accent); }
-.col-writer { width: 110px; font-weight: 500; }
+.col-writer { width: 110px; }
 .col-date { width: 90px; color: var(--text-muted); font-size: 0.8rem; text-align: center; }
 .col-hits { width: 70px; color: var(--text-muted); font-size: 0.8rem; text-align: center; }
+
+.writer-text{
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 
 .reply-count {
     font-size: 0.8rem;
@@ -158,6 +166,7 @@
     font-weight: 600;
     color: var(--text-dark-muted);
     transition: all 0.2s;
+    text-decoration: none;
 }
 
 .pagination li a:hover, .pagination li a.active {
