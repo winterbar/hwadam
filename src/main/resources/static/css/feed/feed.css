@@ -1,1041 +1,649 @@
-main {
-  max-width: 1200px;
-  margin: 2.5rem auto;
-  padding: 0 1.5rem;
-  display: grid;
-  grid-template-columns: 1fr 280px;
-  gap: 2rem;
-  align-items: start;
-}
-.main-left-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-}
-.dashboard-section {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  padding: 2rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01);
-  transition:
-    background-color 0.3s,
-    border-color 0.3s;
-}
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid var(--text-main);
-  padding-bottom: 1rem;
-  margin-bottom: 1.2rem;
-  transition: border-color 0.3s;
-}
-.section-header h2 {
-  font-size: 1.25rem;
-  font-weight: 800;
-}
-.section-header h2 span {
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  margin-left: 0.5rem;
-  font-weight: 500;
-}
-.more-link {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--text-link-muted);
-  transition: color 0.15s;
-}
-.more-link:hover {
-  color: var(--color-accent);
-}
-.main-post-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
+/* =========================================================
+   HWADAM FEED - BEAUTY SHOWROOM CONCEPT
+   깨짐 방지 정리본
+   ========================================================= */
+
+:root {
+  --hw-pink: #ffa1c1;
+  --hw-pink-dark: #f47ca8;
+  --hw-pink-soft: #ffe6ef;
+  --hw-pink-light: #fff6fa;
+  --hw-pink-deep: #e85d92;
+
+  --hw-cream: #fffaf5;
+  --hw-white: #ffffff;
+  --hw-black: #111111;
+  --hw-text: #2b2b2b;
+  --hw-sub: #6f6f6f;
+  --hw-muted: #a5a5a5;
+  --hw-line: #f3d7e2;
+  --hw-line-soft: #f8e8ef;
+
+  --hw-shadow: 0 12px 28px rgba(255, 161, 193, 0.14);
+  --hw-card-shadow: 0 10px 28px rgba(0, 0, 0, 0.05);
 }
 
-.main-post-table td {
-  padding: 1.1rem 0.5rem;
-  font-size: 0.9rem;
-  border-bottom: 1px solid var(--border-row);
-  transition: border-color 0.3s;
+/* =========================================================
+   BASIC
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
 }
 
-.main-post-table tr:hover td {
-  background-color: var(--bg-table-hover);
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 161, 193, 0.16), transparent 26%),
+    radial-gradient(circle at 85% 8%, rgba(255, 220, 232, 0.72), transparent 22%),
+    linear-gradient(180deg, #fff6fa 0%, #fffafc 45%, #ffffff 100%);
+  color: var(--hw-text);
 }
 
-.main-post-tag {
-  font-size: 0.75rem;
-  font-weight: 800;
-  color: var(--color-accent);
-  width: 90px;
-  display: inline-block;
+button,
+input,
+select {
+  font-family: inherit;
 }
 
-.main-post-title {
-  font-weight: 600;
-  color: var(--text-main);
-}
-
-.main-post-title:hover {
-  color: var(--color-accent);
-}
-
-.main-post-replies {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--color-accent);
-  margin-left: 0.3rem;
-}
-
-.main-post-meta {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  text-align: right;
-}
-.motd-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.2rem;
-  margin-top: 0.5rem;
-}
-
-.motd-card {
-  border: 1px solid var(--border-motd);
-  border-radius: 4px;
-  overflow: hidden;
-  background-color: var(--bg-motd-card);
-  transition:
-    transform 0.2s,
-    border-color 0.2s,
-    background-color 0.3s;
-}
-
-.motd-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--color-primary);
-}
-
-.motd-img-placeholder {
-  width: 100%;
-  height: 160px;
-  background-color: var(--border-motd);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--text-muted);
-  font-size: 1.8rem;
-  font-weight: bold;
-  border-bottom: 1px solid var(--border-motd);
-  transition:
-    background-color 0.3s,
-    border-color 0.3s;
-}
-
-.motd-info {
-  padding: 0.9rem;
-}
-
-.motd-user {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--text-dark-muted);
-  margin-bottom: 0.3rem;
-}
-
-.motd-title {
-  font-size: 0.85rem;
-  color: var(--text-main);
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.right-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  position: relative;
-  top: 0;
-}
-.sidebar-login-link-box {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  padding: 1.5rem 1.2rem;
-  text-align: center;
-  transition:
-    background-color 0.3s,
-    border-color 0.3s;
-}
-
-.login-link-title {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-dark-muted);
-  margin-bottom: 1rem;
-  line-height: 1.4;
-}
-
-.login-link-title span {
-  color: var(--color-accent);
-  font-weight: 800;
-}
-
-.sidebar-move-login-btn {
-  display: block;
-  width: 100%;
-  background-color: var(--text-main);
-  color: var(--bg-card);
-  padding: 0.75rem 0;
-  font-weight: 700;
-  font-size: 0.85rem;
-  border: none;
-  border-radius: 2px;
+button {
   cursor: pointer;
-  transition:
-    background-color 0.15s,
-    transform 0.1s,
-    color 0.3s;
 }
 
-.sidebar-move-login-btn:hover {
-  background-color: var(--color-accent);
-  color: #ffffff;
-}
+/* =========================================================
+   TOP FILTER HERO
+   ========================================================= */
 
-.sidebar-move-login-btn:active {
-  transform: scale(0.98);
-}
-
-.login-link-sub {
-  margin-top: 0.8rem;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
-
-.login-link-sub a {
-  margin: 0 0.4rem;
-}
-
-.login-link-sub a:hover {
-  color: var(--text-main);
-  text-decoration: underline;
-}
-.sidebar-chatbot-banner {
-  background: linear-gradient(135deg, #212529 0%, #343a40 100%);
-  border: 1px solid #495057;
-  border-radius: 4px;
-  padding: 1.25rem;
-  color: #ffffff;
-  display: block;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  position: relative;
-  overflow: hidden;
-}
-
-.sidebar-chatbot-banner::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 4px;
-  height: 100%;
-  background-color: var(--color-primary);
-}
-
-.sidebar-chatbot-banner:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(250, 110, 104, 0.15);
-  border-color: var(--color-accent);
-}
-
-.banner-top-tag {
-  display: inline-block;
-  background-color: var(--color-accent);
-  color: #ffffff;
-  font-size: 0.7rem;
-  font-weight: 800;
-  padding: 0.15rem 0.4rem;
-  border-radius: 2px;
-  margin-bottom: 0.6rem;
-  letter-spacing: 0.5px;
-}
-
-.banner-title {
-  font-size: 0.95rem;
-  font-weight: 800;
-  line-height: 1.35;
-  margin-bottom: 0.3rem;
-}
-
-.banner-title span {
-  color: var(--color-primary);
-}
-
-.banner-desc {
-  font-size: 0.75rem;
-  color: #adb5bd;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-.banner-desc::after {
-  content: "➔";
-  font-size: 0.7rem;
-  color: var(--color-primary);
-  transition: transform 0.2s;
-}
-.sidebar-chatbot-banner:hover .banner-desc::after {
-  transform: translateX(3px);
-}
-@media (max-width: 1024px) {
-  main {
-    grid-template-columns: 1fr;
-  }
-
-  .right-sidebar {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .motd-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .right-sidebar {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 600px) {
-  .header-container {
-    text-align: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  nav ul {
-    gap: 1.5rem;
-    justify-content: center;
-  }
-
-  .motd-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .right-sidebar {
-    grid-template-columns: 1fr;
-  }
-}
 .feed-filter-bar {
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 1rem 1.5rem 0;
+  padding: 26px 28px 0;
 }
 
 .feed-filter-summary {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  padding: 0.95rem 1rem;
+  position: relative;
+  min-height: 145px;
+  padding: 26px 38px;
+  border: 1px solid #ffd4e3;
+  border-radius: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.96) 0%,
+      rgba(255, 246, 250, 0.95) 48%,
+      rgba(255, 209, 226, 0.72) 100%
+    );
+  box-shadow: var(--hw-shadow);
+  overflow: hidden;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
+  gap: 20px;
   cursor: pointer;
-  transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease;
 }
 
-.feed-filter-summary:hover {
-  border-color: var(--color-accent);
-  background-color: var(--bg-table-hover);
+.feed-filter-summary::before {
+  content: "";
+  position: absolute;
+  right: 60px;
+  bottom: -28px;
+  width: 260px;
+  height: 115px;
+  border-radius: 140px 140px 0 0;
+  background:
+    radial-gradient(circle at 52% 30%, rgba(255, 255, 255, 0.42), transparent 27%),
+    linear-gradient(135deg, #ffb7d1 0%, #ffa1c1 58%, #f583af 100%);
+  opacity: 0.9;
+}
+
+.feed-filter-summary::after {
+  content: "✦";
+  position: absolute;
+  right: 290px;
+  top: 34px;
+  color: #ffffff;
+  font-size: 24px;
+  opacity: 0.95;
+}
+
+.feed-filter-summary > div {
+  position: relative;
+  z-index: 2;
 }
 
 .feed-filter-summary strong {
   display: block;
-  font-size: 0.9rem;
-  font-weight: 850;
-  color: var(--text-main);
-  margin-bottom: 0.25rem;
+  color: var(--hw-pink-deep);
+  font-size: 14px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.feed-filter-summary strong::after {
+  content: "";
+  display: inline-block;
+  width: 34px;
+  height: 2px;
+  margin-left: 10px;
+  vertical-align: middle;
+  background: var(--hw-pink);
 }
 
 .feed-filter-summary span {
   display: block;
-  font-size: 0.76rem;
-  font-weight: 600;
-  color: var(--text-muted);
+  max-width: 520px;
+  color: var(--hw-text);
+  font-size: 27px;
+  font-weight: 900;
+  line-height: 1.28;
+  letter-spacing: -1px;
+}
+
+.feed-filter-summary span::before {
+  content: "나와 비슷한 피부·톤의 ";
+}
+
+.feed-filter-summary span::after {
+  content: "를 모아보세요";
+  display: block;
 }
 
 .feed-filter-summary em {
+  position: relative;
+  z-index: 2;
   flex: 0 0 auto;
+  min-width: 100px;
+  height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--hw-pink);
+  border-radius: 0;
+  background: var(--hw-pink);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-style: normal;
-  font-size: 0.76rem;
-  font-weight: 850;
-  color: var(--color-accent);
-  padding: 0.38rem 0.55rem;
-  border: 1px solid rgba(250, 110, 104, 0.22);
-  background-color: rgba(250, 110, 104, 0.06);
-  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 900;
+  box-shadow: 0 10px 20px rgba(255, 161, 193, 0.3);
+}
+
+.feed-filter-summary:hover em {
+  background: var(--hw-pink-dark);
+}
+
+.feed-filter-inner {
+  margin-top: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--hw-line-soft);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 8px 20px rgba(255, 161, 193, 0.08);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .feed-filter-bar.is-closed .feed-filter-inner {
-  max-height: 0;
-  margin-top: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  border-color: transparent;
-  opacity: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.feed-filter-inner {
-  margin-top: 0.5rem;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  padding: 0.9rem 1rem;
-  display: flex;
-  gap: 0.55rem;
-  overflow-x: auto;
-  max-height: 90px;
-  opacity: 1;
-  transition:
-    max-height 0.25s ease,
-    margin 0.25s ease,
-    padding 0.25s ease,
-    opacity 0.2s ease,
-    background-color 0.3s,
-    border-color 0.3s;
-}
-
-.feed-filter-inner::-webkit-scrollbar {
-  height: 0;
+  display: none !important;
 }
 
 .feed-tag-btn {
-  flex: 0 0 auto;
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-motd-card);
-  color: var(--text-dark-muted);
-  padding: 0.55rem 0.85rem;
-  border-radius: 2px;
-  font-size: 0.78rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.15s ease;
+  border: 1px solid #ffd2e2;
+  background: #ffffff;
+  color: var(--hw-pink-deep);
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+  transition: 0.18s ease;
 }
 
 .feed-tag-btn:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  background-color: var(--bg-table-hover);
+  background: var(--hw-pink-light);
+  transform: translateY(-1px);
 }
 
 .feed-tag-btn.active {
-  background: linear-gradient(
-    135deg,
-    var(--color-accent),
-    var(--color-primary)
-  );
-  border-color: transparent;
+  background: var(--hw-pink);
+  border-color: var(--hw-pink);
   color: #ffffff;
-  box-shadow: 0 6px 14px rgba(250, 110, 104, 0.18);
+  box-shadow: 0 8px 18px rgba(255, 161, 193, 0.34);
 }
 
-.feed-upload-summary {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  padding: 1.3rem;
+/* =========================================================
+   PAGE LAYOUT
+   ========================================================= */
+
+main {
+  max-width: 1240px;
+  margin: 28px auto 90px;
+  padding: 0 28px;
   display: grid;
-  gap: 1rem;
-  transition:
-    background-color 0.3s,
-    border-color 0.3s;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 34px;
+  align-items: start;
 }
 
-.feed-upload-title {
-  font-size: 0.95rem;
-  font-weight: 800;
-  line-height: 1.4;
-}
-
-.feed-upload-title span {
-  color: var(--color-accent);
-}
-
-.feed-upload-desc {
-  color: var(--text-muted);
-  font-size: 0.78rem;
-  line-height: 1.55;
-}
-
-.feed-upload-btn {
-  width: 100%;
-  border: none;
-  border-radius: 2px;
-  background-color: var(--text-main);
-  color: var(--bg-card);
-  padding: 0.75rem 0;
-  font-size: 0.83rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.feed-upload-btn:hover {
-  background-color: var(--color-accent);
-  color: #ffffff;
-}
-
-.feed-card {
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-card);
-  border-radius: 4px;
-  overflow: hidden;
-  transition:
-    transform 0.18s ease,
-    border-color 0.18s ease,
-    background-color 0.3s;
-}
-
-.feed-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--color-primary);
-}
-
-.feed-card-head {
-  padding: 1rem 1.1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--border-row);
-}
-
-.feed-profile {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+.main-left-content {
   min-width: 0;
-}
-
-.feed-avatar {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    var(--color-accent),
-    var(--color-primary)
-  );
-  color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.8rem;
-  font-weight: 800;
-  flex: 0 0 auto;
-}
-
-.feed-profile-name {
-  font-size: 0.9rem;
-  font-weight: 800;
-  color: var(--text-main);
-  margin-bottom: 0.25rem;
-}
-
-.feed-profile-badges {
-  display: flex;
-  gap: 0.35rem;
-  flex-wrap: wrap;
-}
-
-.feed-badge {
-  display: inline-flex;
-  align-items: center;
-  background-color: var(--bg-table-hover);
-  border: 1px solid var(--border-row);
-  color: var(--text-dark-muted);
-  padding: 0.18rem 0.45rem;
-  font-size: 0.68rem;
-  font-weight: 800;
-  border-radius: 2px;
-}
-
-.feed-badge.accent {
-  color: var(--color-accent);
-  background-color: rgba(250, 110, 104, 0.08);
-  border-color: rgba(250, 110, 104, 0.18);
-}
-
-.feed-more {
-  color: var(--text-muted);
-  font-size: 1.25rem;
-  font-weight: 800;
-}
-
-.feed-visual {
-  position: relative;
-  height: 440px;
-  background-color: var(--bg-motd-card);
-  border-bottom: 1px solid var(--border-row);
-  overflow: hidden;
-}
-
-.feed-visual::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 52%;
-  width: 150px;
-  height: 210px;
-  transform: translate(-50%, -50%) rotate(-7deg);
-  background: rgba(255, 255, 255, 0.34);
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.08);
-}
-
-.feed-visual::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 25%;
-  width: 70px;
-  height: 34px;
-  transform: translateX(-50%);
-  background: rgba(33, 37, 41, 0.12);
-}
-
-.feed-card:nth-child(1) .feed-visual {
-  background: linear-gradient(135deg, #efe3d2, #d5c8b9);
-}
-
-.feed-card:nth-child(2) .feed-visual {
-  background:
-    radial-gradient(
-      circle at 72% 22%,
-      rgba(255, 255, 255, 0.62),
-      transparent 18%
-    ),
-    linear-gradient(135deg, #ffe1c4 0%, var(--color-primary) 100%);
-}
-
-.feed-card:nth-child(3) .feed-visual {
-  background: linear-gradient(135deg, #e8ecef, #ced4da);
-}
-
-.feed-product-chip {
-  position: absolute;
-  left: 1rem;
-  bottom: 1rem;
-  background-color: rgba(255, 255, 255, 0.88);
-  color: #212529;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 2px;
-  padding: 0.55rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 800;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-}
-
-.feed-body {
-  padding: 1rem 1.1rem 1.1rem;
-}
-
-.feed-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.75rem;
-}
-
-.feed-action-left {
-  display: flex;
-  gap: 0.9rem;
-}
-
-.feed-action-btn {
-  border: none;
-  background: transparent;
-  color: var(--text-main);
-  font-size: 1.15rem;
-  cursor: pointer;
-}
-
-.feed-likes {
-  font-size: 0.85rem;
-  font-weight: 800;
-  margin-bottom: 0.55rem;
-}
-
-.feed-caption {
-  color: var(--text-main);
-  font-size: 0.9rem;
-  line-height: 1.65;
-  margin-bottom: 0.55rem;
-}
-
-.feed-caption strong {
-  font-weight: 800;
-}
-
-.feed-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-bottom: 0.6rem;
-}
-
-.feed-tags button {
-  border: none;
-  background: transparent;
-  color: var(--color-accent);
-  font-size: 0.8rem;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.feed-comments {
-  color: var(--text-muted);
-  font-size: 0.82rem;
-  font-weight: 600;
-  margin-bottom: 0.6rem;
-}
-
-.feed-time {
-  color: var(--text-muted);
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-
-.feed-comment-input {
-  margin-top: 1rem;
-  padding-top: 0.9rem;
-  border-top: 1px solid var(--border-row);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.feed-comment-input input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  color: var(--text-main);
-  font-size: 0.82rem;
-}
-
-.feed-comment-input button {
-  border: none;
-  background: transparent;
-  color: var(--color-accent);
-  font-size: 0.8rem;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.feed-result-message {
-  color: var(--text-muted);
-  font-size: 0.82rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.feed-card.is-hidden {
-  display: none;
-}
-
-.feed-empty {
-  display: none;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  padding: 2.5rem 1rem;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-
-@media (max-width: 768px) {
-  .feed-visual {
-    height: 360px;
-  }
-}
-
-.feed-filter-inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 8px;
   width: 100%;
-  height: auto;
-  max-height: none;
   overflow: visible;
 }
 
-.feed-tag-btn {
-  flex: 0 0 auto;
-  max-width: 100%;
-  white-space: normal;
-  word-break: break-all;
-  line-height: 1.4;
-}
-
-.feed-list {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.feed-card {
-  background: #fff;
-  border: 1px solid #eeeeee;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-}
-
-.feed-card-image {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  /* 세로형 피드 비율 */
-  max-height: 520px;
-  background: #eadfce;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid #f0f0f0;
-  overflow: hidden;
-}
-
-.feed-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* 칸에 꽉 차게 */
-  object-position: center;
-  display: block;
-}
-
-.feed-image-placeholder {
-  width: 58%;
-  aspect-ratio: 3 / 4;
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #7f8da3;
-  font-size: 14px;
-  font-weight: 800;
-  transform: rotate(-7deg);
-}
-
-.feed-image-placeholder span {
-  display: block;
-  margin-top: 8px;
-  font-size: 13px;
-  color: #7f8da3;
-}
-
-.feed-card-content {
-  padding: 18px;
-}
-
-.feed-card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-}
-
-.feed-card-top strong {
-  display: block;
-  font-size: 15px;
-  color: #222;
-}
-
-.feed-card-top span {
-  display: block;
-  margin-top: 3px;
-  font-size: 12px;
-  color: #888;
-}
-
-.feed-more-btn {
-  border: none;
+.dashboard-section {
   background: transparent;
-  font-size: 20px;
-  cursor: pointer;
-  color: #777;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+  overflow: visible;
 }
 
-.feed-card-caption {
-  margin: -10px 0 12px;
-  font-size: 14px;
-  line-height: 1.7;
-  color: #333;
-  white-space: pre-line;
-}
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
 
-.feed-info-link {
-  display: inline-flex;
+.feed-section-header,
+.section-header {
+  position: relative;
+  margin-bottom: 10px;
+  padding: 24px 30px;
+  border: 1px solid var(--hw-line-soft);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--hw-card-shadow);
+  display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 20px;
+}
 
-  margin-bottom: 12px;
-  padding: 10px 16px; /* 버튼 안쪽 여백 키움 */
-  min-height: 34px; /* 버튼 높이 키움 */
+.feed-section-header::before,
+.section-header::before {
+  content: "BEAUTY FEED";
+  position: absolute;
+  top: -12px;
+  left: 26px;
+  padding: 4px 10px;
+  background: var(--hw-pink);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+}
 
-  border-radius: 0px;
-  background: #fff7e0;
-  color: #5a4300;
-  font-size: 14px; /* 글자 크기 키움 */
-  font-weight: 800;
-  text-decoration: none;
+.feed-section-header h2,
+.section-header h2 {
+  margin: 0;
+  color: var(--hw-text);
+  font-size: 27px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -1px;
+}
+
+.feed-section-header h2 span,
+.section-header h2 span {
+  display: block;
+  margin-top: 7px;
+  color: var(--hw-sub);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.feed-write-top-btn {
+  flex: 0 0 auto;
+  height: 48px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 0;
+  background: var(--hw-pink);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 900;
+  box-shadow: 0 12px 24px rgba(255, 161, 193, 0.34);
+}
+
+.feed-write-top-btn:hover {
+  background: var(--hw-pink-dark);
+}
+
+/* =========================================================
+   SORT + PERSONAL FILTER
+   여기부터 필터 설정 박스 안전 버전
+   ========================================================= */
+
+.feed-sort-select-wrap {
+  width: 100%;
+  max-width: 760px;
+  margin: 10px auto 18px;
+  padding: 0;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
 
   position: relative !important;
-  top: -10px !important;
-  box-sizing: border-box;
+  z-index: 1000 !important;
+  overflow: visible !important;
 }
 
-.feed-info-link:hover {
-  background: #facb47;
-}
-
-.feed-card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 8px 0 14px;
-}
-
-.feed-hashtag {
+.feed-sort-select {
+  flex: 0 0 auto;
+  width: 100px;
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--hw-line);
+  border-radius: 0;
+  background: #ffffff;
+  color: var(--hw-text);
   font-size: 13px;
-  font-weight: 700;
-  color: #fa6e68;
-}
-
-.feed-card-actions {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.feed-card-actions button {
-  border: none;
-  background: transparent;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 0;
-}
-
-.feed-card-bottom {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 14px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #444;
-}
-
-.feed-comment-box {
-  display: flex;
-  gap: 8px;
-  border-top: 1px solid #f0f0f0;
-  padding-top: 12px;
-}
-
-.feed-comment-box input {
-  flex: 1;
-  border: 1px solid #e5e5e5;
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-size: 13px;
+  font-weight: 800;
   outline: none;
 }
 
-.feed-comment-box input:focus {
-  border-color: #fa6e68;
+.feed-sort-select:focus {
+  border-color: var(--hw-pink);
 }
 
-.feed-comment-box button {
-  border: none;
-  border-radius: 999px;
-  background: #fa6e68;
-  color: #fff;
-  padding: 0 16px;
-  font-size: 13px;
-  font-weight: 800;
-  cursor: pointer;
+.feed-filter-ui {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  height: 40px !important;
+  z-index: 9999 !important;
+  overflow: visible !important;
 }
 
-/* 사진 오른쪽 위 1/1 표시 */
-.feed-card-image {
-  position: relative;
+.feed-filter-open-btn {
+  width: 104px !important;
+  height: 40px !important;
+  padding: 0 10px !important;
+
+  border: 1px solid #d7dde7 !important;
+  background: #ffffff !important;
+  color: #111827 !important;
+
+  border-radius: 0 !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+
+  cursor: pointer !important;
+  box-sizing: border-box !important;
 }
 
-.feed-photo-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  min-width: 44px;
-  height: 26px;
-  padding: 0 9px;
-  border-radius: 4px;
-  background-color: rgba(33, 37, 41, 0.62);
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 800;
+.feed-filter-open-btn:hover {
+  border-color: #ffa1c1 !important;
+  color: #ffa1c1 !important;
+}
+
+.feed-filter-icon {
+  width: 15px !important;
+  height: 15px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+}
+
+.feed-filter-icon img {
+  width: 15px !important;
+  height: 15px !important;
+  display: block !important;
+  object-fit: contain !important;
+}
+
+.feed-filter-arrow {
+  font-size: 11px !important;
+  color: inherit !important;
+  margin-left: 2px !important;
+}
+
+.feed-filter-panel {
+  position: absolute !important;
+  top: 46px !important;
+  left: 0 !important;
+
+  width: 240px !important;
+  max-width: 240px !important;
+
+  padding: 14px 14px 12px !important;
+
+  background: #ffffff !important;
+  border: 1px solid #dfe3ea !important;
+  border-radius: 4px !important;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+
+  display: none !important;
+
+  z-index: 99999 !important;
+  box-sizing: border-box !important;
+}
+
+.feed-filter-ui.is-open .feed-filter-panel {
+  display: block !important;
+}
+
+.feed-filter-group {
+  margin: 0 0 14px 0 !important;
+  padding: 0 !important;
+}
+
+.feed-filter-group:last-child {
+  margin-bottom: 0 !important;
+}
+
+.feed-filter-group-title {
+  margin: 0 0 8px 0 !important;
+  color: #111827 !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  line-height: 1.3 !important;
+}
+
+.feed-filter-chip-list {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 7px !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.feed-filter-chip {
+  height: 28px !important;
+  padding: 0 12px !important;
+
+  border: 1px solid #d7dde7 !important;
+  border-radius: 999px !important;
+
+  background: #ffffff !important;
+  color: #667085 !important;
+
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+}
+
+.feed-filter-chip:hover,
+.feed-filter-chip.is-selected {
+  background: #ffdce8 !important;
+  border-color: #ffa1c1 !important;
+  color: #c85c88 !important;
+}
+
+/* =========================================================
+   FEED LIST
+   ========================================================= */
+
+.feed-list {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+.feed-card {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  border: 1px solid var(--hw-line-soft);
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(255, 161, 193, 0.12);
+  overflow: hidden;
+  transition: 0.2s ease;
+}
+
+.feed-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 46px rgba(255, 161, 193, 0.2);
+}
+
+/* =========================================================
+   FEED PROFILE HEADER
+   ========================================================= */
+
+.feed-card > .feed-profile-header,
+.feed-card-top.feed-profile-header {
+  width: 100%;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 18px 22px !important;
+  margin: 0 !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid var(--hw-line-soft) !important;
+}
+
+.feed-profile-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+.feed-profile-avatar {
+  width: 46px !important;
+  height: 46px !important;
+  min-width: 46px !important;
+  min-height: 46px !important;
+  border-radius: 50% !important;
+  background:
+    radial-gradient(circle at 32% 25%, rgba(255, 255, 255, 0.65), transparent 24%),
+    linear-gradient(135deg, #ffa1c1 0%, #f47ca8 100%) !important;
+  color: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  overflow: hidden !important;
+  box-shadow: 0 8px 18px rgba(255, 161, 193, 0.35) !important;
+}
+
+.feed-profile-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+}
+
+.avatar-fallback {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5;
 }
 
-/* ... 메뉴 */
+.feed-profile-info {
+  min-width: 0 !important;
+  flex: 1 !important;
+}
+
+.feed-profile-nickname {
+  margin: 0 0 7px !important;
+  color: var(--hw-text) !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  line-height: 1.2 !important;
+}
+
+.feed-profile-tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+}
+
+.feed-profile-tag {
+  height: 24px !important;
+  padding: 0 10px !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+}
+
+.feed-profile-tag.skin {
+  background: #fff6fa !important;
+  border: 1px solid #ffd0e1 !important;
+  color: #c85c88 !important;
+}
+
+.feed-profile-tag.color {
+  background: #fff0f6 !important;
+  border: 1px solid #ffc3d8 !important;
+  color: var(--hw-pink-deep) !important;
+}
+
 .feed-more-wrap {
-  position: relative;
+  position: relative !important;
 }
 
 .feed-more-btn {
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  font-size: 20px;
-  font-weight: 900;
-  cursor: pointer;
-  padding: 4px 6px;
+  border: none !important;
+  background: transparent !important;
+  color: #9b9b9b !important;
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  padding: 4px 5px !important;
+}
+
+.feed-more-btn:hover {
+  color: var(--hw-pink-deep) !important;
 }
 
 .feed-more-menu {
-  position: absolute;
-  top: 32px;
-  right: 0;
-  width: 112px;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
   display: none;
-  z-index: 20;
+  position: absolute;
+  top: 34px;
+  right: 0;
+  width: 118px;
+  background: #ffffff;
+  border: 1px solid var(--hw-line-soft);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  overflow: hidden;
 }
 
 .feed-more-menu.is-open {
@@ -1046,253 +654,329 @@ main {
   width: 100%;
   border: none;
   background: transparent;
-  padding: 10px 12px;
+  padding: 12px 14px;
   text-align: left;
-  color: var(--text-main);
   font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
+  font-weight: 800;
+  color: var(--hw-text);
 }
 
 .feed-menu-item:hover {
-  background-color: var(--bg-table-hover);
+  background: var(--hw-pink-light);
 }
 
 .feed-menu-item.danger {
-  color: #fa6e68;
+  color: var(--hw-pink-deep);
 }
 
-/* 해시태그 클릭 버튼 */
-.feed-card-tags {
+/* =========================================================
+   FEED IMAGE
+   ========================================================= */
+
+.feed-card-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  max-height: 620px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.45), transparent 32%),
+    linear-gradient(135deg, #fff0f6 0%, #ffd6e5 100%);
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 8px 0 12px;
-}
-
-.feed-hashtag-btn {
-  border: none;
-  background: transparent;
-  color: #fa6e68;
-  font-size: 13px;
-  font-weight: 800;
-  cursor: pointer;
-  padding: 0;
-}
-
-.feed-hashtag-btn:hover {
-  text-decoration: underline;
-}
-
-/* 댓글 개수 회색 표시 */
-.feed-comment-count {
-  color: var(--text-muted);
-  font-size: 13px;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-
-/* 댓글 입력 */
-.feed-comment-box {
-  display: flex;
-  gap: 8px;
-  border-top: 1px solid var(--border-row);
-  padding-top: 12px;
-}
-
-.feed-comment-box input {
-  flex: 1;
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-body);
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-size: 13px;
-  outline: none;
-  color: var(--text-main);
-}
-
-.feed-comment-box input:focus {
-  border-color: #fa6e68;
-  background-color: var(--bg-card);
-}
-
-.feed-comment-box button {
-  border: none;
-  border-radius: 999px;
-  background-color: #fa6e68;
-  color: #ffffff;
-  padding: 0 16px;
-  font-size: 13px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-/* ===============================
-   FEED 최종 보정 스타일
-   =============================== */
-
-.feed-section-header {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  justify-content: center;
+  overflow: hidden;
 }
 
-.feed-write-top-btn {
-  flex: 0 0 auto;
-  border: none;
-  border-radius: 2px;
-  background-color: #fa6e68;
-  color: #ffffff;
-  padding: 0.75rem 1.35rem;
-  font-size: 0.84rem;
+.feed-card-image::before {
+  content: "";
+  position: absolute;
+  width: 160px;
+  height: 210px;
+  border-radius: 28px;
+  transform: rotate(-8deg);
+  background: rgba(255, 255, 255, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow: 0 20px 38px rgba(255, 161, 193, 0.18);
+}
+
+.feed-image {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.feed-image-placeholder {
+  position: relative;
+  z-index: 2;
+  width: 54%;
+  aspect-ratio: 3 / 4;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.66);
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  box-shadow: 0 16px 38px rgba(255, 161, 193, 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-7deg);
+  color: var(--hw-pink-deep);
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.feed-image-placeholder span {
+  margin-top: 8px;
+  color: #bc6a8b;
+  font-size: 13px;
   font-weight: 800;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.feed-write-top-btn:hover {
-  background-color: #f45d57;
 }
 
 .feed-photo-badge {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  min-width: 46px;
+  top: 16px;
+  right: 16px;
+  z-index: 5;
+  min-width: 48px;
   height: 30px;
-  padding: 0 9px;
-  border-radius: 0px;
-  background-color: rgba(33, 37, 41, 0.3);
+  padding: 5px 11px 0;
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.38);
   color: #ffffff;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5;
 }
 
 .feed-photo-arrow {
   position: absolute;
   top: 50%;
+  z-index: 6;
   transform: translateY(-50%);
-  width: 34px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border: none;
-  border-radius: 4px;
-  background-color: rgba(33, 37, 41, 0.32);
+  border-radius: 50%;
+  background: rgba(17, 17, 17, 0.32);
   color: #ffffff;
   font-size: 30px;
-  font-weight: 300;
-  cursor: pointer;
-  z-index: 6;
+  line-height: 1;
   display: none;
   align-items: center;
   justify-content: center;
-  padding-bottom: 10px !important;
-  box-sizing: border-box !important;
+  padding-bottom: 7px;
 }
 
 .feed-photo-arrow:hover {
-  background-color: rgba(33, 37, 41, 0.55);
+  background: rgba(17, 17, 17, 0.55);
 }
 
 .feed-photo-prev {
-  left: 12px;
+  left: 16px;
 }
 
 .feed-photo-next {
-  right: 12px;
+  right: 16px;
 }
 
-.feed-more-wrap {
-  position: relative;
+/* =========================================================
+   FEED CONTENT
+   ========================================================= */
+
+.feed-created-date {
+  padding: 15px 22px 0;
+  display: flex;
+  justify-content: flex-end;
+  background: #ffffff;
 }
 
-.feed-more-btn {
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  font-size: 20px;
-  font-weight: 900;
-  cursor: pointer;
-  padding: 4px 6px;
-}
-
-.feed-more-menu {
-  position: absolute;
-  top: 32px;
-  right: 0;
-  width: 112px;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  display: none;
-  z-index: 20;
-}
-
-.feed-more-menu.is-open {
-  display: block;
-}
-
-.feed-menu-item {
-  width: 100%;
-  border: none;
-  background: transparent;
-  padding: 10px 12px;
-  text-align: left;
-  color: var(--text-main);
-  font-size: 13px;
+.feed-created-date span {
+  color: #b69aa8;
+  font-size: 12px;
   font-weight: 700;
-  cursor: pointer;
 }
 
-.feed-menu-item:hover {
-  background-color: var(--bg-table-hover);
+.feed-card-content {
+  padding: 14px 22px 18px !important;
+  background: #ffffff;
 }
 
-.feed-menu-item.danger {
-  color: #fa6e68;
+.feed-card-actions {
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  margin: 0 0 12px 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.action-left {
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.feed-like-btn,
+.feed-comment-toggle-btn,
+.feed-share-btn {
+  width: auto !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  line-height: 1 !important;
+}
+
+.feed-like-icon,
+.feed-comment-icon,
+.feed-share-icon {
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  min-height: 26px !important;
+  max-width: 26px !important;
+  max-height: 26px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 22px !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.feed-like-count,
+.feed-comment-action-count {
+  height: 26px !important;
+  min-height: 26px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #555;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.feed-like-btn.is-liked .feed-like-icon {
+  color: var(--hw-pink-deep) !important;
+}
+
+.feed-share-icon {
+  transform: translateY(2px) !important;
+}
+
+.feed-share-icon img {
+  width: 24px !important;
+  height: 24px !important;
+  display: block !important;
+  object-fit: contain !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.feed-card-caption {
+  width: 100% !important;
+  margin: 0 0 10px 0 !important;
+  padding: 0 !important;
+  color: var(--hw-text);
+  white-space: normal !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.feed-card-caption > .js-caption-text {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+  color: var(--hw-text) !important;
+  font-weight: 500 !important;
+  white-space: pre-line !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+}
+
+.feed-card-tags {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 8px 12px !important;
+  margin: 8px 0 12px 0 !important;
+  padding: 0 !important;
+  text-indent: 0 !important;
 }
 
 .feed-hashtag-btn {
-  border: none;
-  background: transparent;
-  color: #fa6e68;
-  font-size: 13px;
-  font-weight: 800;
-  cursor: pointer;
-  padding: 0;
+  display: inline !important;
+  border: none !important;
+  background: transparent !important;
+  color: var(--hw-pink-deep) !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  line-height: 1.4 !important;
 }
 
 .feed-hashtag-btn:hover {
-  text-decoration: underline;
+  background: transparent !important;
+  color: var(--hw-pink-dark) !important;
+  text-decoration: underline !important;
 }
 
 .feed-comment-count {
   border: none;
   background: transparent;
-  padding: 0;
-  margin-bottom: 12px;
-  color: var(--text-muted);
+  padding: 0 !important;
+  margin: 0 !important;
+  color: #9b828e;
   font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
+  font-weight: 800;
 }
 
 .feed-comment-count:hover {
+  color: var(--hw-pink-deep);
   text-decoration: underline;
 }
 
+/* =========================================================
+   COMMENT
+   ========================================================= */
+
 .feed-comment-list {
   display: none;
-  margin-bottom: 12px;
-  padding: 10px 12px;
-  border-radius: 4px;
-  background-color: var(--bg-table-hover);
+  margin: 12px 0;
+  padding: 13px;
+  border: 1px solid var(--hw-line-soft);
+  background: #fff8fb;
+  overflow: visible;
 }
 
 .feed-comment-list.is-open {
@@ -1300,1579 +984,184 @@ main {
 }
 
 .feed-comment-item {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  overflow: visible;
+}
+
+.feed-comment-bubble,
+.comment-child-bubble {
+  width: 100%;
   display: flex;
-  gap: 8px;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.feed-comment-item strong {
-  flex: 0 0 auto;
-  color: var(--text-main);
-  font-weight: 800;
-}
-
-.feed-comment-item span {
-  color: var(--text-muted);
-}
-
-.feed-comment-box {
-  display: flex;
-  gap: 8px;
-  border-top: 1px solid var(--border-row);
-  padding-top: 12px;
-}
-
-.feed-comment-box input {
-  flex: 1;
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-body);
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-size: 13px;
-  outline: none;
-  color: var(--text-main);
-}
-
-.feed-comment-box input:focus {
-  border-color: #fa6e68;
-  background-color: var(--bg-card);
-}
-
-.feed-comment-box button {
-  border: none;
-  border-radius: 999px;
-  background-color: #fa6e68;
-  color: #ffffff;
-  padding: 0 16px;
-  font-size: 13px;
-  font-weight: 800;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid #f7e2ea;
+  background: #ffffff;
   cursor: pointer;
 }
 
-.sidebar-ranking {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  padding: 1.2rem;
+.feed-comment-bubble:hover,
+.comment-child-bubble:hover {
+  background: #fff6fa;
 }
 
-.sidebar-ranking h4 {
-  font-size: 0.95rem;
-  font-weight: 900;
-  margin-bottom: 0.8rem;
-  border-bottom: 2px solid var(--text-main);
-  padding-bottom: 0.65rem;
-}
-
-.ranking-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.ranking-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.55rem 0;
-  font-size: 0.86rem;
-}
-
-.rank-user {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-weight: 700;
-}
-
-.rank-num {
-  color: #fa6e68;
-  font-weight: 900;
-  width: 14px;
-}
-
-.rank-points {
-  color: var(--text-muted);
-  font-size: 0.75rem;
-}
-
-@media (max-width: 600px) {
-  .feed-section-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .feed-write-top-btn {
-    width: 100%;
-  }
-
-  /* ==========================================================================
-   인스타그램 스타일 피드 교정 및 가로 폭 고정 선언
-   ========================================================================== */
-
-  /* 피드 카드 전체 크기 유지 및 수직 흐름 강제 */
-  .feed-card {
-    display: block;
-    /* 수평 정렬을 차단하여 옆으로 늘어나는 현상 방지 */
-    width: 100%;
-    /* 기존 레이아웃이 정한 가로폭에 100% 맞춤 */
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-  }
-
-  /* 1. 프로필 영역: 인스타그램 서클 레이아웃 적용 */
-  .feed-card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .feed-profile-area {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  /* [요청사항] B가 들어가는 프로필 자리를 동그란 사진 모양으로 변경 */
-  .feed-profile-img {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    /* 완벽한 원형 생성 */
-    background-color: #fa6e68;
-    /* 기존 메인 포인트 색상 유지 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    flex-shrink: 0;
-    /* 공간이 부족해도 원형이 찌그러지지 않음 */
-    border: 1px solid rgba(0, 0, 0, 0.05);
-  }
-
-  /* 나중에 실제 <img> 태그가 프로필 안에 들어가도 원형으로 꽉 차게 처리 */
-  .feed-profile-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .feed-profile-img span {
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 16px;
-  }
-
-  .feed-profile-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .feed-profile-text strong {
-    font-size: 14px;
-    color: var(--text-main);
-    font-weight: 600;
-  }
-
-  .feed-profile-text span {
-    font-size: 11px;
-    color: #8e8e8e;
-  }
-
-  /* 2. 하단 콘텐츠 영역: 가로 고정 및 텍스트 자동 개행 처리 */
-  .feed-card-content {
-    display: block;
-    /* 내부 요소들이 순서대로 아래로 쌓이도록 설정 */
-    padding: 16px;
-  }
-
-  /* [요청사항] 글이 아무리 많아져도 옆으로 늘어나지 않고 아래로 늘어나게 선언 */
-  .feed-card-caption {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--text-main);
-    margin: 12px 0;
-
-    /* 가로 한계를 넘어가면 강제로 줄바꿈 시키는 핵심 속성 */
-    white-space: pre-wrap;
-    /* 줄바꿈, 띄어쓰기 그대로 유지 */
-    word-break: break-all;
-    /* 텍스트가 경계선에 도달하면 글자 단위로 쪼개서 아래로 내림 */
-    overflow-wrap: break-word;
-    /* 긴 영문/기호가 와도 터지지 않게 방지 */
-  }
-
-  /* 3. 액션 바 레이아웃 (댓글 모양 옆부분에 링크 배치하되 너무 다닥다닥 붙지 않게 설정) */
-  .feed-card-actions {
-    display: flex;
-    justify-content: space-between;
-    /* 좌측 버튼군과 우측 링크를 양끝으로 배치 */
-    align-items: center;
-    margin-bottom: 4px;
-  }
-
-  .feed-card-actions .action-left {
-    display: flex;
-    gap: 16px;
-    /* 좋아요와 댓글 아이콘 사이 여백 확보 */
-    align-items: center;
-  }
-
-  /* 아이콘 크기 및 정렬 */
-  .feed-like-btn,
-  .feed-comment-toggle-btn {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--text-main);
-  }
-
-  .feed-like-icon,
-  .feed-comment-icon {
-    font-size: 20px;
-  }
-  /* 해시태그 배치 */
-  .feed-card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 8px;
-  }
-
-  /* 피드 카드 전체 가로폭 고정 (절대 옆으로 터지지 않음) */
-  .feed-card {
-    display: flex;
-    flex-direction: column;
-    /* 무조건 위에서 아래로 수직 배치 */
-    width: 100%;
-    max-width: 614px;
-    /* image_18638e.jpg 속 최적의 피드 가로 사이즈 정의 */
-    background-color: var(--bg-card, #ffffff);
-    border: 1px solid var(--border-color, #e1e1e1);
-    border-radius: 8px;
-    margin-bottom: 24px;
-    box-sizing: border-box;
-    overflow: hidden;
-  }
-
-  /* 1. 상단 프로필 영역 (image_18638e.jpg 디자인 완벽 구현) */
-  .feed-card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border-color, #f0f0f0);
-  }
-
-  .feed-profile-area {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  /* 주황색 원형 프로필 이미지 자리 */
-  .feed-profile-img {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background-color: #fca34d;
-    /* 이미지 속 은은한 주황색 계열 반영 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .feed-profile-img span {
-    color: #ffffff;
-    font-weight: bold;
-    font-size: 15px;
-  }
-
-  /* 프로필 텍스트 및 하단 태그 배지 가로 정렬 구조 */
-  .feed-profile-text {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .feed-profile-text strong {
-    font-size: 14px;
-    color: var(--text-main, #262626);
-    font-weight: 600;
-  }
-
-  /* 피부타입 배지 라인 (가로로 예쁘게 나열) */
-  .feed-badge-container {
-    display: flex;
-    gap: 4px;
-  }
-
-  .feed-badge {
-    font-size: 11px;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: 500;
-  }
-
-  .feed-badge.skin-type {
-    background-color: #f5f5f5;
-    color: #666;
-  }
-
-  /* 복합성 스타일 */
-  .feed-badge.personal-color {
-    background-color: #ffeef0;
-    color: #ff6b7a;
-  }
-
-  /* 봄웜 스타일 */
-
-  /* 2. 하단 텍스트 영역 (100글자가 넘어도 무조건 아래로 줄바꿈 처리) */
-  .feed-card-content {
-    display: block;
-    /* 내부 텍스트들이 박스 크기에 갇혀 흐르도록 block 처리 */
-    width: 100%;
-    padding: 16px;
-    box-sizing: border-box;
-  }
-
-  /* [핵심 교정] 글이 길어져도 가로를 절대 깨뜨리지 않고 아래로 흐르게 강제 제어 */
-  .feed-card-caption {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--text-main, #262626);
-    margin: 8px 0;
-
-    /* 가로폭 경계를 만나는 순간 쪼개서 다음 줄로 내리는 브라우저 규칙 선언 */
-    white-space: pre-wrap;
-    /* 공백, 줄바꿈 브라우저 유지 */
-    word-break: break-all;
-    /* 100자 이상 시 알파벳/한글 모두 가로 경계에서 줄바꿈 */
-    overflow-wrap: break-word;
-    /* 특수기호나 링크가 섞여있어도 카드 밖으로 이탈 방지 */
-  }
-
-  /* 본문 내 작성자 아이디 강조 처리 */
-  .caption-username {
-    font-weight: 600;
-    margin-right: 6px;
-    color: #262626;
-  }
-
-  /* 3. 하단 액션 버튼 바 및 기타 인스타 요소 스타일 */
-  .feed-card-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .feed-card-actions .action-left {
-    display: flex;
-    gap: 14px;
-  }
-
-  .feed-like-btn,
-  .feed-comment-toggle-btn {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    font-size: 20px;
-    display: inline-flex;
-    align-items: center;
-    color: #262626;
-  }
-
-  /* 좋아요 수 표시 문구 스타일 */
-  .feed-likes-count-text {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: #262626;
-  }
-
-  /* ===== 프로필 영역만 수정 ===== */
-
-  .feed-card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 14px 18px 12px;
-    border-bottom: 1px solid #f1f1f1;
-    box-sizing: border-box;
-  }
-
-  .feed-profile-area {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    min-width: 0;
-  }
-
-  .feed-profile-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #fa6e68, #facb47);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .feed-profile-img span {
-    color: #fff;
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 1;
-  }
-
-  .feed-profile-meta {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    min-width: 0;
-    padding-top: 1px;
-  }
-
-  .feed-profile-name {
-    font-size: 14px;
-    font-weight: 700;
-    color: #111;
-    line-height: 1.2;
-    margin-bottom: 6px;
-    word-break: keep-all;
-  }
-
-  .feed-profile-badges {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-
-  .feed-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 20px;
-    padding: 0 8px;
-    border-radius: 3px;
-    font-size: 11px;
-    line-height: 1;
-    font-weight: 500;
-    box-sizing: border-box;
-    border: 1px solid #eee;
-    background: #fff;
-    color: #666;
-  }
-
-  .feed-badge.skin-type {
-    background: #fff6cf;
-    color: #7a6700;
-    border-color: #f1df8a;
-  }
-
-  .feed-badge.personal-color {
-    background: #fff0ee;
-    color: #e27973;
-    border-color: #f4c5bf;
-  }
-
-  .feed-more-btn {
-    border: none;
-    background: transparent;
-    color: #8b8b8b;
-    font-size: 20px;
-    line-height: 1;
-    cursor: pointer;
-    padding: 2px 4px;
-    margin-top: 2px;
-    flex-shrink: 0;
-  }
-
-  .feed-more-btn:hover {
-    color: #444;
-  }
-
-  /* ===============================
-   피드 프로필 영역만 수정
-   사진/본문/좋아요/댓글 건드리지 않음
-   =============================== */
-
-  .feed-card > .feed-profile-header {
-    width: 100%;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    padding: 16px 18px 14px 18px !important;
-    margin: 0 !important;
-    box-sizing: border-box !important;
-    border-bottom: 1px solid #f0f0f0;
-    background: #ffffff;
-  }
-
-  /* 왼쪽: 프로필사진 + 텍스트 */
-  .feed-profile-left {
-    display: flex !important;
-    align-items: center !important;
-    gap: 12px !important;
-    min-width: 0;
-    flex: 1;
-  }
-
-  /* 원형 프로필 사진 */
-  .feed-profile-circle {
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-    border-radius: 50% !important;
-    background: linear-gradient(135deg, #fa6e68 0%, #facb47 100%) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    overflow: hidden !important;
-    flex: 0 0 40px !important;
-  }
-
-  .feed-profile-circle span {
-    color: #ffffff !important;
-    font-size: 14px !important;
-    font-weight: 900 !important;
-    line-height: 1 !important;
-  }
-
-  /* 닉네임 + 피부타입 */
-  .feed-profile-detail {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    min-width: 0;
-    flex: 1;
-  }
-
-  .feed-profile-nickname {
-    font-size: 14px !important;
-    font-weight: 900 !important;
-    color: #111111 !important;
-    line-height: 1.2 !important;
-    margin-bottom: 5px !important;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .feed-profile-type {
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    color: #777777 !important;
-    line-height: 1.2 !important;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* 오른쪽 ... */
-  .feed-profile-header .feed-more-wrap {
-    position: relative;
-    flex: 0 0 auto;
-    margin-left: 12px;
-  }
-
-  .feed-profile-header .feed-more-btn {
-    border: none !important;
-    background: transparent !important;
-    color: #888888 !important;
-    font-size: 20px !important;
-    font-weight: 900 !important;
-    line-height: 1 !important;
-    padding: 0 2px !important;
-    margin: 0 !important;
-    cursor: pointer;
-  }
-
-  .feed-profile-header .feed-more-btn:hover {
-    color: #333333 !important;
-  }
-
-  /* 댓글 아이콘 옆 정보공유 버튼 */
-  .action-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .feed-share-link {
-    align-items: center;
-    justify-content: center;
-    height: 28px;
-    padding: 0 12px;
-    border-radius: 999px;
-    background: #fff7df;
-    border: 1px solid rgba(250, 203, 71, 0.65);
-    color: #6f5200;
-    font-size: 12px;
-    font-weight: 800;
-    text-decoration: none;
-    line-height: 1;
-    white-space: nowrap;
-  }
-
-  .feed-share-link:hover {
-    background: #facb47;
-    color: #3f2f00;
-  }
-}
-.feed-comment-box {
-  display: none;
-}
-
-.feed-comment-form {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.feed-comment-form input {
-  flex: 1;
-}
-
-.feed-comment-form button {
+.feed-comment-avatar,
+.comment-child-avatar {
   flex-shrink: 0;
-}
-.feed-comment-box {
-  width: 100%;
-}
-
-.feed-comment-form {
-  width: 100%;
-  display: flex;
-  align-items: stretch;
-  gap: 8px;
-}
-
-.feed-comment-form input {
-  flex: 1;
-  height: 42px;
-  box-sizing: border-box;
-}
-
-.feed-comment-form .comment-submit-btn {
-  height: 42px;
-  min-width: 58px;
-  padding: 0 16px;
-  border-radius: 999px;
-  box-sizing: border-box;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffd5e4, #fff1f7);
+  color: var(--hw-pink-deep);
+  font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.feed-created-date {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  padding: 15px 18px 0 18px;
-  box-sizing: border-box;
-  background: #ffffff;
-}
-
-.feed-created-date span {
-  font-size: 12px;
-  font-weight: 600;
-  color: #9a9a9a;
-  line-height: 1;
-}
-
-.feed-like-btn.is-liked .feed-like-icon {
-  color: #111 !important;
-}
-
-.feed-comment-box {
-  width: 100%;
-  margin-top: 10px;
-}
-
-.feed-comment-form {
-  width: 100%;
-  display: flex;
-  align-items: stretch;
-  gap: 8px;
-}
-
-.feed-comment-form input[type="text"] {
-  flex: 1;
-  height: 42px;
-  box-sizing: border-box;
-  border-radius: 2px !important;
-}
-
-.feed-comment-form .comment-submit-btn {
-  height: 42px;
-  min-width: 58px;
-  padding: 0 16px;
-  border-radius: 2px !important;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.feed-comment-list {
-  width: 100% !important;
-  margin-top: 10px !important;
-  margin-right: 0 !important;
-  box-sizing: border-box !important;
-}
-
-.feed-comment-item {
-  width: 100% !important;
-  display: block !important;
-  margin-bottom: 10px !important;
-  box-sizing: border-box !important;
-}
-
-.feed-comment-bubble {
-  width: 100% !important;
-  min-height: 52px !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  background: #fff !important;
-
-  padding: 10px 14px !important;
-  box-sizing: border-box !important;
-  cursor: pointer !important;
-  background: #fdfaf5 !important; /* 은은한 블록 배경 */
-  padding: 16px;
-}
-
-.feed-comment-bubble:hover {
-  background: #f3f0ea !important;
 }
 
 .feed-comment-avatar {
-  width: 30px !important;
-  height: 30px !important;
-  min-width: 30px !important;
-  border-radius: 50% !important;
-  background: #f8dfe3 !important;
-  color: #7a7680 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 12px !important;
-  font-weight: 800 !important;
-  flex-shrink: 0 !important;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  font-size: 12px;
 }
 
-.feed-comment-main {
-  flex: 1 !important;
-  min-width: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  overflow: hidden !important;
+.comment-child-avatar {
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  font-size: 10px;
+}
+
+.feed-comment-avatar img,
+.comment-child-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.feed-comment-main,
+.comment-child-main {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.feed-comment-writer,
+.comment-child-writer {
+  flex-shrink: 0;
+  color: var(--hw-text);
+  font-weight: 900;
 }
 
 .feed-comment-writer {
-  font-size: 13px !important;
-  font-weight: 900 !important;
-  color: #222222 !important;
-  flex-shrink: 0 !important;
+  font-size: 13px;
 }
 
-.feed-comment-content {
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  color: #5f6b7a !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+.comment-child-writer {
+  font-size: 12px;
+}
+
+.feed-comment-content,
+.comment-child-content {
+  color: #695c63;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.comment-child-content {
+  font-size: 12px;
 }
 
 .feed-comment-empty {
   width: 100%;
-  padding: 12px;
-  color: #999999;
+  padding: 18px 12px;
+  border: 1px dashed #f2c8d8;
+  background: #ffffff;
+  color: #aaa;
   font-size: 13px;
+  font-weight: 700;
   text-align: center;
-  border: 1px dashed #e5e5e5;
-  border-radius: 12px;
-  box-sizing: border-box;
 }
 
 .comment-child-list {
-  width: 100% !important;
-  display: block !important;
-  margin: 7px 0 0 0 !important;
-  padding-left: 24px !important;
-  box-sizing: border-box !important;
-  border-left: none !important;
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding-left: 38px;
+  overflow: visible;
 }
 
 .comment-child-list:empty {
   display: none !important;
 }
 
-.comment-child-bubble {
-  width: 100% !important;
-  min-height: 46px !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  background: #fff !important;
-
-  padding: 8px 10px !important;
-  box-sizing: border-box !important;
-  cursor: pointer !important;
-  background: #fdfaf5 !important; /* 은은한 블록 배경 */
-
-  padding: 16px;
+.comment-child-item {
+  position: relative;
+  margin-bottom: 8px;
+  overflow: visible;
 }
 
-.comment-child-bubble:hover {
-  background: #f3f0ea !important;
-}
-
-.comment-child-avatar {
-  width: 24px !important;
-  height: 24px !important;
-  min-width: 24px !important;
-  border-radius: 50% !important;
-  background: #fff0ee !important;
-  color: #7a7680 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 10px !important;
-  font-weight: 900 !important;
-  flex-shrink: 0 !important;
-}
-
-.comment-child-main {
-  flex: 1 !important;
-  min-width: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 7px !important;
-  overflow: hidden !important;
-}
-
-.comment-child-writer {
-  font-size: 12px !important;
-  font-weight: 900 !important;
-  color: #222222 !important;
-  flex-shrink: 0 !important;
-}
-
-.comment-child-content {
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  color: #5f6b7a !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-.comment-more-wrap {
-  position: relative !important;
-  display: none;
-  margin-left: auto !important;
-  flex-shrink: 0 !important;
-}
-
-.comment-more-btn {
-  width: 24px !important;
-  height: 24px !important;
-  border: none !important;
-  background: transparent !important;
-  color: #8f8f8f !important;
-  font-size: 17px !important;
-  font-weight: 800 !important;
-  cursor: pointer !important;
-  border-radius: 50% !important;
-  line-height: 1 !important;
-  padding: 0 !important;
-}
-
-.comment-more-btn:hover {
-  background: #eeeeee !important;
-  color: #333333 !important;
-}
-
-.comment-more-menu {
-  display: none;
-  position: absolute;
-  top: 28px;
-  right: 0;
-  min-width: 90px;
-  background: #ffffff;
-  border: 1px solid #ececec;
-  border-radius: 10px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-  padding: 6px;
-  z-index: 50;
-}
-
-.comment-more-menu.is-open {
-  display: block;
-}
-
-.comment-menu-item {
-  width: 100%;
+.comment-child-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 4px 42px;
+  padding: 0;
   border: none;
   background: transparent;
-  text-align: left;
-  padding: 8px 10px;
+  color: #b47e93;
   font-size: 12px;
-  font-weight: 700;
-  border-radius: 8px;
-  cursor: pointer;
-  color: #333333;
-}
-
-.comment-menu-item:hover {
-  background: #f7f7f7;
-}
-
-.comment-menu-item.danger {
-  color: #e05d56;
-}
-
-.comment-menu-item.danger:hover {
-  background: #fff1ef;
-}
-
-.comment-reply-target {
-  display: none;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
-  width: 100%;
-  margin-bottom: 8px;
-  padding: 9px 12px;
-  border-radius: 12px;
-  background: #fafafa;
-  border: 1px solid #eeeeee;
-  box-sizing: border-box;
-}
-
-.comment-reply-target.is-active {
-  display: flex;
-}
-
-.comment-reply-target-text {
-  flex: 1;
-  min-width: 0;
-  font-size: 12px;
-  line-height: 1.4;
-  color: #666666;
-}
-
-.comment-reply-target-writer {
   font-weight: 900;
-  color: #111111;
-}
-
-.comment-reply-target-content {
-  display: block;
-  margin-top: 2px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.comment-mention {
-  color: #fa6e68 !important;
-  text-decoration: underline !important;
-  text-underline-offset: 3px !important;
-  font-weight: 900 !important;
-  margin-right: 4px !important;
-}
-
-.comment-reply-target-writer {
-  color: #fa6e68 !important;
-  text-decoration: underline !important;
-  text-underline-offset: 3px !important;
-  font-weight: 900 !important;
-}
-/* 대댓글 안에 또 대댓글 목록이 생겨도 더 이상 안쪽으로 밀리지 않게 고정 */
-.comment-child-item .comment-child-list {
-  width: 100% !important;
-  margin: 7px 0 0 0 !important;
-  padding-left: 0 !important;
-  border-left: none !important;
-}
-
-/* 대대댓글도 대댓글과 같은 위치 */
-.comment-child-item .comment-child-item {
-  padding-left: 0 !important;
-}
-
-/* @닉네임 표시 */
-.comment-mention {
-  color: #fa6e68 !important;
-  font-weight: 900 !important;
-  margin-right: 4px !important;
-  cursor: pointer !important;
-}
-
-/* 댓글이 길어져도 피드 카드가 옆으로 늘어나지 않게 */
-.feed-comment-main,
-.comment-child-main {
-  min-width: 0 !important;
-  max-width: 100% !important;
-  overflow: hidden !important;
-}
-
-/* 부모 댓글 내용 줄바꿈 */
-.feed-comment-content {
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: unset !important;
-  word-break: break-word !important;
-  overflow-wrap: anywhere !important;
-  line-height: 1.5 !important;
-}
-
-/* 대댓글 내용 줄바꿈 */
-.comment-child-content {
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: unset !important;
-  word-break: break-word !important;
-  overflow-wrap: anywhere !important;
-  line-height: 1.5 !important;
-}
-
-/* 댓글 상자 자체도 옆으로 안 커지게 */
-.feed-comment-bubble,
-.comment-child-bubble {
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-/* 답글 목록 숨김: 기존 display:block !important보다 강하게 */
-.feed-comment-item > .comment-child-list.is-collapsed {
-  display: none !important;
-}
-
-/* 답글 더보기 버튼 예쁘게 */
-.comment-child-toggle-btn {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 6px !important;
-
-  margin: 8px 0 2px 42px !important;
-  padding: 0 !important;
-
-  border: none !important;
-  outline: none !important;
-  background: transparent !important;
-
-  color: #7b7166 !important;
-  font-size: 12px !important;
-  font-weight: 800 !important;
-  line-height: 1.2 !important;
-
-  cursor: pointer !important;
-  appearance: none !important;
-  -webkit-appearance: none !important;
-}
-
-/* 앞에 짧은 선 */
-.comment-child-toggle-btn::before {
-  content: "";
-  width: 24px;
-  height: 1.5px;
-  background: #d8d0c5;
-  display: inline-block;
-}
-
-/* hover */
-.comment-child-toggle-btn:hover {
-  color: #fa6e68 !important;
-  background: transparent !important;
-}
-
-/* 답글 펼친 상태 */
-.comment-child-toggle-btn.is-open {
-  color: #fa6e68 !important;
-}
-
-.comment-child-toggle-btn {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 6px !important;
-  margin: 8px 0 2px 42px !important;
-  padding: 0 !important;
-  border: none !important;
-  outline: none !important;
-  background: transparent !important;
-  color: #7b7166 !important;
-  font-size: 12px !important;
-  font-weight: 800 !important;
-  line-height: 1.2 !important;
-  cursor: pointer !important;
-  appearance: none !important;
-  -webkit-appearance: none !important;
 }
 
 .comment-child-toggle-btn::before {
   content: "";
   width: 24px;
   height: 1.5px;
-  background: #d8d0c5;
-  display: inline-block;
+  background: #edbfd0;
 }
 
 .comment-child-toggle-btn:hover,
 .comment-child-toggle-btn.is-open {
-  color: #fa6e68 !important;
-  background: transparent !important;
-}
-
-.feed-comment-item > .comment-child-list {
-  overflow: hidden !important;
-}
-
-.comment-child-toggle-btn {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 6px !important;
-  margin: 8px 0 2px 42px !important;
-  padding: 0 !important;
-  border: none !important;
-  outline: none !important;
-  background: transparent !important;
-  color: #7b7166 !important;
-  font-size: 12px !important;
-  font-weight: 800 !important;
-  line-height: 1.2 !important;
-  cursor: pointer !important;
-  appearance: none !important;
-  -webkit-appearance: none !important;
-}
-
-.comment-child-toggle-btn::before {
-  content: "";
-  width: 24px;
-  height: 1.5px;
-  background: #d8d0c5;
-  display: inline-block;
-}
-
-.comment-child-toggle-btn:hover,
-.comment-child-toggle-btn.is-open {
-  color: #fa6e68 !important;
-  background: transparent !important;
-}
-
-.feed-card-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 8px;
-}
-
-.action-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.feed-like-btn,
-.feed-comment-toggle-btn {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 4px !important;
-  border: none !important;
-  background: transparent !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  cursor: pointer !important;
-  line-height: 1 !important;
-}
-
-.feed-like-icon,
-.feed-comment-icon {
-  font-size: 25px !important;
-  line-height: 1 !important;
-  margin-top: -21px !important;
-}
-
-.feed-like-count,
-.feed-comment-action-count {
-  font-size: 21px !important;
-  font-weight: 100px !important;
-  color: #555555 !important;
-  line-height: 1 !important;
-  margin-top: -21px !important;
-}
-
-.feed-like-btn.is-liked .feed-like-icon {
-  color: #111111 !important;
-}
-
-/* 좋아요/댓글/정보공유 영역 높이 고정 */
-.feed-card-actions {
-  min-height: 30px !important;
-  display: flex !important;
-  align-items: center !important;
-  margin-top: 8px !important;
-  margin-bottom: 10px !important;
-}
-
-/* 아이콘 줄 */
-.action-left {
-  min-height: 30px !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-}
-
-/* 정보공유 버튼이 있을 때도 세로 높이 튀지 않게 */
-.feed-share-link {
-  height: 26px !important;
-  display: inline-flex;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 0 10px !important;
-  margin: 0 !important;
-  line-height: 1 !important;
-  box-sizing: border-box !important;
-}
-
-/* 피드 내용 위치 통일 */
-.feed-card-caption {
-  margin-top: 0 !important;
-  margin-bottom: 10px !important;
-  line-height: 1.5 !important;
-}
-
-/* 해시태그 위치도 일정하게 */
-.feed-card-tags {
-  margin-top: 8px !important;
-}
-
-/* 피드 본문이 길어져도 카드가 옆으로 늘어나지 않게 */
-.feed-card-caption {
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-  white-space: normal !important;
-  overflow: visible !important;
-  word-break: break-word !important;
-  overflow-wrap: anywhere !important;
-  line-height: 1.5 !important;
-}
-
-/* JS로 들어가는 실제 피드 내용 */
-.js-caption-text {
-  display: inline !important;
-  white-space: normal !important;
-  word-break: break-word !important;
-  overflow-wrap: anywhere !important;
-  line-height: 1.5 !important;
-}
-.feed-card-caption {
-  width: 100% !important;
-  max-width: 100% !important;
-  white-space: pre-wrap !important;
-  word-break: break-word !important;
-  overflow-wrap: anywhere !important;
-  line-height: 1.6 !important;
-  box-sizing: border-box !important;
-}
-
-.js-caption-text {
-  display: block !important;
-  white-space: pre-wrap !important;
-  word-break: break-word !important;
-  overflow-wrap: anywhere !important;
-  line-height: 1.6 !important;
-}
-
-.feed-card-caption {
-  width: 100% !important;
-  max-width: 100% !important;
-  max-height: none !important;
-  overflow: visible !important;
-  white-space: pre-wrap !important;
-  word-break: break-word !important;
-  overflow-wrap: anywhere !important;
-  line-height: 0.3 !important;
-  margin-top: 4px !important;
-  margin-bottom: 6px !important;
-  box-sizing: border-box !important;
-  display: block !important;
-}
-
-.js-caption-text {
-  display: block !important;
-  width: 100% !important;
-  max-height: none !important;
-  overflow: visible !important;
-  white-space: pre-wrap !important;
-  word-break: break-word !important;
-  overflow-wrap: anywhere !important;
-  line-height: 1.35 !important;
+  color: var(--hw-pink-deep);
 }
 
 .comment-more-wrap {
-  position: relative !important;
-  display: none !important; /* 기본적으론 숨김 */
-  margin-left: auto !important; /* 오른쪽 끝으로 밀기 */
-  flex-shrink: 0 !important; /* 레이아웃 찌그러짐 방지 */
-  overflow: visible !important; /* 🌟 팝업이 밖으로 삐져나갈 수 있게 허용 */
-  z-index: 50 !important;
+  position: relative;
+  display: none !important;
+  margin-left: auto;
+  flex-shrink: 0;
+  z-index: 50;
 }
 
 .comment-more-wrap.is-owner {
   display: block !important;
 }
 
-/* ===== 대댓글 ... 메뉴 최종 ===== */
-
-/* 대댓글 영역에서 메뉴 잘리지 않게 */
-.comment-child-list,
-.comment-child-item,
-.comment-child-bubble {
-  overflow: visible !important;
+.comment-more-btn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: #aaa;
+  font-size: 17px;
+  font-weight: 900;
 }
 
-/* 대댓글 하나하나 위치 기준 */
-.comment-child-item {
-  position: relative !important;
+.comment-more-btn:hover {
+  color: var(--hw-pink-deep);
+  background: #fff0f6;
 }
 
-/* 대댓글 안의 ... */
-.comment-child-item .comment-more-wrap {
-  position: relative !important;
-  display: none !important;
-  margin-left: auto !important;
-  flex-shrink: 0 !important;
-  z-index: 1000 !important;
-}
-
-/* 내 대댓글일 때만 ... 보이기 */
-.comment-child-item .comment-more-wrap.is-owner {
-  display: block !important;
-}
-
-/* 대댓글 수정/삭제 메뉴 */
-.comment-child-item .comment-more-menu {
-  display: none;
-  position: absolute !important;
-  top: 26px !important;
-  right: 0 !important;
-  min-width: 96px !important;
-
-  background: #ffffff !important;
-  border: 1px solid #ececec !important;
-  border-radius: 10px !important;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14) !important;
-  padding: 6px !important;
-}
-
-/* ===== 대댓글 메뉴 최종 해결 ===== */
-
-/* 메뉴가 잘리지 않게 */
-.feed-comment-list,
-.feed-comment-item,
-.comment-child-list,
-.comment-child-item {
-  overflow: visible !important;
-}
-
-/* 기본 대댓글 */
-.comment-child-item {
-  position: relative !important;
-  z-index: 1 !important;
-}
-
-/* 메뉴 열린 대댓글만 맨 앞으로 */
-.comment-child-item.menu-open {
-  z-index: 999999 !important;
-}
-
-/* 대댓글 ... */
-.comment-child-item .comment-more-wrap {
-  position: relative !important;
-  z-index: 999999 !important;
-}
-
-/* 대댓글 수정/삭제 메뉴 */
-.comment-child-item .comment-more-menu {
-  position: absolute !important;
-  top: 26px !important;
-  bottom: auto !important;
-  right: 0 !important;
-
-  display: none;
-  min-width: 96px !important;
-  background: #fff !important;
-  border: 1px solid #ececec !important;
-  border-radius: 10px !important;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14) !important;
-  padding: 6px !important;
-  z-index: 999999 !important;
-}
-
-/* 열렸을 때 */
-.comment-child-item .comment-more-menu.is-open {
-  display: block !important;
-}
-
-/* 답글 남기는 중 박스 글자 길어질 때 줄바꿈 */
-.comment-reply-target {
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
-}
-
-.comment-reply-target-writer,
-.comment-reply-target-content {
-  max-width: 100% !important;
-  white-space: pre-wrap !important;
-  word-break: break-word !important;
-  overflow-wrap: anywhere !important;
-  line-height: 1.35 !important;
-}
-
-/* 아래 글 내용 부분 */
-.comment-reply-target-content {
-  display: block !important;
-  margin-top: 4px !important;
-  color: #777 !important;
-}
-
-/* 답글 박스 내부가 옆으로 밀리지 않게 */
-.comment-reply-target * {
-  min-width: 0 !important;
-}
-
-.comment-reply-cancel-btn {
-  width: auto !important;
-  height: auto !important;
-  min-width: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  color: #999 !important;
-
-  font-size: 18px !important;
-  font-weight: 700 !important;
-  line-height: 1 !important;
-
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  cursor: pointer !important;
-  flex-shrink: 0 !important;
-}
-
-.comment-reply-cancel-btn:hover {
-  background: transparent !important;
-  color: #fa6e68 !important;
-}
-.comment-reply-target-writer::before {
-  content: "@" !important;
-}
-.comment-edit-input {
-  width: 180px;
-  padding: 5px 8px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-}
-
-.comment-save-btn,
-.comment-cancel-btn {
-  margin-left: 4px;
-  padding: 5px 8px;
-  border: 0;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.feed-profile-avatar img,
-.feed-comment-avatar img,
-.comment-child-avatar img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-}
-.feed-comment-avatar,
-.comment-child-avatar {
-  overflow: hidden !important;
-}
-
-.feed-comment-avatar img,
-.comment-child-avatar img {
-  width: 100% !important;
-  height: 100% !important;
-  border-radius: 50% !important;
-  object-fit: cover !important;
-  display: block !important;
-}
-.feed-sort-select-wrap {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
-  margin: 0 0 16px 0;
-  box-sizing: border-box;
-}
-
-.feed-sort-select-wrap label {
-  font-size: 13px;
-  font-weight: 800;
-  color: #555555;
-}
-
-.feed-sort-select {
-  width: 130px;
-  height: 36px;
-  border: 1px solid #eeeeee;
-  border-radius: 2px;
-  background: #ffffff;
-  color: #333333;
-  font-size: 13px;
-  font-weight: 700;
-  padding: 0 10px;
-  outline: none;
-  cursor: pointer;
-}
-
-.feed-sort-select:focus {
-  border-color: #facb47;
-  box-shadow: 0 0 0 3px rgba(250, 203, 71, 0.18);
-}
 .comment-more-menu {
   display: none !important;
 }
@@ -2880,12 +1169,11 @@ main {
 .floating-comment-menu {
   position: fixed !important;
   display: none !important;
-  min-width: 96px !important;
-  background: #ffffff !important;
-  border: 1px solid #ececec !important;
-  border-radius: 10px !important;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22) !important;
+  min-width: 98px !important;
   padding: 6px !important;
+  background: #ffffff !important;
+  border: 1px solid var(--hw-line-soft) !important;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.14) !important;
   z-index: 2147483647 !important;
 }
 
@@ -2896,229 +1184,212 @@ main {
 .floating-comment-menu button {
   display: block !important;
   width: 100% !important;
-  padding: 8px 10px !important;
-  border: 0 !important;
+  padding: 9px 11px !important;
+  border: none !important;
   background: #ffffff !important;
+  color: var(--hw-text) !important;
   text-align: left !important;
   font-size: 13px !important;
-  cursor: pointer !important;
-  border-radius: 7px !important;
-  color: #222222 !important;
+  font-weight: 800 !important;
 }
 
 .floating-comment-menu button:hover {
-  background: #f7f7f7 !important;
+  background: #fff6fa !important;
 }
 
 .floating-comment-menu button.danger {
-  color: #e44747 !important;
+  color: #e44777 !important;
 }
-/* 피드 오른쪽 영역 */
-main {
-  display: flex;
+
+.comment-reply-target {
+  display: none;
+  width: 100%;
+  margin-bottom: 9px;
+  padding: 10px 12px;
+  border: 1px solid var(--hw-line-soft);
+  background: #fff6fa;
   align-items: flex-start;
-  gap: 24px;
-}
-
-.main-left-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.feed-right-sidebar {
-  width: 270px;
-  flex: 0 0 270px;
-  position: sticky;
-  top: 100px;
-}
-
-/* 실시간 해시태그 랭킹 박스 */
-.feed-trend-box {
-  width: 100%;
-  background: #ffffff;
-  border: 1px solid #dddddd;
-  border-radius: 4px;
-  padding: 18px 20px;
-  box-sizing: border-box;
-}
-
-/* 제목 */
-.feed-trend-title {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding-bottom: 11px;
-  margin-bottom: 12px;
-  border-bottom: 2px solid #222222;
-}
-
-.feed-trend-title span {
-  font-size: 15px;
-  line-height: 1;
-}
-
-.feed-trend-title strong {
-  font-size: 15px;
-  font-weight: 900;
-  color: #111111;
-}
-
-/* 리스트 */
-.feed-trend-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.feed-trend-item {
-  display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 9px 0;
-  border-bottom: 0;
+  gap: 10px;
 }
 
-.feed-trend-left {
+.comment-reply-target.is-active {
   display: flex;
-  align-items: center;
-  gap: 14px;
-  min-width: 0;
 }
 
-/* 순위 숫자 */
-.feed-trend-rank {
-  width: 12px;
-  min-width: 12px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #ff5b57;
-  text-align: left;
-}
-
-/* 태그명 */
-.feed-trend-tag {
-  display: inline-block;
-  max-width: 135px;
-  font-size: 14px;
-  font-weight: 700;
-  color: #111111;
-  text-decoration: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.feed-trend-tag:hover {
-  color: #fa6e68;
-}
-
-/* 사용 횟수 */
-.feed-trend-count {
-  font-size: 12px;
-  font-weight: 500;
-  color: #8b9bb0;
-  white-space: nowrap;
-}
-
-/* 비어있을 때 */
-.feed-trend-empty {
-  font-size: 13px;
-  color: #999999;
-  padding: 10px 0;
-}
-
-/* 화면 좁을 때 */
-@media (max-width: 1100px) {
-  main {
-    flex-direction: column;
-  }
-
-  .feed-right-sidebar {
-    width: 100%;
-    flex: none;
-    position: static;
-  }
-}
-.main-left-content {
+.comment-reply-target-text {
   flex: 1;
   min-width: 0;
+  color: #756871;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
-/* 오른쪽 사이드바 */
-.feed-right-sidebar {
-  width: 260px;
-  flex: 0 0 260px;
-  position: sticky;
-  top: 100px;
+.comment-reply-target-writer {
+  color: var(--hw-pink-deep);
+  font-weight: 900;
 }
 
-/* TOP 5 해시태그 박스 */
-.feed-trend-box {
+.comment-reply-target-writer::before {
+  content: "@";
+}
+
+.comment-reply-target-content {
+  display: block;
+  margin-top: 4px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  color: #8b7c84;
+}
+
+.comment-reply-cancel-btn {
+  border: none !important;
+  background: transparent !important;
+  color: #aaa !important;
+  padding: 0 !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+}
+
+.comment-reply-cancel-btn:hover {
+  color: var(--hw-pink-deep) !important;
+}
+
+.comment-mention {
+  color: var(--hw-pink-deep) !important;
+  font-weight: 900 !important;
+  margin-right: 4px !important;
+}
+
+.feed-comment-box {
+  display: none;
   width: 100%;
-  background: #ffffff;
-  border: 1px solid #f1e6dc;
-  border-radius: 2px;
-  padding: 18px 16px;
-  box-sizing: border-box;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  margin-top: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--hw-line-soft);
 }
 
-/* 제목 영역 */
+.feed-comment-form {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  width: 100%;
+}
+
+.feed-comment-form input[type="text"] {
+  flex: 1;
+  height: 42px;
+  border: 1px solid var(--hw-line);
+  border-radius: 999px;
+  background: #ffffff;
+  padding: 0 15px;
+  color: var(--hw-text);
+  font-size: 13px;
+  outline: none;
+}
+
+.feed-comment-form input[type="text"]:focus {
+  border-color: var(--hw-pink);
+  box-shadow: 0 0 0 4px rgba(255, 161, 193, 0.14);
+}
+
+.comment-submit-btn {
+  min-width: 58px;
+  height: 42px;
+  padding: 0 17px;
+  border: none;
+  border-radius: 999px;
+  background: var(--hw-pink);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.comment-submit-btn:hover {
+  background: var(--hw-pink-dark);
+}
+
+/* =========================================================
+   RIGHT SIDEBAR
+   ========================================================= */
+
+.feed-right-sidebar {
+  position: sticky;
+  top: 96px;
+  width: 300px;
+}
+
+.feed-trend-box {
+  position: relative;
+  padding: 22px 20px;
+  border: 1px solid var(--hw-line-soft);
+  background: #ffffff;
+  box-shadow: var(--hw-card-shadow);
+}
+
 .feed-trend-title {
   display: flex;
   align-items: center;
   gap: 8px;
   padding-bottom: 14px;
   margin-bottom: 10px;
-  border-bottom: 1px solid #f4eee8;
+  border-bottom: 1px solid var(--hw-line-soft);
 }
 
-.feed-trend-title span {
-  font-size: 18px;
+.feed-hashtag-title-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.feed-hashtag-title-icon img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
 }
 
 .feed-trend-title strong {
+  color: var(--hw-text);
   font-size: 15px;
   font-weight: 900;
-  color: #222222;
 }
 
-/* 해시태그 리스트 */
 .feed-trend-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* 해시태그 한 줄 */
 .feed-trend-list li {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 11px 4px;
-  border-bottom: 1px solid #f8f3ee;
+  padding: 12px 2px;
+  border-bottom: 1px solid #fff0f6;
 }
 
 .feed-trend-list li:last-child {
   border-bottom: none;
 }
 
-/* 왼쪽: 순위 + 태그 */
 .feed-trend-left {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
   min-width: 0;
 }
 
-/* 순위 숫자 */
 .feed-trend-rank {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: #facb47;
+  background: var(--hw-pink);
   color: #ffffff;
   font-size: 12px;
   font-weight: 900;
@@ -3128,86 +1399,248 @@ main {
   flex-shrink: 0;
 }
 
-/* 해시태그 버튼 */
 .feed-trend-tag {
+  max-width: 150px;
   border: none;
   background: transparent;
+  color: var(--hw-text);
   padding: 0;
-  color: #333333;
   font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
-  max-width: 130px;
+  font-weight: 900;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .feed-trend-tag:hover {
-  color: #fa6e68;
+  color: var(--hw-pink-deep);
 }
 
-/* 몇 개 사용됐는지 */
 .feed-trend-count {
-  font-size: 12px;
-  font-weight: 700;
-  color: #999999;
   flex-shrink: 0;
+  color: #aaa;
+  font-size: 12px;
+  font-weight: 800;
 }
 
-/* 인기 태그 없을 때 */
 .feed-trend-empty {
   display: block !important;
   padding: 18px 4px !important;
-  text-align: center;
-  color: #999999;
+  color: #aaa;
   font-size: 13px;
-  font-weight: 600;
-  border-bottom: none !important;
+  font-weight: 700;
+  text-align: center;
 }
 
-/* 화면이 좁아졌을 때는 오른쪽 사이드바를 아래로 내림 */
-@media (max-width: 980px) {
+/* =========================================================
+   SHARE MODAL
+   ========================================================= */
+
+.share-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(17, 17, 17, 0.35);
+  z-index: 9999;
+}
+
+.share-modal.is-open {
+  display: flex;
+}
+
+.share-modal-box {
+  width: 470px;
+  max-width: calc(100% - 32px);
+  background: #ffffff;
+  padding: 24px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.18);
+}
+
+.share-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--hw-line-soft);
+}
+
+.share-modal-header h3 {
+  margin: 0;
+  color: var(--hw-text);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.share-modal-close {
+  border: none;
+  background: transparent;
+  color: var(--hw-text);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.share-modal-close:hover {
+  color: var(--hw-pink-deep);
+}
+
+.share-modal-body {
+  display: flex;
+  gap: 8px;
+}
+
+.share-url-input {
+  flex: 1;
+  height: 50px;
+  border: 1px solid var(--hw-line);
+  background: #fff8fb;
+  padding: 0 14px;
+  color: #888;
+  font-size: 14px;
+  outline: none;
+}
+
+.share-copy-btn {
+  width: 60px;
+  height: 50px;
+  border: none;
+  background: var(--hw-pink);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.share-copy-btn:hover {
+  background: var(--hw-pink-dark);
+}
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.feed-empty {
+  display: none;
+  margin-top: 20px;
+  padding: 42px 20px;
+  border: 1px dashed var(--hw-line);
+  background: #ffffff;
+  color: #aaa;
+  font-size: 14px;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1120px) {
   main {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 
   .feed-right-sidebar {
-    width: 100%;
-    flex: none;
     position: static;
+    width: 100%;
   }
 
-  .feed-trend-box {
-    margin-top: 10px;
+  .feed-list,
+  .feed-sort-select-wrap,
+  .feed-card {
+    max-width: 100%;
   }
 }
-.action-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+
+@media (max-width: 768px) {
+  .feed-filter-bar {
+    padding: 24px 16px 0;
+  }
+
+  .feed-filter-summary {
+    min-height: auto;
+    padding: 28px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .feed-filter-summary::before {
+    width: 230px;
+    height: 100px;
+    right: -20px;
+    opacity: 0.45;
+  }
+
+  .feed-filter-summary span {
+    font-size: 25px;
+  }
+
+  main {
+    padding: 0 16px;
+    margin-top: 24px;
+  }
+
+  .feed-section-header,
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 22px;
+  }
+
+  .feed-write-top-btn {
+    width: 100%;
+  }
+
+  .feed-sort-select-wrap {
+    justify-content: flex-start;
+  }
+
+  .feed-card-content {
+    padding: 17px;
+  }
+
+  .comment-child-list {
+    padding-left: 22px;
+  }
+
+  .share-modal-body {
+    flex-direction: column;
+  }
+
+  .share-copy-btn {
+    width: 100%;
+  }
 }
 
-.feed-share-btn {
-  border: none;
-  background: transparent;
-  padding: 0;
-  margin-top: -20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
+@media (max-width: 520px) {
+  .feed-filter-summary span {
+    font-size: 23px;
+  }
 
-.feed-share-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
+  .feed-section-header h2,
+  .section-header h2 {
+    font-size: 24px;
+  }
 
-.feed-share-icon img {
-  width: 25px;
-  height: 25px;
-  display: block;
-  object-fit: contain;
+  .feed-profile-tag {
+    height: 22px !important;
+    font-size: 10px !important;
+  }
+
+  .feed-like-icon,
+  .feed-comment-icon,
+  .feed-share-icon {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 22px !important;
+  }
+
+  .feed-like-count,
+  .feed-comment-action-count {
+    font-size: 14px;
+  }
+}
+.feed-filter-ui.is-open .feed-filter-panel {
+  display: block !important;
 }
