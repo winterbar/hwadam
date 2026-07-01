@@ -1,5 +1,6 @@
 package com.miles.beauminity.service.qna_board;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,7 +146,28 @@ public class QnaServiceImpl implements QnaService {
     // 게시글 상세조회 시 파일 조회
     @Override
     public List<MasterBoardFileVO> getBoardFileById(Long id) {
-        return masterBoardFileMapper.getBoardFileById(id);
+        // 파일의 경로를 확인하기 위해 일단 파일의 리스트를 불러온다.
+        List<MasterBoardFileVO> flist =masterBoardFileMapper.getBoardFileById(id);
+        List<MasterBoardFileVO> existFList= new ArrayList<>();
+        
+        // 파일을 순차탐색하면서 파일의 저장명이 지정 경로에 있는지 확인한다. 있으면 최종리스트에 푸시
+        for(MasterBoardFileVO f : flist){
+            String fileName = f.getSavedName();
+            System.out.println("현재 파일 이름: "+fileName);
+            String filePath = "c:/uploads/qna/"+fileName;
+            System.out.println("파일 경로: "+filePath);
+            File file = new File(filePath);
+
+            if(file.exists() && file.isFile()){
+                System.out.println("파일 있음");
+                existFList.add(f);
+            } else{
+                System.out.println("파일 없음");
+            }
+        }
+
+        // 최종리스트를 반환한다.
+        return existFList;
     }
 
     // 게시글 삭제

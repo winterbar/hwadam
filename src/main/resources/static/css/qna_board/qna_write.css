@@ -1,351 +1,284 @@
-/* 컬러 가이드
-   - 기본색: #FACB47 (선명한 옐로우 / 포커스 및 하이라이트)
-   - 강조색: #FA6E68 (코랄 스칼렛 / 브랜드 로고 및 메인 완료 버튼)
-   - 서브 배경: #F8F9FA (깔끔한 라이트 그레이)
-   - 텍스트: #212529 (가독성이 높은 다크 차콜)
-*/
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Pretendard', -apple-system, system-ui, sans-serif;
+/* =========================================
+   Community Board Write
+   Redesigned for Beauminity
+   ========================================= */
+
+:root{
+    --pink:#FFA1C1;
+    --pink-hover:#f07aa5;
+    --pink-soft:#fff8fb;
+    --pink-line:#ffe3ec;
+    --text:#333;
+    --sub:#777;
+    --border:#e9e9e9;
+    --bg:#ffffff;
 }
 
-body {
-    background-color: #F8F9FA;
-    color: #212529;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Pretendard','Noto Sans KR',sans-serif;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
+body{
+    background:#fff;
+    color:var(--text);
 }
 
-/* 1. Header 영역 */
-header {
-    background-color: #ffffff;
-    border-bottom: 1px solid #DEE2E6;
+main{
+    max-width:920px;
+    margin:48px auto 80px;
+    padding:0 20px;
 }
 
-.header-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1.2rem 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.write-container{
+    background:#fff;
+    border:1px solid var(--pink-line);
+    border-radius:14px;
+    padding:38px;
 }
 
-.logo h1 {
-    color: #FA6E68;
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+.section-header{
+    margin-bottom:30px;
+    padding-bottom:20px;
+    border-bottom:1px solid #f3f3f3;
 }
 
-.logo span {
-    color: #FACB47;
+.section-header h2{
+    display:block;
+    margin:0;
+    font-size:24px;
+    font-weight:700;
+    color:#222;
+    line-height:1.2;
 }
 
-.user-menu {
-    display: flex;
-    gap: 1.2rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #495057;
+.section-desc{
+    display:block;
+    margin-top:20px;
+    font-size:15px;
+    color:#777;
+    line-height:1.6;
 }
 
-.user-menu a:hover {
-    color: #FA6E68;
+.form-group{
+    margin-bottom:26px;
 }
 
-/* 2. 메뉴바 영역 */
-.nav-bar {
-    background-color: #ffffff;
-    border-bottom: 2px solid #FACB47;
+.form-group label{
+    display:block;
+    margin-bottom:10px;
+    font-weight:700;
+    font-size:15px;
 }
 
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
+.form-control{
+    width:100%;
+    padding:14px 16px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:15px;
+    transition:.2s ease;
+    background:#fff;
+    color:var(--text);
 }
 
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 3rem;
+.form-control::placeholder{
+    color:#aaa;
 }
 
-nav ul li a {
-    display: block;
-    padding: 1rem 0;
-    color: #495057;
-    font-weight: 700;
-    font-size: 0.95rem;
-    position: relative;
-    transition: color 0.15s ease;
+.form-control:hover{
+    border-color:#ffc5d9;
 }
 
-nav ul li a:hover, nav ul li a.active {
-    color: #FA6E68;
+.form-control:focus{
+    outline:none;
+    border-color:var(--pink);
 }
 
-nav ul li a:hover::after, nav ul li a.active::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: #FA6E68;
+textarea.form-control{
+    min-height:300px;
+    resize:vertical;
+    line-height:1.7;
 }
 
-/* 메인 본문 구역 (로그인/랭킹 제외, 중앙 집중형 레이아웃 설계) */
-main {
-    max-width: 800px; /* 글쓰기에 최적화된 컴팩트 와이드 넓이 */
-    margin: 3rem auto;
-    display: block;
-    padding: 0 1.5rem;
+.file-upload-wrapper{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:42px 20px;
+    border:2px dashed #ffd5e3;
+    border-radius:14px;
+    background:#fff;
+    cursor:pointer;
+    transition:.2s ease;
 }
 
-/* 글쓰기 컨테이너 박스 (2번 미니멀 플랫 스퀘어 스타일 적용) */
-.write-container {
-    background-color: #ffffff;
-    border: 1px solid #DEE2E6;
-    border-radius: 4px;
-    padding: 2.5rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+.file-upload-wrapper:hover,
+.file-upload-wrapper.dragover{
+    background:var(--pink-soft);
+    border-color:var(--pink);
 }
 
-/* 입력 폼 레이아웃 */
-.form-group {
-    margin-bottom: 1.5rem;
+.file-upload-wrapper input{
+    display:none;
 }
 
-.form-group label {
-    display: block;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #495057;
-    margin-bottom: 0.5rem;
+.upload-icon{
+    font-size:32px;
 }
 
-/* 인풋 및 셀렉트 공통 스타일 (2번 스타일 룩앤필) */
-.form-control {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 0.9rem;
-    color: #212529;
-    background-color: #F8F9FA;
-    border: 1px solid #E9ECEF;
-    border-radius: 2px;
-    outline: none;
-    transition: all 0.2s;
+.upload-text{
+    font-weight:700;
 }
 
-/* 포커스 시 옐로우 라인 하이라이트 피드백 */
-.form-control:focus {
-    background-color: #ffffff;
-    border-color: #FACB47;
-    box-shadow: 0 0 0 3px rgba(250, 203, 71, 0.15);
+.upload-hint{
+    color:#999;
+    font-size:13px;
 }
 
-/* 비활성화 인풋 스타일 (작성자 고정용) */
-.form-control:disabled {
-    background-color: #E9ECEF;
-    color: #868E96;
-    cursor: not-allowed;
-    border-color: #DEE2E6;
+.preview-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:18px;
 }
 
-/* 텍스트에어리어 (내용 적는 영역) */
-textarea.form-control {
-    resize: vertical;
-    min-height: 280px;
-    line-height: 1.6;
+.preview-item{
+    width:110px;
+    height:110px;
+    border-radius:10px;
+    overflow:hidden;
+    border:1px solid var(--border);
+    position:relative;
+    transition:.2s ease;
+    background:#fff;
 }
 
-/* 파일 첨부 커스텀 스퀘어 영역 */
-.file-upload-wrapper {
-    border: 2px dashed #CED4DA;
-    background-color: #F8F9FA;
-    border-radius: 4px;
-    padding: 2rem;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
+.preview-item:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
 }
 
-.file-upload-wrapper:hover {
-    border-color: #FACB47;
-    background-color: #FFFDF7;
+.preview-item img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
-.file-upload-wrapper input[type="file"] {
-    display: none; /* 기본 투박한 버튼 숨김 */
+.remove-btn{
+    position:absolute;
+    top:6px;
+    right:6px;
+    width:24px;
+    height:24px;
+    border:none;
+    border-radius:50%;
+    background:rgba(0,0,0,.55);
+    color:#fff;
+    cursor:pointer;
+    transition:.2s ease;
 }
 
-.upload-icon {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    display: block;
+.remove-btn:hover{
+    background:var(--pink);
 }
 
-.upload-text {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #495057;
+.file-list{
+    margin-top:18px;
 }
 
-.upload-hint {
-    font-size: 0.75rem;
-    color: #868E96;
-    margin-top: 0.3rem;
+.file-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 14px;
+    border:1px solid #f1f1f1;
+    border-radius:10px;
+    margin-bottom:10px;
+    transition:.2s ease;
 }
 
-/* 하단 액션 버튼 그룹 */
-.form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.8rem;
-    margin-top: 2.5rem;
-    border-top: 1px solid #F1F3F5;
-    padding-top: 1.5rem;
+.file-item:hover{
+    background:var(--pink-soft);
+    border-color:#ffd5e3;
 }
 
-.btn {
-    padding: 0.8rem 2rem;
-    font-size: 0.9rem;
-    font-weight: 700;
-    border-radius: 2px;
-    cursor: pointer;
-    border: none;
-    transition: all 0.15s;
+.file-remove-btn{
+    border:none;
+    background:none;
+    color:#999;
+    cursor:pointer;
+    transition:.2s ease;
 }
 
-.btn-cancel {
-    background-color: #E9ECEF;
-    color: #495057;
+.file-remove-btn:hover{
+    color:var(--pink);
 }
 
-.btn-cancel:hover {
-    background-color: #CED4DA;
+.form-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+    padding-top:28px;
+    margin-top:34px;
+    border-top:1px solid #f2f2f2;
 }
 
-.btn-submit {
-    background-color: #FA6E68; /* 브랜드 메인 강조 스칼렛 */
-    color: #ffffff;
+.btn{
+    min-width:110px;
+    height:46px;
+    border-radius:10px;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    transition:.2s ease;
 }
 
-.btn-submit:hover {
-    background-color: #212529; /* 호버 시 시크한 다크 차콜 반전 */
+.btn-cancel{
+    background:#fff;
+    border:1px solid #ddd;
+    color:#555;
 }
 
-.preview-list {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 20px;                    
-    gap: 10px;
+.btn-cancel:hover{
+    border-color:var(--pink);
+    color:var(--pink);
 }
 
-.preview-item {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    background: white;
+.btn-submit{
+    border:none;
+    background:var(--pink);
+    color:#fff;
 }
 
-.preview-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.btn-submit:hover{
+    background:var(--pink-hover);
 }
 
-.remove-btn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: rgba(0,0,0,0.6);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 22px;
-    height: 22px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.file-list {
-    margin-top: 20px;
-}
-
-.file-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background: #f7f7f7;
-    border-radius: 5px;
-    margin-bottom: 10px;
-}
-
-.file-name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.file-remove-btn {
-    background: #e74c3c;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-
-
-@media (max-width: 900px) {
-    .write-layout {
-        grid-template-columns: 1fr;
+@media (max-width:768px){
+    .write-container{
+        padding:24px;
     }
 
-    .upload-preview-box {
-        height: 360px;
-    }
-}
-
-@media (max-width: 600px) {
-    .form-row {
-        grid-template-columns: 1fr;
+    .section-header{
+        flex-direction:column;
+        gap:12px;
     }
 
-    .write-actions {
-        flex-direction: column-reverse;
+    .form-actions{
+        flex-direction:column-reverse;
     }
 
-    .btn-cancel,
-    .btn-submit {
-        width: 100%;
+    .btn{
+        width:100%;
     }
-}
 
-/* 모바일 대응 */
-@media (max-width: 768px) {
-    .form-row-2 {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    .write-container {
-        padding: 1.5rem;
-    }
-    .btn {
-        flex: 1;
-        text-align: center;
+    textarea.form-control{
+        min-height:220px;
     }
 }

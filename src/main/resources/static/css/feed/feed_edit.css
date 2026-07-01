@@ -81,7 +81,7 @@ body {
 }
 
 .notice b {
-    color: #FA6E68 !important;
+    color: #FFA1C1 !important;
 }
 
 /* 좌우 2단 구조 - 작성하기 화면처럼 */
@@ -196,7 +196,7 @@ body {
     padding: 3px 7px;
     border-radius: 999px;
 
-    background: #FACB47;
+    background: #FFA1C1;
     color: #3b2a00;
 
     font-size: 10px;
@@ -338,7 +338,7 @@ input[type="text"] {
 
 textarea:focus,
 input[type="text"]:focus {
-    border-color: #FACB47 !important;
+    border-color: #FFA1C1 !important;
 }
 
 .hint {
@@ -387,9 +387,9 @@ input[type="text"]:focus {
     padding: 0 10px !important;
 
     border-radius: 999px !important;
-    background: #fff8db !important;
-    border: 1px solid #f0df9a !important;
-    color: #7a6500 !important;
+    background: #fcf2f5 !important;
+    border: 1px solid #fc568d !important;
+    color: #c85c88 !important;
 
     font-size: 12px !important;
     font-weight: 800 !important;
@@ -398,7 +398,7 @@ input[type="text"]:focus {
 .tag-chip button {
     border: none !important;
     background: transparent !important;
-    color: #7a6500 !important;
+    color: #FFA1C1 !important;
 
     font-weight: 900 !important;
     cursor: pointer !important;
@@ -538,7 +538,7 @@ input[type="text"]:focus {
     height: 520px !important;
     min-height: 520px !important;
     max-height: 520px !important;
-    background: #e8dccb !important;
+    background: #ffe1eb !important;
     overflow: hidden !important;
     display: flex !important;
     align-items: center !important;
@@ -587,4 +587,43 @@ input[type="text"]:focus {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* =========================
+   상단/하단 주요 버튼 hover 통일
+========================= */
+
+/* 피드로 돌아가기 */
+.back-link:hover {
+    color: #FFA1C1 !important;
+}
+
+/* 업로드 버튼 */
+.upload-btn:hover {
+    background: #FFA1C1 !important;
+    color: #ffffff !important;
+}
+
+/* 등록 버튼 */
+.submit:hover {
+    background: #FFA1C1 !important;
+    color: #ffffff !important;
+}
+
+/* 취소 버튼은 살짝 강조만 */
+.cancel:hover {
+    background: #ffe4ec !important;
+    color: #FFA1C1 !important;
+}
+
+/* 태그 추가 버튼도 통일 */
+.tag-add-btn:hover {
+    background: #FFA1C1 !important;
+    color: #ffffff !important;
+}
+
+/* 이미지 업로드 박스 버튼 (있으면) */
+.file-area button:hover {
+    background: #FFA1C1 !important;
+    color: #ffffff !important;
 }

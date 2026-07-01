@@ -5,6 +5,7 @@
     <title>Beauminity - 피드 작성</title>
     <link rel="stylesheet" th:href="@{/css/feed/feed_write.css}" />
     <link rel="stylesheet" th:href="@{/css/common/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/common/header.css}" />
 
     <style>
       .limit-count-text {
@@ -22,7 +23,7 @@
       <section class="dashboard-section">
         <div class="section-header">
           <h2>
-            ✎ BOTD 작성
+            ✎ 오늘의 화장 작성
             <span
               >오늘의 뷰티 기록을 사진과 해시태그로 간단하게 공유해보세요.</span
             >
@@ -32,21 +33,34 @@
 
         <div class="write-guide">
           <strong>작성 예시</strong> · 사진 1장 이상, 해시태그 3개 이상 5개
-          이하, 본문과 정보공유 링크는 각각 100자 이내로 작성해주세요.
+          이하, 본문 200자 이내로 작성해주세요.
         </div>
 
         <div class="write-layout">
           <!-- 이미지 미리보기 영역 -->
           <div class="upload-preview-card">
-            <div class="upload-preview-box" id="imagePreviewBox">
-              <span>이미지 미리보기</span>
-            </div>
 
-            <div class="upload-preview-info">
-              <strong>대표 사진 미리보기</strong>
-              <p>처음 선택한 사진이 해당 피드의 대표 이미지로 설정됩니다.</p>
-            </div>
-          </div>
+  <!-- 1. 대표 이미지 -->
+  <div class="upload-preview-box" id="imagePreviewBox">
+    <span>이미지 미리보기</span>
+  </div>
+
+  <!-- 2. 설명 (여기가 "대표 사진 미리보기 글씨" 위치) -->
+  <div class="upload-preview-info">
+    <strong>대표 사진 미리보기</strong>
+    <p>처음 선택한 사진이 대표 이미지로 설정됩니다.</p>
+  </div>
+
+  <!-- 3. 썸네일 -->
+  <div class="upload-preview-extra">
+
+    <div id="previewList" class="preview-list"></div>
+
+    <div id="fileList" class="file-list"></div>
+
+  </div>
+
+</div>
 
           <!-- 피드 작성 폼 -->
           <form
@@ -155,7 +169,7 @@
                 취소
               </button>
 
-              <button type="submit" class="btn-submit">등록하기</button>
+              <button type="submit" class="btn-submit">등록</button>
             </div>
           </form>
         </div>

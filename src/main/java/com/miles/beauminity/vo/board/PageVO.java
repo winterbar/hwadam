@@ -14,7 +14,7 @@ public class PageVO {
 
     private int offset; // 가져올 글의 시작위치 
     private int totalPage; //전체페이지 수
-    private int pageBlock=3;
+    private int pageBlock=10;
 
     // 그룹의 시작과 끝 변수
 

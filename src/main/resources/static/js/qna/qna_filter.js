@@ -31,7 +31,7 @@ document.getElementById('filter-status').addEventListener('change', function() {
                         <td class="col-num">${list.boardId}</td>
                         <td class="col-product" style="color: var(--color-accent); font-weight: 800;">[${list.category}]</td>
                         <td>
-                            <a href="/board/qna/${list.boardId}" class="col-title">${list.title}</a>
+                            <a href="/community/${list.boardId}" class="col-title">${list.title}</a>
                             <span class="reply-count">[${list.replyCnt}]</span>
                         </td>
                         <td class="col-writer">${list.nickname}</td>
@@ -50,7 +50,7 @@ document.getElementById('filter-status').addEventListener('change', function() {
 
             // [이전] 버튼 (prev가 true일 때)
             if (pageInfo.prev) {
-                paginationHtml += `<li><a href="/board/qna?page=${pageInfo.startPage - 1}&category=${selectedCategory}">←</a></li>`;
+                paginationHtml += `<li><a href="/community?page=${pageInfo.startPage - 1}&category=${selectedCategory}">←</a></li>`;
             }
 
             // [숫자 페이지 번호] 반복 생성
@@ -58,13 +58,13 @@ document.getElementById('filter-status').addEventListener('change', function() {
                 // 현재 머물고 있는 페이지면 active 클래스 추가
                 const activeClass = (pageInfo.page === i) ? 'active' : '';
                 paginationHtml += `<li>
-                    <a href="/board/qna?page=${i}&category=${selectedCategory}" class="${activeClass}">${i}</a>
+                    <a href="/community?page=${i}&category=${selectedCategory}" class="${activeClass}">${i}</a>
                 </li>`;
             }
 
             // [다음] 버튼 (next가 true일 때)
             if (pageInfo.next) {
-                paginationHtml += `<li><a href="/board/qna?page=${pageInfo.endPage + 1}&category=${selectedCategory}">→</a></li>`;
+                paginationHtml += `<li><a href="/community?page=${pageInfo.endPage + 1}&category=${selectedCategory}">→</a></li>`;
             }
 
             paginationContainer.innerHTML = paginationHtml;

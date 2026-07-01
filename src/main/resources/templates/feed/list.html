@@ -14,6 +14,7 @@
 
     <link rel="stylesheet" th:href="@{/css/feed/feed.css}" />
     <link rel="stylesheet" th:href="@{/css/common/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/common/header.css}" />
 
     <style>
       .feed-card > .feed-profile-header {
@@ -155,7 +156,6 @@
         color: #999999;
         font-style: italic;
       }
-      
     </style>
   </head>
 
@@ -203,7 +203,7 @@
         <section class="dashboard-section">
           <div class="section-header feed-section-header">
             <h2>
-              📸 BOTD
+              오늘의 화장
               <span>사용자의 데일리 루틴과 사용샷을 모아보는 공간입니다.</span>
             </h2>
 
@@ -215,15 +215,56 @@
               피드 작성하기
             </button>
           </div>
-          <div class="feed-sort-select-wrap">
 
+          <div class="feed-sort-select-wrap">
   <select id="feed-sort-select" class="feed-sort-select">
     <option value="latest">최신순</option>
     <option value="oldest">오래된순</option>
     <option value="like">좋아요순</option>
     <option value="comment">댓글순</option>
   </select>
+
+  <div class="feed-filter-ui" id="feed-filter-ui">
+    <button type="button" class="feed-filter-open-btn" id="feed-filter-open-btn">
+      <span class="feed-filter-icon">
+        <img th:src="@{/images/feed/filter.png}" alt="필터" />
+      </span>
+      필터 설정
+    </button>
+
+    <div class="feed-filter-panel" id="feed-filter-panel">
+      <div class="feed-filter-group">
+        <div class="feed-filter-group-title">[퍼스널컬러별]</div>
+        <div class="feed-filter-chip-list">
+          <button type="button" class="feed-filter-chip">봄웜</button>
+          <button type="button" class="feed-filter-chip">여름쿨</button>
+          <button type="button" class="feed-filter-chip">가을웜</button>
+          <button type="button" class="feed-filter-chip">겨울쿨</button>
+        </div>
+      </div>
+
+      <div class="feed-filter-group">
+        <div class="feed-filter-group-title">[피부타입별]</div>
+        <div class="feed-filter-chip-list">
+          <button type="button" class="feed-filter-chip">지성</button>
+          <button type="button" class="feed-filter-chip">건성</button>
+          <button type="button" class="feed-filter-chip">복합성</button>
+          <button type="button" class="feed-filter-chip">민감성</button>
+        </div>
+      </div>
+
+      <div class="feed-filter-group">
+        <div class="feed-filter-group-title">[나이대]</div>
+        <div class="feed-filter-chip-list">
+          <button type="button" class="feed-filter-chip">10대</button>
+          <button type="button" class="feed-filter-chip">20~30대</button>
+          <button type="button" class="feed-filter-chip">40~50대</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
           <div class="feed-list" id="feed-list-container">
             <article
               class="feed-card"
@@ -269,6 +310,7 @@
                       >
                         피부타입
                       </span>
+
                       <span
                         class="feed-profile-tag color"
                         th:text="${feed.personalColor != null ? feed.personalColor : '퍼스널컬러'}"
@@ -281,6 +323,7 @@
 
                 <div class="feed-more-wrap">
                   <button type="button" class="feed-more-btn">···</button>
+
                   <div class="feed-more-menu">
                     <button type="button" class="feed-menu-item edit-btn">
                       수정하기
@@ -302,6 +345,7 @@
                   alt="피드 이미지"
                   class="feed-image js-feed-image"
                   style="display: none"
+                  onerror="this.style.display='none'; this.parentElement.querySelector('.js-feed-placeholder').style.display='flex';"
                 />
 
                 <div class="feed-image-placeholder js-feed-placeholder">
@@ -327,25 +371,25 @@
                 <div class="feed-card-actions">
                   <div class="action-left">
                     <button
-  type="button"
-  class="feed-like-btn"
-  th:classappend="${feed.liked != null and feed.liked ? ' is-liked' : ''}"
-  th:attr="data-liked=${feed.liked != null ? feed.liked : false}, data-like-count=${feed.likeCnt != null ? feed.likeCnt : 0}"
->
-  <span
-    class="feed-like-icon"
-    th:text="${feed.liked != null and feed.liked ? '♥' : '♡'}"
-  >
-    ♡
-  </span>
-  <span
-    class="feed-like-count"
-    th:text="${feed.likeCnt != null ? feed.likeCnt : 0}"
-  >
-    0
-  </span>
-</button>
-                   
+                      type="button"
+                      class="feed-like-btn"
+                      th:classappend="${feed.liked != null and feed.liked ? ' is-liked' : ''}"
+                      th:attr="data-liked=${feed.liked != null ? feed.liked : false}, data-like-count=${feed.likeCnt != null ? feed.likeCnt : 0}"
+                    >
+                      <span
+                        class="feed-like-icon"
+                        th:text="${feed.liked != null and feed.liked ? '❤️' : '🤍'}"
+                      >
+                        ♡
+                      </span>
+
+                      <span
+                        class="feed-like-count"
+                        th:text="${feed.likeCnt != null ? feed.likeCnt : 0}"
+                      >
+                        0
+                      </span>
+                    </button>
 
                     <button
                       type="button"
@@ -353,6 +397,7 @@
                       th:data-comment-count="${feed.replyCnt != null ? feed.replyCnt : 0}"
                     >
                       <span class="feed-comment-icon">💬</span>
+
                       <span
                         class="feed-comment-action-count"
                         th:text="${feed.replyCnt != null ? feed.replyCnt : 0}"
@@ -360,17 +405,18 @@
                         0
                       </span>
                     </button>
-                  <button
-      type="button"
-      class="feed-share-btn"
-      th:data-feed-id="${feed.feedId}"
-    >
-     <span class="feed-share-icon">
-  <img th:src="@{/images/feed/share.png}" alt="공유" />
-</span>
-    </button>
-  </div>
-</div>
+
+                    <button
+                      type="button"
+                      class="feed-share-btn"
+                      th:data-feed-id="${feed.feedId}"
+                    >
+                      <span class="feed-share-icon">
+                        <img th:src="@{/images/feed/share.png}" alt="공유" />
+                      </span>
+                    </button>
+                  </div>
+                </div>
 
                 <p class="feed-card-caption">
                   <span
@@ -405,127 +451,50 @@
                     <span>아직 등록된 댓글이 없습니다.</span>
                   </div>
 
-                  <div
-                    class="feed-comment-item"
-                    th:if="${feed.feedReplyList != null and reply.parentsReplyId == null}"
-                    th:each="reply : ${feed.feedReplyList}"
-                    th:data-reply-id="${reply.replyId}"
-                    th:data-root-reply-id="${reply.replyId}"
-                    th:data-reply-content="${reply.deleted != null and reply.deleted == 1 ? '사용자가 삭제한 댓글입니다.' : reply.replyContent}"
-                    th:data-deleted="${reply.deleted}"
-                    th:data-username="${reply.username}"
-                    th:data-nickname="${reply.nickname != null and reply.nickname != '' ? reply.nickname : reply.username}"
-                  >
-                    <div class="feed-comment-bubble">
-                      <div class="feed-comment-avatar">
-  <img
-    th:if="${reply.profileImage != null and reply.profileImage != ''}"
-    th:src="@{/upload/profile/{fileName}(fileName=${reply.profileImage})}"
-    alt="프로필 이미지"
-  />
-
-  <span
-    th:if="${reply.profileImage == null or reply.profileImage == ''}"
-    th:text="${reply.nickname != null and reply.nickname != '' ? #strings.substring(reply.nickname, 0, 1) : '회'}"
-  ></span>
-</div>
-
-                      <div class="feed-comment-main">
-                        <strong
-                          class="feed-comment-writer"
-                          th:text="${reply.nickname != null and reply.nickname != '' ? reply.nickname : reply.username}"
-                        >
-                          닉네임
-                        </strong>
-
-                        <span
-                          class="feed-comment-content"
-                          th:classappend="${reply.deleted != null and reply.deleted == 1 ? ' deleted-comment-text' : ''}"
-                          th:text="${reply.deleted != null and reply.deleted == 1 ? '사용자가 삭제한 댓글입니다.' : reply.replyContent}"
-                        ></span>
-                      </div>
-
+                  <th:block th:if="${feed.feedReplyList != null}">
+                    <th:block th:each="reply : ${feed.feedReplyList}">
                       <div
-                        class="comment-more-wrap"
-                        th:if="${reply.deleted == null or reply.deleted != 1}"
-                      >
-                        <button type="button" class="comment-more-btn">
-                          ···
-                        </button>
-
-                        <div class="comment-more-menu">
-                          <button
-                            type="button"
-                            class="comment-menu-item comment-edit-btn"
-                          >
-                            수정하기
-                          </button>
-                          <button
-                            type="button"
-                            class="comment-menu-item danger comment-delete-btn"
-                          >
-                            삭제하기
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="comment-child-list">
-                      <div
-                        class="comment-child-item"
-                        th:each="child : ${feed.feedReplyList}"
-                        th:if="${child.parentsReplyId != null and child.parentsReplyId == reply.replyId}"
-                        th:data-reply-id="${child.replyId}"
+                        class="feed-comment-item"
+                        th:if="${reply.parentsReplyId == null}"
+                        th:data-reply-id="${reply.replyId}"
                         th:data-root-reply-id="${reply.replyId}"
-                        th:data-parents-reply-id="${child.parentsReplyId}"
-                        th:data-parent-nickname="${child.parentNickname}"
-                        th:data-reply-content="${child.deleted != null and child.deleted == 1 ? '사용자가 삭제한 댓글입니다.' : child.replyContent}"
-                        th:data-deleted="${child.deleted}"
-                        th:data-username="${child.username}"
-                        th:data-nickname="${child.nickname != null and child.nickname != '' ? child.nickname : child.username}"
+                        th:data-reply-content="${reply.deleted != null and reply.deleted == 1 ? '사용자가 삭제한 댓글입니다.' : reply.replyContent}"
+                        th:data-deleted="${reply.deleted}"
+                        th:data-username="${reply.username}"
+                        th:data-nickname="${reply.nickname != null and reply.nickname != '' ? reply.nickname : reply.username}"
                       >
-                        <div class="comment-child-bubble">
-                          <div class="comment-child-avatar">
-  <img
-    th:if="${child.profileImage != null and child.profileImage != ''}"
-    th:src="@{/upload/profile/{fileName}(fileName=${child.profileImage})}"
-    alt="프로필 이미지"
-  />
+                        <div class="feed-comment-bubble">
+                          <div class="feed-comment-avatar">
+                            <img
+                              th:if="${reply.profileImage != null and reply.profileImage != ''}"
+                              th:src="@{/upload/profile/{fileName}(fileName=${reply.profileImage})}"
+                              alt="프로필 이미지"
+                            />
 
-  <span
-    th:if="${child.profileImage == null or child.profileImage == ''}"
-    th:text="${child.nickname != null and child.nickname != '' ? #strings.substring(child.nickname, 0, 1) : '회'}"
-    >회</span
-  >
-</div>
+                            <span
+                              th:if="${reply.profileImage == null or reply.profileImage == ''}"
+                              th:text="${reply.nickname != null and reply.nickname != '' ? #strings.substring(reply.nickname, 0, 1) : '회'}"
+                            ></span>
+                          </div>
 
-                          <div class="comment-child-main">
+                          <div class="feed-comment-main">
                             <strong
-                              class="comment-child-writer"
-                              th:text="${child.nickname != null and child.nickname != '' ? child.nickname : child.username}"
+                              class="feed-comment-writer"
+                              th:text="${reply.nickname != null and reply.nickname != '' ? reply.nickname : reply.username}"
                             >
                               닉네임
                             </strong>
 
                             <span
-                              class="comment-child-content"
-                              th:classappend="${child.deleted != null and child.deleted == 1 ? ' deleted-comment-text' : ''}"
-                            >
-                              <span
-                                class="comment-mention"
-                                th:if="${(child.deleted == null or child.deleted != 1) and child.parentNickname != null and child.parentNickname != ''}"
-                                th:text="'@' + ${child.parentNickname}"
-                                th:data-target-reply-id="${child.parentsReplyId}"
-                              ></span>
-                              <span
-                                th:text="${child.deleted != null and child.deleted == 1 ? '사용자가 삭제한 댓글입니다.' : child.replyContent}"
-                              ></span>
-                            </span>
+                              class="feed-comment-content"
+                              th:classappend="${reply.deleted != null and reply.deleted == 1 ? ' deleted-comment-text' : ''}"
+                              th:text="${reply.deleted != null and reply.deleted == 1 ? '사용자가 삭제한 댓글입니다.' : reply.replyContent}"
+                            ></span>
                           </div>
 
                           <div
                             class="comment-more-wrap"
-                            th:if="${child.deleted == null or child.deleted != 1}"
+                            th:if="${reply.deleted == null or reply.deleted != 1}"
                           >
                             <button type="button" class="comment-more-btn">
                               ···
@@ -538,6 +507,7 @@
                               >
                                 수정하기
                               </button>
+
                               <button
                                 type="button"
                                 class="comment-menu-item danger comment-delete-btn"
@@ -547,9 +517,92 @@
                             </div>
                           </div>
                         </div>
+
+                        <div class="comment-child-list">
+                          <th:block th:each="child : ${feed.feedReplyList}">
+                            <div
+                              class="comment-child-item"
+                              th:if="${child.parentsReplyId != null and child.parentsReplyId == reply.replyId}"
+                              th:data-reply-id="${child.replyId}"
+                              th:data-root-reply-id="${reply.replyId}"
+                              th:data-parents-reply-id="${child.parentsReplyId}"
+                              th:data-parent-nickname="${child.parentNickname}"
+                              th:data-reply-content="${child.deleted != null and child.deleted == 1 ? '사용자가 삭제한 댓글입니다.' : child.replyContent}"
+                              th:data-deleted="${child.deleted}"
+                              th:data-username="${child.username}"
+                              th:data-nickname="${child.nickname != null and child.nickname != '' ? child.nickname : child.username}"
+                            >
+                              <div class="comment-child-bubble">
+                                <div class="comment-child-avatar">
+                                  <img
+                                    th:if="${child.profileImage != null and child.profileImage != ''}"
+                                    th:src="@{/upload/profile/{fileName}(fileName=${child.profileImage})}"
+                                    alt="프로필 이미지"
+                                  />
+
+                                  <span
+                                    th:if="${child.profileImage == null or child.profileImage == ''}"
+                                    th:text="${child.nickname != null and child.nickname != '' ? #strings.substring(child.nickname, 0, 1) : '회'}"
+                                    >회</span
+                                  >
+                                </div>
+
+                                <div class="comment-child-main">
+                                  <strong
+                                    class="comment-child-writer"
+                                    th:text="${child.nickname != null and child.nickname != '' ? child.nickname : child.username}"
+                                  >
+                                    닉네임
+                                  </strong>
+
+                                  <span
+                                    class="comment-child-content"
+                                    th:classappend="${child.deleted != null and child.deleted == 1 ? ' deleted-comment-text' : ''}"
+                                  >
+                                    <span
+                                      class="comment-mention"
+                                      th:if="${(child.deleted == null or child.deleted != 1) and child.parentNickname != null and child.parentNickname != ''}"
+                                      th:text="'@' + ${child.parentNickname}"
+                                      th:data-target-reply-id="${child.parentsReplyId}"
+                                    ></span>
+
+                                    <span
+                                      th:text="${child.deleted != null and child.deleted == 1 ? '사용자가 삭제한 댓글입니다.' : child.replyContent}"
+                                    ></span>
+                                  </span>
+                                </div>
+
+                                <div
+                                  class="comment-more-wrap"
+                                  th:if="${child.deleted == null or child.deleted != 1}"
+                                >
+                                  <button type="button" class="comment-more-btn">
+                                    ···
+                                  </button>
+
+                                  <div class="comment-more-menu">
+                                    <button
+                                      type="button"
+                                      class="comment-menu-item comment-edit-btn"
+                                    >
+                                      수정하기
+                                    </button>
+
+                                    <button
+                                      type="button"
+                                      class="comment-menu-item danger comment-delete-btn"
+                                    >
+                                      삭제하기
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </th:block>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    </th:block>
+                  </th:block>
                 </div>
 
                 <div class="feed-comment-box">
@@ -559,6 +612,7 @@
                       답글 남기는 중
                       <span class="comment-reply-target-content"></span>
                     </div>
+
                     <button type="button" class="comment-reply-cancel-btn">
                       ×
                     </button>
@@ -575,12 +629,14 @@
                       class="reply-parent-id-input"
                       value=""
                     />
+
                     <input
                       type="text"
                       name="replyContent"
                       placeholder="댓글 달기..."
                       autocomplete="off"
                     />
+
                     <button type="submit" class="comment-submit-btn">
                       게시
                     </button>
@@ -599,11 +655,15 @@
           </div>
         </section>
       </div>
+
       <aside class="feed-right-sidebar">
         <div class="feed-trend-box">
           <div class="feed-trend-title">
-            <span>🔥</span>
-            <strong>#해시태그 TOP 5</strong>
+            
+            <span class="feed-hashtag-title-icon">
+  <img th:src="@{/images/feed/hashtag.png}" alt="해시태그 아이콘" />
+</span>
+            <strong>해시태그 TOP 5</strong>
           </div>
 
           <ol class="feed-trend-list" id="feed-trend-list">
@@ -612,31 +672,34 @@
         </div>
       </aside>
     </main>
-    <!-- 링크 공유 모달 -->
-<div class="share-modal" id="share-modal">
-  <div class="share-modal-box">
-    <div class="share-modal-header">
-      <h3>링크 공유</h3>
-      <button type="button" class="share-modal-close" id="share-modal-close">
-        ×
-      </button>
-    </div>
 
-    <div class="share-modal-body">
-      <input
-        type="text"
-        class="share-url-input"
-        id="share-url-input"
-        readonly
-      />
-      <button type="button" class="share-copy-btn" id="share-copy-btn">
-        복사
-      </button>
+    <div class="share-modal" id="share-modal">
+      <div class="share-modal-box">
+        <div class="share-modal-header">
+          <h3>링크 공유</h3>
+
+          <button type="button" class="share-modal-close" id="share-modal-close">
+            ×
+          </button>
+        </div>
+
+        <div class="share-modal-body">
+          <input
+            type="text"
+            class="share-url-input"
+            id="share-url-input"
+            readonly
+          />
+
+          <button type="button" class="share-copy-btn" id="share-copy-btn">
+            복사
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
     <footer th:replace="~{layout/footer :: footer}"></footer>
+
     <script th:src="@{/js/feed/feed_list.js}"></script>
     <script th:src="@{/js/feed/feed_like.js}"></script>
     <script th:src="@{/js/feed/feed_reply.js}"></script>
