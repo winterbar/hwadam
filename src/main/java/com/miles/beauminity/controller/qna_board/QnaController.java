@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -56,7 +55,7 @@ public class QnaController {
     // 질문 게시판 이동
     // 여기에서 목록을 받아와야할 거 같은데...
     // 파라미터에 값 받아오는 느낌인가 으음 
-    @GetMapping("/board/qna")
+    @GetMapping("/community")
     public String getQnaList(@ModelAttribute PageVO pageVO, Model model) {
 
         // 게시판 종류 설정
@@ -83,7 +82,7 @@ public class QnaController {
     }
 
     // 질문 게시글 작성
-    @GetMapping("/board/qna/write")
+    @GetMapping("/community/write")
     public String getQnaWrite() {
 
         if (getUsername().equals("anonymousUser"))
@@ -93,7 +92,7 @@ public class QnaController {
     }
 
     // 질문 게시글을 포스트
-    @PostMapping("/board/qna")
+    @PostMapping("/community")
     public String postQna(@ModelAttribute MasterBoardVO masterBoardVO
         , @RequestParam("category") String category, @RequestParam("files") MultipartFile[] files) {
         
@@ -116,11 +115,11 @@ public class QnaController {
         // 모든 값이 잘 들어가는 것을 확인했기 때문에 이제 서비스의 메서드로 넘기겠습니다. 한꺼번에 넘기는 것으로.
         qnaService.insertBoard(masterBoardVO, files, category);
         
-        return "redirect:/board/qna";
+        return "redirect:/community";
     }
 
     //게시글 이동 링크
-    @GetMapping("/board/qna/{id}")
+    @GetMapping("/community/{id}")
     public String getQnaDetail(@PathVariable("id") Long id, Model model) {
 
         MasterBoardVO qna = qnaService.getOneBoard(id);
@@ -142,7 +141,7 @@ public class QnaController {
     }
 
     // 게시글 삭제 링크
-    @GetMapping("/board/qna/delete/{id}")
+    @GetMapping("/community/delete/{id}")
     public String getQnaDel(@PathVariable("id") Long id) {
 
         // id 잘 나오나 체크
@@ -150,11 +149,11 @@ public class QnaController {
 
         qnaService.deleteBoard(id);
 
-        return "redirect:/board/qna";
+        return "redirect:/community";
     }
 
     // 게시글 수정 링크
-    @GetMapping("/board/qna/edit/{id}")
+    @GetMapping("/community/edit/{id}")
     public String getQnaEdit(@PathVariable("id") Long id, Model model) {
 
         if (getUsername().equals("anonymousUser"))
@@ -177,7 +176,7 @@ public class QnaController {
     }
 
     //수정한 거... 보낸다~!
-    @PostMapping("/board/qna/update")
+    @PostMapping("/community/update")
     public String postMethodName(@ModelAttribute MasterBoardVO masterBoardVO,
                                  @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
                                  @RequestParam("selectedFiles") MultipartFile[] files,
@@ -202,7 +201,7 @@ public class QnaController {
     @ResponseBody
     @GetMapping("/download/{filename}")
     public ResponseEntity<Resource> downLoadFile(@PathVariable("filename") String filename) {
-        String uploadDir = "C:\\uploads";
+        String uploadDir = "c:/uploads/qna";
         File file = new File(uploadDir, filename);
 
         if (!file.exists() || !file.isFile()) {
@@ -218,7 +217,7 @@ public class QnaController {
     }
 
     // 게시글 검색 메서드
-    @PostMapping("/board/qna/search")
+    @PostMapping("/community/search")
     public String getSearchBoard(@RequestParam("searchStr") String str, @ModelAttribute PageVO pageVO, Model model) {
         
         System.out.println("현재 검색어: "+str);
