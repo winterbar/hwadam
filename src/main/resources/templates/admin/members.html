@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>화담 관리자</title>
+    <link rel="icon" type="image/png" th:href="@{/images/common/icon_gray.png}">
+    <link rel="stylesheet" th:href="@{/css/admin/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/members.css}">
+</head>
+<body>
+
+    <div class="admin-wrapper">
+        
+        <aside th:replace="~{admin/sidebar :: sidebarFragment}"></aside>
+
+        <main class="admin-content">
+            <header class="content-header">
+                <h1>회원 관리 <small>Member Management</small></h1>
+            </header>
+
+            <section class="filter-section">
+                <h2 class="section-title">상세 필터링</h2>
+                <div class="filter-box">
+                    <div class="filter-row">
+                        <label>가입일</label>
+                        <button>오늘</button><button>1주일</button><button>1개월</button><button>3개월</button><button>기간선택</button>
+                        <input type="date"> ~ <input type="date"> <button class="btn-main">조회</button>
+                    </div>
+                    <div class="filter-row">
+                        <label>등급</label>
+                        <button>전체</button><button>일반</button><button>관리자</button>
+                    </div>
+                    <div class="filter-row">
+                        <label>상태</label>
+                        <button>전체</button><button>정상</button><button>탈퇴</button>
+                    </div>
+                    <div class="filter-row">
+                        <label>포인트</label>
+                        <input type="number" placeholder="최소"> ~ <input type="number" placeholder="최대"> <button class="btn-main">조회</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="table-section">
+                <div class="controls-wrapper">
+                    <div class="search-area">
+                        <select class="category">
+                            <option value="username">아이디</option>
+                            <option value="username">닉네임</option>
+                            <option value="username">이름</option>
+                            <option value="username">이메일</option>
+                            <option value="username">전화번호</option>
+                        </select>
+                        <input class="search-input" placeholder="검색할 키워드 입력">
+                        <button class="btn-primary">검색</button>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-action">선택 수정</button>
+                        <button class="btn-action">선택 삭제</button>
+                        <button class="btn-primary">등록</button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>닉네임</th>
+                                <th>생년월일</th>
+                                <th>성별</th>
+                                <th>이메일</th>
+                                <th>전화번호</th>
+                                <th>피부</th>
+                                <th>컬러</th>
+                                <th>포인트</th>
+                                <th>가입일</th>
+                                <th>등급</th>
+                                <th>상태</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>lolololololololo</td>
+                                <td>김현준</td>
+                                <td>롯데리아버거음료감튀도둑</td>
+                                <td>1990-01-01</td>
+                                <td>남</td>
+                                <td>lotteria1010@naver.com</td>
+                                <td>010-1234-5678</td>
+                                <td>수부지</td>
+                                <td>겨울쿨</td>
+                                <td>1,000</td>
+                                <td>2024-05-15</td>
+                                <td>일반</td>
+                                <td>정상</td>
+                                <td>
+                                    <button class="btn-edit">보기</button>
+                                    <button class="btn-edit">수정</button>
+                                    <button class="btn-delete">삭제</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script th:src="@{/js/admin/members.js}"></script>
+
+</body>
+</html>
