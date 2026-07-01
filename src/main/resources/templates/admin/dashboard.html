@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>화담 관리자</title>
+    <link rel="icon" type="image/png" th:href="@{/images/common/icon_gray.png}">
+    <link rel="stylesheet" th:href="@{/css/admin/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/dashboard.css}">
+</head>
+<body>
+
+    <div class="admin-wrapper">
+
+        <aside th:replace="~{admin/sidebar :: sidebarFragment}"></aside>
+
+        <main class="admin-content">
+            <header class="content-header">
+                <h1>대시보드 <small>dashboard</small></h1>
+            </header>
+
+            <section class="dashboard-stats">
+                <div class="stat-card">오늘 가입한 회원 수<span>16명</span></div>
+                <div class="stat-card">오늘 등록된 게시글 수<span>1.2만개</span></div>
+                <div class="stat-card">오늘 등록된 댓글 수<span>2.6천개</span></div>
+                <div class="stat-card">오늘 거래된 상품 수<span>304건</span></div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
