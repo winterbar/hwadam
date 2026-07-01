@@ -68,3 +68,14 @@ nav a:hover {
     background: #000;
     color: #fff;
 }
+
+.auth-menu .admin-btn {
+    background-color: #000;
+    color: #fff;
+    border: 1px solid #000;
+}
+
+.auth-menu .admin-btn:hover {
+    background-color: #fff;
+    color: #000;
+}

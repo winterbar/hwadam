@@ -1,0 +1,246 @@
+body {
+    font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    margin: 0 auto;
+    padding: 0;
+    color: #333;
+    background: #fff;
+    line-height: 1.6;
+}
+
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-content {
+    flex: 1;
+    min-width: 0;
+    padding: 20px;
+    background: #fff;
+}
+
+/* 헤더 스타일 */
+.content-header {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 10px;
+}
+
+.content-header h1 {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.content-header small {
+    font-size: 0.5em;
+    color: #888;
+    margin-left: 7px;
+}
+
+/* 소제목 */
+.section-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.controls-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* 검색 영역 */
+.search-area {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.category {
+    padding: 5px 25px 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 0.9em;
+    color: #333;
+    
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 5px center;
+    background-size: 16px;
+}
+
+.category:hover {
+    border-color: #999;
+}
+
+.category:focus {
+    outline: none;
+    border-color: #000;
+}
+
+.search-input {
+    padding: 5px;
+    border: 1px solid #ddd;
+}
+
+/* 버튼 영역 */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-action {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+}
+
+.btn-primary {
+    padding: 6px 12px;
+    border: 1px solid #FFA1C1;
+    background: #FFA1C1;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* 필터링 박스 */
+.filter-box {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.filter-row {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-row label {
+    width: 80px;
+    font-weight: bold;
+}
+
+/* 테이블 스타일 */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #eee;
+}
+
+table {
+    width: 100%;
+    min-width: 1200px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: 0.85em;
+}
+
+th,
+td {
+    padding: 10px;
+    border: 1px solid #fdeff4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+/* 각 칼럼별 고정 너비 설정 */
+/* 체크 박스 */
+th:nth-child(1) {
+    width: 20px;
+}
+
+/* 아이디 */
+th:nth-child(2) {
+    width: 110px;
+}
+
+/* 이름 */
+th:nth-child(3) {
+    width: 70px;
+}
+
+/* 닉네임 */
+th:nth-child(4) {
+    width: 120px;
+}
+
+/* 생년월일 */
+th:nth-child(5) {
+    width: 90px;
+}
+
+/* 성별 */
+th:nth-child(6) {
+    width: 30px;
+}
+
+/* 이메일 */
+th:nth-child(7) {
+    width: 160px;
+}
+
+/* 전화번호 */
+th:nth-child(8) {
+    width: 110px;
+}
+
+/* 피부 */
+th:nth-child(9) {
+    width: 40px;
+}
+
+/* 컬러 */
+th:nth-child(10) {
+    width: 40px;
+}
+
+/* 포인트 */
+th:nth-child(11) {
+    width: 80px;
+}
+
+/* 가입일 */
+th:nth-child(12) {
+    width: 100px;
+}
+
+/* 등급 */
+th:nth-child(13) {
+    width: 40px;
+}
+
+/* 상태 */
+th:nth-child(14) {
+    width: 40px;
+}
+
+/* 관리 */
+th:nth-child(15) {
+    width: 160px;
+}
+
+/* 관리 버튼 스타일 */
+.btn-edit {
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+}
+
+.btn-delete {
+    padding: 4px 8px;
+    border: 1px solid #FFA1C1;
+    background: #FFA1C1;
+    color: #fff;
+    cursor: pointer;
+}

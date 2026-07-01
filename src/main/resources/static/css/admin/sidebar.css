@@ -1,0 +1,75 @@
+.admin-sidebar {
+    font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    width: 200px;
+    height: 100vh;
+    padding: 17px 12px;
+    background: #fdeff4;
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-decoration: none;
+    margin-bottom: 7px;
+}
+
+.sidebar-logo img {
+    width: 160px;
+}
+
+.admin-label {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #555;
+}
+
+.admin-profile {
+    text-align: center;
+    padding: 3px 0;
+    font-size: 0.9em;
+    color: #444;
+}
+
+/* 네비게이션 영역 */
+.admin-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.admin-nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.admin-nav li {
+    margin-bottom: 15px;
+}
+
+/* 메뉴 글자 모두 가운데 정렬 */
+.admin-nav ul a {
+    display: block;
+    text-align: center;
+    padding: 10px 55px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+    background-color: #fff;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+}
+
+.admin-nav ul a:hover {
+    background: #fcfcfc;
+    border-color: #333;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+}

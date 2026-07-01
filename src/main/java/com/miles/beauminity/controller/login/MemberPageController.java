@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-public class PageController {
+public class MemberPageController {
 
     private final MemberService memberService;
     
