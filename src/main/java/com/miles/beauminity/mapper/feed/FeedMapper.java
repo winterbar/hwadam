@@ -31,4 +31,6 @@ public interface FeedMapper {
 
     int getLikeCnt(@Param("feedId") Long feedId);
 
+    List<FeedVO> getShareFeedlist(Long feedId);
+
 }

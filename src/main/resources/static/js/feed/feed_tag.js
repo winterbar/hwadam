@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     trendList.addEventListener("click",function (event){
-      const trendTag = event.target.closest("feed-trend-tag");
+      const trendTag = event.target.closest(".feed-trend-tag");
       if(!trendTag) return;
       const selectedTag = trendTag.dataset.tag;
       document.querySelectorAll(".feed-tag-btn").forEach(function (button){

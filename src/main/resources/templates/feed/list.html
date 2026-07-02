@@ -177,26 +177,39 @@
       </div>
 
       <div
-        class="feed-filter-inner"
-        id="feed-filter-inner"
-        aria-label="해시태그 필터"
-        style="display: none"
-      >
-        <button type="button" class="feed-tag-btn active" data-tag="all">
-          #전체
-        </button>
+  class="feed-filter-inner"
+  id="feed-filter-inner"
+  aria-label="해시태그 필터"
+  style="display: none"
+>
+  <input
+    type="checkbox"
+    id="feed-tag-more-toggle"
+    class="feed-tag-more-toggle"
+  />
 
-        <button
-          type="button"
-          class="feed-tag-btn"
-          th:each="tagName : ${tagList}"
-          th:data-tag="${tagName}"
-          th:text="'#' + ${tagName}"
-        >
-          #해시태그
-        </button>
-      </div>
-    </div>
+  <div class="feed-tag-one-line">
+    <button type="button" class="feed-tag-btn active" data-tag="all">
+      #전체
+    </button>
+
+    <button
+      type="button"
+      class="feed-tag-btn"
+      th:each="tagName : ${tagList}"
+      th:data-tag="${tagName}"
+      th:text="'#' + ${tagName}"
+    >
+      #해시태그
+    </button>
+  </div>
+
+  <label for="feed-tag-more-toggle" class="feed-tag-more-btn">
+    <span class="more-text">+ 더보기</span>
+    <span class="close-text">- 접기</span>
+  </label>
+</div>
+
 
     <main>
       <div class="main-left-content">
@@ -224,59 +237,120 @@
     <option value="comment">댓글순</option>
   </select>
 
-  <div class="feed-filter-ui" id="feed-filter-ui">
-    <button type="button" class="feed-filter-open-btn" id="feed-filter-open-btn">
+  <details class="feed-filter-details">
+    <summary class="feed-filter-open-btn">
       <span class="feed-filter-icon">
         <img th:src="@{/images/feed/filter.png}" alt="필터" />
       </span>
       필터 설정
-    </button>
+    </summary>
 
-    <div class="feed-filter-panel" id="feed-filter-panel">
+    <form class="feed-filter-panel">
       <div class="feed-filter-group">
         <div class="feed-filter-group-title">[퍼스널컬러별]</div>
-        <div class="feed-filter-chip-list">
-          <button type="button" class="feed-filter-chip">봄웜</button>
-          <button type="button" class="feed-filter-chip">여름쿨</button>
-          <button type="button" class="feed-filter-chip">가을웜</button>
-          <button type="button" class="feed-filter-chip">겨울쿨</button>
+
+        <div class="feed-filter-chip-list personal-color-layout">
+          <label class="feed-filter-chip-label">
+            <input type="checkbox" name="personalColor" value="봄웜" />
+            <span>봄웜</span>
+          </label>
+
+          <label class="feed-filter-chip-label">
+            <input type="checkbox" name="personalColor" value="가을웜" />
+            <span>가을웜</span>
+          </label>
+
+          <label class="feed-filter-chip-label">
+            <input type="checkbox" name="personalColor" value="여름쿨" />
+            <span>여름쿨</span>
+          </label>
+
+          <label class="feed-filter-chip-label">
+            <input type="checkbox" name="personalColor" value="겨울쿨" />
+            <span>겨울쿨</span>
+          </label>
         </div>
       </div>
 
       <div class="feed-filter-group">
-        <div class="feed-filter-group-title">[피부타입별]</div>
-        <div class="feed-filter-chip-list">
-          <button type="button" class="feed-filter-chip">지성</button>
-          <button type="button" class="feed-filter-chip">건성</button>
-          <button type="button" class="feed-filter-chip">복합성</button>
-          <button type="button" class="feed-filter-chip">민감성</button>
-        </div>
-      </div>
+  <div class="feed-filter-group-title">[피부타입별]</div>
+
+  <div class="feed-filter-chip-list skin-type-layout">
+    <label class="feed-filter-chip-label">
+      <input type="checkbox" name="skinType" value="중성" />
+      <span>중성</span>
+    </label>
+
+    <label class="feed-filter-chip-label">
+      <input type="checkbox" name="skinType" value="건성" />
+      <span>건성</span>
+    </label>
+
+    <label class="feed-filter-chip-label">
+      <input type="checkbox" name="skinType" value="지성" />
+      <span>지성</span>
+    </label>
+
+    <label class="feed-filter-chip-label">
+      <input type="checkbox" name="skinType" value="민감성" />
+      <span>민감성</span>
+    </label>
+
+    <label class="feed-filter-chip-label">
+      <input type="checkbox" name="skinType" value="복합성" />
+      <span>복합성</span>
+    </label>
+
+    <label class="feed-filter-chip-label">
+      <input type="checkbox" name="skinType" value="수부지" />
+      <span>수부지</span>
+    </label>
+  </div>
+</div>
 
       <div class="feed-filter-group">
         <div class="feed-filter-group-title">[나이대]</div>
-        <div class="feed-filter-chip-list">
-          <button type="button" class="feed-filter-chip">10대</button>
-          <button type="button" class="feed-filter-chip">20~30대</button>
-          <button type="button" class="feed-filter-chip">40~50대</button>
+
+        <div class="feed-filter-chip-list age-layout">
+          <label class="feed-filter-chip-label">
+            <input type="checkbox" name="ageGroup" value="10대" />
+            <span>10대</span>
+          </label>
+
+          <label class="feed-filter-chip-label">
+            <input type="checkbox" name="ageGroup" value="20~30대" />
+            <span>20~30대</span>
+          </label>
+
+          <label class="feed-filter-chip-label">
+            <input type="checkbox" name="ageGroup" value="40~50대" />
+            <span>40~50대</span>
+          </label>
         </div>
       </div>
-    </div>
-  </div>
+
+      <div class="feed-filter-reset-wrap">
+        <button type="reset" class="feed-filter-reset-btn">
+          필터 초기화
+        </button>
+      </div>
+    </form>
+  </details>
 </div>
 
           <div class="feed-list" id="feed-list-container">
             <article
-              class="feed-card"
-              th:each="feed : ${feedList}"
-              th:data-feed-id="${feed.feedId}"
-              th:data-username="${feed.username}"
-              th:data-skin-type="${feed.skinType}"
-              th:data-personal-color="${feed.personalColor}"
-              th:data-content="${feed.feedContent}"
-              th:data-images="${feed.feedFileList != null ? #strings.listJoin(feed.feedFileList, ',') : ''}"
-              th:data-tags="${feed.feedTagList != null ? #strings.listJoin(feed.feedTagList, ',') : ''}"
-            >
+  class="feed-card"
+  th:each="feed : ${feedList}"
+  th:data-feed-id="${feed.feedId}"
+  th:data-username="${feed.username}"
+  th:data-skin-type="${feed.skinType}"
+  th:data-personal-color="${feed.personalColor}"
+  th:data-age-group="${feed.ageGroup != null ? feed.ageGroup : ''}"
+  th:data-content="${feed.feedContent}"
+  th:data-images="${feed.feedFileList != null ? #strings.listJoin(feed.feedFileList, ',') : ''}"
+  th:data-tags="${feed.feedTagList != null ? #strings.listJoin(feed.feedTagList, ',') : ''}"
+>
               <div class="feed-card-top feed-profile-header">
                 <div class="feed-profile-left">
                   <div class="feed-profile-avatar">
@@ -317,6 +391,13 @@
                       >
                         퍼스널컬러
                       </span>
+                       <span
+    class="feed-profile-tag age"
+    th:text="${feed.ageGroup != null ? feed.ageGroup : '나이대'}"
+  >
+    나이대
+  </span>
+
                     </div>
                   </div>
                 </div>
@@ -560,11 +641,16 @@
                                     th:classappend="${child.deleted != null and child.deleted == 1 ? ' deleted-comment-text' : ''}"
                                   >
                                     <span
-                                      class="comment-mention"
-                                      th:if="${(child.deleted == null or child.deleted != 1) and child.parentNickname != null and child.parentNickname != ''}"
-                                      th:text="'@' + ${child.parentNickname}"
-                                      th:data-target-reply-id="${child.parentsReplyId}"
-                                    ></span>
+  class="comment-mention"
+  th:if="${child.deleted != 1 
+          and child.deleted != '1'
+          and reply.deleted != 1 
+          and reply.deleted != '1'
+          and child.parentNickname != null 
+          and child.parentNickname != ''}"
+  th:text="'@' + ${child.parentNickname}"
+  th:data-target-reply-id="${child.parentsReplyId}"
+></span>
 
                                     <span
                                       th:text="${child.deleted != null and child.deleted == 1 ? '사용자가 삭제한 댓글입니다.' : child.replyContent}"
@@ -704,5 +790,173 @@
     <script th:src="@{/js/feed/feed_like.js}"></script>
     <script th:src="@{/js/feed/feed_reply.js}"></script>
     <script th:src="@{/js/feed/feed_tag.js}"></script>
+    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const filterArea =
+      document.getElementById("feed-filter-ui") ||
+      document.querySelector(".feed-filter-details");
+
+    const feedCards = document.querySelectorAll(".feed-card");
+
+    if (!filterArea || feedCards.length === 0) return;
+    
+
+    // 글자 비교용 정리
+    function clean(value) {
+      return (value || "")
+        .replace(/\s/g, "")
+        .replace("웜톤", "웜")
+        .replace("쿨톤", "쿨")
+        .replace("피부", "")
+        .trim();
+    }
+
+    // 선택된 값 가져오기
+    function getSelectedValues(type) {
+      let values = [];
+
+      // checkbox 방식일 때
+      filterArea
+        .querySelectorAll('input[name="' + type + '"]:checked')
+        .forEach(function (input) {
+          values.push(clean(input.value));
+        });
+
+      // button 방식일 때
+      const groups = filterArea.querySelectorAll(".feed-filter-group");
+
+      // 0번째 그룹 = 퍼스널컬러
+      if (type === "personalColor" && groups[0]) {
+        groups[0].querySelectorAll(".feed-filter-chip.is-selected").forEach(function (chip) {
+          values.push(clean(chip.textContent));
+        });
+      }
+
+      // 1번째 그룹 = 피부타입
+      if (type === "skinType" && groups[1]) {
+        groups[1].querySelectorAll(".feed-filter-chip.is-selected").forEach(function (chip) {
+          values.push(clean(chip.textContent));
+        });
+      }
+
+      return values;
+    }
+
+    // 실제 피드 필터링
+    function applyFilter() {
+      const selectedPersonalColors = getSelectedValues("personalColor");
+      const selectedSkinTypes = getSelectedValues("skinType");
+      const selectedAgeGroup = getSelectedValues("ageGroup");
+
+      feedCards.forEach(function (card) {
+        const cardPersonalColor = clean(card.dataset.personalColor);
+        const cardSkinType = clean(card.dataset.skinType);
+        const cardAgeGroup = clean(card.dataset.ageGroup);
+
+        const personalColorMatch =
+          selectedPersonalColors.length === 0 ||
+          selectedPersonalColors.includes(cardPersonalColor);
+
+        const skinTypeMatch =
+          selectedSkinTypes.length === 0 ||
+          selectedSkinTypes.includes(cardSkinType);
+
+        const ageGroupMatch =
+          selectedAgeGroup.length === 0 ||
+          selectedAgeGroup.includes(cardAgeGroup);
+
+        if (personalColorMatch && skinTypeMatch && ageGroupMatch) {
+          card.style.display = "";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    }
+
+    // button 방식일 때 선택 처리
+    filterArea.addEventListener("click", function (event) {
+      const chip = event.target.closest(".feed-filter-chip");
+      const resetBtn = event.target.closest(".feed-filter-reset-btn");
+
+      if (chip) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        chip.classList.toggle("is-selected");
+        applyFilter();
+      }
+
+      if (resetBtn) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        filterArea.querySelectorAll(".feed-filter-chip").forEach(function (chip) {
+          chip.classList.remove("is-selected");
+        });
+
+        filterArea.querySelectorAll("input[type='checkbox']").forEach(function (input) {
+          input.checked = false;
+        });
+
+        feedCards.forEach(function (card) {
+          card.style.display = "";
+        });
+      }
+    });
+
+    // checkbox 방식일 때 선택 처리
+    filterArea.addEventListener("change", function (event) {
+      if (event.target.matches("input[type='checkbox']")) {
+        applyFilter();
+      }
+    });
+  });
+  document.addEventListener("DOMContentLoaded",function(){
+  const shareModal = document.getElementById("share-modal");
+  const shareCloseBtn = document.getElementById("share-modal-close");
+  const shareUrlInput = document.getElementById("share-url-input");
+  const shareCopyBtn = document.getElementById("share-copy-btn");
+  const shareButtons = document.querySelectorAll(".feed-share-btn");
+
+  shareButtons.forEach(function (button){
+    button.addEventListener("click",function(event){
+      event.preventDefault();
+      event.stopPropagation();
+
+      const feedId = button.dataset.feedId;
+      const shareUrl = window.location.origin + "/feed/"+feedId;
+      if(shareUrlInput){
+        shareUrlInput.value = shareUrl;
+      }
+      shareModal.classList.add("is-open");
+      });
+    });
+    if(shareCloseBtn) {
+      shareCloseBtn.addEventListener("click",function(){
+        shareModal.classList.remove("is-open");
+      });
+    }
+    shareModal.addEventListener("click",function(event){
+      if(event.target===shareModal){
+        shareModal.classList.remove("is-open");
+      }
+    });
+    if(shareCopyBtn && shareUrlInput) {
+      shareCopyBtn.addEventListener("click",function(){
+        shareUrlInput.select();
+        document.execCommand("copy");
+        shareCopyBtn.textContent= "완료";
+        setTimeout(function(){
+          shareCopyBtn.textContent="복사";
+        }, 1200);
+
+      });
+    }
+  });
+
+
+
+
+</script>
   </body>
 </html>
