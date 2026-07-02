@@ -1,3 +1,5 @@
+//필터1
+
 document.getElementById('filter-status').addEventListener('change', function() {
     
     const selectedCategory = this.value;
@@ -70,4 +72,22 @@ document.getElementById('filter-status').addEventListener('change', function() {
             paginationContainer.innerHTML = paginationHtml;
         })
         .catch(error => console.error('Error:', error));
+});
+
+// 최신순 or 조회순 
+
+// 날짜 모달
+
+const filterBtn = document.querySelector(".date-filter-btn");
+const popup = document.querySelector(".date-popup");
+
+filterBtn.addEventListener("click", function(e){
+    e.stopPropagation();
+    popup.classList.toggle("show");
+});
+
+document.addEventListener("click", function(e){
+    if(!e.target.closest(".date-filter")){
+        popup.classList.remove("show");
+    }
 });

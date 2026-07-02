@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${qna.title} + ' - BEAUMINITY'"></title>
+    <title th:text="${qna.title} + ' - 화담'"></title>
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
     <link rel="stylesheet" th:href="@{/css/common/main.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
-    <link rel="stylesheet" th:href="@{/css/qna_board/qna_detail.css}">
+    <link rel="stylesheet" th:href="@{/css/community/community_detail.css}">
     <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
 </head>
 <body>
@@ -83,7 +83,7 @@
                     <a th:href="@{/community}" class="btn btn-list">목록으로</a>
                 </div>
                 <div class="action-right" id="action-field" th:data-id="${qna.boardId}">
-                    <a th:href="@{|/board/qna/edit/${qna.boardId}|}" class="btn btn-modify">수정</a>
+                    <a th:href="@{|/community/edit/${qna.boardId}|}" class="btn btn-modify">수정</a>
                     <button type="submit" class="btn btn-delete" th:onclick="|deleteBoard(${qna.boardId})|" style="display: inline;">삭제</button>
                 </div>
             </div>

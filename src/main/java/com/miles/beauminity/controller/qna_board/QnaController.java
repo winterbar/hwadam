@@ -1,6 +1,8 @@
 package com.miles.beauminity.controller.qna_board;
 
 import java.io.File;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.core.io.FileSystemResource;
@@ -58,6 +60,8 @@ public class QnaController {
     @GetMapping("/community")
     public String getQnaList(@ModelAttribute PageVO pageVO, Model model) {
 
+        LocalDate today = LocalDate.now();
+
         // 게시판 종류 설정
         String type = "qna";
 
@@ -77,8 +81,9 @@ public class QnaController {
 
         model.addAttribute("qnaS", qnaBoardList);
         model.addAttribute("pageVO", pageVO);
+        model.addAttribute("today", today);
 
-        return "qna_board/qna";
+        return "qna_board/list";
     }
 
     // 질문 게시글 작성
@@ -194,7 +199,7 @@ public class QnaController {
 
         qnaService.updateBoard(masterBoardVO, files, category);
         
-        return "redirect:/board/qna";
+        return "redirect:/community";
     }
 
     // 파일 첨부 메서드
@@ -240,7 +245,7 @@ public class QnaController {
         model.addAttribute("pageVO", pageVO);
 
         
-        return "/qna_board/qna";
+        return "/qna_board/list";
     }
     
     
