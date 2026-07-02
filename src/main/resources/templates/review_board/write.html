@@ -20,7 +20,7 @@
                 <h2>후기 등록하기</h2>
             </div>
 
-            <form id="reviewForm" th:action="@{/board/review/write}" method="post" enctype="multipart/form-data">
+            <form id="reviewForm" th:action="@{/review/write}" method="post" enctype="multipart/form-data">
                 
                 <input type="hidden" id="mainCategory" name="category1">
                 <input type="hidden" id="subCategory" name="category2">
@@ -81,7 +81,7 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn btn-cancel" th:onclick="|location.href='@{/board/review}'|">취소</button>
+                    <button type="button" class="btn btn-cancel" th:onclick="|location.href='@{/review}'|">취소</button>
                     <button type="button" class="btn btn-submit" onclick="submitReviewForm()">등록 완료</button>
                 </div>
 

@@ -91,7 +91,9 @@ a {
 /* ==========================================================================
    3. 탭 + 칩스 카테고리 필터 스타일 (rv- 접두사 적용)
    ========================================================================== */
-/* 전체 박스 */
+
+/* 카테고리 드롭박스 영역 */
+
 .rv-category-filter-section {
     background-color: #ffffff;
     border: 1px solid #f1f3f5;
@@ -172,21 +174,6 @@ a {
 
 
 
-
-.rv-dropdown-container.show .rv-dropdown-menu {
-    display: grid !important; /* 가로 배열을 위해 grid 채택 */
-}
-
-.rv-dropdown-container.show .rv-dropdown-btn {
-    border-color: #FFA1C1;
-    color: #FFA1C1;
-}
-
-.rv-dropdown-container.show .arrow-icon {
-    transform: rotate(-90deg); /* 화살표 회전 */
-    color: #FFA1C1;
-}
-
 /* ★ 무조건 버튼 우측(오른쪽)에 고정 배치하는 리스트 박스 */
 .rv-dropdown-menu {
     display: none !important; /* 초기 상태에서는 화면에서 완전히 지워버림 */
@@ -211,14 +198,12 @@ a {
 
 .rv-dropdown-menu li a {
     display: block;
-    padding: 8px 12px;
     color: #495057;
     font-size: 13px;
     font-weight: 500;
     text-decoration: none;
     text-align: center;
     background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
     border-radius: 20px;
     transition: all 0.15s ease;
 }
@@ -230,6 +215,44 @@ a {
     font-weight: 600;
 }
 
+/* 1. 평소(초기 상태): 메뉴를 완전히 숨겨둡니다 */
+ul.rv-dropdown-menu {
+    display: none !important; /* 기본적으로 숨김 */
+    
+    /* 팝업처럼 둥둥 뜨게 만들기 위한 스타일 */
+    position: absolute;
+    top: 100%; /* 버튼 바로 아래 배치 */
+    left: 0;
+    width: 800px;
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    z-index: 999; /* 다른 컨텐츠에 가려지지 않게 최상단 배치 */
+    list-style: none;
+}
+
+
+/* 2. 클릭 시 활성화 상태: 자바스크립트로 .show 가 붙으면 가로 7칸 그리드로 노출! */
+ul.rv-dropdown-menu.show {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+/* 2. 내부 li와 a 태그 정렬 안정화 */
+ul.rv-dropdown-menu li {
+    width: 100%; /* grid 칸 내부를 꽉 채우도록 설정 */
+}
+
+ul.rv-dropdown-menu li a {
+    display: block;
+    text-align: center;
+    /* 기존 css 스타일 유지... */
+}
+
+/*-------------------------------------------------------------------------------------------------*/
 
 /* 활성화된 대분류 탭 언더라인 */
 .rv-tab-btn.active {
@@ -268,40 +291,53 @@ a {
     cursor: pointer;
     transition: all 0.2s ease;
 }
-.rv-chip-item:hover {
-    background-color: #e9ecef;
-    color: #212529;
-}
+
 
 /* 선택된 소분류 하이라이트 */
-.rv-chip-item.active {
-    background-color: #fff1f2;
-    color: #FFA1C1;
-    border-color: #FFA1C1;
-    font-weight: 600;
+.rv-category-filter-section li.active,
+.chip-item.active {
+    background-color: #fff1f2 !important;
+    color: #FFA1C1 !important;
+    border-color: #FFA1C1 !important;
+    font-weight: 600 !important;
 }
 
 /* ==========================================================================
    4. 세로로 깨지는 소분류 칩스(ul, li) 영역 강제 교정 스타일
    ========================================================================== */
 /* 타임리프로 뿌려지는 소분류 ul 컨테이너 목록이 있다면 */
-.rv-category-filter-section ul, 
-.chips-container {
-    display: flex !important;
+.rv-category-filter-section ul {
     flex-wrap: wrap !important;
     gap: 8px !important;
     list-style: none !important; /* 불릿 기호(•) 강제 제거 */
-    padding: 0 !important;
-    margin: 15px 0 0 0 !important;
+    
+}
+
+
+.chips-container {
+    display: none !important;
+}
+
+/* active 클래스가 붙은 컨테이너만 가로로 이쁘게 노출시킵니다 */
+.chips-container.active {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px; /* 드롭다운 버튼과의 간격 조정 */
 }
 
 /* 소분류 개별 li 항목들 동글동글하게 교정 */
 .rv-category-filter-section li,
 .chip-item {
     display: inline-block !important;
-    padding: 8px 16px !important;
     font-size: 13px !important;
+    font-weight: 500;
+
+    padding: 8px 16px;
+
     background-color: #f8f9fa !important;
+    border: 1px solid #dee2e6;
+
     color: #495057 !important;
     border-radius: 20px !important;
     cursor: pointer !important;
@@ -315,14 +351,9 @@ a {
     background-color: #e9ecef !important;
 }
 
-/* 선택된 소분류 하이라이트 */
-.rv-category-filter-section li.active,
-.chip-item.active {
-    background-color: #fff1f2 !important;
-    color: #FFA1C1 !important;
-    border-color: #FFA1C1 !important;
-    font-weight: 600 !important;
-}
+
+
+
 
 
 /* ==========================================================================
@@ -492,4 +523,80 @@ a {
     background: #ffffff;
     border: 1px solid #eef0f2;
     border-radius: 12px;
+}
+
+/* ==========================================================================
+   후기 게시판 페이징 (Pagination) 스타일
+   ========================================================================== */
+.board-footer {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 페이징과 검색창을 가로 중앙 정렬 */
+    gap: 24px;          /* 페이징 버튼과 검색창 사이 간격 */
+    width: 100%;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 6px; /* 숫자 버튼들 사이의 자잘한 간격 */
+}
+
+.pagination li {
+    display: inline-block;
+}
+
+.pagination li a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 6px;
+    
+    font-size: 14px;
+    font-weight: 500;
+    color: #495057; /* 기본 글자색 */
+    text-decoration: none;
+    
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px; /* 예쁜 사각형 라운드 처리 */
+    
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* 마우스를 올렸을 때(Hover) 효과 */
+.pagination li a:hover {
+    background-color: #f8f9fa;
+    border-color: #ced4da;
+    color: #212529;
+}
+
+/* 현재 사용자가 보고 있는 페이지 활성화 (Thymeleaf classappend='active') */
+.pagination li a.active {
+    background-color: #FFA1C1 !important; /* 선택된 페이지 배경색 (분홍) */
+    border-color: #FFA1C1 !important;     /* 테두리도 분홍색 고정 */
+    color: #ffffff !important;            /* 글자색 흰색으로 반전 */
+    font-weight: 600;                     /* 글씨 조금 더 두껍게 */
+}
+
+/* 이전(←) / 다음(→) 화살표 버튼에 스타일 변화를 주고 싶을 때 */
+.pagination li:first-child a,
+.pagination li:last-child a {
+    font-weight: bold;
+    background-color: #f8f9fa;
+    color: #868e96;
+}
+
+.pagination li:first-child a:hover,
+.pagination li:last-child a:hover {
+    color: #495057;
+    background-color: #e9ecef;
 }

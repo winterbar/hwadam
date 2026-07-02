@@ -156,10 +156,11 @@
                 -- 해당 게시글의 파일들 중 가장 첫 번째 파일 ID 하나만 조회하는 서브쿼리
                 SELECT MIN(file_id) 
                 FROM board_file 
-                WHERE board_id = m.board_id
+                WHERE board_id = m.board_id 
             )
            <where>
                 m.board_type = #{type}
+                AND m.deleted = 0
                 <if test="search.category1 != null and search.category1 != '' and search.category1 != '전체보기'">
                     AND r.category1 = #{search.category1}
                 </if>
