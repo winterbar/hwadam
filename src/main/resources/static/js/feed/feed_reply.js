@@ -853,6 +853,25 @@ document.addEventListener("DOMContentLoaded", function () {
       saveBtn.type = "button";
       saveBtn.className = "comment-save-btn";
       saveBtn.textContent = "저장";
+      input.addEventListener("click", function (event) {
+  event.stopPropagation();
+});
+
+input.addEventListener("mousedown", function (event) {
+  event.stopPropagation();
+});
+
+input.addEventListener("mouseover", function (event) {
+  event.stopPropagation();
+});
+
+saveBtn.addEventListener("click", function (event) {
+  event.stopPropagation();
+});
+
+saveBtn.addEventListener("mousedown", function (event) {
+  event.stopPropagation();
+});
 
       contentEl.appendChild(input);
       contentEl.appendChild(saveBtn);
@@ -927,7 +946,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.addEventListener("scroll", closeFloatingMenu);
     window.addEventListener("resize", closeFloatingMenu);
+    
   }
+  
 
   // 실행
   initCommentArea();

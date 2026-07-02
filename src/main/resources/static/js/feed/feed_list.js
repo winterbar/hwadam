@@ -309,24 +309,6 @@ document.querySelectorAll(".js-caption-text").forEach(function (caption) {
   caption.textContent = caption.textContent.trim();
 });
 
-// 피드 필터 기능
-document.addEventListener("DOMContentLoaded",function() {
-  const filterUi = document.getElementById("feed-filter-Ui");
-  const filterBtn = document.getElementById("feed-filter-open-btn");
-
-  filterBtn.addEventListener("click", function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-    filterUi.classList.toggle("is-open");
-  });
-
-  document.addEventListener("click",function(event) {
-    if(!filterUi.contains(event.target)) {
-      filterUi.classList.remove("is-open");
-    }
-  });
-});
-
   renderFeedContentAndLink();
   renderFeedImages();
   initFeedSortSelect();

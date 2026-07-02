@@ -1,5 +1,7 @@
 package com.miles.beauminity.service.feed;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -70,15 +72,38 @@ public class FeedServiceImpl implements FeedService {
             // 특정 피드 아이디에 해당하는 사진 가져와서 리스트로 저장
             List<String> feedFileList = feedFileMapper.getFeedFileList(feed.getFeedId());
             List<String> feedReplyList = feedReplyMapper.getFeedReplyList(feed.getFeedId());
-
             feed.setFeedFileList(feedFileList);
             feed.setFeedTagList(feedTagList);
             feed.setFeedReplyList(feedReplyList);
             feed.setReplyCnt(feedReplyList.size());
+            
+            String ageGroup = BirthdayToAgeGroup(feed.getBirthday());
+            feed.setAgeGroup(ageGroup);
 
         }
 
         return feedList;
+    }
+    
+    private String BirthdayToAgeGroup(String birthday) {
+        if(birthday== null || birthday.trim().isEmpty()) {
+            return "나이대";
+        }
+        try {
+            LocalDate birthDate = LocalDate.parse(birthday);
+
+            int age = Period.between(birthDate,LocalDate.now()).getYears();
+            if(age>=10 && age<20){
+                return "10대";
+            } else if(age<40 && age>=20){
+                return "20~30대";
+            }else if(age<60 && age>=40){
+                return "40~50대";
+            }
+        } catch (Exception e) {
+            return "나이대";
+        }
+        return "나이대";
     }
 
     @Override
@@ -186,5 +211,27 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public void deleteReply(Long replyId) {
         feedReplyMapper.deleteReply(replyId);
+    }
+
+    @Override
+    public List<FeedVO> getShareFeedlist(Long feedId) {
+        List<FeedVO> feedList = feedMapper.getShareFeedlist(feedId);
+        for (FeedVO feed : feedList) {
+            // 특정 피드 아이디에 해당하는 해시태그를 가져와서 리스트로 저장
+            List<String> feedTagList = tagMapper.getFeedTagList(feed.getFeedId());
+            // 특정 피드 아이디에 해당하는 사진 가져와서 리스트로 저장
+            List<String> feedFileList = feedFileMapper.getFeedFileList(feed.getFeedId());
+            List<String> feedReplyList = feedReplyMapper.getFeedReplyList(feed.getFeedId());
+            feed.setFeedFileList(feedFileList);
+            feed.setFeedTagList(feedTagList);
+            feed.setFeedReplyList(feedReplyList);
+            feed.setReplyCnt(feedReplyList.size());
+            
+            String ageGroup = BirthdayToAgeGroup(feed.getBirthday());
+            feed.setAgeGroup(ageGroup);
+
+        }
+
+        return feedList;
     }
 }

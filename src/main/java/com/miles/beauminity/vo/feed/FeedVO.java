@@ -28,5 +28,7 @@ public class FeedVO {
     private Boolean liked;
     private String profileImage;
 private String profilePath;
+private String birthday;
+private String ageGroup;
 
 }
