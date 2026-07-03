@@ -1,5 +1,6 @@
 package com.miles.beauminity.service.qna_board;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +19,7 @@ public interface QnaService {
 
     List<QnaBoardCompleteVO> getTypeBoard(String type, PageVO pageVO);
 
-    List<QnaBoardCompleteVO> getQnaBoardByCategory(String type, PageVO pageVO, String category);
+    List<QnaBoardCompleteVO> getQnaBoardByCategory(String type, PageVO pageVO, String category, String sort, LocalDateTime startDate, LocalDateTime endDate, String searchType, String keyword);
 
     MasterBoardVO getOneBoard(Long id);
 

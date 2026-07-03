@@ -5,6 +5,15 @@
 
 <mapper namespace="com.miles.beauminity.mapper.qna_board.QnaBoardMapper">
 
+<resultMap id="communityResultMap" type="com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO">
+    <id property="boardId" column="board_id"/>
+    <result property="category" column="category"/>
+    <result property="title" column="title"/>
+    <result property="nickname" column="nickname"/>
+    <result property="createdAt" column="created_at"/>
+    <result property="viewCnt" column="view_cnt"/>
+</resultMap>
+
     <!-- 게시글에 정보 등록 -->
     <insert id="insertQna"
                 parameterType="com.miles.beauminity.vo.qna_board.QnaBoardVO">
@@ -13,18 +22,76 @@
         VALUES (#{boardId}, #{category})
     </insert>
 
-    <!-- 조인해서 비교하고 가져온다 -->
-    <select id="selectQnaByCategory"
-            parameterType="com.miles.beauminity.vo.board.TypeOffsetVO"
-            resultType="com.miles.beauminity.vo.board.MasterBoardVO">
-        SELECT *
-            FROM master_board m
-            INNER JOIN
-            qna_board q
-            ON m.board_id = q.board_id
-            WHERE q.category=#{category} AND m.board_type = #{type} AND deleted = 0
-            ORDER BY m.board_id DESC
-            LIMIT #{offset}, #{size}
+    <!-- 조인해서 비교하고 가져온다. if문을 쓰면 카테고리 없어도 생략되ㄴ -->
+    <select id="selectCommuByCategory"
+            resultMap="communityResultMap">
+        SELECT 
+            mb.board_id,
+            q.category,
+            mb.title,
+            m.nickname,
+            mb.created_at,
+            mb.view_cnt
+            FROM master_board mb
+            INNER JOIN qna_board q
+            ON mb.board_id = q.board_id
+            INNER JOIN member m
+            ON mb.username = m.username
+            WHERE mb.board_type = #{type} AND mb.deleted = 0
+
+            <if test="category != null and category != '전체보기'">
+            
+                AND q.category=#{category}
+
+            </if>
+
+            <if test="startDate != null">
+            
+                AND mb.created_at &gt;= #{startDate}
+
+            </if>
+
+            <if test="endDate != null">
+            
+                AND mb.created_at &lt;= #{endDate}
+            
+            </if>
+
+            <if test="keyword != null and keyword != ''">
+                <choose>
+                    <when test="searchType == 'title'">
+                        AND mb.title LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+
+                    <when test="searchType == 'content'">
+                        AND mb.content LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+
+                    <when test="searchType == 'writer'">
+                        AND m.nickname LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+
+                    <otherwise>
+                        AND (
+                            title LIKE CONCAT('%', #{keyword}, '%')
+                            OR content LIKE CONCAT('%', #{keyword}, '%')
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+
+            <choose>
+                <when test="sort == '최신순'">
+                    ORDER BY mb.board_id DESC
+                </when>
+                <when test="sort == '조회순'">
+                    ORDER BY mb.view_cnt DESC
+                </when>
+                <otherwise>
+                    ORDER BY mb.board_id DESC
+                </otherwise>
+            </choose>
+            LIMIT #{page.offset}, #{page.size}
     </select>
 
     <!-- 게시글 수 확인 -->
