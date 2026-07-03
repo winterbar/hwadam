@@ -1,5 +1,7 @@
 package com.miles.beauminity.controller.qna_board;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +9,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -47,9 +50,14 @@ public class QnaApiController {
 
     @GetMapping("/filter")
     public ResponseEntity<Map<String, Object>> filterBoard(@RequestParam(
-        value = "category", defaultValue = "all") String category, @ModelAttribute PageVO pageVO){
+        value = "category", defaultValue = "전체보기") String category, @ModelAttribute PageVO pageVO, @RequestParam(
+        value = "sort", defaultValue = "최신순") String sort, @RequestParam(required = false) LocalDateTime startDate
+        , @RequestParam(required = false) LocalDateTime endDate, @RequestParam(
+        value = "searchType", defaultValue = "titleContent") String searchType, @RequestParam(required = false) String keyword){
         Map<String, Object> result = new HashMap<>();
         // 카테고리에 맞는 리스트를 DB에서 조회해서 반환
+
+        System.out.println("검색 종류: " + searchType);
 
         String type="qna";
 
@@ -58,7 +66,7 @@ public class QnaApiController {
 
         System.out.println("페이지 정보:"+ pageVO.toString());
 
-        List<QnaBoardCompleteVO> filteredList = qnaService.getQnaBoardByCategory(type, pageVO, category);
+        List<QnaBoardCompleteVO> filteredList = qnaService.getQnaBoardByCategory(type, pageVO, category, sort, startDate, endDate, searchType, keyword);
         
         result.put("list", filteredList);
         result.put("pageInfo", pageVO);
