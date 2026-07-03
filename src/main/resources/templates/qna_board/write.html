@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beauminity - 글쓰기</title>
+    <title>화담 - 글쓰기</title>
     
-    <link rel="stylesheet" th:href="@{/css/qna_board/qna_write.css}">
+    <link rel="stylesheet" th:href="@{/css/community/community_write.css}">
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
     <link rel="stylesheet" th:href="@{/css/common/main.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
@@ -31,10 +31,10 @@
                         <label for="post-category">카테고리</label>
                         <select id="post-category" name="category" class="form-control" required>
                             <option value="" disabled selected>카테고리를 선택해주세요</option>
-                            <option value="입문">입문</option>
-                            <option value="비교">비교</option>
-                            <option value="도움요청">도움요청</option>
-                            <option value="기타">기타</option>
+                            <option value="자유">자유</option>
+                            <option value="질문">질문</option>
+                            <option value="꿀팁">꿀팁</option>
+                            <option value="공지사항">공지사항</option>
                         </select>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                 <div class="form-group">
                     <label>사진 첨부</label>
                     <label for="file-input" class="file-upload-wrapper" id="dropZone">
-                        <input type="file" id="fileInput" multiple name="files">
+                        <input type="file" id="file-input" multiple name="files">
                         <span class="upload-icon">📁</span>
                         <span class="upload-text">클릭하거나 파일을 여기로 드래그하여 업로드</span>
                         <span class="upload-hint">JPG, PNG, GIF 파일 가능 (최대 10MB)</span>

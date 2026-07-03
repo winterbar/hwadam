@@ -1,11 +1,16 @@
 package com.miles.beauminity.mapper.qna_board;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.miles.beauminity.vo.board.MasterBoardVO;
+import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.board.TypeOffsetVO;
+import com.miles.beauminity.vo.login.MemberVO;
+import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardVO;
 
 @Mapper
@@ -15,7 +20,14 @@ public interface QnaBoardMapper {
     public void insertQna(QnaBoardVO qnaBoardVO);
 
     // 카테고리별로 질문게시판 조회
-    public List<MasterBoardVO> selectQnaByCategory(TypeOffsetVO typeOffsetVO);
+    public List<QnaBoardCompleteVO> selectCommuByCategory(@Param("type") String type
+                                                        , @Param("page") PageVO pageVO                                                    
+                                                        , @Param("category") String category
+                                                        , @Param("sort") String sort
+                                                        , @Param("startDate") LocalDateTime startDate
+                                                        , @Param("endDate") LocalDateTime endDate
+                                                        , @Param("searchType") String searchType
+                                                        , @Param("keyword") String keyword);
 
     // 카테고리별 게시글 수
     public int getQnaCountByCategory(TypeOffsetVO typeOffsetVO);
