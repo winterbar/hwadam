@@ -41,6 +41,17 @@
         LIMIT #{offset}, #{size}
     </select>
 
+    <!-- 특정게시판 조회 매퍼 조회수 순으로 -->
+    <select id="getTypeBoardByOrder" 
+        parameterType="com.miles.beauminity.vo.board.TypeOffsetVO"
+        resultType="com.miles.beauminity.vo.board.MasterBoardVO">
+        SELECT *
+        FROM master_board
+        WHERE board_type = #{type} AND deleted = 0
+        ORDER BY view_cnt DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
     <!-- 특정게시글 조회 쿼리  -->
     <select id="getOneBoard" 
             parameterType="Long">

@@ -3,11 +3,13 @@
 <head>
      <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beauminity : 후기 게시글 상세 페이지</title>
+    <title>화담 : 리뷰</title>
     <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
     <link rel="stylesheet" th:href="@{/css/common/main.css}">
     <link rel="stylesheet" th:href="@{/css/review_board/review_common.css}">
     <link rel="stylesheet" th:href="@{/css/review_board/review_detail.css}">
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 
 <div th:replace="~{layout/header :: header}"></div>
@@ -68,7 +70,7 @@
 
             <div class="detail-actions-row">
                 <div>
-                    <a href="/board/review" class="btn-list-go">
+                    <a href="/review" class="btn-list-go">
                         목록으로
                     </a>
                 </div>
@@ -81,7 +83,7 @@
                     </div>
                     
                     <a th:if="${#authentication.name == detail.userName}"
-                       th:href="@{/board/review/edit/{id}(id=${detail.boardId})}"
+                       th:href="@{/review/edit/{id}(id=${detail.boardId})}"
                        class="btn-edit-dark"
                        style="display: inline-block; padding: 0.8rem 1.5rem; background-color: #1a1a1a; color: #ffffff; border: 1px solid #1a1a1a; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 500;">
                         수정

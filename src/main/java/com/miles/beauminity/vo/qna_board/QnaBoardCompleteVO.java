@@ -22,5 +22,5 @@ public class QnaBoardCompleteVO {
     private int likeCnt;
     private boolean deleted;
     private String category;
-    
+    private String searchString;
 }

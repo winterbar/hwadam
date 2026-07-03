@@ -1,12 +1,26 @@
 package com.miles.beauminity.controller.admin;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.miles.beauminity.service.admin.AdminMemberService;
+import com.miles.beauminity.vo.admin.AdminMemberVO;
+import com.miles.beauminity.vo.admin.AdminPageVO;
+
+import lombok.RequiredArgsConstructor;
 
 
 @Controller
+@RequiredArgsConstructor
 public class AdminPageController {
     
+    private final AdminMemberService adminMemberService;
+
     // 관리자 페이지 요청 (대시보드)
     @GetMapping("/admin")
     public String getAdminHomePage() {
@@ -15,7 +29,16 @@ public class AdminPageController {
     
     // 회원 관리 페이지 요청
     @GetMapping("/admin/members")
-    public String getAdminMembersPage() {
+    public String getAdminMembersPage(@ModelAttribute AdminPageVO adminPageVO,
+            @RequestParam(required = false, defaultValue = "search") String tab, Model model) {
+        // 페이징
+        long count = adminMemberService.countMembers(adminPageVO);
+        adminPageVO.pageInfo(count);
+        // 회원 목록
+        List<AdminMemberVO> members = adminMemberService.searchMembers(adminPageVO);
+        model.addAttribute("tab", tab);
+        model.addAttribute("members", members);
+        model.addAttribute("page", adminPageVO);
         return "admin/members";
     }
     
