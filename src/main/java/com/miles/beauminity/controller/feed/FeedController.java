@@ -161,4 +161,12 @@ public class FeedController {
 
     }
 
+    @GetMapping("/feed/{feedId}")
+    public String shareFeedById(@PathVariable("feedId") Long feedId,Model model) {
+        List<FeedVO> feedList = feedService.getShareFeedlist(feedId);
+        model.addAttribute("feedList",feedList);
+        return "feed/list";
+    }
+    
+
 }
