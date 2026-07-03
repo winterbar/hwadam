@@ -18,54 +18,136 @@
                 <h1>회원 관리 <small>Member Management</small></h1>
             </header>
 
-            <section class="filter-section">
-                <h2 class="section-title">상세 필터링</h2>
-                <div class="filter-box">
-                    <div class="filter-row">
-                        <label>가입일</label>
-                        <button>오늘</button><button>1주일</button><button>1개월</button><button>3개월</button><button>기간선택</button>
-                        <input type="date"> ~ <input type="date"> <button class="btn-main">조회</button>
-                    </div>
-                    <div class="filter-row">
-                        <label>등급</label>
-                        <button>전체</button><button>일반</button><button>관리자</button>
-                    </div>
-                    <div class="filter-row">
-                        <label>상태</label>
-                        <button>전체</button><button>정상</button><button>탈퇴</button>
-                    </div>
-                    <div class="filter-row">
-                        <label>포인트</label>
-                        <input type="number" placeholder="최소"> ~ <input type="number" placeholder="최대"> <button class="btn-main">조회</button>
-                    </div>
-                </div>
-            </section>
+            <div class="tab-container" th:data-current-tab="${tab}">
+                <button class="tab-btn"
+                    th:classappend="${tab == null || tab == 'search'} ? 'active' : ''"
+                    th:onclick="|location.href='@{/admin/members(tab='search', page=${page.page}, searchType=${page.searchType}, keyword=${page.keyword})}'|">
+                    회원 조회</button>
+                <button class="tab-btn"
+                    th:classappend="${tab == 'analysis'} ? 'active' : ''"
+                    th:onclick="|location.href='@{/admin/members(tab='analysis', page=${page.page}, searchType=${page.searchType}, keyword=${page.keyword})}'|">
+                    회원 통계</button>
+            </div>
 
-            <section class="table-section">
+            <div id="member-search" class="content-container">
+                <form th:action="@{/admin/members}" method="get" class="filter-box">
+                    <input type="hidden" name="page" value="1">
+                    <input type="hidden" name="tab" th:value="${tab}">
+                    <select name="searchType" class="category">
+                        <option value="all">전체목록</option>
+                        <option value="username">아이디</option>
+                        <option value="nickname">닉네임</option>
+                        <option value="name">이름</option>
+                        <option value="email">이메일</option>
+                        <option value="phone">전화번호</option>
+                    </select>
+                    <input name="keyword" class="search-input" placeholder="검색어 입력">
+                    <button type="submit" class="btn-primary">검색</button>
+                </form>
+            </div>
+
+            <div id="member-analysis" class="content-container" hidden>
+                <form id="memberFilterForm" class="filter-box">
+                    <input type="hidden" name="page" value="1">
+                    <input type="hidden" name="tab" th:value="${tab}">
+                    <div class="filter-row">
+                        <label class="filter-label">가입일</label>
+                        <div class="btn-group">
+                            <input type="radio" name="signedAt" value="now()" id="s0"><label for="s0">오늘</label>
+                            <input type="radio" name="signedAt" id="s1"><label for="s1">7일</label>
+                            <input type="radio" name="signedAt" id="s2"><label for="s2">1개월</label>
+                            <input type="radio" name="signedAt" id="s3"><label for="s3">3개월</label>
+                            <input type="radio" name="signedAt" id="s4"><label for="s4">6개월</label>
+                            <input type="radio" name="signedAt" id="s5"><label for="s5">1년</label>
+                            <div class="date-input">
+                                <input type="date"> ~ <input type="date">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-row"><label class="filter-label">나이</label>
+                        <div class="btn-group">
+                            <input type="checkbox" name="birthday" id="a1"><label for="a1">10대</label>
+                            <input type="checkbox" name="birthday" id="a2"><label for="a2">20대</label>
+                            <input type="checkbox" name="birthday" id="a3"><label for="a3">30대</label>
+                            <input type="checkbox" name="birthday" id="a4"><label for="a4">40대</label>
+                            <input type="checkbox" name="birthday" id="a5"><label for="a5">50대</label>
+                            <input type="checkbox" name="birthday" id="a6"><label for="a6">60대▲</label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-row"><label class="filter-label">성별</label>
+                        <div class="btn-group">
+                            <input type="checkbox" name="gender" id="g1"><label for="g1">남</label>
+                            <input type="checkbox" name="gender" id="g2"><label for="g2">여</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-row"><label class="filter-label">권한</label>
+                        <div class="btn-group">
+                            <input type="checkbox" id="r1"><label for="r1">일반</label>
+                            <input type="checkbox" id="r2"><label for="r2">관리자</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-row"><label class="filter-label">상태</label>
+                        <div class="btn-group">
+                            <input type="checkbox" id="st1"><label for="st1">정상</label>
+                            <input type="checkbox" id="st2"><label for="st2">정지</label>
+                            <input type="checkbox" id="st3"><label for="st3">탈퇴</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-row"><label class="filter-label">피부</label>
+                        <div class="btn-group">
+                            <input type="checkbox" id="p1"><label for="p1">중성</label>
+                            <input type="checkbox" id="p2"><label for="p2">건성</label>
+                            <input type="checkbox" id="p3"><label for="p3">지성</label>
+                            <input type="checkbox" id="p4"><label for="p4">민감성</label>
+                            <input type="checkbox" id="p5"><label for="p5">복합성</label>
+                            <input type="checkbox" id="p6"><label for="p6">수부지</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-row"><label class="filter-label">퍼스널컬러</label>
+                        <div class="btn-group">
+                            <input type="checkbox" id="c1"><label for="c1">봄웜</label>
+                            <input type="checkbox" id="c2"><label for="c2">가을웜</label>
+                            <input type="checkbox" id="c3"><label for="c3">여름쿨</label>
+                            <input type="checkbox" id="c4"><label for="c4">겨울쿨</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-row">
+                        <label class="filter-label">포인트</label>
+                        <input type="number" placeholder="최소"> ~ <input type="number" placeholder="최대">
+                    </div>
+
+                    <div class="filter-actions">
+                        <button type="button" id="resetBtn">초기화</button>
+                        <button type="submit" class="btn-primary">검색</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="table-div">
                 <div class="controls-wrapper">
-                    <div class="search-area">
-                        <select class="category">
-                            <option value="username">아이디</option>
-                            <option value="username">닉네임</option>
-                            <option value="username">이름</option>
-                            <option value="username">이메일</option>
-                            <option value="username">전화번호</option>
-                        </select>
-                        <input class="search-input" placeholder="검색할 키워드 입력">
-                        <button class="btn-primary">검색</button>
-                    </div>
                     <div class="action-buttons">
-                        <button class="btn-action">선택 수정</button>
-                        <button class="btn-action">선택 삭제</button>
-                        <button class="btn-primary">등록</button>
+                        <span id="checkInfo"></span>
+                        <button id="modifySkinType" class="btn-action hidden">피부 일괄변경</button>
+                        <button id="modifyPersonalColor" class="btn-action hidden">컬러 일괄변경</button>
+                        <button id="modifyPoint" class="btn-action hidden">포인트 일괄변경</button>
+                        <button id="modifyRole" class="btn-action hidden">등급 일괄변경</button>
+                        <button id="modifyStatus" class="btn-action hidden">상태 일괄변경</button>
                     </div>
+                    <button id="registerBtn" onclick="openRegisterModal()" class="btn-primary">회원 등록</button>
                 </div>
 
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th><input type="checkbox"></th>
+                                <th><input id="all-check" type="checkbox"></th>
                                 <th>아이디</th>
                                 <th>이름</th>
                                 <th>닉네임</th>
@@ -79,36 +161,228 @@
                                 <th>가입일</th>
                                 <th>등급</th>
                                 <th>상태</th>
-                                <th>관리</th>
+                                <th>기능</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>lolololololololo</td>
-                                <td>김현준</td>
-                                <td>롯데리아버거음료감튀도둑</td>
-                                <td>1990-01-01</td>
-                                <td>남</td>
-                                <td>lotteria1010@naver.com</td>
-                                <td>010-1234-5678</td>
-                                <td>수부지</td>
-                                <td>겨울쿨</td>
-                                <td>1,000</td>
-                                <td>2024-05-15</td>
-                                <td>일반</td>
-                                <td>정상</td>
+                            <tr th:each="member : ${members}">
+                                <td><input class="member-check" type="checkbox"></td>
+                                <td th:text="${member.username}"></td>
+                                <td th:text="${member.name}"></td>
+                                <td th:text="${member.nickname}"></td>
+                                <td th:text="${member.birthday}"></td>
+                                <td th:text="${member.gender}"></td>
+                                <td th:text="${member.email}"></td>
+                                <td th:text="${member.phone}"></td>
+                                <td th:text="${member.skinType}"></td>
+                                <td th:text="${member.personalColor}"></td>
+                                <td th:text="${member.point}"></td>
+                                <td th:text="${#temporals.format(member.signedAt, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${member.role}"></td>
+                                <td th:text="${member.status}"></td>
                                 <td>
-                                    <button class="btn-edit">보기</button>
-                                    <button class="btn-edit">수정</button>
-                                    <button class="btn-delete">삭제</button>
+                                    <button th:attr="data-username=${member.username}"
+                                        onclick="openDetailModal(this.dataset.username)"
+                                        class="btn-view">보기</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </section>
+                <div class="pagination" th:if="${page.totalPage}">
+                    <button th:if="${page.prev}"
+                        th:onclick="|location.href='@{/admin/members(tab=${tab}, page=${page.startPage - 1}, searchType=${page.searchType}, keyword=${page.keyword})}'|"
+                        class="page-btn">&lt;</button>
+                    
+                    <th:block th:each="num : ${#numbers.sequence(page.startPage, page.endPage)}">
+                        <button th:onclick="|location.href='@{/admin/members(tab=${tab}, page=${num}, searchType=${page.searchType}, keyword=${page.keyword})}'|"
+                            th:text="${num}" th:classappend="${page.page == num} ? 'page-btn active' : 'page-btn'">></button>
+                    </th:block>
+
+                    <button th:if="${page.next}"
+                        th:onclick="|location.href='@{/admin/member(tab=${tab}, page=${page.endPage + 1}, searchType=${page.searchType}, keyword=${page.keyword})}'|"
+                        class="page-btn">&gt;</button>
+                </div>
+            </div>
         </main>
+    </div>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <h2>회원 등록</h2>
+            <form id="registerForm" th:action="@{/admin/members/register}" method="post">
+                <div class="form-group full-width">
+                    <label>아이디</label>
+                    <div class="input-with-btn">
+                        <input type="text" id="username" name="username" placeholder="영어와 숫자 조합 (최대 16자)" pattern="^[a-zA-Z0-9]+$" required autofocus>
+                        <button type="button" class="check-btn">중복확인</button>
+                    </div>
+                    <span id="usernameError" class="error-text"></span>
+                </div>
+                <div class="form-group full-width">
+                    <label>비밀번호</label>
+                    <input type="password" id="password" name="password" placeholder="영어와 숫자 조합 (최소 8자)" minlength="8" required>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>이름</label>
+                        <input type="text" id="name" name="name" placeholder="이름 (10자 이하)" maxlength="10" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>닉네임</label>
+                        <input type="text" id="nickname" name="nickname" placeholder="닉네임 (12자 이하)" maxlength="12" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>생년월일</label>
+                        <input type="date" id="birthday" name="birthday" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>성별</label>
+                        <div class="radio-group">
+                            <label for="male"><input type="radio" name="gender" id="gender" value="남" required>남</label>
+                            <label for="female"><input type="radio" name="gender" id="gender" value="여" required>여</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>피부타입</label>
+                        <select id="skinType" name="skinType" required>
+                            <option>중성</option>
+                            <option>건성</option>
+                            <option>지성</option>
+                            <option>민감성</option>
+                            <option>복합성</option>
+                            <option>수부지</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>퍼스널 컬러</label>
+                        <select id="personalColor" name="personalColor" required>
+                            <option>봄웜</option>
+                            <option>가을웜</option>
+                            <option>여름쿨</option>
+                            <option>겨울쿨</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>이메일</label>
+                        <input type="email" id="email" name="email" placeholder="example@naver.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>전화번호</label>
+                        <input type="tel" id="phone" name="phone" placeholder="010-1234-5678"
+                            pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>포인트</label>
+                        <input type="number" id="point" name="point" placeholder="포인트 입력 (0 이상)" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>등급</label>
+                        <select id="role" name="role" required>
+                            <option value="USER">일반</option>
+                            <option value="ADMIN">관리자</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="btn-footer">
+                    <button type="button" class="btn-cancel" onclick="closeRegisterModal()">취소</button>
+                    <button type="submit" class="btn-primary">등록</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <h2>회원 정보</h2>
+            <form id="detailForm" th:action="@{/admin/members/modify}" method="post">
+                <div class="form-group full-width">
+                    <label>아이디</label>
+                    <input type="text" id="detailUsername" name="username" readOnly>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>이름</label>
+                        <input type="text" id="detailName" name="name" readOnly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>닉네임</label>
+                        <input type="text" id="detailNickname" name="nickname" readOnly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>생년월일</label>
+                        <input type="date" id="detailBirthday" name="birthday" readOnly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>성별</label>
+                        <input type="text" id="detailGender" name="gender" readOnly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>피부타입</label>
+                        <select id="detailSkinType" name="skinType" required>
+                            <option>중성</option>
+                            <option>건성</option>
+                            <option>지성</option>
+                            <option>민감성</option>
+                            <option>복합성</option>
+                            <option>수부지</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>퍼스널 컬러</label>
+                        <select id="detailPersonalColor" name="personalColor" required>
+                            <option>봄웜</option>
+                            <option>가을웜</option>
+                            <option>여름쿨</option>
+                            <option>겨울쿨</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>이메일</label>
+                        <input type="email" id="detailEmail" name="email" readOnly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>전화번호</label>
+                        <input type="tel" id="detailPhone" name="phone" readOnly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>포인트</label>
+                        <input type="number" id="detailPoint" name="point" placeholder="포인트 입력 (0 이상)" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>등급</label>
+                        <select id="detailRole" name="role" required>
+                            <option value="USER">일반</option>
+                            <option value="ADMIN">관리자</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="btn-footer">
+                    <button type="button" class="btn-cancel" onclick="closeDetailModal()">취소</button>
+                    <button type="submit" class="btn-primary">수정</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script th:src="@{/js/admin/members.js}"></script>
