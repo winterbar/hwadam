@@ -169,8 +169,6 @@
                 </if>
            </where>
             
-        
-            
             <choose>
                 <when test="search.sortType == 'hits'">
                     ORDER BY m.view_cnt DESC, m.board_id DESC

@@ -272,10 +272,13 @@ public class ReviewServiceImpl implements ReviewService {
                 }
             }
 
-        }
-
-    
+        }    
     }
 
+    //역할: 게시글 조회수 상승
+    public void viewUp (Long boardId) {
+
+        masterBoardMapper.viewUp(boardId);
+    }
    
 }

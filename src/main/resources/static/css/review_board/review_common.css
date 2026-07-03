@@ -352,7 +352,39 @@ ul.rv-dropdown-menu li a {
 }
 
 
+/* ==========================================================================
+   재사용 필터 컴포넌트 & 클릭 동작 제어 (추가된 코드)
+   ========================================================================== */
 
+/* 1. 디자인 시스템 변수 정의 (향후 일괄 수정 용이) */
+:root {
+    --filter-radius-btn: 20px;
+    --filter-radius-menu: 8px;
+    --filter-bg-hover: #f5f5f5;
+}
+
+/* 2. 미래에 추가될 필터들도 공통으로 쓸 수 있는 재사용 클래스 */
+.u-dropdown-menu {
+    display: none; /* 평소에는 숨김 */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 6px;
+    border-radius: var(--filter-radius-menu);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    z-index: 100;
+}
+
+/* 3. 자바스크립트 클릭 이벤트를 통해 클래스가 붙었을 때만 보여주는 규칙 */
+.u-dropdown-menu.show {
+    display: block !important; /* 기존 :hover CSS 규칙과의 간섭을 확실하게 차단 */
+}
+
+/* 정렬 아이템 호버 효과 정의 */
+.sort-item:hover {
+    background-color: var(--filter-bg-hover);
+    color: #000;
+}
 
 
 
