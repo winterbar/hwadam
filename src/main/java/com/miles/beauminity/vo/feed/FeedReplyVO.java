@@ -10,7 +10,7 @@ public class FeedReplyVO {
     private Long parentsReplyId;
     private String replyContent;
     private int likeCnt;
-    private Integer deleted;
+    private Boolean deleted;
     private String nickname;
     private int replyCnt;
     private String parentNickname;

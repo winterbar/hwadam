@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beauminity - 글쓰기</title>
+    <title>화담 : 글쓰기</title>
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
     <link rel="stylesheet" th:href="@{/css/common/main.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
-    <link rel="stylesheet" th:href="@{/css/qna_board/qna_write.css}">
+    <link rel="stylesheet" th:href="@{/css/community/community_write.css}">
     <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
 </head>
 <body>
@@ -18,10 +18,9 @@
         <section class="write-container">
             <div class="section-header">
                 <h2> 수정하기 </h2>
-                <a href="beaminity_main_style_feed_botd_clean_linked.html" class="more-link">목록으로 돌아가기</a>
             </div>
 
-            <form th:action="@{/board/qna/update}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/community/update}" method="post" enctype="multipart/form-data">
 
                 <input type="hidden" name="boardId" th:value="${qnaEdit.boardId}">
                 
@@ -30,10 +29,10 @@
                         <label for="post-category">카테고리</label>
                         <select id="post-category" name="category" class="form-control" required>
                             <option value="" disabled selected>카테고리를 선택해주세요</option>
-                            <option value="입문">입문</option>
-                            <option value="비교">비교</option>
-                            <option value="도움요청">도움요청</option>
-                            <option value="기타">기타</option>
+                            <option value="자유">자유</option>
+                            <option value="질문">질문</option>
+                            <option value="꿀팁">꿀팁</option>
+                            <option value="공지사항">공지사항</option>
                         </select>
                     </div>
                 </div>
@@ -65,7 +64,7 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn btn-cancel" th:onclick="|location.href='@{/board/qna}'|">취소하기</button>
+                    <button type="button" class="btn btn-cancel" th:onclick="|location.href='@{/community}'|">취소하기</button>
                     <button type="submit" class="btn btn-submit">수정하기</button>
                 </div>
 

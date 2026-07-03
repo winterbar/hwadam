@@ -26,6 +26,9 @@ public interface ReviewService { // 역할: 후기 게시판에 대한 서비스
     // 후기 게시글 갯수 조회 명세
     int getTypeBoardCount(String bordtype, PageVO pageVO, ReviewSearchVO searchVO);
 
+    // 후기 게시글 조회수 상승 명세
+    void viewUp(Long boardId);
+
 
         
 }

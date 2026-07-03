@@ -31,6 +31,16 @@ public class PageVO {
 
     public void pageInfo(int totalCount){
         this.totalCount=totalCount;
+
+        if (totalCount == 0) {
+        totalPage = 0;
+        startPage = 0;
+        endPage = 0;
+        prev = false;
+        next = false;
+        return;
+        }
+
         this.totalPage=(int)Math.ceil((double)totalCount/size);
         this.endPage=(int)Math.ceil((double)page/pageBlock)* pageBlock;
         this.startPage=endPage - pageBlock+1;

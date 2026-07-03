@@ -20,6 +20,16 @@ public interface FeedReplyMapper {
 
     void updateReply(FeedReplyVO feedReplyVO);
 
-    void deleteReply(Long replyId);
+    void updateDeleteReply(Long replyId);
+
+    Long hasChildren(Long replyId);
+
+    Long deleteReply(Long replyId);
+
+    int parentsReplyCnt(Long replyId);
+
+    Long parentsDelete(Long replyId);
+
+    Long parentsReplyFindId(Long replyId);
 
 }
