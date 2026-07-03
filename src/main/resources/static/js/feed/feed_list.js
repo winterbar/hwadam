@@ -14,45 +14,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
   
 
-  // 피드 내용 출력
-  function renderFeedContentAndLink() {
-    const feedCards = document.querySelectorAll(".feed-card");
+// 피드 내용 출력
+function renderFeedContentAndLink() {
+  const feedCards = document.querySelectorAll(".feed-card");
 
-    feedCards.forEach(function (card) {
-      const captionTextEl = card.querySelector(".js-caption-text");
-      const link = card.querySelector(".feed-share-link");
+  feedCards.forEach(function (card) {
+    const captionTextEl = card.querySelector(".js-caption-text");
+    const link = card.querySelector(".feed-share-link");
 
-      if (!captionTextEl) return;
+    if (!captionTextEl) return;
 
-      const rawContent = captionTextEl.textContent
-        ? captionTextEl.textContent
-        : card.dataset.content
-          ? card.dataset.content
-          : "";
+    // 가독성 떨어지는 복잡한 삼항 연산자를 기본값 지정을 통해 한 줄로 정리
+    const rawContent = captionTextEl.textContent || card.dataset.content || "";
+    if (!rawContent.trim()) return;
 
-      if (!rawContent.trim()) return;
+    let contentText = rawContent;
 
-      let contentText = rawContent;
+    if (link) {
+      link.style.display = "none";
 
-      if (link) {
-        link.style.display = "none";
+      const urlRegex = /(https?:\/\/[^\s]+)/;
+      const urlMatch = rawContent.match(urlRegex);
 
-        const urlRegex = /(https?:\/\/[^\s]+)/;
-        const urlMatch = rawContent.match(urlRegex);
+      if (urlMatch) {
+        const linkText = urlMatch[0];
 
-        if (urlMatch) {
-          const linkText = urlMatch[0];
-
-          contentText = rawContent.replace(linkText, "").trim();
-
-          link.href = linkText;
-          link.style.display = "inline-flex";
-        }
+        contentText = rawContent.replace(linkText, "").trim();
+        link.href = linkText;
+        link.style.display = "inline-flex";
       }
+    }
 
-      captionTextEl.textContent = contentText.trim();
-    });
-  }
+    captionTextEl.textContent = contentText.trim();
+  });
+}
 
   // 피드 이미지 출력 기능
   function renderFeedImages() {

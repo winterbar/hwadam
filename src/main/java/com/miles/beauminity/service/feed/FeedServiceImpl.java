@@ -210,7 +210,23 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     public void deleteReply(Long replyId) {
-        feedReplyMapper.deleteReply(replyId);
+        Long parentsReplyId = feedReplyMapper.parentsReplyFindId(replyId);
+        // 자식 댓글 여부 확인 
+        Long parentReplyId = feedReplyMapper.hasChildren(replyId);
+        int parentsReplyCnt = feedReplyMapper.parentsReplyCnt(replyId);
+           
+        // 자식 댓글이 없다면 삭제
+        if(parentReplyId == null) {
+            feedReplyMapper.deleteReply(replyId);
+            if(parentsReplyCnt==1){
+            feedReplyMapper.parentsDelete(parentsReplyId);
+            }
+        
+        }else{ // 자식이 존재한다면 deleted = 1로 업데이트
+            feedReplyMapper.updateDeleteReply(replyId);
+        }
+        
+        
     }
 
     @Override
