@@ -249,6 +249,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const contentEl = item.querySelector(".feed-comment-content");
             const replyContent = item.dataset.replyContent || "";
 
+
             if (contentEl) {
               renderReplyContent(contentEl, replyContent, "", "");
             }
@@ -262,12 +263,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const parentNickname = item.dataset.parentNickname || "";
             const parentsReplyId = item.dataset.parentsReplyId || "";
 
+
             if (contentEl) {
               renderReplyContent(
                 contentEl,
                 replyContent,
                 parentNickname,
-                parentsReplyId,
+                parentsReplyId
               );
             }
           });
@@ -333,7 +335,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const content = getPureContentText(contentEl);
 
-        parentInput.value = replyId;
+        parentInput.value = commentItem.dataset.rootReplyId || replyId;
 
         if (replyTargetWriter) {
           replyTargetWriter.textContent = writer;
@@ -404,7 +406,7 @@ document.addEventListener("DOMContentLoaded", function () {
               },
             );
 
-            const childCount = childItems.length;
+            const childCount = childList.querySelectorAll(".comment-child-item").length;
 
             const oldBtn = Array.from(commentItem.children).find(
               function (child) {
@@ -438,6 +440,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
               const isClosed = childList.style.display === "none";
 
+              const currentchildCount = childList.querySelectorAll(".comment-child-item").length;
+
               if (isClosed) {
                 childList.style.setProperty("display", "block", "important");
                 toggleBtn.classList.add("is-open");
@@ -445,12 +449,19 @@ document.addEventListener("DOMContentLoaded", function () {
               } else {
                 childList.style.setProperty("display", "none", "important");
                 toggleBtn.classList.remove("is-open");
-                toggleBtn.textContent = "답글 " + childCount + "개 보기";
+                toggleBtn.textContent = "답글 " + currentchildCount + "개 보기";
               }
             });
           });
       }
-
+      function isDeletedReply(reply) {
+        return (
+          reply.deleted === true ||
+          reply.deleted === "true" ||
+          reply.deleted === 1 ||
+          reply.deleted === "1"
+        );
+      }
       // 댓글 리스트 다시 그리기
       function renderReplyList(replyList) {
         if (!commentList) return;
@@ -479,7 +490,9 @@ document.addEventListener("DOMContentLoaded", function () {
           reply._parentsReplyId = getParentsReplyId(reply)
             ? String(getParentsReplyId(reply))
             : "";
-
+          if (isDeletedReply(reply)) {
+            reply.replyContent = "사용자가 삭제한 댓글입니다.";
+          }
           if (reply._replyId) {
             replyMap[reply._replyId] = reply;
           }
@@ -587,14 +600,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const content = document.createElement("span");
         content.className = "feed-comment-content";
 
-        renderReplyContent(content, getReplyContent(reply), "", "");
+        renderReplyContent(content, getReplyContent(reply), "", "", isDeletedReply(reply));
 
         main.appendChild(writer);
         main.appendChild(content);
 
         bubble.appendChild(avatar);
         bubble.appendChild(main);
-        bubble.appendChild(createCommentMoreWrap());
+        const moreWrap = createCommentMoreWrap(reply);
+
+        if (moreWrap) {
+          bubble.appendChild(moreWrap);
+        }
 
         const childList = document.createElement("div");
         childList.className = "comment-child-list";
@@ -678,6 +695,7 @@ document.addEventListener("DOMContentLoaded", function () {
           getReplyContent(reply),
           parentNickname,
           parentsReplyId,
+          isDeletedReply(reply)
         );
 
         main.appendChild(writer);
@@ -685,7 +703,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         bubble.appendChild(avatar);
         bubble.appendChild(main);
-        bubble.appendChild(createCommentMoreWrap());
+        const moreWrap = createCommentMoreWrap(reply);
+
+        if (moreWrap) {
+          bubble.appendChild(moreWrap);
+        }
 
         childItem.appendChild(bubble);
 
@@ -699,10 +721,19 @@ document.addEventListener("DOMContentLoaded", function () {
         text,
         parentNickname,
         parentReplyId,
+        isDeleted
       ) {
         const value = text || "";
 
         contentEl.innerHTML = "";
+
+        if (isDeleted === true) {
+          contentEl.textContent = "사용자가 삭제한 댓글입니다.";
+          contentEl.classList.add("deleted-comment-text");
+          return;
+        }
+
+        contentEl.classList.remove("deleted-comment-text");
 
         if (parentNickname && parentReplyId) {
           const mention = document.createElement("span");
@@ -732,9 +763,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         return clone.textContent.trim();
       }
-      
+
       // 댓글/답글 ... 버튼 생성
-      function createCommentMoreWrap() {
+      function createCommentMoreWrap(reply) {
+        if (isDeletedReply(reply)) {
+          return null;
+        }
         const moreWrap = document.createElement("div");
         moreWrap.className = "comment-more-wrap";
 
@@ -746,6 +780,8 @@ document.addEventListener("DOMContentLoaded", function () {
         moreWrap.appendChild(moreBtn);
 
         return moreWrap;
+
+
       }
 
       // 댓글 모두 보기 / 접기 문구 변경
@@ -854,24 +890,24 @@ document.addEventListener("DOMContentLoaded", function () {
       saveBtn.className = "comment-save-btn";
       saveBtn.textContent = "저장";
       input.addEventListener("click", function (event) {
-  event.stopPropagation();
-});
+        event.stopPropagation();
+      });
 
-input.addEventListener("mousedown", function (event) {
-  event.stopPropagation();
-});
+      input.addEventListener("mousedown", function (event) {
+        event.stopPropagation();
+      });
 
-input.addEventListener("mouseover", function (event) {
-  event.stopPropagation();
-});
+      input.addEventListener("mouseover", function (event) {
+        event.stopPropagation();
+      });
 
-saveBtn.addEventListener("click", function (event) {
-  event.stopPropagation();
-});
+      saveBtn.addEventListener("click", function (event) {
+        event.stopPropagation();
+      });
 
-saveBtn.addEventListener("mousedown", function (event) {
-  event.stopPropagation();
-});
+      saveBtn.addEventListener("mousedown", function (event) {
+        event.stopPropagation();
+      });
 
       contentEl.appendChild(input);
       contentEl.appendChild(saveBtn);
@@ -918,37 +954,54 @@ saveBtn.addEventListener("mousedown", function (event) {
       event.stopPropagation();
 
       if (!currentCommentItem) return;
+      const deletedItem = currentCommentItem;
+      const replyId = deletedItem.dataset.replyId;
+      const card = deletedItem.closest(".feed-card");
+      const commentList = card ? card.querySelector(".feed-comment-list") : null;
 
-      const replyId = currentCommentItem.dataset.replyId;
+
+      const childCount = commentList
+        ? Array.from(commentList.querySelectorAll("[data-parents-reply-id]"))
+          .filter(function (item) {
+            return item.dataset.parentsReplyId === replyId;
+          }).length
+        : 0;
 
       fetch("/feed/reply/" + replyId + "/delete", {
         method: "POST",
         headers: getCsrfHeaders(),
       }).then(function () {
-        const contentEl = currentCommentItem.querySelector(
-          ".feed-comment-content, .comment-child-content",
-        );
+        // 자식댓글이 있으면 화면에서 지우지 않고 문구만 변경
+        if (childCount > 0) {
+          const contentEl = deletedItem.querySelector(
+            ".feed-comment-content, .comment-child-content"
+          );
 
-        if (contentEl) {
-          contentEl.textContent = "사용자가 삭제한 댓글입니다.";
-          contentEl.classList.add("deleted-comment-text");
-        }
+          if (contentEl) {
+            contentEl.textContent = "사용자가 삭제한 댓글입니다.";
+            contentEl.classList.add("deleted-comment-text");
+          }
 
-        const moreWrap = currentCommentItem.querySelector(".comment-more-wrap");
+          const moreWrap = deletedItem.querySelector(".comment-more-wrap");
 
-        if (moreWrap) {
-          moreWrap.remove();
+          if (moreWrap) {
+            moreWrap.remove();
+          }
+
+          deletedItem.dataset.deleted = "true";
+        } else {
+          // 자식댓글이 없으면 화면에서 제거
+          deletedItem.remove();
         }
 
         closeFloatingMenu();
       });
     });
-
     window.addEventListener("scroll", closeFloatingMenu);
     window.addEventListener("resize", closeFloatingMenu);
-    
+
   }
-  
+
 
   // 실행
   initCommentArea();
