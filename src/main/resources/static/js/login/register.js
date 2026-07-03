@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const usernameInput = document.getElementById('username');
     const registerForm = document.querySelector('form');
     const checkDupBtn = document.querySelector('.check-btn');
+    const usernameError = document.getElementById('usernameError');
     // 비밀번호 표시 버튼
     const togglePassword = document.getElementById('toggle-password');
     const password = document.getElementById('password');
@@ -94,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 event.preventDefault(); // 전송 방지
 
                 if(usernameError) {
-                usernameError.textContent = '아이디 중복을 확인해주세요.';
+                    usernameError.textContent = '아이디 중복을 확인해주세요.';
                 }
 
                 if(usernameInput) {
