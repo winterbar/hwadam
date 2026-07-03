@@ -92,11 +92,18 @@
             </div>
 
             <div class="rv-board-utility">
-                <div class="rv-filter-group">
-                    <select name="sort" id="filter-sort">
-                        <option value="latest" th:selected="${param.sortType == 'latest'}">최신순</option>
-                        <option value="hits" th:selected="${param.sortType == 'hits'}">조회순</option>
-                    </select>
+                <div class="rv-dropdown-container" >
+                    <button type="button" class="rv-dropdown-btn" id="sortDropdownBtn">
+                        <span th:text="${param.sortType == 'hits'} ? '조회순' : '최신순'">최신순</span>
+                        <span class="sort-arrow-icon" style="font-size: 10px; margin-left: 5px;">▼</span>
+                    </button>
+                    
+                    
+                    <ul class = "rv-dropdown-menu" id="categoryMenu">
+                        <li class="sort-item" data-sort="latest" style="padding: 10px 16px; cursor: pointer;">최신순</li>
+                        <li class="sort-item" data-sort="hits" style="padding: 10px 16px; cursor: pointer;">조회순</li>
+                    </ul>
+                    
                 </div>
             </div>
 
@@ -199,10 +206,7 @@
 <script th:inline="javascript">
 document.addEventListener("DOMContentLoaded", function() {
     
-    // 1. 필요한 DOM 요소들 딱 한 번만 깔끔하게 선언
-    const dropdownContainer = document.querySelector(".rv-dropdown-container");
-    const dropdownBtn = document.querySelector(".rv-dropdown-btn");
-    const dropdownMenu = document.getElementById("categoryMenu"); // ★ CSS show가 붙을 대상인 ul 태그
+    // 1. 필요한 DOM 요소 선언
     const dropdownItems = document.querySelectorAll(".rv-dropdown-menu a");
     const chipsContainers = document.querySelectorAll(".chips-container");
     const sortSelect = document.getElementById("filter-sort");
@@ -211,13 +215,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const currentCategory2 = urlParams.get('category2');
     let currentCategory1 = urlParams.get('category1');
 
+    const sortItems = document.querySelectorAll(".sort-item");
 
-    // ==========================================================================
-    // ⭕ [딱 요 자리에 이 코드 20줄만 쏙 복사해서 끼워 넣으세요!]
-    // ==========================================================================
-    
-
-    // 주소창에 소분류가 있으면 화면의 칩들 중에서 자동으로 대분류를 찾아냄
+    // 주소창 소분류 기준 대분류 자동 추적
     if (currentCategory2 && currentCategory2 !== "전체") {
         const matchChip = Array.from(document.querySelectorAll(".chip-item")).find(chip => 
             chip.getAttribute("data-cat2") === currentCategory2
@@ -231,12 +231,7 @@ document.addEventListener("DOMContentLoaded", function() {
         currentCategory1 = "전체보기";
     }
 
-    // 드롭다운 버튼 텍스트 변경 및 화살표 유지
-    if (dropdownBtn) {
-        dropdownBtn.innerHTML = `${currentCategory1} <span class="arrow-icon">▾</span>`;
-    }
-
-    // 일치하는 소분류 박스만 열어주기
+    // 초기 화면 로드 시 일치하는 소분류 박스 활성화
     chipsContainers.forEach(container => {
         if (container.getAttribute("data-group") === currentCategory1) {
             container.classList.add("active");
@@ -245,25 +240,68 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    /* ==========================================================================
+       [공통 컴포넌트 로직] 클래스가 같은 모든 드롭다운 상자들을 통째로 제어하기
+       ========================================================================== */
+    const allDropdowns = document.querySelectorAll(".rv-dropdown-container");
+
+    allDropdowns.forEach(container => {
+        // 내 상자 안의 버튼과 메뉴 상자를 1:1로 찾음
+        const btn = container.querySelector(".rv-dropdown-btn");
+        const menu = container.querySelector(".rv-dropdown-menu");
+
+        // 1) 초기 텍스트 세팅 (카테고리 드롭다운 전용 초기화)
+        if (btn && !btn.id) { 
+            btn.innerHTML = `${currentCategory1} <span class="arrow-icon">▾</span>`;
+        }
+
+        // 2) 내 상자의 버튼을 누르면 내 상자의 메뉴만 토글(열고 닫기)
+        if (btn && menu) {
+            btn.addEventListener("click", function(e) {
+                e.stopPropagation(); // document 클릭 버블링 방지
+
+                // 내가 열릴 때, 혹시 열려있는 다른 드롭다운이 있다면 매너있게 닫아줌
+                allDropdowns.forEach(other => {
+                    if (other !== container) {
+                        const otherMenu = other.querySelector(".rv-dropdown-menu");
+                        if (otherMenu) otherMenu.classList.remove("show");
+                    }
+                });
+
+                menu.classList.toggle("show");
+            });
+        }
+    });
+
+    // 3) 글로벌 이벤트: 드롭다운 상자 바깥 영역을 누르면 화면의 모든 드롭다운 닫기
+    document.addEventListener("click", function(e) {
+        allDropdowns.forEach(container => {
+            const menu = container.querySelector(".rv-dropdown-menu");
+            if (menu && !container.contains(e.target)) {
+                menu.classList.remove("show");
+            }
+        });
+    });
+
+    /* ==========================================================================
+       2. 대분류 카테고리 메뉴 아이템 클릭 시 데이터 처리
+       ========================================================================== */
     dropdownItems.forEach(item => {
         item.addEventListener("click", function(e) {
-            e.preventDefault(); // 기본 이동 방지
+            e.preventDefault(); 
             
             const selectedCat1 = this.getAttribute("data-cat1");
 
-            // [핵심] '전체보기' 클릭 시 기존 정렬조건 무시하고 무조건 최신순(latest)으로 리셋 이동!
+            // '전체보기' 클릭 시 리셋 이동
             if (selectedCat1 === "전체보기" || !selectedCat1) {
-                if (dropdownBtn && dropdownBtn.querySelector("span")) {
-                    dropdownBtn.querySelector("span").textContent = "전체보기";
-                }
-                // 주소창 파라미터를 category2=전체, sortType=latest(최신순)로 깔끔하게 리셋하여 새로고침
                 location.href = `/review?page=1&category1=${encodeURIComponent('전체보기')}&category2=전체&sortType=latest`;
                 return; 
             }
 
-            // 일반 대분류 카테고리 클릭 시 처리
-            if (dropdownBtn) {
-                dropdownBtn.innerHTML = `${selectedCat1} <span class="arrow-icon">▾</span>`;
+            // 일반 대분류 클릭 시 화면단 UI 즉시 변경 (공통 로직 밖에서 개별 처리)
+            const parentBtn = this.closest(".rv-dropdown-container").querySelector(".rv-dropdown-btn");
+            if (parentBtn) {
+                parentBtn.innerHTML = `${selectedCat1} <span class="arrow-icon">▾</span>`;
             }
 
             dropdownItems.forEach(link => link.classList.remove("active"));
@@ -277,34 +315,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
-            if (dropdownMenu) dropdownMenu.classList.remove("show");
+            const parentMenu = this.closest(".rv-dropdown-menu");
+            if (parentMenu) parentMenu.classList.remove("show");
         });
     });
 
-
-
     /* ==========================================================================
-       [정리] 1. 드롭다운 열고 닫기 제어 (중복 완전 제거)
-       ========================================================================== */
-    if (dropdownBtn && dropdownMenu) {
-        // 버튼 클릭 시 드롭다운 토글 (열기/닫기)
-        dropdownBtn.addEventListener("click", function(e) {
-            e.stopPropagation(); // 바깥 클릭 이벤트와 충돌 방지
-            dropdownMenu.classList.toggle("show"); // ★ ul 태그에 show 클래스 토글
-        });
-    }
-
-    // 드롭다운 메뉴 바깥 영역 아무 데나 누르면 자동으로 닫히기
-    document.addEventListener("click", function(e) {
-        if (dropdownContainer && !dropdownContainer.contains(e.target)) {
-            if (dropdownMenu) dropdownMenu.classList.remove("show");
-        }
-    });
-
- 
-
-    /* ==========================================================================
-       3. 소분류 칩(Chip) 클릭 시 최종 파라미터 전송 및 이동
+       3. 소분류 칩(Chip) 클릭 시 파라미터 전송
        ========================================================================== */
     const chipItems = document.querySelectorAll(".chip-item");
     chipItems.forEach(chip => {
@@ -318,16 +335,17 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     /* ==========================================================================
-       4. 정렬 변경 이벤트 처리
+       4. 정렬 옵션(최신순/조회순 리스트 항목) 클릭 시 파라미터 유지하며 이동
        ========================================================================== */
-    if (sortSelect) {
-        sortSelect.addEventListener("change", function() {
-            const urlParams = new URLSearchParams(window.location.search);
+    sortItems.forEach(item => {
+        item.addEventListener("click", function() {
+            const selectedSort = this.getAttribute("data-sort");
             const cat1 = urlParams.get("category1") || "전체보기";
             const cat2 = urlParams.get("category2") || "전체";
             
-            location.href = `/review?page=1&category1=${encodeURIComponent(cat1)}&category2=${encodeURIComponent(cat2)}&sortType=${this.value}`;
+            location.href = `/review?page=1&category1=${encodeURIComponent(cat1)}&category2=${encodeURIComponent(cat2)}&sortType=${selectedSort}`;
         });
-    }
-});
+    });
+
+}); // ★ DOMContentLoaded 안전 구역 마감 완료
 </script>
