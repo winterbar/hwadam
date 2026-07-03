@@ -31,11 +31,11 @@ public class SecurityConfig {
                 .requestMatchers("/", "/login",
                     "/register", "/chkid-dup/{username}", "/find",
                     "/css/**", "/images/**", "/js/**",
-                    "/review", "/api/**", "/upload/**"
+                    "/review", "/review/detail/**", "/api/**", "/upload/**"
                 ) // 클라이언트 요청이 이것과 일치한다면
                 .permitAll() // 접근을 허가
                 .requestMatchers(
-                    "/review/**",
+                    "/review/write", "/review/edit/**",
                     "/community/**", "/feed/**", "/mypage/**"
                 ).hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
