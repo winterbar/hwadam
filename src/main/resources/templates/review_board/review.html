@@ -23,7 +23,7 @@
                 <h2>
                     리뷰 <span class="rv-sub-title">협찬 무관, 유저들의 리얼한 후기</span>
                 </h2>
-                <button class="rv-write-btn" th:onclick="|location.href='@{/board/review/write}'|">
+                <button class="rv-write-btn" th:onclick="|location.href='@{/review/write}'|">
                     글쓰기
                 </button>
             </section>
@@ -32,49 +32,86 @@
         
                 <div class="rv-dropdown-container">
                     <button type="button" class="rv-dropdown-btn">
-                        <span th:text="${param.category1 != null && !#strings.isEmpty(param.category1)} ? ${param.category1} : '카테고리'">카테고리</span>
+                        <span th:text="${param.category1 == null || #arrays.isEmpty(param.category1) || param.category1[0] == '전체보기' || param.category1[0] == 'null' || param.category1[0] == ''} ? '전체보기' : ${param.category1[0]}">전체보기</span>
                         <span class="arrow-icon">▾</span>
                     </button>
                     
-                    <ul class="rv-dropdown-menu">
-                        <li><a th:href="@{/board/review/list}" th:classappend="${param.category1 == null || #strings.isEmpty(param.category1)} ? 'active'">전체보기</a></li>
-                        <li><a th:href="@{/board/review/list(category1='스킨케어')}" data-cat1="스킨케어" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '스킨케어'} ? 'active'">스킨케어</a></li>
-                        <li><a th:href="@{/board/review/list(category1='선케어')}" data-cat1="선케어" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '선케어'} ? 'active'">선케어</a></li>
-                        <li><a th:href="@{/board/review/list(category1='마스크/팩')}" data-cat1="마스크/팩" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '마스크/팩'} ? 'active'">마스크/팩</a></li>
-                        <li><a th:href="@{/board/review/list(category1='클렌징')}" data-cat1="클렌징" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '클렌징'} ? 'active'">클렌징</a></li>
-                        <li><a th:href="@{/board/review/list(category1='메이크업')}" data-cat1="메이크업" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '메이크업'} ? 'active'">메이크업</a></li>
-                        <li><a th:href="@{/board/review/list(category1='헤어케어')}" data-cat1="헤어케어" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '헤어케어'} ? 'active'">헤어케어</a></li>
-                        <li><a th:href="@{/board/review/list(category1='바디케어')}" data-cat1="바디케어" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '바디케어'} ? 'active'">바디케어</a></li>
-                        <li><a th:href="@{/board/review/list(category1='핸드케어')}" data-cat1="핸드케어" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '핸드케어'} ? 'active'">핸드케어</a></li>
-                        <li><a th:href="@{/board/review/list(category1='네일케어')}" data-cat1="네일케어" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '네일케어'} ? 'active'">네일케어</a></li>
-                        <li><a th:href="@{/board/review/list(category1='뷰티소품')}" data-cat1="뷰티소품" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '뷰티소품'} ? 'active'">뷰티소품</a></li>
+                    <ul class="rv-dropdown-menu" id = "categoryMenu">
+                        <li><a th:href="@{/review/list}" 
+                                th:classappend="${param.category1 == null || #arrays.isEmpty(param.category1) || param.category1[0] == '전체보기'} ? 'active'">
+                                전체보기
+                                </a>
+                        </li>
+                        <li><a th:href="@{/review/list(category1='스킨케어')}" data-cat1="스킨케어" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '스킨케어'} ? 'active'">스킨케어</a></li>
+                        <li><a th:href="@{/review/list(category1='선케어')}" data-cat1="선케어" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '선케어'} ? 'active'">선케어</a></li>
+                        <li><a th:href="@{/review/list(category1='마스크/팩')}" data-cat1="마스크/팩" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '마스크/팩'} ? 'active'">마스크/팩</a></li>
+                        <li><a th:href="@{/review/list(category1='클렌징')}" data-cat1="클렌징" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '클렌징'} ? 'active'">클렌징</a></li>
+                        <li><a th:href="@{/review/list(category1='메이크업')}" data-cat1="메이크업" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '메이크업'} ? 'active'">메이크업</a></li>
+                        <li><a th:href="@{/review/list(category1='헤어케어')}" data-cat1="헤어케어" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '헤어케어'} ? 'active'">헤어케어</a></li>
+                        <li><a th:href="@{/review/list(category1='바디케어')}" data-cat1="바디케어" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '바디케어'} ? 'active'">바디케어</a></li>
+                        <li><a th:href="@{/review/list(category1='핸드케어')}" data-cat1="핸드케어" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '핸드케어'} ? 'active'">핸드케어</a></li>
+                        <li><a th:href="@{/review/list(category1='네일케어')}" data-cat1="네일케어" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '네일케어'} ? 'active'">네일케어</a></li>
+                        <li><a th:href="@{/review/list(category1='뷰티소품')}" data-cat1="뷰티소품" th:classappend="${param.category1 != null && #strings.toString(param.category1) == '뷰티소품'} ? 'active'">뷰티소품</a></li>
                     </ul>
                 </div>
 
-                <div class="chips-container active" data-group="스킨케어">
+                <div class="chips-container" data-group="스킨케어"
+                     th:classappend="${param.category1 != null && #strings.toString(param.category1) == '스킨케어'} ? 'active'">
+
                     <button type="button" class="chip-item" data-cat1="스킨케어" data-cat2="전체"
                             th:classappend="${param.category2 == null || #strings.isEmpty(param.category2) || #strings.toString(param.category2) == '전체'} ? 'active'">전체 보기</button>
                     
-                    <button type="button" class="chip-item" data-cat1="스킨케어" data-cat2="스킨/토너">스킨/토너</button>
-                    <button type="button" class="chip-item" data-cat1="스킨케어" data-cat2="로션">로션</button>
-                    <button type="button" class="chip-item" data-cat1="스킨케어" data-cat2="에센스">에센스</button>
-                    <button type="button" class="chip-item" data-cat1="스킨케어" data-cat2="크림">크림</button>
+                    <button type="button" class="chip-item" data-cat1="스킨케어" data-cat2="스킨/토너"
+                    th:classappend="${param.category2 != null && #strings.toString(param.category2) == '스킨/토너'} ? 'active'">스킨/토너</button>
+                    <button type="button" class="chip-item" data-cat1="스킨케어" data-cat2="로션"
+                    th:classappend="${param.category2 != null && #strings.toString(param.category2) == '로션'} ? 'active'">로션</button>
+                    <button type="button" class="chip-item" data-cat1="스킨케어" data-cat2="에센스"
+                    th:classappend="${param.category2 != null && #strings.toString(param.category2) == '에센스'} ? 'active'">에센스</button>
+                    <button type="button" class="chip-item" data-cat1="스킨케어" data-cat2="크림"
+                    th:classappend="${param.category2 != null && #strings.toString(param.category2) == '크림'} ? 'active'">크림</button>
+                </div>
+
+                <div class="chips-container" data-group="클렌징"
+                     th:classappend="${param.category1 != null && #strings.toString(param.category1) == '클렌징'} ? 'active'">
+
+                    <button type="button" class="chip-item" data-cat1="클렌징" data-cat2="전체"
+                            th:classappend="${param.category2 == null || #strings.isEmpty(param.category2) || #strings.toString(param.category2) == '전체'} ? 'active'">전체 보기</button>
+                    
+                    <button type="button" class="chip-item" data-cat1="클렌징" data-cat2="클렌징밤"
+                    th:classappend="${param.category2 != null && #strings.toString(param.category2) == '클렌징밤'} ? 'active'">클렌징밤</button>
+                    <button type="button" class="chip-item" data-cat1="클렌징" data-cat2="클렌징밀크"
+                    th:classappend="${param.category2 != null && #strings.toString(param.category2) == '클렌징밀크'} ? 'active'">클렌징밀크</button>
+                    <button type="button" class="chip-item" data-cat1="클렌징" data-cat2="클렌징젤"
+                    th:classappend="${param.category2 != null && #strings.toString(param.category2) == '클렌징젤'} ? 'active'">클렌징젤</button>
+                    <button type="button" class="chip-item" data-cat1="클렌징" data-cat2="클렌징티슈"
+                    th:classappend="${param.category2 != null && #strings.toString(param.category2) == '클렌징티슈'} ? 'active'">클렌징티슈</button>
+                    <button type="button" class="chip-item" data-cat1="클렌징" data-cat2="클렌징워터"
+                    th:classappend="${param.category2 != null && #strings.toString(param.category2) == '클렌징워터'} ? 'active'">클렌징워터</button>
                 </div>
 
             </div>
 
             <div class="rv-board-utility">
-                <div class="rv-filter-group">
-                    <select name="sort" id="filter-sort">
-                        <option value="latest" th:selected="${param.sortType == 'latest'}">최신순</option>
-                        <option value="hits" th:selected="${param.sortType == 'hits'}">조회순</option>
-                    </select>
+                <div class="rv-dropdown-container" >
+                    <button type="button" class="rv-dropdown-btn" id="sortDropdownBtn">
+                        <span th:text="${param.sortType == 'hits'} ? '조회순' : '최신순'">최신순</span>
+                        <span class="sort-arrow-icon" style="font-size: 10px; margin-left: 5px;">▼</span>
+                    </button>
+                    
+                    
+                    <ul class = "rv-dropdown-menu" id="categoryMenu">
+                        <li class="sort-item" data-sort="latest" style="padding: 10px 16px; cursor: pointer;">최신순</li>
+                        <li class="sort-item" data-sort="hits" style="padding: 10px 16px; cursor: pointer;">조회순</li>
+                    </ul>
+                    
                 </div>
             </div>
 
             <div class="rv-card-grid">
                 <th:block th:if="${reviewList != null and !reviewList.isEmpty()}">
-                    <div class="rv-card" th:each="review : ${reviewList}" th:onclick="|location.href='@{/board/review/detail(id=${review.boardId})}'|">
+                        <div class="rv-card" 
+                            th:each="review : ${reviewList}" 
+                            th:onclick="'location.href=\'' + @{/review/detail/{boardId}(boardId=${review.boardId})} + '\''">
                         
                         <div class="card-category-tag">
                             <span class="main-cat" th:text="${review.category1}">대분류</span> 
@@ -127,6 +164,38 @@
                 </div>
             </div>
         </div>
+
+        <div class="board-footer">
+            <ul class="pagination">
+                <li th:if="${pageVO.prev}">
+                    <a th:href="@{/review(page=${pageVO.startPage - 1}, category1=${param.category1}, category2=${param.category2}, sortType=${param.sortType})}">«</a>
+                </li>
+
+                <li th:each="p : ${#numbers.sequence(pageVO.startPage, pageVO.endPage)}">
+                    <a th:href="@{/review(page=${p}, category1=${param.category1}, category2=${param.category2}, sortType=${param.sortType})}" 
+                    th:text="${p}"
+                    th:classappend="${p == pageVO.page} ? 'active'">1</a>
+                </li>
+
+                <li th:if="${pageVO.next}">
+                    <a th:href="@{/review(page=${pageVO.endPage + 1}, category1=${param.category1}, category2=${param.category2}, sortType=${param.sortType})}">»</a>
+                </li>
+            </ul>
+            <form th:action="@{/review/search}" method="POST">
+                <div class="search-group">
+                    <select name="searchType">
+                        <option value="titleContent">제목+내용</option>
+                        <option value="title">제목</option>
+                        <option value="writer">작성자</option>
+                    </select>
+                    <input type="text" name="searchStr" placeholder="궁금한 단어를 입력하세요.">
+                    <button type="submit" class="search-btn">검색</button>
+                </div>
+            </form>
+        </div>
+
+
+
     </main>
 
     <div th:replace="~{layout/footer :: footerFragment}"></div>
@@ -137,63 +206,107 @@
 <script th:inline="javascript">
 document.addEventListener("DOMContentLoaded", function() {
     
-    // 드롭다운 관련 요소들
-    const dropdownContainer = document.querySelector(".rv-dropdown-container");
-    const dropdownBtn = document.querySelector(".rv-dropdown-btn");
+    // 1. 필요한 DOM 요소 선언
     const dropdownItems = document.querySelectorAll(".rv-dropdown-menu a");
-    
-    // 소분류 칩스 및 정렬 요소
     const chipsContainers = document.querySelectorAll(".chips-container");
     const sortSelect = document.getElementById("filter-sort");
 
-    /* ==========================================================================
-       [추가] 1. 드롭다운 열고 닫기 제어
-       ========================================================================== */
-    document.addEventListener("DOMContentLoaded", function() {
-        const dropdownContainer = document.querySelector(".rv-dropdown-container");
-        const dropdownBtn = document.querySelector(".rv-dropdown-btn");
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentCategory2 = urlParams.get('category2');
+    let currentCategory1 = urlParams.get('category1');
 
-        if (dropdownBtn && dropdownContainer) {
-            // 1. 버튼 클릭 시 드롭다운 토글 (열기/닫기)
-            dropdownBtn.addEventListener("click", function(e) {
-                e.stopPropagation(); // 바깥 클릭 이벤트와 충돌 방지
-                dropdownContainer.classList.toggle("show");
-            });
+    const sortItems = document.querySelectorAll(".sort-item");
+
+    // 주소창 소분류 기준 대분류 자동 추적
+    if (currentCategory2 && currentCategory2 !== "전체") {
+        const matchChip = Array.from(document.querySelectorAll(".chip-item")).find(chip => 
+            chip.getAttribute("data-cat2") === currentCategory2
+        );
+        if (matchChip) {
+            currentCategory1 = matchChip.getAttribute("data-cat1");
+        }
+    }
+
+    if (!currentCategory1 || currentCategory1 === "null" || currentCategory1 === "전체보기") {
+        currentCategory1 = "전체보기";
+    }
+
+    // 초기 화면 로드 시 일치하는 소분류 박스 활성화
+    chipsContainers.forEach(container => {
+        if (container.getAttribute("data-group") === currentCategory1) {
+            container.classList.add("active");
+        } else {
+            container.classList.remove("active");
+        }
+    });
+
+    /* ==========================================================================
+       [공통 컴포넌트 로직] 클래스가 같은 모든 드롭다운 상자들을 통째로 제어하기
+       ========================================================================== */
+    const allDropdowns = document.querySelectorAll(".rv-dropdown-container");
+
+    allDropdowns.forEach(container => {
+        // 내 상자 안의 버튼과 메뉴 상자를 1:1로 찾음
+        const btn = container.querySelector(".rv-dropdown-btn");
+        const menu = container.querySelector(".rv-dropdown-menu");
+
+        // 1) 초기 텍스트 세팅 (카테고리 드롭다운 전용 초기화)
+        if (btn && !btn.id) { 
+            btn.innerHTML = `${currentCategory1} <span class="arrow-icon">▾</span>`;
         }
 
-        // 2. 드롭다운 메뉴 바깥 영역 아무 데나 누르면 자동으로 닫히기
-        document.addEventListener("click", function(e) {
-            if (dropdownContainer && !dropdownContainer.contains(e.target)) {
-                dropdownContainer.classList.remove("show");
+        // 2) 내 상자의 버튼을 누르면 내 상자의 메뉴만 토글(열고 닫기)
+        if (btn && menu) {
+            btn.addEventListener("click", function(e) {
+                e.stopPropagation(); // document 클릭 버블링 방지
+
+                // 내가 열릴 때, 혹시 열려있는 다른 드롭다운이 있다면 매너있게 닫아줌
+                allDropdowns.forEach(other => {
+                    if (other !== container) {
+                        const otherMenu = other.querySelector(".rv-dropdown-menu");
+                        if (otherMenu) otherMenu.classList.remove("show");
+                    }
+                });
+
+                menu.classList.toggle("show");
+            });
+        }
+    });
+
+    // 3) 글로벌 이벤트: 드롭다운 상자 바깥 영역을 누르면 화면의 모든 드롭다운 닫기
+    document.addEventListener("click", function(e) {
+        allDropdowns.forEach(container => {
+            const menu = container.querySelector(".rv-dropdown-menu");
+            if (menu && !container.contains(e.target)) {
+                menu.classList.remove("show");
             }
         });
     });
 
     /* ==========================================================================
-       [개편] 2. 대분류 선택 처리 (기존 .tab-btn 로직을 드롭다운 링크로 이식)
+       2. 대분류 카테고리 메뉴 아이템 클릭 시 데이터 처리
        ========================================================================== */
     dropdownItems.forEach(item => {
         item.addEventListener("click", function(e) {
-            // <a> 태그의 기본 상단 이동 및 즉시 페이지 이동 동작을 방지 (소분류 칩 토글을 먼저 해야하므로)
             e.preventDefault(); 
             
             const selectedCat1 = this.getAttribute("data-cat1");
 
-            // [예외] 클릭한 대분류가 '전체보기'라면 칩 토글 없이 바로 서버로 이동!
-            if (selectedCat1 === "전체보기") {
-                const currentSort = sortSelect.value;
-                location.href = `/board/review?page=1&category1=${encodeURIComponent(selectedCat1)}&category2=전체&sortType=${currentSort}`;
+            // '전체보기' 클릭 시 리셋 이동
+            if (selectedCat1 === "전체보기" || !selectedCat1) {
+                location.href = `/review?page=1&category1=${encodeURIComponent('전체보기')}&category2=전체&sortType=latest`;
                 return; 
             }
 
-            // 드롭다운 버튼 텍스트를 현재 선택한 대분류 이름으로 변경 + 화살표 유지
-            dropdownBtn.innerHTML = `${selectedCat1} <span class="arrow-icon">▾</span>`;
+            // 일반 대분류 클릭 시 화면단 UI 즉시 변경 (공통 로직 밖에서 개별 처리)
+            const parentBtn = this.closest(".rv-dropdown-container").querySelector(".rv-dropdown-btn");
+            if (parentBtn) {
+                parentBtn.innerHTML = `${selectedCat1} <span class="arrow-icon">▾</span>`;
+            }
 
-            // 모든 드롭다운 아이템 스타일 초기화 후 선택된 아이템 활성화
             dropdownItems.forEach(link => link.classList.remove("active"));
             this.classList.add("active");
 
-            // 모든 칩스 컨테이너 숨긴 후, 매칭되는 대분류 컨테이너 칩스 구역만 아래에 노출
             chipsContainers.forEach(container => {
                 if (container.getAttribute("data-group") === selectedCat1) {
                     container.classList.add("active");
@@ -202,36 +315,37 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
-            // 선택이 끝났으므로 드롭다운 메뉴 닫기
-            dropdownContainer.classList.remove("show");
+            const parentMenu = this.closest(".rv-dropdown-menu");
+            if (parentMenu) parentMenu.classList.remove("show");
         });
     });
 
     /* ==========================================================================
-       3. 소분류 칩(Chip) 클릭 시 최종 파라미터 전송 및 페이지 이동 (기존 유지)
+       3. 소분류 칩(Chip) 클릭 시 파라미터 전송
        ========================================================================== */
     const chipItems = document.querySelectorAll(".chip-item");
     chipItems.forEach(chip => {
         chip.addEventListener("click", function() {
             const cat1 = this.getAttribute("data-cat1");
             const cat2 = this.getAttribute("data-cat2");
-            const currentSort = sortSelect.value;
+            const currentSort = sortSelect ? sortSelect.value : 'latest';
             
-            location.href = `/board/review?page=1&category1=${encodeURIComponent(cat1)}&category2=${encodeURIComponent(cat2)}&sortType=${currentSort}`;
+            location.href = `/review?page=1&category1=${encodeURIComponent(cat1)}&category2=${encodeURIComponent(cat2)}&sortType=${currentSort}`;
         });
     });
 
     /* ==========================================================================
-       4. 최신순/조회순 정렬 변경 이벤트 처리 (기존 유지)
+       4. 정렬 옵션(최신순/조회순 리스트 항목) 클릭 시 파라미터 유지하며 이동
        ========================================================================== */
-    if (sortSelect) {
-        sortSelect.addEventListener("change", function() {
-            const urlParams = new URLSearchParams(window.location.search);
+    sortItems.forEach(item => {
+        item.addEventListener("click", function() {
+            const selectedSort = this.getAttribute("data-sort");
             const cat1 = urlParams.get("category1") || "전체보기";
             const cat2 = urlParams.get("category2") || "전체";
             
-            location.href = `/board/review?page=1&category1=${encodeURIComponent(cat1)}&category2=${encodeURIComponent(cat2)}&sortType=${this.value}`;
+            location.href = `/review?page=1&category1=${encodeURIComponent(cat1)}&category2=${encodeURIComponent(cat2)}&sortType=${selectedSort}`;
         });
-    }
-});
+    });
+
+}); // ★ DOMContentLoaded 안전 구역 마감 완료
 </script>

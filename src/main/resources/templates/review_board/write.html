@@ -6,10 +6,68 @@
     <title>후기 작성</title>
     <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
     <link rel="stylesheet" th:href="@{/css/common/main.css}">
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
     <link rel="stylesheet" th:href="@{/css/review_board/review_common.css}">
     <link rel="stylesheet" th:href="@{/css/review_board/review_write.css}">
     <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
 </head>
+<style>
+    /* 글쓰기 컨테이너 박스 */
+    .write-container {
+        background-color: var(--bg);
+        border: 1px soild var(--border-color);
+        border-radius: 4px;
+        border-radius: 4px;
+        padding: 2.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+        width: 100%;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+.write-header {
+    border-bottom: 2px solid var(--text);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+.write-header h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text);
+}
+/* 폼 입력 요소 */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weigth:700;
+    color:var(--sub);
+    margin-bottom:0.5rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--text);
+    background-color: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.form-control:focus {
+    background-color: var(--bg-container);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(250, 203, 71, 0.15);
+}
+
+
+</style>
+
 <body>
 
     <div th:replace="~{layout/header :: header}"></div>
@@ -17,35 +75,17 @@
     <main>
         <div class="write-container">
             <div class="write-header">
-                <h2>후기 등록하기</h2>
+                <h2>리뷰 등록하기</h2>
             </div>
 
-            <form id="reviewForm" th:action="@{/board/review/write}" method="post" enctype="multipart/form-data">
+            <form id="reviewForm" th:action="@{/review/write}" method="post" enctype="multipart/form-data">
                 
                 <input type="hidden" id="mainCategory" name="category1">
                 <input type="hidden" id="subCategory" name="category2">
                 <input type="hidden" id="productImage" name="productImage">
                 <input type="hidden" id="purchaseLink" name="productLink">
 
-                <div class="form-row-2">
-                    <div class="form-group">
-                        <label for="author">작성자</label>
-                        <input type="text" id="author" name="author" class="form-control" 
-                               th:value="${loginUser}" required readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="displayMainCategory">대분류</label>
-                        <input type="text" id="displayMainCategory" class="form-control" placeholder="검색 시 자동 입력됩니다" disabled>
-                    </div>
-                </div>
-
-                <div class="form-row-2">
-                    <div class="form-group">
-                        <label for="displaySubCategory">소분류</label>
-                        <input type="text" id="displaySubCategory" class="form-control" placeholder="검색 시 자동 입력됩니다" disabled>
-                    </div>
-
+                <section class="form-row">
                     <div class="form-group">
                         <label for="apiSearch">리뷰상품 검색</label>
                         <div class="search-input-group">
@@ -53,24 +93,30 @@
                             <button type="button" class="btn-search" onclick="openSearchModal()">검색</button>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                <div class="form-group">
-                    <label for="targetTitle">선택된 리뷰 대상</label>
-                    <input type="text" id="targetTitle" name="productName" class="form-control" placeholder="검색 창에서 제품을 선택해 주세요." readonly required>
-                </div>
+                <section class="form-row">
+                    <div class="form-group">
+                        <label for="targetTitle">선택된 리뷰 대상</label>
+                        <input type="text" id="targetTitle" name="productName" class="form-control" placeholder="검색 창에서 제품을 선택해 주세요." readonly required>
+                    </div>
+                </section>
 
-                <div class="form-group">
-                    <label for="title">리뷰 제목</label>
-                    <input type="text" id="title" name="title" class="form-control" placeholder="리뷰 제목을 입력해주세요." required>
-                </div>
+                <section class="form-row">
+                    <div class="form-group">
+                        <label for="title">리뷰 제목</label>
+                        <input type="text" id="title" name="title" class="form-control" placeholder="리뷰 제목을 입력해주세요." required>
+                    </div>
+                </section>
 
-                <div class="form-group">
-                    <label for="content">리뷰 내용</label>
-                    <textarea id="content" name="content" class="form-control" placeholder="내용을 정성껏 작성해주세요." required></textarea>
-                </div>
-
-                <div class="form-group">
+                <section class="form-row">
+                    <div class="form-group">
+                        <label for="content">리뷰 내용</label>
+                        <textarea id="content" name="content" class="form-control" placeholder="내용을 정성껏 작성해주세요." required></textarea>
+                    </div>
+                </section>
+                
+                <section class="form-row">
                     <label>이미지 첨부</label>
                     <div class="file-upload-wrapper" id="dropZone" >
                         <span class="upload-icon">📁</span>
@@ -78,13 +124,15 @@
                         <span class="upload-hint">JPG, PNG, GIF 파일만 업로드 가능합니다.</span>
                         <input type="file" id="fileInput" name="reviewFiles" multiple>
                     </div>
-                </div>
+                </section>
 
-                <div class="form-actions">
-                    <button type="button" class="btn btn-cancel" th:onclick="|location.href='@{/board/review}'|">취소</button>
-                    <button type="button" class="btn btn-submit" onclick="submitReviewForm()">등록 완료</button>
-                </div>
-
+                <section class="form-row">
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel" th:onclick="|location.href='@{/review}'|">취소</button>
+                        <button type="button" class="btn btn-submit" onclick="submitReviewForm()">등록 완료</button>
+                    </div>
+                </section>
+            
             </form>
         </div>
     </main>
