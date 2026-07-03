@@ -1,6 +1,7 @@
 package com.miles.beauminity.service.qna_board;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,38 +101,13 @@ public class QnaServiceImpl implements QnaService {
 
     // 게시글 카테고리별 전체조회
     @Override
-    public List<QnaBoardCompleteVO> getQnaBoardByCategory(String type, PageVO pageVO, String category) {
-
-        TypeOffsetVO typeOffsetVO = new TypeOffsetVO();
-
-        typeOffsetVO.setType(type);
-        typeOffsetVO.setOffset(pageVO.getOffset());
-        typeOffsetVO.setSize(pageVO.getSize());
-
-        List<MasterBoardVO> qnaList = new ArrayList<>();
-
-        if (category.equals("전체보기")) {
-            qnaList = masterBoardMapper.getTypeBoard(typeOffsetVO);
-        } else {
-            typeOffsetVO.setCategory(category);
-            System.out.println("현재상태: " + typeOffsetVO.toString());
-            qnaList = qnaBoardMapper.selectQnaByCategory(typeOffsetVO);
-        }
-        List<QnaBoardCompleteVO> finalList = new ArrayList<>();
-
-        for (MasterBoardVO q : qnaList) {
-            QnaBoardCompleteVO nQ = new QnaBoardCompleteVO();
-            nQ.setBoardId(q.getBoardId());
-            nQ.setNickname(masterBoardMapper.getNicknameByBoardId(q.getBoardId()));
-            nQ.setTitle(q.getTitle());
-            nQ.setCreatedAt(q.getCreatedAt());
-            nQ.setViewCnt(q.getViewCnt());
-            nQ.setReplyCnt(q.getReplyCnt());
-            nQ.setCategory(qnaBoardMapper.getCategoryById(q.getBoardId()));
-            finalList.add(nQ);
-        }
-
-        return finalList;
+    public List<QnaBoardCompleteVO> getQnaBoardByCategory(String type, PageVO pageVO, String category, String sort
+                                                        , LocalDateTime startDate, LocalDateTime endDate
+                                                        , String searchType, String keyword) {
+        
+        return qnaBoardMapper.selectCommuByCategory(type, pageVO, category
+                                                    , sort, startDate, endDate
+                                                    , searchType, keyword);
     }
 
     // 게시글 상세조회

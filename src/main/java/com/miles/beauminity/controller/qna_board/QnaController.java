@@ -199,7 +199,7 @@ public class QnaController {
 
         qnaService.updateBoard(masterBoardVO, files, category);
         
-        return "redirect:/community";
+        return "redirect:/board/qna";
     }
 
     // 파일 첨부 메서드
@@ -221,32 +221,32 @@ public class QnaController {
                 .body(resource);
     }
 
-    // 게시글 검색 메서드
-    @PostMapping("/community/search")
-    public String getSearchBoard(@RequestParam("searchStr") String str, @ModelAttribute PageVO pageVO, Model model) {
+    // // 게시글 검색 메서드
+    // @PostMapping("/community/search")
+    // public String getSearchBoard(@RequestParam("searchStr") String str, @ModelAttribute PageVO pageVO, Model model) {
         
-        System.out.println("현재 검색어: "+str);
+    //     System.out.println("현재 검색어: "+str);
 
-        // 게시판 종류 설정
-        String type = "qna";
+    //     // 게시판 종류 설정
+    //     String type = "qna";
 
-        // 전체 게시글수 확인
-        int count = qnaService.getCountSearchBoardByTitle(type, str); 
-        System.out.println("게시글의 수:" + count);
-        pageVO.pageInfo(count);
+    //     // 전체 게시글수 확인
+    //     int count = qnaService.getCountSearchBoardByTitle(type, str); 
+    //     System.out.println("게시글의 수:" + count);
+    //     pageVO.pageInfo(count);
 
-        // 파라미터 여러개는 페이징 적용 이후에 고려해보는 걸로. 
-        List<QnaBoardCompleteVO> qnaBoardList=qnaService.getSearchBoard(type, str, pageVO);
+    //     // 파라미터 여러개는 페이징 적용 이후에 고려해보는 걸로. 
+    //     List<QnaBoardCompleteVO> qnaBoardList=qnaService.getSearchBoard(type, str, pageVO);
 
-        for(QnaBoardCompleteVO q : qnaBoardList )
-            System.out.println(q.toString());
+    //     for(QnaBoardCompleteVO q : qnaBoardList )
+    //         System.out.println(q.toString());
 
-        model.addAttribute("qnaS", qnaBoardList);
-        model.addAttribute("pageVO", pageVO);
+    //     model.addAttribute("qnaS", qnaBoardList);
+    //     model.addAttribute("pageVO", pageVO);
 
         
-        return "/qna_board/list";
-    }
+    //     return "/qna_board/list";
+    // }
     
     
 
