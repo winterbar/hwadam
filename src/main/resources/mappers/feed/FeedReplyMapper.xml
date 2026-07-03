@@ -75,9 +75,42 @@
     <update id="updateReply"
         parameterType="com.miles.beauminity.vo.feed.FeedReplyVO"> update feed_reply set
         reply_content=#{replyContent} where reply_id=#{replyId} </update>
-
-    <update id="deleteReply"
-        parameterType="long"> update feed_reply set deleted=1 where reply_id=#{replyId} </update>
-
+<!-- 자식 댓글이 존재할 경우 -->
+    <update id="updateDeleteReply"
+        parameterType="long"> update feed_reply fr join feed f on fr.feed_id=f.feed_id set fr.deleted=1,f.reply_cnt = f.reply_cnt -1  where reply_id=#{replyId} </update>
+<!-- 자식 댓글 존재 여부 확인-->
+    <select id="hasChildren"
+        parameterType="long"
+        resultType="long">
+        select parents_reply_id 
+            from feed_reply
+            where parents_reply_id = #{replyId}
+    </select>
+    <delete id="deleteReply"
+        parameterType="long">
+        delete from feed_reply
+        where reply_id=#{replyId}
+    </delete>
+    <select id="parentsReplyCnt"
+        parameterType="long"
+        resultType="int">
+    SELECT COUNT(*)
+    FROM feed_reply
+    WHERE parents_reply_id = (SELECT parents_reply_id FROM feed_reply where reply_id=#{replyId})
+   
+    </select>
+    <select id="parentsReplyFindId"
+        parameterType = "long"
+        resultType = "long">
+        select parents_reply_id
+        from feed_reply
+        WHERE reply_id = #{replyId}
+    </select>
+    <delete id="parentsDelete"
+        parameterType="long">
+        delete from feed_reply
+        where reply_id = #{value}
+    </delete>
+    
 
 </mapper>

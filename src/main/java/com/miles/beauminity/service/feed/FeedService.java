@@ -30,5 +30,6 @@ public interface FeedService {
     List<FeedReplyVO> updateReply(FeedReplyVO feedReplyVO);
 
     void deleteReply(Long replyId);
-
+    
+    List<FeedVO> getShareFeedlist(Long feedId);
 }
