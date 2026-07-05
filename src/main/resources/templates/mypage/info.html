@@ -4,167 +4,301 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>화담 : 마이페이지</title>
+
     <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
-    <link rel="stylesheet" th:href="@{/css/mypage/info.css}"
+    <link rel="stylesheet" th:href="@{/css/mypage/info.css}">
 </head>
 <body>
 
-    <div th:replace="~{layout/header :: headerFragment}"></div>
+<div th:replace="~{layout/header :: headerFragment}"></div>
 
-    <main class="mypage-main">
-        <div class="mypage-container">
-            
-            <div class="profile-section">
-                <a href="javascript:void(0)" onclick="openProfileModal()" class="btn-profile-edit">프로필 편집</a>
-                <a th:href="@{/mypage/reset/photo}" class="btn-profile-reset">기본 이미지로 변경</a>
+<main class="mypage-main">
+    <div class="mypage-container">
 
-                <div class="profile-img-container">
-                    <img th:src="${memberInfo.profile != null} ? @{'/upload/profile/' + ${memberInfo.profile.savedName}} : @{/images/common/base_profile.png}" alt="프로필 사진">
+        <!-- 프로필 영역 -->
+        <section class="profile-section">
+            <div class="profile-img-container">
+                <img th:src="${memberInfo.profile != null}
+                        ? @{'/upload/profile/' + ${memberInfo.profile.savedName}}
+                        : @{/images/common/base_profile.png}"
+                     alt="프로필 사진">
+            </div>
+
+            <div class="profile-info">
+                <p class="mypage-label">MY PAGE</p>
+
+                <h2>
+                    <span th:text="${memberInfo.member.nickname}">닉네임</span>
+                    <span class="user-id" th:text="'(' + ${memberInfo.member.username} + ')'">(아이디)</span>
+                </h2>
+
+                <p class="profile-desc">
+                    화담에서 나의 리뷰, 커뮤니티, 피드 활동을 확인해요.
+                </p>
+
+                <div class="profile-points">
+                    <span>보유 포인트</span>
+                    <strong th:text="${#numbers.formatInteger(memberInfo.member.point, 1, 'COMMA')}">0</strong>
+                    <em>p</em>
                 </div>
-                <div class="profile-info">
-                    <h2><span th:text="${memberInfo.member.nickname}">닉네임</span> <span class="user-id" th:text="'(' + ${memberInfo.member.username} + ')'">(아이디)</span></h2>
-                    <div class="profile-points"> <span th:text="${memberInfo.gradeName}"></span>  <span th:text="${#numbers.formatInteger(memberInfo.member.point, 1, 'COMMA')}"></span>p</div>
+
+                <div class="profile-buttons">
+                    <a href="javascript:void(0)" onclick="openProfileModal()" class="btn-profile-edit">
+                        프로필 편집
+                    </a>
+
+                    <a th:href="@{/mypage/reset/photo}" class="btn-profile-reset">
+                        기본 이미지 변경
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 기본 정보 -->
+        <section class="info-section">
+            <div class="section-title">
+                <h3>기본 정보</h3>
+                <p>가입 시 입력한 회원 정보를 확인할 수 있어요.</p>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">아이디</span>
+                    <span class="info-value" th:text="${memberInfo.member.username}">test12</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">닉네임</span>
+                    <span class="info-value" th:text="${memberInfo.member.nickname}">바보</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">이름</span>
+                    <span class="info-value" th:text="${memberInfo.member.name}">김말자</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">성별</span>
+                    <span class="info-value" th:text="${memberInfo.member.gender}">여</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">이메일</span>
+                    <span class="info-value" th:text="${memberInfo.member.email}">34@NAVER.COM</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">전화번호</span>
+                    <span class="info-value" th:text="${memberInfo.member.phone}">010-4242-5262</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">생년월일</span>
+                    <span class="info-value" th:text="${memberInfo.member.birthday}">2026-06-01</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">가입일</span>
+                    <span class="info-value" th:text="${#temporals.format(memberInfo.member.signedAt, 'yyyy-MM-dd')}">가입일</span>
                 </div>
             </div>
 
-            <div class="stats-section">
-                <div class="stats-item">
-                    <span class="stats-label">후기</span>
-                    <span class="stats-count" th:text="${memberInfo.reviewCnt}">0</span>
+            <div class="beauty-info-wrap">
+                <div class="section-title beauty-title">
+                    <h3>뷰티 정보</h3>
                 </div>
-                <div class="stats-item">
-                    <span class="stats-label">질문</span>
-                    <span class="stats-count" th:text="${memberInfo.qnaCnt}">0</span>
-                </div>
-                <div class="stats-item">
-                    <span class="stats-label">정보공유</span>
-                    <span class="stats-count" th:text="${memberInfo.infoshareCnt}">0</span>
-                </div>
-                <div class="stats-item">
-                    <span class="stats-label">피드</span>
-                    <span class="stats-count" th:text="${memberInfo.feedCnt}">0</span>
+
+                <div class="beauty-info-list">
+                    <div class="beauty-info-item">
+                        <span>피부타입</span>
+                        <strong th:text="${memberInfo.member.skinType}">지성</strong>
+                    </div>
+
+                    <div class="beauty-info-item">
+                        <span>퍼스널 컬러</span>
+                        <strong th:text="${memberInfo.member.personalColor}">겨쿨</strong>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <div class="info-section">
-                
-                <div class="info-group-title">기본 정보</div>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <span class="info-label">아이디</span>
-                        <span class="info-value" th:text="${memberInfo.member.username}">아이디</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">닉네임</span>
-                        <span class="info-value" th:text="${memberInfo.member.nickname}">닉네임</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">이름</span>
-                        <span class="info-value" th:text="${memberInfo.member.name}">이름</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">성별</span>
-                        <span class="info-value" th:text="${memberInfo.member.gender}">성별</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">이메일</span>
-                        <span class="info-value" th:text="${memberInfo.member.email}">이메일</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">전화번호</span>
-                        <span class="info-value" th:text="${memberInfo.member.phone}">전화번호</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">생년월일</span>
-                        <span class="info-value"  th:text="${memberInfo.member.birthday}">생년월일</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">가입일</span>
-                        <span class="info-value" th:text="${#temporals.format(memberInfo.member.signedAt, 'yyyy-MM-dd')}">가입일</span>
-                    </div>
-                </div>
-
-                <div class="info-group-title">뷰티 정보</div>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <span class="info-label">피부타입</span>
-                        <span class="info-value" th:text="${memberInfo.member.skinType}">피부타입</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">퍼스널 컬러</span>
-                        <span class="info-value" th:text="${memberInfo.member.personalColor}">퍼스널 컬러</span>
-                    </div>
-                </div>
-
+        <!-- 계정 관리 -->
+        <section class="account-section">
+            <div class="account-text">
+                <h3>계정 관리</h3>
+                <p>회원정보 수정, 비밀번호 변경, 회원 탈퇴를 할 수 있어요.</p>
             </div>
 
             <div class="action-buttons">
-                <div class="top-buttons">
-                    <button type="button" class="btn-mypage btn-highlight" 
-                            onclick="openPasswordModal('/mypage/edit/info')">회원정보 수정</button>
-                    <button type="button" class="btn-mypage btn-highlight" 
-                            onclick="openPasswordModal('/mypage/edit/pw')">비밀번호 변경</button>
-                </div>
-                    <button type="button"  class="btn-mypage btn-edit"
-                            onclick="openPasswordModal('/mypage/withdraw')">회원탈퇴</button>
+                <button type="button"
+                        class="btn-mypage btn-highlight"
+                        onclick="openPasswordModal('/mypage/edit/info')">
+                    회원정보 수정
+                </button>
+
+                <button type="button"
+                        class="btn-mypage btn-highlight"
+                        onclick="openPasswordModal('/mypage/edit/pw')">
+                    비밀번호 변경
+                </button>
+
+                <button type="button"
+                        class="btn-mypage btn-withdraw"
+                        onclick="openPasswordModal('/mypage/withdraw')">
+                    회원 탈퇴
+                </button>
             </div>
-        </div>
-    </main>
+        </section>
 
-    <div th:replace="~{layout/footer :: footerFragment}"></div>
+        <!-- 활동 탭 -->
+        <section class="activity-section">
+            <input type="radio" name="mypageTab" id="tabReview" checked>
+            <input type="radio" name="mypageTab" id="tabCommunity">
+            <input type="radio" name="mypageTab" id="tabFeed">
+            <input type="radio" name="mypageTab" id="tabOrder">
 
-    <div id="profileModal" class="modal">
-        <div class="modal-content">
-            <h3>프로필 사진 변경</h3>
-            <p class="modal-info-text">5MB 이하의 이미지 파일만 등록 가능합니다.</p>
-            
-            <form th:action="@{/mypage/edit/photo}" method="post" enctype="multipart/form-data">
-                <div id="dropZone" class="drop-zone">
-                    <p>파일을 여기로 드래그하거나</p>
-                    <p>클릭하여 선택</p>
-                    <input type="file" name="profile" id="fileInput" accept="image/*" style="display:none;">
-                </div>
-                
-                <div id="fileInfo" style="display:none;">
-                    <span id="fileName"></span> (<span id="fileSize"></span>)
+            <div class="tab-menu">
+                <label for="tabReview">리뷰</label>
+                <label for="tabCommunity">커뮤니티</label>
+                <label for="tabFeed">피드</label>
+                <label for="tabOrder">구매내역</label>
+            </div>
+
+            <div class="tab-content">
+
+                <div class="tab-panel review-panel">
+                    <div class="tab-header">
+                        <div>
+                            <h3>내가 작성한 리뷰</h3>
+                            <p>화담 스토어 상품에 남긴 리뷰를 확인해요.</p>
+                        </div>
+
+                        <span th:text="${memberInfo.reviewCnt}">0</span>
+                    </div>
+
+                    <div class="empty-box">
+                        <p>작성한 리뷰가 이곳에 표시됩니다.</p>
+                    </div>
                 </div>
 
-                <div class="modal-btns">
-                    <button type="submit" class="btn-save" id="saveBtn" disabled>저장</button>
-                    <button type="button" onclick="closeProfileModal()" class="btn-cancel">취소</button>
+                <div class="tab-panel community-panel">
+                    <div class="tab-header">
+                        <div>
+                            <h3>내 커뮤니티 활동</h3>
+                            <p>질문과 정보공유 게시글을 확인해요.</p>
+                        </div>
+                    </div>
+
+                    <div class="community-counts">
+                        <div>
+                            <span>질문</span>
+                            <strong th:text="${memberInfo.qnaCnt}">0</strong>
+                        </div>
+
+                        <div>
+                            <span>정보공유</span>
+                            <strong th:text="${memberInfo.infoshareCnt}">0</strong>
+                        </div>
+                    </div>
                 </div>
-            </form>
-        </div>
+
+                <div class="tab-panel feed-panel">
+                    <div class="tab-header">
+                        <div>
+                            <h3>내 피드</h3>
+                            <p>오늘의 화장과 뷰티 피드 활동을 확인해요.</p>
+                        </div>
+
+                        <span th:text="${memberInfo.feedCnt}">0</span>
+                    </div>
+
+                    <div class="empty-box">
+                        <p>작성한 피드가 이곳에 표시됩니다.</p>
+                    </div>
+                </div>
+
+                <div class="tab-panel order-panel">
+                    <div class="tab-header">
+                        <div>
+                            <h3>구매내역</h3>
+                            <p>화담 스토어에서 구매한 상품을 확인해요.</p>
+                        </div>
+
+                        <span>SHOP</span>
+                    </div>
+
+                    <div class="empty-box">
+                        <p>구매내역이 이곳에 표시됩니다.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
     </div>
+</main>
 
-    <div id="passwordConfirmModal" class="modal">
-        <div class="modal-content">
-            <h3>비밀번호 확인</h3>
-            <form id="passwordForm" method="post" th:action="@{/mypage/chkpw}">
-                <input type="password" name="password" class="modal-input" placeholder="비밀번호 입력" required>
-                <div id="passwordError" class="error-msg">비밀번호가 일치하지 않습니다.</div>
-                <input type="hidden" name="path" id="path">
-                <div class="modal-btns">
-                    <button type="submit" class="btn-save">확인</button>
-                    <button type="button" onclick="closePasswordModal()" class="btn-cancel">취소</button>
-                </div>
-            </form>
-        </div>
+<div th:replace="~{layout/footer :: footerFragment}"></div>
+
+<!-- 프로필 사진 변경 모달 -->
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+        <h3>프로필 사진 변경</h3>
+        <p class="modal-info-text">5MB 이하의 이미지 파일만 등록 가능합니다.</p>
+
+        <form th:action="@{/mypage/edit/photo}" method="post" enctype="multipart/form-data">
+            <div id="dropZone" class="drop-zone">
+                <p>파일을 여기로 드래그하거나</p>
+                <p>클릭하여 선택</p>
+                <input type="file" name="profile" id="fileInput" accept="image/*" style="display:none;">
+            </div>
+
+            <div id="fileInfo" class="file-info" style="display:none;">
+                <span id="fileName"></span>
+                (<span id="fileSize"></span>)
+            </div>
+
+            <div class="modal-btns">
+                <button type="submit" class="btn-save" id="saveBtn" disabled>저장</button>
+                <button type="button" onclick="closeProfileModal()" class="btn-cancel">취소</button>
+            </div>
+        </form>
     </div>
-    
-    <div id="toast" class="toast"></div>
+</div>
 
-    <script th:src="@{/js/mypage/info.js}"></script>
+<!-- 비밀번호 확인 모달 -->
+<div id="passwordConfirmModal" class="modal">
+    <div class="modal-content">
+        <h3>비밀번호 확인</h3>
 
-    <!-- 회원 정보 수정 및 비밀번호 성공 여부 출력 -->
-    <script th:inline="javascript">
-        const serverMsg = [[${msg}]];
-        if (serverMsg) {
-            showToast(serverMsg);
-        }
-    </script>
+        <form id="passwordForm" method="post" th:action="@{/mypage/chkpw}">
+            <input type="password" name="password" class="modal-input" placeholder="비밀번호 입력" required>
+
+            <div id="passwordError" class="error-msg">비밀번호가 일치하지 않습니다.</div>
+
+            <input type="hidden" name="path" id="path">
+
+            <div class="modal-btns">
+                <button type="submit" class="btn-save">확인</button>
+                <button type="button" onclick="closePasswordModal()" class="btn-cancel">취소</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script th:src="@{/js/mypage/info.js}"></script>
+
+<script th:inline="javascript">
+    const serverMsg = [[${msg}]];
+
+    if (serverMsg) {
+        showToast(serverMsg);
+    }
+</script>
 
 </body>
 </html>
