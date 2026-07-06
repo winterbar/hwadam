@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.miles.beauminity.mapper.board.MasterBoardFileMapper;
 import com.miles.beauminity.mapper.board.MasterBoardLikeMapper;
 import com.miles.beauminity.mapper.board.MasterBoardMapper;
+import com.miles.beauminity.mapper.login.MemberMapper;
 import com.miles.beauminity.mapper.qna_board.QnaBoardMapper;
 import com.miles.beauminity.util.MasterFileUtil;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
@@ -19,6 +20,7 @@ import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.board.SearchVO;
 import com.miles.beauminity.vo.board.TypeOffsetVO;
+import com.miles.beauminity.vo.login.MemberVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardVO;
 
@@ -36,6 +38,7 @@ public class QnaServiceImpl implements QnaService {
     private MasterBoardFileMapper masterBoardFileMapper;
     private MasterBoardLikeMapper masterBoardLikeMapper;
     private QnaBoardMapper qnaBoardMapper;
+    private MemberMapper memberMapper;
 
     // 게시글 등록
     @Override
@@ -316,6 +319,11 @@ public class QnaServiceImpl implements QnaService {
         MasterFileUtil.copyFiles(prevPath, getFile.getSavedName(), nextPath);
             // 이전 경로에 있던 파일은 삭제
         MasterFileUtil.deleteFiles(prevPath, getFile.getSavedName());
+    }
+
+    @Override
+    public MemberVO getMemberInfo(String username) {
+        return memberMapper.findLoginId(username);
     }
 
 

@@ -23,12 +23,12 @@ import com.miles.beauminity.service.qna_board.QnaService;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.MasterBoardLikeVO;
 import com.miles.beauminity.vo.board.PageVO;
+import com.miles.beauminity.vo.login.MemberVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
-
 
 @RestController
 @AllArgsConstructor
@@ -36,38 +36,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class QnaApiController {
     private QnaService qnaService;
 
-    public String getUsername(){
-    
+    public String getUsername() {
+
         // 멤버 정보 가져오기
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
         String username = authentication.getName();
 
-        System.out.println("현재 로그인한 회원: "+username);
-        
+        System.out.println("현재 로그인한 회원: " + username);
+
         return username;
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<Map<String, Object>> filterBoard(@RequestParam(
-        value = "category", defaultValue = "전체보기") String category, @ModelAttribute PageVO pageVO, @RequestParam(
-        value = "sort", defaultValue = "최신순") String sort, @RequestParam(required = false) LocalDateTime startDate
-        , @RequestParam(required = false) LocalDateTime endDate, @RequestParam(
-        value = "searchType", defaultValue = "titleContent") String searchType, @RequestParam(required = false) String keyword){
+    public ResponseEntity<Map<String, Object>> filterBoard(
+            @RequestParam(value = "category", defaultValue = "전체보기") String category, @ModelAttribute PageVO pageVO,
+            @RequestParam(value = "sort", defaultValue = "최신순") String sort,
+            @RequestParam(required = false) LocalDateTime startDate,
+            @RequestParam(required = false) LocalDateTime endDate,
+            @RequestParam(value = "searchType", defaultValue = "titleContent") String searchType,
+            @RequestParam(required = false) String keyword) {
         Map<String, Object> result = new HashMap<>();
         // 카테고리에 맞는 리스트를 DB에서 조회해서 반환
 
         System.out.println("검색 종류: " + searchType);
 
-        String type="qna";
+        String type = "qna";
 
-        int count = qnaService.getQnaCountByCategory(type, category); 
+        int count = qnaService.getQnaCountByCategory(type, category);
         pageVO.pageInfo(count);
 
-        System.out.println("페이지 정보:"+ pageVO.toString());
+        System.out.println("페이지 정보:" + pageVO.toString());
 
-        List<QnaBoardCompleteVO> filteredList = qnaService.getQnaBoardByCategory(type, pageVO, category, sort, startDate, endDate, searchType, keyword);
-        
+        List<QnaBoardCompleteVO> filteredList = qnaService.getQnaBoardByCategory(type, pageVO, category, sort,
+                startDate, endDate, searchType, keyword);
+
         result.put("list", filteredList);
         result.put("pageInfo", pageVO);
 
@@ -77,13 +80,13 @@ public class QnaApiController {
     // 좋아요 불러오기
     @GetMapping("/{boardId}/like-check")
     public ResponseEntity<Map<String, Object>> likeStatus(
-        @PathVariable("boardId") Long id) {
+            @PathVariable("boardId") Long id) {
 
         Map<String, Object> result = new HashMap<>();
 
         String username = getUsername();
 
-        if(username == null){
+        if (username == null) {
             result.put("isLikeOn", false);
             return ResponseEntity.ok(result);
         }
@@ -94,12 +97,11 @@ public class QnaApiController {
 
         return ResponseEntity.ok(result);
     }
-    
 
     // 좋아요 누르면
     @PostMapping("/{boardId}/toggle-like")
     public ResponseEntity<Map<String, Object>> toggleLike(
-        @PathVariable("boardId") Long id) {
+            @PathVariable("boardId") Long id) {
 
         Map<String, Object> result = new HashMap<>();
 
@@ -116,12 +118,12 @@ public class QnaApiController {
         boolean isLikeONBefore = qnaService.isLikeON(id, username);
 
         // 클릭했을 때 좋아요 없으면 좋아요 추가
-        if(!isLikeONBefore){
-            
+        if (!isLikeONBefore) {
+
             qnaService.insertLike(masterBoardLikeVO);
         }
         // 클릭했을 때 좋아요 있으면 좋아요 취소
-        else{
+        else {
             qnaService.deleteLike(masterBoardLikeVO);
         }
 
@@ -137,24 +139,23 @@ public class QnaApiController {
 
         return ResponseEntity.ok(result);
     }
-     
+
     // 기존 파일 가져오기
     @GetMapping("/{boardId}/render-file")
     public ResponseEntity<Map<String, Object>> getOriginFile(@PathVariable("boardId") Long id) {
-        
+
         Map<String, Object> result = new HashMap<>();
 
         List<MasterBoardFileVO> files = qnaService.getBoardFileById(id);
 
-        for(MasterBoardFileVO f : files){
+        for (MasterBoardFileVO f : files) {
             System.out.println(f.toString());
         }
 
         result.put("files", files);
-        
+
         return ResponseEntity.ok(result);
     }
-    
 
     // 게시글 보호 - 본인 아니면 수정삭제 숨김
     // 여기에서 가져올 것은 오직 아이디.
@@ -165,7 +166,7 @@ public class QnaApiController {
 
         String username = getUsername();
 
-        if(username == null){
+        if (username == null) {
             result.put("isLikeOn", false);
             return ResponseEntity.ok(result);
         }
@@ -176,6 +177,30 @@ public class QnaApiController {
 
         return ResponseEntity.ok(result);
     }
-    
-    
+
+    // 공지 접근 제한 - 관리자 역할이 아니면 접근 차단
+    // 역할을 가져와야 한다.
+    @GetMapping("/check-role")
+    public ResponseEntity<Map<String, Object>> isAdmin() {
+
+        Map<String, Object> result = new HashMap<>();
+
+        String username = getUsername();
+
+        MemberVO memberVO = qnaService.getMemberInfo(username);
+
+        String role = memberVO.getRole();
+
+        if (role == null) {
+            result.put("isAdmin", false);
+            return ResponseEntity.ok(result);
+        }
+
+        boolean isAdmin = role.equals("ADMIN");
+
+        result.put("isAdmin", isAdmin);
+
+        return ResponseEntity.ok(result);
+    }
+
 }
