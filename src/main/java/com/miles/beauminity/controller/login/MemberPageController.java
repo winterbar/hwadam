@@ -1,5 +1,8 @@
 package com.miles.beauminity.controller.login;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,8 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.miles.beauminity.security.CustomUserDetails;
 import com.miles.beauminity.service.login.MemberService;
+import com.miles.beauminity.vo.feed.FeedVO;
+import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -37,6 +44,12 @@ public class MemberPageController {
         model.addAttribute("memberInfo",
             memberService.getMemberInfo(loginMember.getUsername())
         );
+        List<FeedVO> feedList = memberService.getFeedList(loginMember.getUsername());
+        List<QnaBoardCompleteVO> qnaList = memberService.getQnaList(loginMember.getUsername());
+        model.addAttribute("feedList",feedList);
+        model.addAttribute("qnaList", qnaList);
+        model.addAttribute("communityList", new ArrayList<>());
+        model.addAttribute("orderList", new ArrayList<>());
         return "mypage/info";
     }
     
@@ -64,5 +77,8 @@ public class MemberPageController {
     public String getWithdrawPage() {
         return "mypage/withdraw";
     }
+
+    
+    
 
 }

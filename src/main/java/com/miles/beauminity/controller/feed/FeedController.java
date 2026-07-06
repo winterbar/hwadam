@@ -142,7 +142,7 @@ public class FeedController {
         int likeCnt = feedService.getFeedLike(liked, feedLikeVO);
         return likeCnt;
     }
-
+    //본인 특정 댓글 수정
     @PostMapping("/feed/reply/{replyId}/edit")
     @ResponseBody
     public List<FeedReplyVO> updateReply(@PathVariable("replyId") Long replyId,
@@ -153,14 +153,14 @@ public class FeedController {
 
         return feedService.updateReply(feedReplyVO);
     }
-
+    //본인 특정 댓글 삭제
     @PostMapping("/feed/reply/{replyId}/delete")
     public String getMethodName(@PathVariable("replyId") Long replyId) {
         feedService.deleteReply(replyId);
         return "redirect:/feed/list";
 
     }
-
+    //공유 링크로 들어 올 경우 -> 해당 피드 먼저 보기
     @GetMapping("/feed/{feedId}")
     public String shareFeedById(@PathVariable("feedId") Long feedId,Model model) {
         List<FeedVO> feedList = feedService.getShareFeedlist(feedId);

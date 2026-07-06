@@ -1,64 +1,145 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #f8f9fa;
-    font-family: sans-serif;
+:root {
+    --hw-pink: #FFA1C1;
+    --hw-pink-dark: #f47ca8;
+    --hw-pink-soft: #ffe8f0;
+    --hw-pink-light: #fff7fa;
+    --hw-pink-deep: #e85d92;
+
+    --hw-white: #ffffff;
+    --hw-bg: #fff9fb;
+    --hw-text: #222222;
+    --hw-sub: #777777;
+    --hw-muted: #aaaaaa;
+    --hw-line: #f1dbe4;
+    --hw-line-soft: #f7e8ee;
+
+    --hw-shadow: 0 10px 24px rgba(255, 161, 193, 0.12);
+    --hw-card-shadow: 0 8px 22px rgba(0, 0, 0, 0.035);
 }
 
-.pw-change-main {
-    display: flex;
-    justify-content: center;
-    padding: 3rem 1rem;
-}
-
-.pw-change-container {
-    width: 100%;
-    max-width: 450px;
-    background: #ffffff;
-    padding: 2.5rem;
-    border: 1px solid #e2e2e2;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-.pw-change-title {
-    margin: 0 0 2rem 0;
-    font-size: 1.5rem;
-    color: #222;
-    text-align: center;
-}
-
-.input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    margin-bottom: 1.5rem;
-}
-
-.label-text {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #555;
-}
-
-.input-field {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
+* {
     box-sizing: border-box;
 }
 
-.input-field:focus {
-    border-color: #FA6E68;
-    outline: none;
+body {
+    margin: 0;
+    padding: 0;
+
+    color: var(--hw-text);
+    background:
+        radial-gradient(circle at 12% 8%, rgba(255, 161, 193, 0.16), transparent 24%),
+        linear-gradient(180deg, #fff7fa 0%, #fffdfd 52%, #ffffff 100%);
+
+    font-family: sans-serif;
 }
 
+button,
+input {
+    font-family: inherit;
+}
+
+/* 전체 영역 */
+.pw-change-main {
+    width: 100%;
+    min-height: calc(100vh - 160px);
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: 48px 20px 80px;
+}
+
+/* 비밀번호 변경 카드 */
+.pw-change-container {
+    width: 100%;
+    max-width: 460px;
+
+    padding: 34px 32px 36px;
+
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid var(--hw-line-soft);
+    
+    box-shadow: var(--hw-shadow);
+}
+
+/* 제목 */
+.pw-change-title {
+    margin: 0 0 28px;
+
+    color: var(--hw-text);
+    font-size: 24px;
+    font-weight: 900;
+    text-align: center;
+    letter-spacing: -0.7px;
+}
+
+.pw-change-title::before {
+    content: "";
+    display: block;
+
+    width: 34px;
+    height: 4px;
+
+    margin: 0 auto 12px;
+
+    
+    background: var(--hw-pink);
+}
+
+/* 입력 그룹 */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+
+    margin-bottom: 18px;
+}
+
+.label-text {
+    color: #9a7b87;
+    font-size: 13px;
+    font-weight: 850;
+}
+
+/* 입력창 */
+.input-field {
+    width: 100%;
+    height: 46px;
+
+    padding: 0 14px;
+
+    border: 1px solid var(--hw-line);
+    
+    background: #fff8fb;
+
+    color: var(--hw-text);
+    font-size: 14px;
+    font-weight: 650;
+
+    outline: none;
+    transition: 0.18s ease;
+}
+
+.input-field::placeholder {
+    color: #b8a6ae;
+}
+
+.input-field:focus {
+    border-color: var(--hw-pink);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(255, 161, 193, 0.14);
+}
+
+/* 유효성 메시지 */
 .validation-msg {
-    font-size: 0.8rem;
-    height: 1rem;
-    margin-top: 0.2rem;
+    min-height: 17px;
+
+    margin-top: 2px;
+
+    font-size: 12px;
+    font-weight: 750;
+
     display: none;
 }
 
@@ -68,38 +149,82 @@ body {
 }
 
 .msg-mismatch {
-    color: #FA6E68;
+    color: var(--hw-pink-deep);
     display: block;
 }
 
+/* 버튼 영역 */
 .btn-group {
     display: flex;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
+    gap: 9px;
+
+    margin-top: 26px;
 }
 
+/* 공통 버튼 */
 .btn {
     flex: 1;
-    padding: 1rem;
+    height: 44px;
+
     border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 700;
+    
+
+    font-size: 14px;
+    font-weight: 850;
+
     cursor: pointer;
-    transition: background 0.2s;
+    transition: 0.18s ease;
 }
 
+/* 저장 버튼 */
 .submit-btn {
-    background-color: #FA6E68;
-    color: white;
+    background: var(--hw-pink);
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(255, 161, 193, 0.22);
+}
+
+.submit-btn:hover {
+    background: var(--hw-pink-dark);
 }
 
 .submit-btn:disabled {
-    background-color: #d1d1d1;
+    background: #e7e7eb;
+    color: #aaaaaa;
+    box-shadow: none;
     cursor: not-allowed;
 }
 
+/* 취소 버튼 */
 .cancel-btn {
-    background-color: #f0f0f0;
-    color: #555;
+    background: #f4f4f6;
+    color: #555555;
+}
+
+.cancel-btn:hover {
+    background: #ececf0;
+    color: #222222;
+}
+
+/* 반응형 */
+@media (max-width: 520px) {
+    .pw-change-main {
+        padding: 34px 14px 60px;
+    }
+
+    .pw-change-container {
+        padding: 30px 22px 32px;
+        
+    }
+
+    .pw-change-title {
+        font-size: 22px;
+    }
+
+    .btn-group {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
 }
