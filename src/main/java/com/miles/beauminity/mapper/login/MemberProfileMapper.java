@@ -10,4 +10,5 @@ public interface MemberProfileMapper {
     public void updateMemberProfile(MyPageFileVO myPageFileVO);
     public MyPageFileVO findMemberProfile(String username);
     public void resetMemberProfile(String username);
+    
 }

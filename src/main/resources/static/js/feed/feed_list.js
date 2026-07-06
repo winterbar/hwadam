@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
       : "";
   }
 
-  
 
 // 피드 내용 출력
 function renderFeedContentAndLink() {
@@ -24,7 +23,6 @@ function renderFeedContentAndLink() {
 
     if (!captionTextEl) return;
 
-    // 가독성 떨어지는 복잡한 삼항 연산자를 기본값 지정을 통해 한 줄로 정리
     const rawContent = captionTextEl.textContent || card.dataset.content || "";
     if (!rawContent.trim()) return;
 
@@ -49,8 +47,8 @@ function renderFeedContentAndLink() {
   });
 }
 
-  // 피드 이미지 출력 기능
-  function renderFeedImages() {
+  // 피드 이미지 출력
+function renderFeedImages() {
   const feedCards = document.querySelectorAll(".feed-card");
 
   feedCards.forEach(function (card) {
@@ -62,39 +60,56 @@ function renderFeedContentAndLink() {
 
     const rawImage = card.dataset.images ? card.dataset.images.trim() : "";
 
-    const images =
-      rawImage && rawImage !== "null" && rawImage !== "undefined"
-        ? rawImage.split(",").map(img => img.trim()).filter(Boolean)
-        : [];
+    const images = rawImage && rawImage !== "null" && rawImage !== "undefined"
+      ? rawImage.split(",").map(function (img) {
+          return img.trim();
+        }).filter(Boolean)
+      : [];
 
     let currentIndex = 0;
 
     function updateImage() {
+      // 이미지가 없을 때
       if (images.length === 0) {
-        if (imageEl) { imageEl.removeAttribute("src"); imageEl.style.display = "none"; }
+        if (imageEl) {
+          imageEl.removeAttribute("src");
+          imageEl.style.display = "none";
+        }
+
         if (placeholder) placeholder.style.display = "flex";
         if (badge) badge.style.display = "none";
         if (prevBtn) prevBtn.style.display = "none";
         if (nextBtn) nextBtn.style.display = "none";
+
         return;
       }
 
+      // 이미지가 있을 때
       if (imageEl) {
         imageEl.src = "/upload/" + images[currentIndex];
         imageEl.style.display = "block";
       }
-      if (placeholder) placeholder.style.display = "none";
 
+      if (placeholder) {
+        placeholder.style.display = "none";
+      }
 
+      // 이미지가 여러 장이면 번호와 버튼 표시
       if (images.length > 1) {
         if (badge) {
-          badge.textContent = `${currentIndex + 1} / ${images.length}`; // 뱃지 텍스트 갱신 (예: 1 / 3)
+          badge.textContent = (currentIndex + 1) + " / " + images.length;
           badge.style.display = "block";
         }
-        if (prevBtn) prevBtn.style.display = currentIndex === 0 ? "none" : "block"; // 첫 장이면 이전 버튼 숨김
-        if (nextBtn) nextBtn.style.display = currentIndex === images.length - 1 ? "none" : "block"; // 마지막 장이면 다음 버튼 숨김
+
+        if (prevBtn) {
+          prevBtn.style.display = currentIndex === 0 ? "none" : "block";
+        }
+
+        if (nextBtn) {
+          nextBtn.style.display = currentIndex === images.length - 1 ? "none" : "block";
+        }
       } else {
-        // 사진이 딱 1장밖에 없으면 전부 숨김
+        // 이미지가 한 장이면 버튼과 번호 숨김
         if (badge) badge.style.display = "none";
         if (prevBtn) prevBtn.style.display = "none";
         if (nextBtn) nextBtn.style.display = "none";
@@ -103,7 +118,8 @@ function renderFeedContentAndLink() {
 
     if (nextBtn) {
       nextBtn.onclick = function (e) {
-        e.preventDefault(); // 링크 이동이나 새로고침 방지
+        e.preventDefault();
+
         if (currentIndex < images.length - 1) {
           currentIndex++;
           updateImage();
@@ -111,10 +127,10 @@ function renderFeedContentAndLink() {
       };
     }
 
-  
     if (prevBtn) {
       prevBtn.onclick = function (e) {
         e.preventDefault();
+
         if (currentIndex > 0) {
           currentIndex--;
           updateImage();
@@ -122,191 +138,177 @@ function renderFeedContentAndLink() {
       };
     }
 
-    // 첫 실행
     updateImage();
   });
 }
 
-  // 필터 열고 닫기 기능
-  function toggleFeedFilter() {
-    if (!filterInner) return;
+  // 필터 열고 닫기
+function toggleFeedFilter() {
+  if (!filterInner) return;
 
-    const isClosed =
-      filterInner.style.display === "none" || filterInner.style.display === "";
+  const isClosed = filterInner.style.display === "none" || filterInner.style.display === "";
 
-    if (isClosed) {
-      filterInner.style.display = "flex";
+  if (isClosed) {
+    filterInner.style.display = "flex";
 
-      if (filterBar) {
-        filterBar.classList.remove("is-closed");
-      }
-
-      if (filterToggleIcon) {
-        filterToggleIcon.innerText = "접기 －";
-      }
-    } else {
-      filterInner.style.display = "none";
-
-      if (filterBar) {
-        filterBar.classList.add("is-closed");
-      }
-
-      if (filterToggleIcon) {
-        filterToggleIcon.innerText = "펼치기 ＋";
-      }
+    if (filterBar) {
+      filterBar.classList.remove("is-closed");
     }
+
+    if (filterToggleIcon) {
+      filterToggleIcon.innerText = "접기 －";
+    }
+
+    return;
   }
+
+  filterInner.style.display = "none";
+
+  if (filterBar) {
+    filterBar.classList.add("is-closed");
+  }
+
+  if (filterToggleIcon) {
+    filterToggleIcon.innerText = "펼치기 ＋";
+  }
+}
+
+
+  // 피드 정렬
+function initFeedSortSelect() {
+  const sortSelect = document.getElementById("feed-sort-select");
+  const feedContainer = document.getElementById("feed-list-container");
+
+  if (!sortSelect || !feedContainer) return;
+
+  sortSelect.addEventListener("change", function () {
+    const sortType = sortSelect.value;
+    const feedCards = Array.from(feedContainer.querySelectorAll(".feed-card"));
+
+    feedCards.sort(function (a, b) {
+      const aFeedId = Number(a.dataset.feedId || 0);
+      const bFeedId = Number(b.dataset.feedId || 0);
+
+      const aLikeBtn = a.querySelector(".feed-like-btn");
+      const bLikeBtn = b.querySelector(".feed-like-btn");
+
+      const aLike = aLikeBtn ? Number(aLikeBtn.dataset.likeCount || 0) : 0;
+      const bLike = bLikeBtn ? Number(bLikeBtn.dataset.likeCount || 0) : 0;
+
+      const aCommentBtn = a.querySelector(".feed-comment-toggle-btn");
+      const bCommentBtn = b.querySelector(".feed-comment-toggle-btn");
+
+      const aComment = aCommentBtn ? Number(aCommentBtn.dataset.commentCount || 0) : 0;
+      const bComment = bCommentBtn ? Number(bCommentBtn.dataset.commentCount || 0) : 0;
+
+      if (sortType === "latest") {
+        return bFeedId - aFeedId;
+      }
+
+      if (sortType === "oldest") {
+        return aFeedId - bFeedId;
+      }
+
+      if (sortType === "like") {
+        return bLike - aLike;
+      }
+
+      if (sortType === "comment") {
+        return bComment - aComment;
+      }
+
+      return 0;
+    });
+
+    feedCards.forEach(function (card) {
+      feedContainer.appendChild(card);
+    });
+  });
+}
 
   
 
-  // 피드 정렬 기능
-  function initFeedSortSelect() {
-    const sortSelect = document.getElementById("feed-sort-select");
-    const feedContainer = document.getElementById("feed-list-container");
+  // 피드 작성자인지 확인
+function isOwner(card) {
+  if (!card) return false;
 
-    if (!sortSelect || !feedContainer) return;
+  const loginUsername = getLoginUsername();
+  const feedUsername = card.dataset.username ? card.dataset.username.trim() : "";
 
-    sortSelect.addEventListener("change", function () {
-      const sortType = sortSelect.value;
-      const feedCards = Array.from(feedContainer.querySelectorAll(".feed-card"));
-
-      feedCards.sort(function (a, b) {
-        const aFeedId = Number(a.dataset.feedId || 0);
-        const bFeedId = Number(b.dataset.feedId || 0);
-
-        const aLikeBtn = a.querySelector(".feed-like-btn");
-        const bLikeBtn = b.querySelector(".feed-like-btn");
-
-        const aLike = aLikeBtn ? Number(aLikeBtn.dataset.likeCount || 0) : 0;
-        const bLike = bLikeBtn ? Number(bLikeBtn.dataset.likeCount || 0) : 0;
-
-        const aCommentBtn = a.querySelector(".feed-comment-toggle-btn");
-        const bCommentBtn = b.querySelector(".feed-comment-toggle-btn");
-
-        const aComment = aCommentBtn
-          ? Number(aCommentBtn.dataset.commentCount || 0)
-          : 0;
-
-        const bComment = bCommentBtn
-          ? Number(bCommentBtn.dataset.commentCount || 0)
-          : 0;
-
-        if (sortType === "latest") {
-          return bFeedId - aFeedId;
-        }
-
-        if (sortType === "oldest") {
-          return aFeedId - bFeedId;
-        }
-
-        if (sortType === "like") {
-          return bLike - aLike;
-        }
-
-        if (sortType === "comment") {
-          return bComment - aComment;
-        }
-
-        return 0;
-      });
-
-      feedCards.forEach(function (card) {
-        feedContainer.appendChild(card);
-      });
-    });
+  if (!loginUsername || !feedUsername) {
+    return false;
   }
 
-  
+  return loginUsername === feedUsername;
+}
 
-  // 피드 작성자 본인 확인
-  function isOwner(card) {
-    if (!card) return false;
+// 내 피드에만 더보기 버튼 보이기
+function initOwnerMoreMenus() {
+  document.querySelectorAll(".feed-card").forEach(function (card) {
+    const moreWrap = card.querySelector(".feed-more-wrap");
 
-    const loginUsername = getLoginUsername();
+    if (!moreWrap) return;
 
-    const feedUsername = card.dataset.username
-      ? card.dataset.username.trim()
-      : "";
+    moreWrap.style.display = isOwner(card) ? "block" : "none";
+  });
+}
 
-    if (!loginUsername || !feedUsername) {
-      return false;
-    }
+// 피드 더보기 메뉴
+function initMoreMenu() {
+  document.querySelectorAll(".feed-more-btn").forEach(function (button) {
+    button.addEventListener("click", function (event) {
+      event.stopPropagation();
 
-    return loginUsername === feedUsername;
-  }
+      const card = button.closest(".feed-card");
 
-  // 본인이 작성한 피드에만 수정/삭제 버튼 보이기
-  function initOwnerMoreMenus() {
-    document.querySelectorAll(".feed-card").forEach(function (card) {
-      const moreWrap = card.querySelector(".feed-more-wrap");
+      if (!isOwner(card)) return;
 
-      if (!moreWrap) return;
+      const currentMenu = button
+        .closest(".feed-more-wrap")
+        .querySelector(".feed-more-menu");
 
-      if (isOwner(card)) {
-        moreWrap.style.display = "block";
-      } else {
-        moreWrap.style.display = "none";
-      }
-    });
-  }
-
-  // 피드 더보기 메뉴
-  function initMoreMenu() {
-    document.querySelectorAll(".feed-more-btn").forEach(function (button) {
-      button.addEventListener("click", function (event) {
-        event.stopPropagation();
-
-        const card = button.closest(".feed-card");
-
-        if (!isOwner(card)) {
-          return;
-        }
-
-        const currentMenu = button
-          .closest(".feed-more-wrap")
-          .querySelector(".feed-more-menu");
-
-        document.querySelectorAll(".feed-more-menu").forEach(function (menu) {
-          if (menu !== currentMenu) {
-            menu.classList.remove("is-open");
-          }
-        });
-
-        currentMenu.classList.toggle("is-open");
-      });
-    });
-
-    document.addEventListener("click", function () {
       document.querySelectorAll(".feed-more-menu").forEach(function (menu) {
-        menu.classList.remove("is-open");
-      });
-    });
-
-    document.querySelectorAll(".feed-menu-item").forEach(function (btn) {
-      btn.addEventListener("click", function (event) {
-        event.stopPropagation();
-
-        const card = btn.closest(".feed-card");
-        const feedId = card ? card.dataset.feedId : null;
-
-        if (btn.classList.contains("danger")) {
-          location.href = "/feed/" + feedId + "/delete";
-          return;
-        }
-
-        if (btn.classList.contains("edit-btn")) {
-          location.href = "/feed/" + feedId + "/edit";
+        if (menu !== currentMenu) {
+          menu.classList.remove("is-open");
         }
       });
+
+      currentMenu.classList.toggle("is-open");
     });
-  }
+  });
+
+  document.addEventListener("click", function () {
+    document.querySelectorAll(".feed-more-menu").forEach(function (menu) {
+      menu.classList.remove("is-open");
+    });
+  });
+
+  document.querySelectorAll(".feed-menu-item").forEach(function (btn) {
+    btn.addEventListener("click", function (event) {
+      event.stopPropagation();
+
+      const card = btn.closest(".feed-card");
+      const feedId = card ? card.dataset.feedId : null;
+
+      if (btn.classList.contains("danger")) {
+        location.href = "/feed/" + feedId + "/delete";
+        return;
+      }
+
+      if (btn.classList.contains("edit-btn")) {
+        location.href = "/feed/" + feedId + "/edit";
+      }
+    });
+  });
+}
+
 document.querySelectorAll(".js-caption-text").forEach(function (caption) {
   caption.textContent = caption.textContent.trim();
 });
 
-  renderFeedContentAndLink();
-  renderFeedImages();
-  initFeedSortSelect();
-  initOwnerMoreMenus();
-  initMoreMenu();
+renderFeedContentAndLink();
+renderFeedImages();
+initFeedSortSelect();
+initOwnerMoreMenus();
+initMoreMenu();
 });

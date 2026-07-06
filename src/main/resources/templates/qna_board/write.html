@@ -34,7 +34,7 @@
                             <option value="자유">자유</option>
                             <option value="질문">질문</option>
                             <option value="꿀팁">꿀팁</option>
-                            <option value="공지사항">공지사항</option>
+                            <option id='notice-op' value="공지사항">공지사항</option>
                         </select>
                     </div>
                 </div>
@@ -74,6 +74,7 @@
         </section>
     </main>
     <script th:src="@{/js/qna/qna_write_file.js}"></script>
+    <script th:src="@{/js/qna/qna_check_role.js}"></script>
     <footer th:replace="~{layout/footer :: footerFragment}"></footer>
 
     
