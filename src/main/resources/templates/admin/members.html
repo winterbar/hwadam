@@ -30,7 +30,7 @@
             </div>
 
             <div id="member-search" class="content-container">
-                <form th:action="@{/admin/members}" method="get" class="filter-box">
+                <form th:action="@{/admin/members}" method="GET" class="filter-box">
                     <input type="hidden" name="page" value="1">
                     <input type="hidden" name="tab" th:value="${tab}">
                     <select name="searchType" class="category">
@@ -47,18 +47,18 @@
             </div>
 
             <div id="member-analysis" class="content-container" hidden>
-                <form id="memberFilterForm" class="filter-box">
+                <form th:action="@{/admin/members}" id="memberFilterForm" method="POST" class="filter-box">
                     <input type="hidden" name="page" value="1">
                     <input type="hidden" name="tab" th:value="${tab}">
                     <div class="filter-row">
                         <label class="filter-label">가입일</label>
                         <div class="btn-group">
                             <input type="radio" name="signedAt" value="now()" id="s0"><label for="s0">오늘</label>
-                            <input type="radio" name="signedAt" id="s1"><label for="s1">7일</label>
-                            <input type="radio" name="signedAt" id="s2"><label for="s2">1개월</label>
-                            <input type="radio" name="signedAt" id="s3"><label for="s3">3개월</label>
-                            <input type="radio" name="signedAt" id="s4"><label for="s4">6개월</label>
-                            <input type="radio" name="signedAt" id="s5"><label for="s5">1년</label>
+                            <input type="radio" name="signedAt" value="7" id="s1"><label for="s1">7일</label>
+                            <input type="radio" name="signedAt" value="30" id="s2"><label for="s2">1개월</label>
+                            <input type="radio" name="signedAt" value="90" id="s3"><label for="s3">3개월</label>
+                            <input type="radio" name="signedAt" value="180" id="s4"><label for="s4">6개월</label>
+                            <input type="radio" name="signedAt" value="365" id="s5"><label for="s5">1년</label>
                             <div class="date-input">
                                 <input type="date"> ~ <input type="date">
                             </div>
@@ -67,60 +67,60 @@
 
                     <div class="filter-row"><label class="filter-label">나이</label>
                         <div class="btn-group">
-                            <input type="checkbox" name="birthday" id="a1"><label for="a1">10대</label>
-                            <input type="checkbox" name="birthday" id="a2"><label for="a2">20대</label>
-                            <input type="checkbox" name="birthday" id="a3"><label for="a3">30대</label>
-                            <input type="checkbox" name="birthday" id="a4"><label for="a4">40대</label>
-                            <input type="checkbox" name="birthday" id="a5"><label for="a5">50대</label>
-                            <input type="checkbox" name="birthday" id="a6"><label for="a6">60대▲</label>
+                            <input type="checkbox" name="birthday" value="10" id="a1"><label for="a1">10대</label>
+                            <input type="checkbox" name="birthday" value="20" id="a2"><label for="a2">20대</label>
+                            <input type="checkbox" name="birthday" value="30" id="a3"><label for="a3">30대</label>
+                            <input type="checkbox" name="birthday" value="40" id="a4"><label for="a4">40대</label>
+                            <input type="checkbox" name="birthday" value="50" id="a5"><label for="a5">50대</label>
+                            <input type="checkbox" name="birthday" value="60" id="a6"><label for="a6">60대▲</label>
                         </div>
                     </div>
                     
                     <div class="filter-row"><label class="filter-label">성별</label>
                         <div class="btn-group">
-                            <input type="checkbox" name="gender" id="g1"><label for="g1">남</label>
-                            <input type="checkbox" name="gender" id="g2"><label for="g2">여</label>
+                            <input type="radio" name="gender" value="남" id="g1"><label for="g1">남</label>
+                            <input type="radio" name="gender" value="여" id="g2"><label for="g2">여</label>
                         </div>
                     </div>
 
                     <div class="filter-row"><label class="filter-label">권한</label>
                         <div class="btn-group">
-                            <input type="checkbox" id="r1"><label for="r1">일반</label>
-                            <input type="checkbox" id="r2"><label for="r2">관리자</label>
+                            <input type="radio" name="role" value="USER" id="r1"><label for="r1">일반</label>
+                            <input type="radio" name="role" value="ADMIN" id="r2"><label for="r2">관리자</label>
                         </div>
                     </div>
 
                     <div class="filter-row"><label class="filter-label">상태</label>
                         <div class="btn-group">
-                            <input type="checkbox" id="st1"><label for="st1">정상</label>
-                            <input type="checkbox" id="st2"><label for="st2">정지</label>
-                            <input type="checkbox" id="st3"><label for="st3">탈퇴</label>
+                            <input type="radio" name="status" value="normal" id="st1"><label for="st1">정상</label>
+                            <input type="radio" name="status" value="deleted" id="st2"><label for="st2">탈퇴</label>
                         </div>
                     </div>
 
                     <div class="filter-row"><label class="filter-label">피부</label>
                         <div class="btn-group">
-                            <input type="checkbox" id="p1"><label for="p1">중성</label>
-                            <input type="checkbox" id="p2"><label for="p2">건성</label>
-                            <input type="checkbox" id="p3"><label for="p3">지성</label>
-                            <input type="checkbox" id="p4"><label for="p4">민감성</label>
-                            <input type="checkbox" id="p5"><label for="p5">복합성</label>
-                            <input type="checkbox" id="p6"><label for="p6">수부지</label>
+                            <input type="checkbox" name="skinType" value="중성" id="p1"><label for="p1">중성</label>
+                            <input type="checkbox" name="skinType" value="건성" id="p2"><label for="p2">건성</label>
+                            <input type="checkbox" name="skinType" value="지성" id="p3"><label for="p3">지성</label>
+                            <input type="checkbox" name="skinType" value="민감성" id="p4"><label for="p4">민감성</label>
+                            <input type="checkbox" name="skinType" value="복합성" id="p5"><label for="p5">복합성</label>
+                            <input type="checkbox" name="skinType" value="수부지" id="p6"><label for="p6">수부지</label>
                         </div>
                     </div>
 
                     <div class="filter-row"><label class="filter-label">퍼스널컬러</label>
                         <div class="btn-group">
-                            <input type="checkbox" id="c1"><label for="c1">봄웜</label>
-                            <input type="checkbox" id="c2"><label for="c2">가을웜</label>
-                            <input type="checkbox" id="c3"><label for="c3">여름쿨</label>
-                            <input type="checkbox" id="c4"><label for="c4">겨울쿨</label>
+                            <input type="checkbox" name="personalColor" value="봄웜" id="c1"><label for="c1">봄웜</label>
+                            <input type="checkbox" name="personalColor" value="가을웜" id="c2"><label for="c2">가을웜</label>
+                            <input type="checkbox" name="personalColor" value="여름쿨" id="c3"><label for="c3">여름쿨</label>
+                            <input type="checkbox" name="personalColor" value="겨울쿨" id="c4"><label for="c4">겨울쿨</label>
                         </div>
                     </div>
 
                     <div class="filter-row">
                         <label class="filter-label">포인트</label>
-                        <input type="number" placeholder="최소"> ~ <input type="number" placeholder="최대">
+                        <input type="number" name="minPoint" placeholder="최소"> ~
+                        <input type="number" name="maxPoint" placeholder="최대">
                     </div>
 
                     <div class="filter-actions">
@@ -134,11 +134,23 @@
                 <div class="controls-wrapper">
                     <div class="action-buttons">
                         <span id="checkInfo"></span>
-                        <button id="modifySkinType" class="btn-action hidden">피부 일괄변경</button>
-                        <button id="modifyPersonalColor" class="btn-action hidden">컬러 일괄변경</button>
-                        <button id="modifyPoint" class="btn-action hidden">포인트 일괄변경</button>
-                        <button id="modifyRole" class="btn-action hidden">등급 일괄변경</button>
-                        <button id="modifyStatus" class="btn-action hidden">상태 일괄변경</button>
+                        <button id="modifySkinType" class="btn-action hidden"
+                            data-update-type="skinType">피부 일괄변경</button>
+                        <button id="modifyPersonalColor" class="btn-action hidden"
+                            data-update-type="personalColor">컬러 일괄변경</button>
+                        <button id="modifyPoint" class="btn-action hidden"
+                            data-update-type="point">포인트 일괄변경</button>
+                        <button id="modifyRole" class="btn-action hidden"
+                            data-update-type="role">등급 일괄변경</button>
+                        <button id="modifyStatus" class="btn-action hidden"
+                            data-update-type="status">상태 일괄변경</button>
+                    </div>
+                    <div id="batchPopover" class="popover hidden">
+                        <div class="popover-content">
+                            <select id="popoverSelect" class="category hidden"></select> 
+                            <input type="number" id="popoverInput" class="popover-input hidden" placeholder="포인트 입력">
+                            <button id="popoverConfirm" class="btn-primary">확인</button>
+                        </div>
                     </div>
                     <button id="registerBtn" onclick="openRegisterModal()" class="btn-primary">회원 등록</button>
                 </div>
@@ -148,17 +160,52 @@
                         <thead>
                             <tr>
                                 <th><input id="all-check" type="checkbox"></th>
-                                <th>아이디</th>
-                                <th>이름</th>
-                                <th>닉네임</th>
+                                <th>
+                                    <a th:href="@{/admin/members(
+                                        tab=${tab},page=${page.page}, searchType=${page.searchType},
+                                        keyword=${page.keyword}, sort='1', dir=${page.sort == 'username' && page.dir == 'desc' ? 'asc' : 'desc'})}"
+                                        th:classappend="${page.dir !=null && page.sort == 'username' ? page.dir : ''}"
+                                        class="sort-link">아이디
+                                    </a>
+                                </th>
+                                <th>
+                                    <a th:href="@{/admin/members(
+                                        tab=${tab},page=${page.page}, searchType=${page.searchType},
+                                        keyword=${page.keyword}, sort='2', dir=${page.sort == 'name' && page.dir == 'desc' ? 'asc' : 'desc'})}"
+                                        th:classappend="${page.dir !=null && page.sort == 'name' ? page.dir : ''}"
+                                        class="sort-link">이름
+                                    </a>
+                                </th>
+                                <th>
+                                    <a th:href="@{/admin/members(
+                                        tab=${tab},page=${page.page}, searchType=${page.searchType},
+                                        keyword=${page.keyword}, sort='3',dir=${page.sort == 'nickname' && page.dir == 'desc' ? 'asc' : 'desc'})}"
+                                        th:classappend="${page.dir !=null && page.sort == 'nickname' ? page.dir : ''}"
+                                        class="sort-link">닉네임
+                                    </a>
+                                </th>
                                 <th>생년월일</th>
                                 <th>성별</th>
                                 <th>이메일</th>
                                 <th>전화번호</th>
                                 <th>피부</th>
                                 <th>컬러</th>
-                                <th>포인트</th>
-                                <th>가입일</th>
+                                <th>
+                                    <a th:href="@{/admin/members(
+                                        tab=${tab},page=${page.page}, searchType=${page.searchType},
+                                        keyword=${page.keyword}, sort='4', dir=${page.sort == 'point' && page.dir == 'desc' ? 'asc' : 'desc'})}"
+                                        th:classappend="${page.dir !=null && page.sort == 'point' ? page.dir : ''}"
+                                        class="sort-link">포인트
+                                    </a>
+                                </th>
+                                <th>
+                                    <a th:href="@{/admin/members(
+                                        tab=${tab},page=${page.page}, searchType=${page.searchType},
+                                        keyword=${page.keyword}, sort='5', dir=${page.sort == 'signed_at' && page.dir == 'desc' ? 'asc' : 'desc'})}"
+                                        th:classappend="${page.dir !=null && page.sort == 'signed_at' ? page.dir : ''}"
+                                        class="sort-link">가입일
+                                    </a>
+                                </th>
                                 <th>등급</th>
                                 <th>상태</th>
                                 <th>기능</th>
@@ -306,12 +353,18 @@
         <div class="modal-content">
             <h2>회원 정보</h2>
             <form id="detailForm" th:action="@{/admin/members/modify}" method="post">
-                <div class="form-group full-width">
-                    <label>아이디</label>
-                    <input type="text" id="detailUsername" name="username" readOnly>
-                </div>
-
                 <div class="form-grid">
+                    <div class="form-group">
+                        <label>아이디</label>
+                        <input type="text" id="detailUsername" name="username" readOnly>
+                    </div>
+                    <div class="form-group">
+                        <label>상태</label>
+                        <select id="detailStatus" name="status">
+                            <option value="normal">정상</option>
+                            <option value="deleted">탈퇴</option>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label>이름</label>
                         <input type="text" id="detailName" name="name" readOnly>

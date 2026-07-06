@@ -7,20 +7,20 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.miles.beauminity.vo.login.MemberVO;
+import com.miles.beauminity.vo.admin.AdminMemberVO;
 
 public class CustomUserDetails implements UserDetails {
 
      // 로그인한 회원 정보를 저장
-    private final MemberVO member;
+    private final AdminMemberVO member;
 
     // MemberVO를 UserDetails 형태로 변환하기 위한 생성자
-    public CustomUserDetails(MemberVO member) {
+    public CustomUserDetails(AdminMemberVO member) {
         this.member = member;
     }
 
     // 로그인한 회원 정보를 꺼내기 위한 메서드
-    public MemberVO getMember() {
+    public AdminMemberVO getMember() {
         return member;
     }
 
