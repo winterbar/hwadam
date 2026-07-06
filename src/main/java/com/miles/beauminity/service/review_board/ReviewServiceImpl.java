@@ -13,12 +13,14 @@ import com.miles.beauminity.mapper.board.MasterBoardFileMapper;
 import com.miles.beauminity.mapper.board.MasterBoardMapper;
 
 import com.miles.beauminity.mapper.review_board.ReviewBoardMapper;
+import com.miles.beauminity.mapper.review_board.ReviewBoardReplyMapper;
 import com.miles.beauminity.util.MasterFileUtil;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.board.TypeOffsetVO;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
+import com.miles.beauminity.vo.review.ReviewReplyVO;
 import com.miles.beauminity.vo.review.ReviewSearchVO;
 
 import lombok.AllArgsConstructor;
@@ -33,6 +35,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewBoardMapper reviewBoardMapper; 
     private final MasterBoardMapper masterBoardMapper;
     private final MasterBoardFileMapper masterBoardFileMapper;
+    private final ReviewBoardReplyMapper reviewBoardReplyMapper; 
     
   
     // 역할: 후기 게시판 등록요청 서비스 처리
@@ -276,9 +279,24 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     //역할: 게시글 조회수 상승
+    @Override
     public void viewUp (Long boardId) {
 
         masterBoardMapper.viewUp(boardId);
     }
    
+    //역할: 게시글 댓글 등록
+    @Override
+    public void registerReply(ReviewReplyVO replyVO) {
+        
+        reviewBoardReplyMapper.saveReply(replyVO);
+    }
+
+
+    //역할: 게시글 댓글 조회
+    @Override
+    public List<ReviewReplyVO> getReplyList(Long boardId) {
+    
+        return reviewBoardReplyMapper.getReplyList(boardId);
+    }
 }
