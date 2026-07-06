@@ -40,11 +40,63 @@ function openDetailModal(username) {
         document.getElementById("detailPhone").value = member.phone;
         document.getElementById("detailPoint").value = member.point;
         document.getElementById("detailRole").value = member.role;
+        document.getElementById("detailStatus").value = member.status;
         document.getElementById('detailModal').style.display = "block";
     })
     .catch(error => {
         console.error('Error:', error);
     });
+}
+
+// 일괄 변경 버튼의 팝오버 메뉴창 설정
+function setUpPopoverContent(type) {
+    const select = document.getElementById('popoverSelect');
+    const input = document.getElementById('popoverInput');
+
+    select.classList.add('hidden');
+    input.classList.add('hidden');
+
+    // 값을 직접 입력하는 포인트인지 확인
+    // 포인트만 값을 직접 입력하고 나머지는 드롭다운으로 선택하기 때문에 나온 분기
+    if(type == 'point') {
+        input.classList.remove('hidden');
+        input.value = '';
+    } else {
+        select.classList.remove('hidden');
+        select.innerHTML = '';
+
+        const options = { 
+            'skinType' : [
+                { val: '중성', text: '중성'},
+                { val: '건성', text: '건성'},
+                { val: '지성', text: '지성'},
+                { val: '민감성', text: '민감성'},
+                { val: '복합성', text: '복합성'},
+                { val: '수부지', text: '수부지'}
+            ],
+            'personalColor' : [
+                { val: '봄웜', text: '봄웜'},
+                { val: '가을웜', text: '가을웜'},
+                { val: '여름쿨', text: '여름쿨'},
+                { val: '겨울쿨', text: '겨울쿨'}
+            ],
+            'role' : [
+                { val: 'USER', text: '일반'},
+                { val: 'ADMIN', text: '관리자'}
+            ],
+            'status' : [
+                { val: 'normal', text: '정상'},
+                { val: 'deleted', text: '탈퇴'}
+            ]
+        };
+
+        options[type].forEach(opt => {
+            const el = document.createElement('option');
+            el.value = opt.val;
+            el.innerText = opt.text;
+            select.appendChild(el);
+        });
+    }
 }
 
 // 회원 상세정보 보기 모달 창 닫기
@@ -68,6 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('registerForm');
     const checkDupBtn = document.querySelector('.check-btn');
     const usernameError = document.getElementById('usernameError');
+
+    const popover = document.getElementById('batchPopover');
+    const popoverSelect = document.getElementById('popoverSelect');
+    const popoverInput = document.getElementById('popoverInput');
+    const confirmBtn = document.getElementById('popoverConfirm');
 
     // 탭 메뉴를 통한 화면 전환 (회원 조회 <-> 회원 통계분석)
     const currentTab = tabContainer.getAttribute('data-current-tab');
@@ -186,8 +243,66 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // 수정 버튼 클릭 이벤트
+    // 일괄 변경 버튼의 상세 옵션창(팝오버) 설정
+    document.querySelectorAll('.btn-action').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const type = btn.dataset.updateType;
+            // 팝 오버 출력
+            popover.classList.remove('hidden');
 
+            // 팝오버 폼 설정
+            setUpPopoverContent(type);
+            
+            // 팝오버 위치 설정
+            const rect = btn.getBoundingClientRect();
+            popover.style.top = `${rect.bottom + window.scrollY + 5}px`;
+            popover.style.left = `${rect.left + window.scrollX}px`;
+
+            confirmBtn.dataset.currentType = type;
+        });
+    });
+
+    // 일괄 변경 수행
+    confirmBtn.addEventListener('click', () => {
+        const type = confirmBtn.dataset.currentType;
+        const value = (type === 'point') ? popoverInput.value : popoverSelect.value;
+        const usernames = Array.from(document.querySelectorAll('.member-check:checked'))
+            .map(cb => cb.closest('tr').cells[1].innerText);
+        const payload = {
+            usernames: usernames,
+            modifyType: type,
+            value: value
+        };
+
+        // fetch 요청
+        fetch('/admin/members/modifies', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload) // 직렬화하여 문자열로 보냄
+        })
+        .then(response => {
+            if(!response.ok) {
+                throw new Error('서버 오류 발생');
+            } else {
+                location.reload(); // 현재 화면 새로고침
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("작업 중 오류 발생. 담당자에게 문의하세요.")
+        });
+
+        popover.classList.add('hidden'); // 작업 후 상세 옵션창(팝오버) 닫기
+    })
+
+    // 일괄 변경 상세 옵션창 바깥 클릭 시 상세 옵션창 닫기
+    document.addEventListener('click', (e) => {
+        const popover = document.getElementById('batchPopover');
+        // 클릭한 요소가 팝오버 내부도 아니고 버튼도 아닐 때만 창 닫기
+        if(!popover.contains(e.target) && !e.target.closest('.btn-action')) {
+            popover.classList.add('hidden');
+        }
+    })
 
     // 등록하기 버튼 클릭 이벤트
     if (registerForm) {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.miles.beauminity.vo.admin.AdminMemberBatchVO;
 import com.miles.beauminity.vo.admin.AdminMemberVO;
 import com.miles.beauminity.vo.admin.AdminPageVO;
 
@@ -14,4 +15,5 @@ public interface AdminMemberMapper {
     public void insertMember(AdminMemberVO adminMemberVO);
     public AdminMemberVO getMemberInfo(String username);
     public void updateMemberInfo(AdminMemberVO adminMemberVO);
+    public void updateMembersInfo(AdminMemberBatchVO adminMemberBatchVO);
 }
