@@ -130,7 +130,7 @@
 
                         <div class="card-image-wrapper">
                             <img th:if="${review.savedName != null and !#strings.isEmpty(review.savedName)}" 
-                                th:src="@{|/upload/${review.savedName}|}" 
+                                th:src="@{|/upload/review/${review.savedName}|}" 
                                 alt="리뷰 제품 이미지"/>
                             <div th:unless="${review.savedName != null and !#strings.isEmpty(review.savedName)}" 
                                 class="no-image">

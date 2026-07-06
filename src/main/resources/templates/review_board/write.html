@@ -13,56 +13,300 @@
     <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
 </head>
 <style>
-    /* 글쓰기 컨테이너 박스 */
-    .write-container {
-        background-color: var(--bg);
-        border: 1px soild var(--border-color);
-        border-radius: 4px;
-        border-radius: 4px;
-        padding: 2.5rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.01);
-        width: 100%;
-        transition: background-color 0.3s, border-color 0.3s;
-    }
+/* ==========================================================================
+   리뷰 등록 페이지 (제공된 :root 변수 기반 var() 함수 적용)
+   ========================================================================== */
+
+/* 1. 전체 중심 정렬 상자 (네이버 블로그처럼 중앙에 정갈하게 배치) */
+.write-container {
+    max-width: 850px;       /* 너무 넓지도 좁지도 않은 딱 좋은 가로폭 */
+    margin: 50px auto;      /* 위아래 50px 여백, 좌우는 알아서 가운데 정렬 */
+    padding: 40px;          /* 상자 안쪽 여백을 넓게 주어 시원한 느낌 */
+    background-color: var(--bg); /* 하얀색 바탕 */
+    border: 1px solid var(--line); /* 은은한 회색 테두리 */
+    border-radius: 12px;    /* 모서리를 부드럽게 라운딩 */
+}
+
+/* 2. 대제목 영역 */
 .write-header {
-    border-bottom: 2px solid var(--text);
-    padding-bottom: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 35px;     /* 제목 아래 공간 확보 */
+    border-bottom: 2px solid var(--pink); /* 제목 밑에 화사한 핑크색 바 */
+    padding-bottom: 15px;    /* 선과 글자 사이의 여백 */
 }
 
 .write-header h2 {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--text);
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text);      /* 진한 텍스트 색상 */
 }
-/* 폼 입력 요소 */
-.form-group {
-    margin-bottom: 1.5rem;
+
+/* 3. 각 입력창 한 줄씩 묶어주는 세로 여백 */
+.form-row {
+    margin-bottom: 25px;    /* 입력창들끼리 서로 다닥다닥 붙지 않게 아래 여백 부여 */
 }
+
+/* 4. 항목 이름(라벨) 스타일 */
 .form-group label {
-    display: block;
-    font-size: 0.85rem;
-    font-weigth:700;
-    color:var(--sub);
-    margin-bottom:0.5rem;
+    display: block;         /* 라벨을 한 줄 통째로 차지하게 해서 글자 입력창이 아래로 내려가도록 함 */
+    font-size: 15px;
+    font-weight: 600;       /* 글자를 약간 두껍게 */
+    color: var(--text);      /* 진한 텍스트 색상 */
+    margin-bottom: 8px;     /* 글자와 아래 입력창 사이의 간격 */
 }
 
+/* 5. 글자 입력창 공통 스타일 (제목창, 내용창 등) */
 .form-control {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 0.9rem;
+    width: 100%;            /* 가로 길이를 부모 상자에 꽉 차게 100%로 설정 */
+    padding: 14px 16px;     /* 안쪽 여백을 주어 글자가 갇혀 보이지 않게 함 */
+    font-size: 15px;
+    background-color: var(--bg); /* 연하고 부드러운 핑크빛 배경 */
+    border: 1px solid var(--line); /* 연한 테두리 */
+    border-radius: 8px;     /* 입력창 모서리 라운딩 */
+    outline: none;          /* 입력창 클릭 시 생기는 기본 파란 테두리 제거 */
     color: var(--text);
-    background-color: var(--bg);
-    border: 1px solid var(--line);
-    border-radius: 2px;
-    outline: none;
-    transition: all 0.2s;
+    transition: all 0.2s ease; /* 부드러운 전환 효과 */
 }
 
+/* 입력창을 마우스로 클릭해서 글을 쓰려고 할 때(포커스 상태) 바뀔 스타일 */
 .form-control:focus {
-    background-color: var(--bg-container);
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(250, 203, 71, 0.15);
+    background-color: var(--bg); /* 배경을 다시 새하얗게 변경 */
+    border-color: var(--pink-deep); /* 테두리 선을 찐한 핑크색으로 변경해서 집중 효과 */
+}
+
+/* 내용(Textarea) 입력창 특별 높이 지정 */
+textarea.form-control {
+    height: 250px;          /* 본문은 글을 길게 써야 하므로 높이를 크게 지정 */
+    resize: none;           /* 마우스로 창 크기를 임의로 늘리거나 줄이지 못하게 고정 */
+}
+
+/* 6. 상품 검색 전용 (인풋창과 버튼이 가로로 나란히 오는 구조) */
+.search-input-group {
+    display: flex;          /* 인풋창과 검색 버튼을 가로로 나란히 배치하기 위해 Flex 사용 */
+    flex: 1;
+    gap: 10px;              /* 인풋창과 버튼 사이의 좁은 간격 */
+}
+
+/* 검색 버튼 스타일 */
+.btn-search {
+    padding: 10px 10px;        /* 버튼 좌우 여백 */
+    background-color: var(--pink); /* 메인 브랜드 컬러인 핑크색 배경 */
+    color: var(--bg);       /* 글자는 흰색 */
+    border: none;           /* 기본 테두리 없애기 */
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;        /* 마우스를 올렸을 때 손가락 모양으로 변경 */
+    transition: background-color 0.2s ease;
+    margin-left: 10px;
+    width: 5rem;
+}
+
+.btn-search:hover {
+    background-color: var(--pink-deep); /* 마우스를 올리면 조금 더 진한 핑크색으로 변경 */
+}
+
+/* 7. 이미지 첨부 드롭박스 영역 (점선 모양의 세련된 상자) */
+.file-upload-wrapper {
+    width: 100%;
+    padding: 40px 20px;     /* 드롭존 영역 내부 상하좌우 여백 */
+    background-color: var(--pink-soft); /* 연한 핑크빛 배경 */
+    border: 2px dashed var(--pink); /* 실선이 아닌 점선(dashed) 테두리로 파일 공간 느낌 내기 */
+    border-radius: 12px;
+    text-align: center;     /* 정중앙에 아이콘과 글자들이 오도록 정렬 */
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.file-upload-wrapper:hover {
+    background-color: var(--sky);  /* 마우스 올리면 산뜻한 스카이블루 배경으로 피드백 */
+    border-color: var(--pink-deep); /* 점선은 짙은 핑크로 변경 */
+}
+
+/* 파일 업로드 내부 텍스트들 세로 배치 */
+.file-upload-wrapper span {
+    display: block;         /* 각각의 글자 스팬 태그들을 한 줄씩 차지하게 해서 세로로 정렬시킴 */
+}
+
+.upload-icon {
+    font-size: 32px;        /* 폴더 아이콘 크기 키우기 */
+    margin-bottom: 10px;
+}
+
+.upload-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 5px;
+}
+
+.upload-hint {
+    font-size: 13px;
+    color: var(--sub);       /* 힌트 텍스트는 서브 글자색(#666)으로 처리 */
+}
+
+/* 진짜 오리지널 파일 태그는 화면에서 숨기기 */
+#fileInput {
+    display: none;
+}
+
+/* 8. 맨 하단 등록/취소 버튼 영역 */
+.form-actions {
+    text-align: right;      /* 버튼들을 오른쪽 끝으로 밀어 붙임 */
+    padding-top: 20px;
+    border-top: 1px solid var(--line); /* 버튼 구역 위쪽에 얇은 구분선 생성 */
+}
+
+/* 버튼 기본 공통 모양 */
+.btn {
+    padding: 12px 30px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+/* 취소 버튼 */
+.btn-cancel {
+    background-color: var(--line); /* 기본 라인 회색 배경 */
+    color: var(--sub);             /* 서브 글자색 */
+    margin-right: 10px;            /* 등록 버튼과의 간격 */
+}
+
+.btn-cancel:hover {
+    background-color: #cbd5e1;     /* 호버 시 살짝 어둡게 */
+}
+
+/* 등록 완료 버튼 (가장 강조되어야 하는 메인 버튼) */
+.btn-submit {
+    background-color: var(--pink); /* 메인 핑크 버튼 */
+    color: var(--bg);              /* 흰색 글자 */
+}
+
+.btn-submit:hover {
+    background-color: var(--pink-deep); /* 호버 시 진한 핑크 */
+}
+
+
+/* ==========================================================================
+   9. 검색 모달창 (창 띄웠을 때 뒤에 깔리는 반투명 검은 배경)
+   ========================================================================== */
+.modal-overlay {
+    display: none;          /* 평소에는 기본적으로 화면에서 아예 안 보이게 숨김 */
+    position: fixed;        /* 스크롤을 내려도 화면 정중앙에 고정되도록 고정 위치 설정 */
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* 뒤 배경을 흐리게 만드는 반투명 검은색 */
+    z-index: 1000;          /* 최상단 레이어로 무조건 맨 위에 오도록 함 */
+
+    /* ★ 완벽한 중앙 정렬을 위한 3줄 추가 */
+    justify-content: center;/* 자식(하얀 상자)을 가로 기준으로 정중앙 배치 */
+    align-items: center;    /* 자식(하얀 상자)을 세로 기준으로 정중앙 배치 */
+}
+
+/* 실제 모달 팝업 하얀 상자 */
+.modal-content {
+    background-color: var(--bg);
+    width: 600px;           /* 팝업창 가로 크기 */
+    height: 500px;
+    max-width: 90%;
+    padding: 25px;
+}
+
+.search-item {
+    display: flex;          /* ★ 핵심: 이미지와 텍스트 구역을 가로로 나란히 배치 */
+    align-items: center;    /* 이미지와 글자들의 위아래 수평 정중앙 맞춤 */
+    padding: 15px;          /* 각 상자 내부 여백 */
+    margin-bottom: 12px;    /* 결과 항목들끼리 서로 다닥다닥 붙지 않게 아래 간격 */
+    border: 1px solid var(--line); /* 은은한 회색 테두리 선 */
+    border-radius: 8px;     /* 모서리 부드럽게 라운딩 */
+    background-color: var(--bg);
+    transition: all 0.2s ease; /* 마우스 올릴 때 부드러운 전환 효과 */
+    cursor: pointer;        /* 클릭 가능한 손가락 모양 피드백 */
+
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 검색 결과 아이템에 마우스 올렸을 때(Hover) 화사한 핑크빛 피드백 */
+.search-item:hover {
+    background-color: var(--pink-soft); /* 부드러운 연핑크 배경색 */
+    border-color: var(--pink);          /* 테두리도 핑크색으로 강조 */
+}
+/* 마지막 검색 결과 아이템은 아래 여백을 없애서 깔끔하게 마감 */
+.search-item:last-child {
+    margin-bottom: 0;
+}
+
+/* 3. 상품 이미지 스타일 */
+.search-item img {
+    width: 65px;            /* 이미지 가로 크기 딱 고정 */
+    height: 65px;           /* 이미지 세로 크기 딱 고정 */
+    object-fit: cover;      /* 크기가 달라도 정비율로 예쁘게 채우기 */
+    border-radius: 6px;     /* 이미지 모서리 라운딩 */
+    margin-right: 18px;     /* 이미지 오른쪽에 글자들과 벌어질 여백 확보 */
+    border: 1px solid var(--line); /* 이미지 외곽선 구분 */
+}
+
+/* 4. 상품 정보 텍스트 전체 구역 (제목과 카테고리를 세로로 정렬) */
+.item-info {
+    flex: 1;                /* 가로 공간에서 이미지를 제외한 남은 영역을 전부 다 차지 */
+    display: flex;
+    flex-direction: column; /* 제목과 카테고리가 위아래 세로로 오도록 설정 */
+    gap: 6px;               /* 제목과 카테고리 사이의 미세한 상하 간격 */
+    text-align: left;       /* 글자 왼쪽 정렬 강제 보장 */
+}
+
+/* 상품 제목(이름) 스타일 */
+.item-title {
+    font-size: 15px;
+    font-weight: 600;       /* 글자를 굵게 해서 눈에 띄게 처리 */
+    color: var(--text);      /* 진한 메인 글자색 (#333) */
+    line-height: 1.4;
+    margin: 0;              /* p 태그 자체의 기본 브라우저 여백 제거 */
+}
+
+/* 상품 카테고리 경로 스타일 */
+.item-cate {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--sub);       /* 서브 글자색 (#666) */
+    margin: 0;              /* p 태그 자체의 기본 브라우저 여백 제거 */
+}
+
+/* 모달 머리글 (타이틀과 닫기 X 버튼 나란히 배치) */
+.modal-header {
+    display: flex;
+    justify-content: space-between; /* 타이틀은 왼쪽, X 버튼은 오른쪽 끝으로 찢음 */
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+}
+
+.modal-header h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text);
+}
+
+/* 모달 우측 상단 닫기(X) 버튼 */
+.modal-close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--sub);
+}
+
+.modal-close-btn:hover {
+    color: var(--text);
+}
+
+/* 검색 결과 아이템들이 담길 몸통 구역 */
+.modal-body {
+    max-height: 400px;      /* 결과가 너무 많으면 상자가 한없이 늘어나므로 최대 높이 제한 */
+    overflow-y: auto;       /* 넘치는 결과는 스크롤바가 생기도록 처리 */
+    padding: 10px 5px;
 }
 
 
@@ -253,8 +497,6 @@
         // 상품 선택 시 폼에 데이터 바인딩
         function selectProduct(title, link, image, mainCate, subCate) {
             // 1. [화면 표시용] 사용자가 건드릴 수 없는 disabled 필드 및 읽기전용 필드에 세팅
-            document.getElementById('displayMainCategory').value = mainCate;
-            document.getElementById('displaySubCategory').value = subCate;
             document.getElementById('targetTitle').value = title;
 
             // 2. [서버 전송용] 숨김(hidden) 필드에 세팅 (이미지, 링크 등은 화면엔 안 보이지만 전송됨)
