@@ -10,18 +10,18 @@ import com.miles.beauminity.vo.feed.TagVO;
 
 @Mapper
 public interface TagMapper {
-    void postTag(TagVO tagNames);
+    public void postTag(TagVO tagNames);
 
-    List<String> getTagNameList();
+    public List<String> getTagNameList();
 
-    List<String> getFeedTagList(Long feedId);
+    public List<String> getFeedTagList(Long feedId);
 
-    void tagFeed(@Param("feedId") Long getFeedId, @Param("tagId") Long getTagId);
+    public void tagFeed(@Param("feedId") Long getFeedId, @Param("tagId") Long getTagId);
 
-    List<String> getfeedTagList();
+    public List<String> getfeedTagList();
 
-    void deleteTag(Long feedId);
+    public void deleteTag(Long feedId);
 
-    void deleteFeedTag(FeedVO feedVO);
+    public void deleteFeedTag(FeedVO feedVO);
 
 }

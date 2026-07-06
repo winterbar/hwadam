@@ -11,26 +11,28 @@ import com.miles.beauminity.vo.feed.FeedVO;
 
 @Mapper
 public interface FeedMapper {
-    void postFeed(FeedVO feedVO);
+    public void postFeed(FeedVO feedVO);
 
-    List<FeedVO> getFeedList(String username);
+    public List<FeedVO> getFeedList(String username);
 
-    FeedVO loadFeedData(Long feedId);
+    public FeedVO loadFeedData(Long feedId);
 
-    FeedVO loadTagData(Long feedId);
+    public FeedVO loadTagData(Long feedId);
 
-    void deleteFeedId(Long feedId);
+    public void deleteFeedId(Long feedId);
 
-    long countFeed(String username);
+    public long countFeed(String username);
 
-    void updateFeed(FeedVO feedVO);
+    public void updateFeed(FeedVO feedVO);
 
-    void cancleLikeCnt(FeedLikeVO feedLikeVO);
+    public void cancleLikeCnt(FeedLikeVO feedLikeVO);
 
-    void increaseLikeCnt(FeedLikeVO feedLikeVO);
+    public void increaseLikeCnt(FeedLikeVO feedLikeVO);
 
-    int getLikeCnt(@Param("feedId") Long feedId);
+    public int getLikeCnt(@Param("feedId") Long feedId);
 
-    List<FeedVO> getShareFeedlist(Long feedId);
+    public List<FeedVO> getShareFeedlist(Long feedId);
+
+    public List<FeedVO> getMyFeedList(String username);
 
 }
