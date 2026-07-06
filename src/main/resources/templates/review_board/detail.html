@@ -11,6 +11,424 @@
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
+<style>
+
+/* 상세보기 메인 컨테이너 박스 */
+.detail-container {
+    max-width: 850px;
+    margin: 50px auto 0 auto;
+    padding: 40px;
+    background-color: var(--bg);   /* 하얀색 바탕 */
+    border: 1px solid var(--line); /* 은은한 회색 테두리 */
+    border-radius: 12px;
+}
+
+/* 상단 헤더 및 메타 정보 */
+.category-path {
+    font-size: 14px;
+    color: var(--sub);
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.category-path span {
+    color: var(--pink-deep);       /* 강조 카테고리는 진한 핑크 */
+    font-weight: 600;
+}
+
+.detail-header {
+    margin-bottom: 35px;
+    border-bottom: 2px solid var(--pink); /* 일관성 있는 시그니처 핑크 구분선 */
+    padding-bottom: 18px;
+}
+
+/* 제목 텍스트 */
+.detail-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 15px 0;
+    line-height: 1.4;
+}
+
+.detail-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* 작성 정보 정렬 (좌측: 작성일 / 우측: 조회수 구조) */
+.detail-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: var(--sub);
+}
+
+/* 세로 구분선 (|) 은은하게 스타일링 */
+.detail-meta-row span:not([class]) {
+    margin: 0 0.5rem;
+    color: var(--sub);
+}
+
+.detail-meta-row strong {
+    color: var(--text);
+}
+
+.stats-group {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* 조회수, 댓글수 통계 그룹 */
+.stats-group span {
+    margin-left: 12px;
+}
+
+.stats-group strong {
+    color: var(--pink-deep); /* 숫자 강조 */
+}
+
+/* 리뷰 대상 제품 정보 구역 */
+.product-info-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg);   /* 산뜻한 파스텔 블루 배경 */
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 35px;
+    border: 1px solid var(--line);
+}
+/* '리뷰 대상' 소제목 텍스트 */
+.product-info-card span:first-child {
+    font-size: 13px;
+    color: var(--sub);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.product-info-card .product-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* 상품 썸네일 이미지 */
+.product-image-wrapper img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background-color: var(--bg);
+}
+
+.product-image-wrapper span {
+    font-size: 13px;
+    color: var(--sub);
+}
+
+.product-image-wrapper img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+/* 본문 내용 및 업로드 이미지 */
+.detail-content-body {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text);
+    white-space: pre-wrap;         /* 작성할 때 넣은 엔터(줄바꿈)가 그대로 보이게 보존 */
+    padding: 10px 5px;
+    margin-bottom: 40px;
+    min-height: 150px;
+}
+
+.attached-images-grid {
+    display: flex;
+    flex-direction: column;         /* 리뷰 이미지는 가로 그리드보다 세로로 길게 보는게 편함 */
+    gap: 30px;
+    align-items: center;            /* 이미지 정중앙 배치 */
+    margin-bottom: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+}
+
+.image-item-box {
+    width: 100%;
+    max-width: 650px;               /* 이미지가 너무 거대해지는 것을 방지 */
+}
+/* 이미지 위에 작게 붙는 '업로드한 이미지1' 안내 텍스트 */
+.image-item-box span {
+    font-size: 12px;
+    color: var(--sub);
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.image-item-box img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+/* 하단 액션 및 좋아요/링크 영역 */
+.detail-actions-row {
+    display: flex;
+    justify-content: space-between; /* 목록으로는 왼쪽, 나머지 액션은 오른쪽 정렬 */
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 25px;
+    border-top: 1px solid var(--line);
+}
+/* 버튼 기본 공통 스타일 제거 및 재정의 */
+.detail-actions-row a,
+.detail-actions-row button {
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+/* [좌측] 목록으로 버튼 */
+.btn-list-go {
+    padding: 10px 20px;
+    background-color: var(--line);
+    color: var(--sub);
+    border: none;
+}
+
+.btn-list-go:hover {
+    background-color: #cbd5e1;
+    color: var(--text);
+}
+
+/* [우측] 쇼핑몰 이동 버튼 */
+.btn-link-out {
+    background-color: var(--pink-soft);
+    color: var(--pink-deep);
+    border: 1px solid var(--pink);
+    padding: 10px 20px;
+}
+
+.btn-link-out:hover {
+    background-color: var(--pink);
+    color: var(--bg);
+}
+
+/* [우측] 수정 버튼 (블랙 감성을 지우고 핑크 무드 조화) */
+.btn-edit-dark {
+    padding: 10px 20px;
+    background-color: var(--pink);
+    color: var(--bg);
+    border: 1px solid var(--pink);
+}
+
+.btn-edit-dark:hover {
+    background-color: var(--pink-deep);
+    border-color: var(--pink-deep);
+}
+
+/* [우측] 삭제 버튼 */
+.btn-delete-line {
+    padding: 10px 20px;
+    background-color: var(--bg);
+    color: var(--sub);
+    border: 1px solid var(--line);
+}
+
+.btn-delete-line:hover {
+    background-color: #fff0f1;
+    color: #9f1239;
+    border-color: #fecdd3;
+}
+
+/* [우측] 하트(좋아요) 아이콘 구역 */
+.detail-actions-row div:has(> .like-icon) {
+    font-size: 1.5rem;
+    transition: transform 0.2s ease;
+    user-select: none;
+}
+
+.detail-actions-row div:has(> .like-icon):hover {
+    transform: scale(1.2);          /* 하트에 마우스 올리면 통통 튀는 피드백 */
+    color: #ff4d4d !important;
+}
+
+/* 댓글 영역 */
+/* 9. 댓글 섹션 디자인 (댓글 창 무드 세팅) */
+.comment-section {
+    max-width: 850px;
+    margin: 30px auto 80px auto;    /* 하단 여백 넉넉히 확보 */
+    padding: 30px;
+    background-color: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+
+.comment-section h5 {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+    margin: 0 0 20px 0;
+}
+
+/* 댓글 없을 때 나오는 빈 상자 */
+.comment-empty-box {
+    padding: 40px 0;
+    text-align: center;
+    color: var(--sub);
+    font-size: 14px;
+    border: 1px dashed var(--line);
+    border-radius: 8px;
+    background-color: #fafafa;
+}
+
+/* 댓글 아이템 간격 */
+.comment-item {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.comment-meta {
+    margin-bottom: 6px;
+}
+
+.comment-meta strong {
+    font-size: 14px;
+    color: var(--text);
+}
+
+.comment-meta span {
+    font-size: 12px;
+    color: var(--sub);
+    margin-left: 10px;
+}
+
+.comment-body {
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.5;
+    white-space: pre-wrap; /* 댓글 내부 줄바꿈 유지 */
+}
+
+/* 댓글 입력 폼 디자인 */
+.comment-write-box {
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 1px solid var(--line);
+}
+
+.comment-write-box textarea {
+    width: 100%;
+    height: 90px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    resize: none;
+    box-sizing: border-box;
+    font-size: 14px;
+    color: var(--text);
+}
+
+.comment-write-box textarea:focus {
+    outline: none;
+    border-color: var(--pink); /* 포커스 시 시그니처 핑크 테두리 */
+}
+
+/* 등록 버튼 우측 정렬 박스 */
+.comment-btn-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.btn-reply-submit {
+    padding: 10px 24px;
+    background-color: var(--pink);
+    color: var(--bg);
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-reply-submit:hover {
+    background-color: var(--pink-deep);
+}
+
+/* ==========================================================================
+   [유지 및 보완] 모바일 및 태블릿 환경 대응 (반응형 미디어 쿼리)
+   ========================================================================== */
+@media (max-width: 768px) {
+    /* 전체 컨테이너 여백 조정으로 모바일 화면 넓게 쓰기 */
+    .detail-container, 
+    .comment-section {
+        padding: 20px;
+        margin: 20px 10px;
+    }
+
+    /* 가로로 나열되던 요소들을 세로(column)로 안전하게 배치 변경 */
+    .detail-meta-row, 
+    .product-info-card, 
+    .detail-actions-row { 
+        flex-direction: column; 
+        align-items: flex-start; /* 왼쪽 정렬로 통일 */
+        gap: 12px; 
+    }
+
+    /* 모바일에서는 조회수/댓글수 구역을 아래로 자연스럽게 내림 */
+    .stats-group {
+        margin-top: 5px;
+    }
+    .stats-group span:first-child {
+        margin-left: 0; /* 모바일 첫 요소 간격 초기화 */
+    }
+
+    /* 하단 버튼 구역 모바일 최적화 */
+    .detail-actions-row {
+        align-items: stretch; /* 버튼들이 가로로 꽉 차게 설정 */
+        width: 100%;
+    }
+
+    /* 버튼 옆에 붙은 마진이나 정렬 그룹들 모바일 맞춤 변경 */
+    .detail-actions-row > div {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .detail-actions-row .btn,
+    .btn-list-go {
+        text-align: center; /* 모바일 버튼 글씨 가운데 정렬 */
+        width: 100%;       /* 누르기 편하게 100% 폭 확장 */
+    }
+
+}
+
+</style>
+
 
 <div th:replace="~{layout/header :: header}"></div>
 
@@ -111,10 +529,39 @@
 
 
         <div class="comment-section">
-            <h5 style="font-weight: 800; font-size: 0.95rem; color: var(--text-main); margin-bottom: 1rem;">댓글 <span th:text="${detail.replyCnt}" style="color: #ff4d4d;">0</span></h5>
+            <h5>댓글 <span th:text="${detail.replyCnt}">0</span></h5>
             
-            <div class="comment-empty-box">
-                등록된 댓글이 없습니다. 첫 댓글을 남겨보세요!
+            <div class="comment-list-box">
+                <div th:if="${#lists.isEmpty(replyList)}" class="comment-empty-box">
+                    등록된 댓글이 없습니다. 첫 댓글을 남겨보세요!
+                </div>
+                
+                <div th:unless="${#lists.isEmpty(replyList)}" 
+                    th:each="reply : ${replyList}" 
+                    class="comment-item">
+                    
+                    <div class="comment-meta">
+                        <strong th:text="${reply.userName}">작성자 아이디</strong>
+                    </div>
+                    
+                    <div class="comment-body" th:text="${reply.replyContent}">
+                        사용자가 작성한 후기 댓글 내용이 이곳에 깔끔하게 출력됩니다.
+                    </div>
+                </div>
+            </div>
+
+            <div class="comment-write-box">
+                <form th:action="@{/review/detail/{id}/reply(id=${detail.boardId})}" method="post">
+                    <textarea name="replyContent" 
+                            required 
+                            placeholder="댓글을 입력해주세요. 타인을 비방하는 글은 삭제될 수 있습니다."></textarea>
+                    
+                    <div class="comment-btn-row">
+                        <button type="submit" class="btn-reply-submit">
+                            등록
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 

@@ -13,20 +13,26 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.miles.beauminity.mapper.board.MasterBoardMapper;
+import com.miles.beauminity.mapper.feed.FeedFileMapper;
 import com.miles.beauminity.mapper.feed.FeedMapper;
+import com.miles.beauminity.mapper.feed.TagMapper;
 import com.miles.beauminity.mapper.login.MemberMapper;
 import com.miles.beauminity.mapper.login.MemberProfileMapper;
+import com.miles.beauminity.mapper.qna_board.QnaBoardMapper;
 import com.miles.beauminity.security.CustomUserDetails;
 import com.miles.beauminity.security.CustomUserDetailsService;
 import com.miles.beauminity.util.MemberFileUtil;
+import com.miles.beauminity.vo.feed.FeedVO;
 import com.miles.beauminity.vo.login.MemberVO;
 import com.miles.beauminity.vo.login.MyPageFileVO;
 import com.miles.beauminity.vo.login.MyPageVO;
+import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberServiceImpl implements MemberService {
 
     private final MemberMapper memberMapper;
@@ -35,6 +41,9 @@ public class MemberServiceImpl implements MemberService {
     private final FeedMapper feedMapper;
     private final PasswordEncoder passwordEncoder;
     private final CustomUserDetailsService customUserDetailsService;
+    private final FeedFileMapper feedFileMapper;
+    private final TagMapper tagMapper;
+    private final QnaBoardMapper qnaBoardMapper;
 
     // 사용자가 입력한 아이디로 가입된 계정이 있는지 확인
     @Override
@@ -143,7 +152,6 @@ public class MemberServiceImpl implements MemberService {
 
     // 사용자의 정보(회원 정보, 프로필 사진, 작성된 글 수 등) 검색
     @Override
-    @Transactional(readOnly = true)
     public MyPageVO getMemberInfo(String username) {
         MemberVO member = memberMapper.findLoginId(username);
         MyPageVO memberInfo = new MyPageVO();
@@ -175,4 +183,27 @@ public class MemberServiceImpl implements MemberService {
         return memberInfo;
     }
 
+    @Override
+    public List<FeedVO> getFeedList(String username) {
+        List<FeedVO> feedList = feedMapper.getMyFeedList(username);
+        
+       for (FeedVO feed : feedList) {
+            // 특정 피드 아이디에 해당하는 해시태그를 가져와서 리스트로 저장
+            List<String> feedTagList = tagMapper.getFeedTagList(feed.getFeedId());
+            // 특정 피드 아이디에 해당하는 사진 가져와서 리스트로 저장
+            List<String> feedFileList = feedFileMapper.getFeedFileList(feed.getFeedId());
+
+            feed.setFeedFileList(feedFileList);
+            feed.setFeedTagList(feedTagList);
+
+        }
+
+        return feedList;
+    }
+
+    @Override
+    public List<QnaBoardCompleteVO> getQnaList(String username) {
+        
+        return qnaBoardMapper.getQnaList(username);
+    }
 }

@@ -1,12 +1,15 @@
 package com.miles.beauminity.security;
 
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.miles.beauminity.mapper.admin.AdminMemberMapper;
 import com.miles.beauminity.mapper.login.MemberMapper;
-import com.miles.beauminity.vo.login.MemberVO;
+import com.miles.beauminity.vo.admin.AdminMemberVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,14 +19,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final MemberMapper memberMapper;
+    private final AdminMemberMapper adminMemberMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        MemberVO member = memberMapper.findLoginId(username); // 로그인을 시도하는 사용자
-        if(member == null) { // 입력한 아이디로 가입되어 있지 않을 경우
-            throw new UsernameNotFoundException("가입된 사용자가 아닙니다.");
+        AdminMemberVO member = adminMemberMapper.getMemberInfo(username); // 로그인을 시도하는 사용자
+        
+        // 입력한 아이디로 가입되어 있지 않을 경우
+        if(member == null) {
+            throw new UsernameNotFoundException("존재하지 않는 회원입니다.");
         }
+
+        // 탈퇴한 아이디인 경우
+        // 보안을 위해 탈퇴한 계정임을 알리지 않고 정보 불일치 문구를 출력
+        if("deleted".equals(member.getStatus())) {
+            throw new BadCredentialsException("아이디나 비밀번호가 일치하지 않습니다.");
+        }
+
         // 스프링이 member 객체의 타입을 알 수 있게 userDetails 객체로 랩핑
         return new CustomUserDetails(member);
     }
