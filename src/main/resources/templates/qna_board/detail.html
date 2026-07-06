@@ -94,15 +94,26 @@
     
             <div class="comment-input-area">
                 <textarea placeholder="댓글을 남겨보세요." rows="2"></textarea>
-                <button class="btn btn-comment-submit">등록</button>
+
+                <div class="comment-btn-group">
+                    <button type="button" class="btn btn-comment-cancel">취소</button>
+                    <button type="submit" class="btn btn-comment-submit">등록</button>
+                </div>
             </div>
             
 
             <div class="comment-list">
                 <div class="comment-item">
-                    <div class="comment-info">
-                        <span class="comment-author">그루밍왕초보</span>
-                        <span class="comment-date">2026-06-18</span>
+                    <div class="comment-header">
+                        <div class="comment-info">
+                            <span class="comment-author">그루밍왕초보</span>
+                            <span class="comment-date">2026-06-18</span>
+                        </div>
+
+                        <div class="comment-actions">
+                            <button type="button" class="btn-comment-edit">수정</button>
+                            <button type="button" class="btn-comment-delete">삭제</button>
+                        </div>
                     </div>
                     <div class="comment-content">도움이 많이 되는 정보네요! 감사합니다.</div>
                 </div>

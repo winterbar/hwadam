@@ -9,6 +9,7 @@ import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.MasterBoardLikeVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
+import com.miles.beauminity.vo.login.MemberVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 
 // 스프링에서 쓸 거니까 서비스 걸어줍니다.
@@ -49,8 +50,10 @@ public interface QnaService {
 
     int getCountSearchBoardByTitle(String type, String str);
 
-    public String getUsernameByBoardId (Long id);
+    String getUsernameByBoardId (Long id);
 
     void deleteFilesForUpdate (Long id);
+
+    MemberVO getMemberInfo(String username);
     
 }
