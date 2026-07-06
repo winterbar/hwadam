@@ -120,6 +120,32 @@ body {
     cursor: pointer;
 }
 
+/* 일괄 변경 버튼의 세부 메뉴 */
+.popover {
+    position: absolute; 
+    z-index: 9999; /* 화면에서 가장 위에 뜨도록 */
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    padding: 10px;
+    border-radius: 8px;
+    min-width: 150px;
+}
+
+.popover-input {
+    padding: 8px 5px;
+    width: 80px;
+    border: 1px solid #ddd;
+}
+
+.popover-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 5px;
+}
+
 .hidden {
     display: none;
 }
@@ -185,8 +211,18 @@ body {
     transition: all 0.2s;
 }
 
+.btn-group input[type="radio"]+label {
+    border: 1px solid #ff3b7c;
+    color: #ff3b7c;
+}
+
 .btn-group input:checked+label {
     background-color: #FFA1C1;
+    color: #fff;
+}
+
+.btn-group input[type="radio"]:checked+label {
+    background-color: #ff3b7c;
     color: #fff;
 }
 
@@ -227,6 +263,27 @@ td {
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
+}
+
+.sort-link {
+    color: #333;
+    text-decoration: none;
+}
+
+.sort-link::after {
+    content: '↕';
+}
+
+/* 내림차순(DESC)일 때 */
+.sort-link.desc::after {
+    content: ' ▼';
+    color: #FFA1C1;
+}
+
+/* 오름차순(ASC)일 때 */
+.sort-link.asc::after {
+    content: ' ▲';
+    color: #FFA1C1;
 }
 
 /* 각 칼럼별 고정 너비 설정 */

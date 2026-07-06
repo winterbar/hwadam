@@ -19,6 +19,9 @@ public class AdminPageVO {
 
     private String keyword; // 검색어
     private String searchType; // 검색 타입
+    private String sort; // 정렬 기준
+    private String dir = "asc"; // 정렬 방향
+    // 기본은 내림차순이라 desc지만, 컨트롤러에서 변경되어 이를 고려해 asc로 둠
     
     // limit 시작 위치 계산
     private int getOffset() {

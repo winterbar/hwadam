@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberServiceImpl implements MemberService {
 
     private final MemberMapper memberMapper;
@@ -143,7 +144,6 @@ public class MemberServiceImpl implements MemberService {
 
     // 사용자의 정보(회원 정보, 프로필 사진, 작성된 글 수 등) 검색
     @Override
-    @Transactional(readOnly = true)
     public MyPageVO getMemberInfo(String username) {
         MemberVO member = memberMapper.findLoginId(username);
         MyPageVO memberInfo = new MyPageVO();
