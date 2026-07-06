@@ -14,6 +14,300 @@
 
 </head>
 
+<style>
+@charset "UTF-8";
+
+/* ===================================================
+   [REVIEW EDIT COMPONENT] 후기 게시글 수정 페이지 전용 스타일
+=================================================== */
+/* 1. 전체 중심 정렬 상자 (글쓰기 페이지와 동일한 크기와 여백) */
+.detail-container {
+    max-width: 850px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+
+/* 2. 카테고리 경로 표시 (상단 작은 글씨 구역) */
+.category-path {
+    font-size: 14px;
+    color: var(--sub);
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.category-path span {
+    color: var(--pink-deep); /* 카테고리 강조 */
+    font-weight: 600;
+}
+
+/* 3. 머리글 영역 (제목 + 작성자 정보) */
+.detail-header {
+    margin-bottom: 30px;
+}
+
+/* 제목 입력창 줄 (HTML의 style 속성을 덮어씌우기 위해 우선순위 강화) */
+.detail-title-row[style] {
+    margin-bottom: 1.5rem !important;
+    border-bottom: 2px solid var(--pink) !important; /* 글쓰기 페이지와 동일한 핑크 선 */
+    padding-bottom: 10px;
+}
+
+/* 인풋창 스타일 */
+.borderless-input {
+   width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: transparent;
+    font-size: 1.6rem;
+    color: var(--text);            /* #333 메인 텍스트 색상 */
+    padding: 5px 0;
+}
+
+.borderless-input::placeholder {
+    color: var(--sub);
+}
+
+/* 작성자, 등록일 메타 정보 */
+.detail-meta-row {
+    font-size: 14px;
+    color: var(--sub);
+}
+.detail-meta-row span {
+    margin: 0 0.5rem;
+    color: var(--text);            /* 세로 구분선 (|) 은은하게 처리 */
+}
+
+.detail-meta-row strong {
+    color: var(--text);
+}
+
+/* 4. 리뷰 대상 상품 정보 카드 (정갈한 박스 형태) */
+.product-info-card {
+    display: flex;
+    justify-content: space-between; /* 제품명은 왼쪽, 이미지는 오른쪽 끝 */
+    align-items: center;
+    background-color: var(--bg); /* 산뜻한 스카이블루 배경 */
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 35px;
+    border: 1px solid var(--line);
+}
+
+.product-info-card span:first-child {
+    font-size: 13px;
+    color: var(--sub);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.product-info-card .product-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+}
+dit-textarea-custom
+/* 상품 이미지 wrapper */
+.product-image-wrapper img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background-color: var(--bg);
+}
+
+.product-image-wrapper span {
+    font-size: 13px;
+    color: var(--sub);
+}
+
+/* 5. 본문 내용 수정 입력창 (Textarea) */
+
+/*-------------*/
+.detail-container > div:has(.edit-textarea-custom) {
+    margin-bottom: 2rem;
+}
+
+.detail-container > div:has(.edit-textarea-custom) label {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 8px;
+}
+/*-------------*/
+
+.edit-textarea-custom {
+    font-family: inherit;              /* 폰트 상속 추가 */
+    width: 100%;
+    height: 250px;
+    padding: 15px;
+    font-size: 15px;
+    background-color: var(--bg); /* 글쓰기창과 통일된 연핑크 배경 */
+    border: 1px solid var(--line) !important; /* 기본 보더리스를 덮어쓰고 테두리 생성 */
+    border-radius: 8px;
+    resize: none;
+    line-height: 1.6;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.edit-textarea-custom:focus {
+    background-color: var(--bg);
+    border-color: var(--pink-deep) !important; /* 클릭 시 진한 핑크색 선 */
+}
+/* ==========================================================================
+   [추가] 입력창 및 버튼 폰트 누락 현상 해결 (부모 폰트 상속)
+   ========================================================================== */
+.detail-container input,
+.detail-container textarea,
+.detail-container button,
+.detail-container select {
+    /* 부모(body)에 선언된 Pretendard 폰트를 강제로 물려받게 설정 */
+    font-family: inherit; 
+}
+
+/* 6. 기존 업로드 이미지 그리드 배치 영역 */
+.attached-images-grid {
+    display: flex;
+    flex-wrap: wrap;       /* 박스가 많아지면 아래 줄로 부드럽게 넘어가도록 함 */
+    gap: 20px;             /* 박스들 사이의 상하좌우 간격 */
+    margin-bottom: 2.5rem;
+}
+
+
+/* 드래그한 파일이 영역 위로 올라왔을 때 활성화될 클래스 효과 */
+.image-item-box.drop-zone.drag-over {
+    /* 마우스를 올렸을 때 테두리를 짙은 핑크색 점선으로 강조 */
+    border: 2px dashed var(--pink-deep) !important;
+    
+    /* 배경색을 부드러운 연핑크빛으로 변경하여 시각적 피드백 제공 */
+    background-color: var(--pink-soft) !important;
+}
+
+/* 개별 이미지 아이템 상자 (드롭존 무드) */
+.image-item-box.drop-zone {
+    flex: 1;
+    min-width: 240px;                   /* 너무 작아지지 않게 방어선 구축 */
+    background-color: var(--bg);
+    border: 2px dashed var(--pink);     /* 글쓰기 파일 업로드 공간과 결을 맞춘 핑크 점선 */
+    padding: 20px;
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.image-item-box.drop-zone:hover {
+    background-color: var(--pink-soft); /* 마우스 올리면 부드러운 연핑크 반응 */
+    border-color: var(--pink-deep);
+}
+
+.image-item-box.drop-zone > span {
+    font-size: 13px;
+    color: var(--sub);
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+/* 이미지 미리보기 썸네일 상자 */
+.current-image-preview {
+    width: 150px;
+    height: 150px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    margin: 10px auto;                  /* 상자 안에서 정중앙 정렬 */
+    background-color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+}
+
+.current-image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;                /* 썸네일 이미지가 잘리지 않고 정비율로 보이게 조절 */
+}
+
+/* 파일 선택 인풋 스타일 */
+.file-input {
+    width: 100%;
+    font-size: 13px;
+    color: var(--sub);
+    margin-top: 12px;
+    cursor: pointer;
+}
+
+/* 안내 드래그 텍스트 */
+.drop-zone-text {
+    color: var(--sub);
+    font-size: 12px;
+    margin-top: 6px;
+    line-height: 1.4;
+}
+
+/* 7. 맨 하단 버튼 구역 및 로그인 정보 바 */
+.detail-actions-row {
+    display: flex;
+    justify-content: space-between;    /* 취소 / 계정정보 / 수정완료 삼등분 배치 */
+    align-items: center;
+    margin-top: 40px;
+    padding-top: 25px;
+    border-top: 1px solid var(--line);  /* 위쪽 구분선 */
+}
+
+/* 버튼 기본 공통 속성 정의 */
+.detail-actions-row .btn {
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    display: inline-block;
+    text-decoration: none;             /* a 태그의 기본 밑줄 제거 */
+}
+
+/* 수정 취소 버튼 (a 태그) */
+.detail-actions-row a.btn {
+    background-color: var(--line);     /* 회색 바탕 */
+    color: var(--sub);                 /* 서브 글자색 */
+}
+
+.detail-actions-row a.btn:hover {
+    background-color: #cbd5e1;
+}
+
+/* 가운데 위치한 로그인 계정 ID 검증 안내 창 (경고 무드는 유지하되 파스텔 톤으로 정리) */
+.detail-actions-row div:not([style]):not(:first-child):not(:last-child) {
+    background-color: #fff0f1;         /* 눈이 아프지 않은 가벼운 파스텔 연분홍 */
+    border: 1px solid #fecdd3;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 13px;
+    color: #9f1239;                    /* 딥 버건디 텍스트로 가독성 확보 */
+    line-height: 1.5;
+}
+
+/* 오른쪽 수정 완료 버튼 (button 태그) */
+.detail-actions-row button[type="submit"].btn-cancel {
+    background-color: var(--pink);      /* 메인 브랜드 컬러 핑크 적용 */
+    color: var(--bg);                  /* 글자는 흰색 */
+    font-weight: bold;
+}
+
+.detail-actions-row button[type="submit"].btn-cancel:hover {
+    background-color: var(--pink-deep); /* 호버 시 진한 핑크 */
+}
+
+</style>
+
 <div th:replace="~{layout/header :: header}"></div>
 
 <body>
@@ -32,13 +326,13 @@
             </div>
 
             <div class="detail-header">
-                <div class="detail-title-row" style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
-                    <input type="text" th:field="*{title}" class="borderless-input" style="font-weight: bold; font-size: 1.6rem;" placeholder="제목을 입력하세요." required />
+                <div class="detail-title-row">
+                    <input type="text" th:field="*{title}" class="borderless-input"  placeholder="제목을 입력하세요." required />
                 </div>
                 <div class="detail-meta-row">
                     <div>
                         작성자: <strong th:text="*{nickName}">작성자 닉네임</strong>
-                        <span style="margin: 0 0.5rem; color: var(--border-color);">|</span>
+                        <span>|</span>
                         등록일: <span th:text="${#temporals.format(reviewForm.createdAt, 'yyyy-MM-dd HH:mm')}">2026-06-19</span>
                     </div>
                 </div>
@@ -46,40 +340,37 @@
 
             <div class="product-info-card">
                 <div>
-                    <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.3rem;">리뷰 대상</span>
+                    <span>리뷰 대상</span>
                     <span class="product-name" th:text="*{productName}">제품명 정보</span>
                 </div>
                 <div class="product-image-wrapper">
                     <img th:if="*{productImage}" th:src="*{productImage}" alt="제품 사진">
-                    <span th:unless="*{productImage}" style="font-size: 0.8rem; color: var(--text-muted);">사진 없음</span>
+                    <span th:unless="*{productImage}">사진 없음</span>
                 </div>
             </div>
 
 
-            <div style="margin-bottom: 2rem;">
-                <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.5rem;">리뷰 내용 수정</label>
+            <div>
+                <label>리뷰 내용 수정</label>
                 <textarea th:field="*{content}" class="borderless-input edit-textarea-custom" placeholder="솔직한 실사용 후기를 작성해 주세요." required></textarea>
             </div>
 
             <div class="attached-images-grid" style="margin-bottom: 2.5rem;">
                 <div class="image-item-box drop-zone" 
-                    th:each="file, status : ${fileList}"
-                    style="margin-bottom: 1.5rem;
-                    border: 1px solid var(--border-color);
-                    padding: 1rem; border-radius: 6px; position: relative;">
-                    <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem; font-weight: bold;">
+                    th:each="file, status : ${fileList}">
+                    <span>
                         기존 업로드 이미지 <span th:text="${status.count}">1</span>
                     </span>
                     
-                    <div class="current-image-preview" style="width: 150px; height: 150px; border: 1px solid #eee; overflow: hidden; margin-bottom: 0.5rem; background-color: #f9f9f9; display: flex; align-items: center; justify-content: center;">
-                        <img th:src="@{/upload/review/{name}(name=${file.savedName})}" alt="기존 이미지" style="width: 100%; height: 100%; object-fit: contain;">
+                    <div class="current-image-preview">
+                        <img th:src="@{/upload/review/{name}(name=${file.savedName})}" alt="기존 이미지">
                     </div>
 
                     <input type="hidden" name="existingFileIds" th:value="${file.fileId}" />
 
-                    <input type="file" name="reviewFiles" class="file-input" accept="image/*" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;" />
+                    <input type="file" name="reviewFiles" class="file-input" accept="image/*"/>
                     
-                    <div class="drop-zone-text" style="color: #888; font-size: 0.75rem; margin-top: 0.3rem;">
+                    <div class="drop-zone-text">
                         ※ 이 이미지를 변경하려면 새 파일을 선택하거나 **여기에 이미지를 드래그하세요.**
                     </div>
                 </div>
@@ -87,19 +378,19 @@
 
             <div class="detail-actions-row">
                 <div>
-                    <a th:href="@{/review/detail/{id}(id=${reviewForm.boardId})}" class="btn" style="background-color: #f5f5f5; border: 1px solid var(--border-color); color: var(--text-main); text-decoration: none; padding: 0.8rem 1.5rem; display: inline-block;">
-                        ❌ 수정 취소
+                    <a th:href="@{/review/detail/{id}(id=${reviewForm.boardId})}" class="btn">
+                        수정 취소
                     </a>
                 </div>
                 
-                <div style="background: #f8d7da; padding: 0.5rem; font-size: 0.8rem; color: #721c24;">
+                <div>
                     현재 로그인 계정 ID: <strong th:text="${#authentication.name}">로그인ID</strong> <br>
                     게시글 작성자 ID: <strong th:text="*{userName}">작성자ID</strong>
                 </div>
 
-                <div style="display: flex; gap: 0.5rem;">
-                    <button type="submit" class="btn btn-cancel" style="background-color: var(--color-accent); color: white; padding: 0.8rem 1.5rem; font-weight: bold; cursor: pointer;">
-                        💾 수정 완료
+                <div >
+                    <button type="submit" class="btn btn-cancel" >
+                        수정 완료
                     </button>
                 </div>
             </div>

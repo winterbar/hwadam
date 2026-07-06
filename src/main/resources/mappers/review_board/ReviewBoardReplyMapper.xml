@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.miles.beauminity.mapper.review_board.ReviewBoardReplyMapper">
+
+<insert id="saveReply"
+        parameterType="com.miles.beauminity.vo.review.ReviewReplyVO">
+    INSERT INTO board_reply (board_id, username, reply_content)
+    VALUES ( {#boardId}, #{userName}, #{replyContent} )
+</insert>
+
+<select id="getReplyList"
+        resultType="com.miles.beauminity.vo.review.ReviewReplyVO">
+    SELECT 
+        reply_id AS replyId,
+        board_id AS boardId,
+        username,
+        reply_content AS replyContent,
+        deleted
+    FROM board_reply
+    WHERE board_id = #{boardId}
+    ORDER BY reply_id DESC;
+</select>
+
+
+
+</mapper>
