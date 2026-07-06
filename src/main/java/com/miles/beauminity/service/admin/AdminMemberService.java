@@ -2,6 +2,7 @@ package com.miles.beauminity.service.admin;
 
 import java.util.List;
 
+import com.miles.beauminity.vo.admin.AdminMemberBatchVO;
 import com.miles.beauminity.vo.admin.AdminMemberVO;
 import com.miles.beauminity.vo.admin.AdminPageVO;
 
@@ -11,4 +12,5 @@ public interface AdminMemberService {
     public void registerMember(AdminMemberVO adminMemberVO);
     public AdminMemberVO getMemberDetails(String username);
     public void modifyMemberInfo(AdminMemberVO adminMemberVO);
+    public void modifyMembersInfo(AdminMemberBatchVO adminMemberBatchVO);
 }
