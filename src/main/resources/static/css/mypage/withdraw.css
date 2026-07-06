@@ -1,126 +1,269 @@
-.withdraw-container {
-    max-width: 500px;
-    margin: 40px auto;
-    padding: 40px;
-    border: 1px solid #e1e1e1;
-    border-radius: 12px;
-    background-color: #ffffff;
+:root {
+    --hw-pink: #FFA1C1;
+    --hw-pink-deep: #e85d92;
+    --hw-pink-light: #fff1f6;
+    --hw-pink-bg: #fff8fb;
+    --hw-text: #3b2f35;
+    --hw-muted: #9a7b87;
+    --hw-line: #f0d9e2;
+    --hw-line-soft: #f6e7ed;
 }
 
+/* 회원 탈퇴 전체 박스 */
+.withdraw-container {
+    max-width: 540px;
+    margin: 50px auto;
+    padding: 42px 40px;
+
+    border: 1px solid var(--hw-line-soft);
+   
+    background: #ffffff;
+
+    box-shadow: 0 14px 36px rgba(255, 161, 193, 0.18);
+    box-sizing: border-box;
+}
+
+/* 상단 안내 */
 .withdraw-intro {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 26px;
 }
 
+/* 주요 문구 */
 .main-desc {
-    font-weight: 700;
-    font-size: 1.1rem;
-    margin-bottom: 5px;
+    margin: 0 0 8px;
+
+    color: var(--hw-text);
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: -0.6px;
 }
 
+/* 보조 설명 */
 .sub-desc {
-    color: #666;
-    margin-bottom: 15px;
+    margin: 0 0 18px;
+
+    color: var(--hw-muted);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.6;
 }
 
+/* 탈퇴 안내 박스 */
 .withdraw-warning {
-    background-color: #f9f9f9;
-    padding: 15px 20px;
-    border-radius: 8px;
-    border: 1px solid #eee;
+    padding: 18px 20px;
+
+    border: 1px solid var(--hw-line-soft);
+    
+    background: linear-gradient(135deg, #fff8fb, #fff1f6);
 }
 
+/* 삭제 항목 리스트 */
 .delete-list {
     list-style: none;
     padding: 0;
     margin: 0;
-    color: #333;
+
+    color: var(--hw-text);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.8;
 }
 
 .delete-list li {
-    margin: 5px 0;
+    position: relative;
+    margin: 4px 0;
+    padding-left: 18px;
 }
 
+.delete-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    color: var(--hw-pink);
+    font-weight: 900;
+}
+
+/* 제목 */
 .withdraw-title {
+    margin: 0 0 30px;
+
     text-align: center;
-    margin-bottom: 30px;
-    font-weight: 700;
+    color: var(--hw-text);
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.8px;
 }
 
+/* 입력 그룹 */
 .withdraw-form-group {
-    margin-bottom: 25px;
+    margin-bottom: 24px;
 }
 
+/* 라벨 */
 .withdraw-form-group label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
+    margin-bottom: 9px;
+
+    color: var(--hw-text);
+    font-size: 14px;
+    font-weight: 900;
 }
 
+/* 입력 안내 문구 */
 .withdraw-guide {
-    font-size: 0.85rem;
-    color: #888;
-    margin-bottom: 8px;
+    margin: 0 0 9px;
+
+    color: var(--hw-muted);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
 }
 
+/* 하단 안내 문구 */
 .withdraw-bottom-guide {
-    font-size: 0.85rem;
-    color: #888;
-    margin-top: 10px;
-    margin-bottom: 30px;
+    margin: 10px 0 30px;
+
+    color: var(--hw-muted);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.6;
 }
 
+/* input, textarea */
 .withdraw-input {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    padding: 13px 15px;
+
+    border: 1px solid var(--hw-line);
+    
+    background: #ffffff;
+
+    color: var(--hw-text);
+    font-size: 14px;
+    font-weight: 600;
+
+    outline: none;
     box-sizing: border-box;
+    transition: 0.18s ease;
 }
 
-textarea {
+.withdraw-input::placeholder {
+    color: #c4a8b4;
+    font-weight: 500;
+}
+
+.withdraw-input:focus {
+    border-color: var(--hw-pink);
+    box-shadow: 0 0 0 4px rgba(255, 161, 193, 0.22);
+}
+
+/* textarea 크기 고정 */
+textarea.withdraw-input {
+    min-height: 120px;
     resize: none;
+    line-height: 1.6;
 }
 
+/* 버튼 영역 */
 .btn-group {
     display: flex;
-    gap: 10px;
-    margin-top: 30px;
+    gap: 12px;
+    margin-top: 32px;
 }
 
+/* 탈퇴 버튼 */
 .btn-withdraw-confirm {
     flex: 1;
-    padding: 12px;
-    background-color: #FA6E68;
-    color: white;
+    height: 48px;
+
     border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 700;
+    
+    background: var(--hw-pink);
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 900;
     letter-spacing: -0.5px;
+
+    cursor: pointer;
+    transition: 0.18s ease;
 }
 
+.btn-withdraw-confirm:hover {
+    background: #f28ab0;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(255, 161, 193, 0.28);
+}
+
+/* 취소 버튼 */
 .btn-withdraw-cancel {
     flex: 1;
-    padding: 12px;
+    height: 48px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--hw-line-soft);
+    
+    background: #fff8fb;
+    color: var(--hw-pink-deep);
+
     text-align: center;
-    background-color: #f0f0f0;
-    color: #333;
-    border-radius: 6px;
     text-decoration: none;
-    font-size: 16px;
-    font-weight: 600;
+
+    font-size: 15px;
+    font-weight: 900;
     letter-spacing: -0.5px;
+
+    box-sizing: border-box;
+    transition: 0.18s ease;
 }
 
+.btn-withdraw-cancel:hover {
+    border-color: var(--hw-pink);
+    background: var(--hw-pink-light);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(255, 161, 193, 0.18);
+}
+
+/* 에러 문구 */
 .withdraw-error-text {
-    color: #FA6E68;
-    font-size: 0.8rem;
-    margin-top: 8px;
     display: block;
+    margin-top: 8px;
+
+    color: var(--hw-pink-deep);
+    font-size: 12px;
+    font-weight: 800;
 }
 
+/* 에러 input */
 .error-border {
-    border: 1px solid #FA6E68 !important;
+    border-color: var(--hw-pink) !important;
+    box-shadow: 0 0 0 4px rgba(255, 161, 193, 0.18);
+}
+
+/* 모바일 */
+@media (max-width: 600px) {
+    .withdraw-container {
+        margin: 30px 16px;
+        padding: 34px 24px;
+        
+    }
+
+    .withdraw-title {
+        font-size: 21px;
+    }
+
+    .btn-group {
+        flex-direction: column;
+    }
+
+    .btn-withdraw-confirm,
+    .btn-withdraw-cancel {
+        width: 100%;
+    }
 }

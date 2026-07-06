@@ -9,13 +9,13 @@ import com.miles.beauminity.vo.feed.FeedVO;
 
 @Mapper
 public interface FeedFileMapper {
-    void postFile(FeedFileVO feedFileVO);
+    public void postFile(FeedFileVO feedFileVO);
 
-    List<String> getFileList();
+    public List<String> getFileList();
 
-    List<String> getFeedFileList(Long feedId);
+    public  List<String> getFeedFileList(Long feedId);
 
-    void deleteFile(FeedVO feedVO);
+    public void deleteFile(FeedVO feedVO);
 
-    List<FeedFileVO> getFileListByFeedId(Long feedId);
+    public List<FeedFileVO> getFileListByFeedId(Long feedId);
 }

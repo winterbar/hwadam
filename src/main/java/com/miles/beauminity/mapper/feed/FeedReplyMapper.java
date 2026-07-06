@@ -8,28 +8,28 @@ import com.miles.beauminity.vo.feed.FeedReplyVO;
 
 @Mapper
 public interface FeedReplyMapper {
-    void postReply(FeedReplyVO feedReplyVO);
+    public void postReply(FeedReplyVO feedReplyVO);
 
-    List<FeedReplyVO> getReply(Long feedReplyVO);
+    public List<FeedReplyVO> getReply(Long feedReplyVO);
 
-    List<String> getFeedReplyList(Long feedId);
+    public List<String> getFeedReplyList(Long feedId);
 
-    int getReplyCnt(FeedReplyVO feedReplyVO);
+    public int getReplyCnt(FeedReplyVO feedReplyVO);
 
-    void increaseReply(FeedReplyVO feedReplyVO);
+    public void increaseReply(FeedReplyVO feedReplyVO);
 
-    void updateReply(FeedReplyVO feedReplyVO);
+    public void updateReply(FeedReplyVO feedReplyVO);
 
-    void updateDeleteReply(Long replyId);
+    public void updateDeleteReply(Long replyId);
 
-    Long hasChildren(Long replyId);
+    public Long hasChildren(Long replyId);
 
-    Long deleteReply(Long replyId);
+    public Long deleteReply(Long replyId);
 
-    int parentsReplyCnt(Long replyId);
+    public int parentsReplyCnt(Long replyId);
 
-    Long parentsDelete(Long replyId);
+    public Long parentsDelete(Long replyId);
 
-    Long parentsReplyFindId(Long replyId);
+    public Long parentsReplyFindId(Long replyId);
 
 }
