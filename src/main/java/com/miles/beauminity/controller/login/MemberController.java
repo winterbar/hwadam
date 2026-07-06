@@ -80,10 +80,19 @@ public class MemberController {
     // 회원탈퇴 요청
     @PostMapping("/mypage/withdraw")
     public String withdrawMember(@ModelAttribute FeedbackVO feedbackVO,
-                                @RequestParam("password") String password) {
+                                @RequestParam("password") String password,
+                                @AuthenticationPrincipal CustomUserDetails loginMember,
+                                RedirectAttributes rttr) {
         // 여기에 비밀번호 유효성 검사랑 피드백 테이블 튜플 삽입
         // 그리고 각 테이블 deleted 업데이트, username을 #deleted로 바꾸기
-        return null;
+        boolean isChecked = memberService.findPassword(loginMember.getUsername(), password);
+        if(isChecked) {
+            // memberService.withdraw(loginMember.getUsername(),feedbackVO);
+            return "redirect:/";
+        }else {
+            return "redirect:/mypage/withdraw";
+        }
+        
     }
     
     // 아이디 중복 체크 요청

@@ -177,5 +177,43 @@ ORDER BY
     f.feed_id DESC; 
         
 </select>
+ <!-- 해당 사용자의 피드 내용 전체 가져오기-->
+    <select id="getMyFeedList"
+        parameterType="string"
+        resultType="com.miles.beauminity.vo.feed.FeedVO"> 
+    SELECT
+    f.feed_id,
+    f.username,
+    f.feed_content,
+    f.created_at,
+    f.reply_cnt,
+    COUNT(fl_all.like_id) AS likeCnt
+
+FROM feed f
+
+JOIN member m
+    ON f.username = m.username
+
+LEFT JOIN member_profile mp
+    ON f.username = mp.username
+
+LEFT JOIN feed_like fl_all
+    ON f.feed_id = fl_all.feed_id
+
+LEFT JOIN feed_like fl_me
+    ON f.feed_id = fl_me.feed_id
+    AND fl_me.username = #{username}
+
+WHERE f.deleted = 0 and f.username=#{username}
+
+GROUP BY
+    f.feed_id,
+    f.username,
+    f.feed_content,
+    f.created_at,
+    f.deleted,
+    f.reply_cnt
+ORDER BY f.feed_id DESC; 
+</select>
 
 </mapper>

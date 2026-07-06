@@ -1,113 +1,335 @@
-.edit-main {
-    display: flex;
-    justify-content: center;
-    padding: 2rem 1rem;
+/* =========================================================
+   HWADAM MYPAGE EDIT - BEAUTY SHOWROOM CONCEPT
+   내정보 수정
+   ========================================================= */
+
+:root {
+  --hw-pink: #ffa1c1;
+  --hw-pink-dark: #f47ca8;
+  --hw-pink-soft: #ffe6ef;
+  --hw-pink-light: #fff6fa;
+  --hw-pink-deep: #e85d92;
+
+  --hw-cream: #fffaf5;
+  --hw-white: #ffffff;
+  --hw-black: #111111;
+  --hw-text: #2b2b2b;
+  --hw-sub: #6f6f6f;
+  --hw-muted: #a5a5a5;
+  --hw-line: #f3d7e2;
+  --hw-line-soft: #f8e8ef;
+
+  --hw-shadow: 0 12px 28px rgba(255, 161, 193, 0.14);
+  --hw-card-shadow: 0 10px 28px rgba(0, 0, 0, 0.05);
 }
+
+/* =========================================================
+   PAGE BACKGROUND
+   ========================================================= */
+
+.edit-main {
+  min-height: calc(100vh - 180px);
+  display: flex;
+  justify-content: center;
+  padding: 48px 28px 90px;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 161, 193, 0.16), transparent 26%),
+    radial-gradient(circle at 85% 8%, rgba(255, 220, 232, 0.72), transparent 22%),
+    linear-gradient(180deg, #fff6fa 0%, #fffafc 45%, #ffffff 100%);
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   EDIT CARD
+   ========================================================= */
 
 .edit-container {
-    width: 100%;
-    max-width: 550px;
-    background: #ffffff;
-    padding: 2rem;
-    border: 1px solid #e2e2e2;
-    border-radius: 12px;
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  padding: 36px 38px 34px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--hw-line-soft);
+  border-radius: 0;
+  box-shadow: var(--hw-card-shadow);
+  box-sizing: border-box;
 }
+
+/* 위쪽 작은 라벨 */
+.edit-container::before {
+  content: "MY BEAUTY INFO";
+  position: absolute;
+  top: -12px;
+  left: 30px;
+  padding: 5px 12px;
+  background: var(--hw-pink);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+}
+
+/* =========================================================
+   TITLE
+   ========================================================= */
 
 .edit-page-title {
-    margin: 0 0 1.5rem 0;
-    font-size: 1.4rem;
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #333;
+  margin: 0 0 30px 0;
+  padding-bottom: 18px;
+  border-bottom: 2px solid var(--hw-black);
+  color: var(--hw-text);
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  text-align: left;
 }
+
+/* 제목 아래 설명 느낌 */
+.edit-page-title::after {
+  content: "나의 화장품 취향과 기본 정보를 수정할 수 있어요.";
+  display: block;
+  margin-top: 9px;
+  color: var(--hw-sub);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* =========================================================
+   GROUP TITLE
+   ========================================================= */
 
 .edit-group-title {
-    font-size: 0.95rem;
-    font-weight: 800;
-    color: #333333;
-    margin: 1.5rem 0 1rem 0;
-    border-bottom: 1px solid #e2e2e2;
-    padding-bottom: 0.5rem;
+  position: relative;
+  margin: 28px 0 14px 0;
+  padding-left: 13px;
+  color: var(--hw-pink-deep);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.3;
 }
 
+.edit-group-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 4px;
+  height: 14px;
+  background: var(--hw-pink);
+}
+
+/* =========================================================
+   FORM GRID
+   ========================================================= */
+
 .edit-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 12px;
 }
 
 .edit-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
 }
 
 .edit-item.full-width {
-    grid-column: span 2;
+  grid-column: span 2;
 }
 
 .edit-label {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #888888;
+  color: #9b828e;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
 }
 
+/* =========================================================
+   INPUT / SELECT
+   ========================================================= */
+
 .edit-input {
-    width: 100%;
-    padding: 0.7rem;
-    border: 1px solid #e2e2e2;
-    border-radius: 6px;
-    font-size: 0.95rem;
-    outline: none;
-    box-sizing: border-box;
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--hw-line);
+  border-radius: 0;
+  background: #ffffff;
+  color: var(--hw-text);
+  font-size: 14px;
+  font-weight: 700;
+  outline: none;
+  box-sizing: border-box;
+  transition: 0.18s ease;
+}
+
+.edit-input::placeholder {
+  color: #b69aa8;
+  font-weight: 600;
+}
+
+.edit-input:hover {
+  border-color: #ffd2e2;
+  background: #fffdfd;
 }
 
 .edit-input:focus {
-    border-color: #FA6E68;
+  border-color: var(--hw-pink);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(255, 161, 193, 0.14);
 }
 
-.input-readonly {
-    background-color: #f9f9f9;
-    color: #999;
-    cursor: not-allowed;
+select.edit-input {
+  cursor: pointer;
 }
+
+/* 읽기 전용 아이디 */
+.input-readonly {
+  background: #fff8fb;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   GENDER
+   ========================================================= */
 
 .gender-group {
-    display: flex;
-    gap: 1rem;
-    padding-top: 0.7rem;
-    font-size: 0.95rem;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
+.gender-group label {
+  height: 34px;
+  min-width: 64px;
+  padding: 0 14px;
+  border: 1px solid var(--hw-line);
+
+  background: #ffffff;
+  color: #667085;
+  font-size: 13px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: 0.15s ease;
+}
+
+.gender-group label:hover {
+  background: #fff3f7;
+  border-color: var(--hw-pink);
+  color: #c85c88;
+}
+
+.gender-group input[type="radio"] {
+  accent-color: var(--hw-pink);
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
 .action-btns {
-    margin-top: 2rem;
-    display: flex;
-    gap: 0.5rem;
+  margin-top: 34px;
+  padding-top: 22px;
+  border-top: 1px solid var(--hw-line-soft);
+  display: flex;
+  gap: 10px;
+}
+
+.btn-submit,
+.btn-cancel {
+  flex: 1;
+  height: 48px;
+  border-radius: 0;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: 0.18s ease;
 }
 
 .btn-submit {
-    flex: 1;
-    padding: 0.9rem;
-    background-color: #FA6E68;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: 700;
-    cursor: pointer;
+  border: 1px solid var(--hw-pink);
+  background: var(--hw-pink);
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(255, 161, 193, 0.34);
+}
+
+.btn-submit:hover {
+  background: var(--hw-pink-dark);
+  border-color: var(--hw-pink-dark);
+  transform: translateY(-1px);
 }
 
 .btn-cancel {
-    flex: 1;
-    padding: 0.9rem;
-    background-color: #f0f0f0;
-    color: #555;
-    border: none;
-    border-radius: 6px;
-    font-weight: 700;
-    cursor: pointer;
+  border: 1px solid #d7dde7;
+  background: #ffffff;
+  color: #111827;
 }
 
+.btn-cancel:hover {
+  border-color: var(--hw-pink);
+  color: var(--hw-pink-deep);
+  background: var(--hw-pink-light);
+}
+
+/* =========================================================
+   VALIDATION
+   ========================================================= */
+
 .edit-input:invalid {
-    border-color: #FA6E68;
-    background-color: #fff1f0;
+  border-color: #ffa1c1;
+  background: #fff6fa;
+}
+
+/* 처음부터 빨간 느낌이 너무 강하면 아래처럼 focus된 invalid만 쓰면 됨 */
+/*
+.edit-input:invalid:not(:focus) {
+  border-color: var(--hw-line);
+  background: #ffffff;
+}
+*/
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .edit-main {
+    padding: 34px 16px 70px;
+  }
+
+  .edit-container {
+    padding: 32px 22px 26px;
+  }
+
+  .edit-page-title {
+    font-size: 24px;
+  }
+
+  .edit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-item.full-width {
+    grid-column: span 1;
+  }
+
+  .action-btns {
+    flex-direction: column;
+  }
+
+  .btn-submit,
+  .btn-cancel {
+    width: 100%;
+  }
 }
