@@ -209,6 +209,8 @@ public class QnaApiController {
     @PostMapping("/reply")
     public ResponseEntity<Map<String, Object>> insertReply(@RequestBody MasterBoardReplyVO masterBoardReplyVO){
 
+        String username = getUsername();
+        masterBoardReplyVO.setUsername(username);
         qnaService.insertReply(masterBoardReplyVO);
 
         return ResponseEntity.ok().build();
@@ -222,7 +224,10 @@ public class QnaApiController {
         Map<String, Object> result = new HashMap<>();
 
         List<CommunityReplyVO> replyList = qnaService.getReplyList(boardId);
+        System.out.println(replyList.get(0).toString());
         int replyCount = qnaService.getReplyCountByBoardId(boardId);
+
+        System.out.println("댓글수: "+replyCount);
 
         result.put("reList", replyList);
         result.put("rCount", replyCount);

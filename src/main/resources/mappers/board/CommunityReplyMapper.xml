@@ -10,8 +10,8 @@
             parameterType="com.miles.beauminity.vo.qna_board.CommunityReplyVO">
     
         INSERT INTO board_reply
-        (reply_id, board_id, parents_reply_id, username, reply_content)
-        VALUES (#{replyId}, #{boardId}, #{parentsReplyId}, #{username}, #{replyContent})
+        (board_id, parents_reply_id, username, reply_content)
+        VALUES (#{boardId}, #{parentsReplyId}, #{username}, #{replyContent})
     
     </insert>
     
@@ -27,7 +27,7 @@
 
     <!-- 회원의 게시글에 등록한 댓글 수 조회 -->
     <select id="getReplyCountByBoardId"
-    
+
             parameterType="Long"
             resultType="Int">
 

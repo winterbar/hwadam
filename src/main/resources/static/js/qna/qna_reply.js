@@ -3,6 +3,12 @@ const commentInsertBtn = document.getElementById('comment-submit');
 
 const boardId = Number(window.location.pathname.split("/").pop());
 
+document.addEventListener("DOMContentLoaded", function(){
+
+    getReplyList();
+
+});
+
 commentInsertBtn.addEventListener('click', ()=>{
 
     
@@ -17,8 +23,6 @@ commentInsertBtn.addEventListener('click', ()=>{
     }
     
     insertReply(content);
-
-    getReplyList();
 
 })
 
@@ -52,9 +56,11 @@ function insertReply(content){
             console.log(response);
 
             // 댓글 다시 조회
-
+            getReplyList();
 
             // textarea 비우기
+            document.getElementById("comment-content").value = "";
+
 
         }
 
@@ -65,10 +71,46 @@ function insertReply(content){
 }
 
 function getReplyList(){
-    fetch(`/api/board/reply/{boardId}`,
+    fetch(`/api/board/reply/${boardId}`,
 
-        {method: POST}
-    ).then(function(response){
-        return response.json();
+        {method: "GET"}
+    ).then(res=>res.json())
+    .then(data=>{
+
+        drawReplyList(data.reList);
+        document.getElementById("replyCount").textContent = data.rCount;
+
     });
+}
+
+function drawReplyList(replyList){
+
+    let html = "";
+
+    replyList.forEach(function(reply) {
+
+        html += createReplyHtml(reply);
+
+    });
+
+    document.querySelector(".comment-list").innerHTML = html;
+}
+
+function createReplyHtml(reply){
+    const html = `<div class="comment-item">
+                    <div class="comment-header">
+                        <div class="comment-info">
+                            <span class="comment-author">${reply.nickname}</span>
+                            <span class="comment-date">2026-06-18</span>
+                        </div>
+
+                        <div class="comment-actions">
+                            <button type="button" class="btn-comment-edit">수정</button>
+                            <button type="button" class="btn-comment-delete">삭제</button>
+                        </div>
+                    </div>
+                    <div class="comment-content">${reply.replyContent}</div>
+                </div>`
+
+    return html;
 }
