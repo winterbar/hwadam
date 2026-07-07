@@ -15,8 +15,6 @@ import com.miles.beauminity.vo.admin.AdminPageVO;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
 
 
 @Controller
@@ -31,41 +29,72 @@ public class AdminPageController {
         return "admin/dashboard";
     }
     
-    // 회원 관리 페이지 요청 (회원 조회)
+    // 회원 관리 페이지 요청
     @GetMapping("/admin/members")
     public String getAdminMembersPage(@ModelAttribute AdminPageVO adminPageVO,
+            @ModelAttribute AdminMemberAnalysisVO adminMemberAnalysisVO,
             @RequestParam(required = false, defaultValue = "search") String tab, Model model) {
-
-        // 페이징
-        long count = adminMemberService.countMembers(adminPageVO);
-        adminPageVO.pageInfo(count);
-        // 오름차순/내림차순 정렬 설정 (정렬 기준이 있을 때만 설정)
-        if(adminPageVO.getSort() != null) {
-            // 사용자가 asc, desc가 아닌 값을 임의로 url에 적어 넣을 경우를 방지
-            if(!"asc".equals(adminPageVO.getDir()) && !"desc".equals(adminPageVO.getDir())) {
-                adminPageVO.setDir("desc");
+        
+        List<AdminMemberVO> members;
+        System.out.println("다중 필터링 : " + adminMemberAnalysisVO.hasSearchCondition());
+        // 다중 필터링 검색 (회원 통계)
+        if (adminMemberAnalysisVO.hasSearchCondition()) { // 필터링이 하나라도 걸려있는지 확인
+            // 페이징 설정
+            long count = adminMemberService.countAnalysisMember(adminMemberAnalysisVO);
+            adminPageVO.pageInfo(count);
+            // 정렬 설정 (정렬 기준이 있을 때만 설정)
+            if(adminPageVO.getSort() != null) {
+                // 사용자가 asc, desc가 아닌 값을 임의로 url에 적어 넣을 경우를 방지
+                if(!"asc".equals(adminPageVO.getDir()) && !"desc".equals(adminPageVO.getDir())) {
+                    adminPageVO.setDir("desc");
+                }
             }
+            members = adminMemberService.analysisMembers(adminMemberAnalysisVO, adminPageVO);
+        // 단일 필터링 검색 (회원 조회)
+        } else {
+            // 페이징 설정
+            long count = adminMemberService.countMembers(adminPageVO);
+            adminPageVO.pageInfo(count);
+            // 정렬 설정 (정렬 기준이 있을 때만 설정)
+            if(adminPageVO.getSort() != null) {
+                // 사용자가 asc, desc가 아닌 값을 임의로 url에 적어 넣을 경우를 방지
+                if(!"asc".equals(adminPageVO.getDir()) && !"desc".equals(adminPageVO.getDir())) {
+                    adminPageVO.setDir("desc");
+                }
+            }
+            members = adminMemberService.searchMembers(adminPageVO);
         }
-        // 회원 목록
-        List<AdminMemberVO> members = adminMemberService.searchMembers(adminPageVO);
         model.addAttribute("tab", tab);
         model.addAttribute("members", members);
         model.addAttribute("page", adminPageVO);
+        model.addAttribute("analysis", adminMemberAnalysisVO);
         return "admin/members";
     }
 
-    // 회원 관리 페이지 요청 (회원 통계)
-    @PostMapping("/admin/members")
-    public String getAdminMemberPage(@ModelAttribute AdminPageVO adminPageVO,
-        @ModelAttribute AdminMemberAnalysisVO adminMemberAnalysisVO,
-        @RequestParam(required = false, defaultValue = "analysis") String tab, Model model) {
+    // // 회원 관리 페이지 요청 (회원 통계)
+    // @PostMapping("/admin/members")
+    // public String getAdminMemberPage(@ModelAttribute AdminPageVO adminPageVO,
+    //     @ModelAttribute AdminMemberAnalysisVO adminMemberAnalysisVO,
+    //     @RequestParam(required = false, defaultValue = "analysis") String tab, Model model) {
         
-        System.out.println(adminPageVO.toString());
-        System.out.println(adminMemberAnalysisVO.toString());
-        
-        return "admin/members";
-    }
-    
+    //     // 페이징
+    //     long count = adminMemberService.countAnalysisMember(adminMemberAnalysisVO);
+    //     adminPageVO.pageInfo(count);
+    //     // 오름차순/내림차순 정렬 설정 (정렬 기준이 있을 때만 설정)
+    //     if(adminPageVO.getSort() != null) {
+    //         // 사용자가 asc, desc가 아닌 값을 임의로 url에 적어 넣을 경우를 방지
+    //         if(!"asc".equals(adminPageVO.getDir()) && !"desc".equals(adminPageVO.getDir())) {
+    //             adminPageVO.setDir("desc");
+    //         }
+    //     }
+    //     // 회원 목록
+    //     List<AdminMemberVO> members = adminMemberService.analysisMembers(adminMemberAnalysisVO, adminPageVO);
+    //     model.addAttribute("tab", tab);
+    //     model.addAttribute("members", members);
+    //     model.addAttribute("page", adminPageVO);
+    //     model.addAttribute("analysis", adminMemberAnalysisVO);
+    //     return "admin/members";
+    // }
     
     // 게시글 관리 페이지 요청
     @GetMapping("/admin/posts")
