@@ -21,11 +21,11 @@
             <div class="tab-container" th:data-current-tab="${tab}">
                 <button class="tab-btn"
                     th:classappend="${tab == null || tab == 'search'} ? 'active' : ''"
-                    th:onclick="|location.href='@{/admin/members(tab='search', page=${page.page}, searchType=${page.searchType}, keyword=${page.keyword})}'|">
+                    th:onclick="|location.href='@{/admin/members(tab='search', page=1, searchType=${page.searchType}, keyword=${page.keyword})}'|">
                     회원 조회</button>
                 <button class="tab-btn"
                     th:classappend="${tab == 'analysis'} ? 'active' : ''"
-                    th:onclick="|location.href='@{/admin/members(tab='analysis', page=${page.page}, searchType=${page.searchType}, keyword=${page.keyword})}'|">
+                    th:onclick="|location.href='@{/admin/members(tab='analysis', page=1, searchType=${page.searchType}, keyword=${page.keyword})}'|">
                     회원 통계</button>
             </div>
 
@@ -47,13 +47,13 @@
             </div>
 
             <div id="member-analysis" class="content-container" hidden>
-                <form th:action="@{/admin/members}" id="memberFilterForm" method="POST" class="filter-box">
+                <form th:action="@{/admin/members}" id="memberFilterForm" method="GET" class="filter-box">
                     <input type="hidden" name="page" value="1">
                     <input type="hidden" name="tab" th:value="${tab}">
                     <div class="filter-row">
                         <label class="filter-label">가입일</label>
                         <div class="btn-group">
-                            <input type="radio" name="signedAt" value="now()" id="s0"><label for="s0">오늘</label>
+                            <input type="radio" name="signedAt" value="today" id="s0"><label for="s0">오늘</label>
                             <input type="radio" name="signedAt" value="7" id="s1"><label for="s1">7일</label>
                             <input type="radio" name="signedAt" value="30" id="s2"><label for="s2">1개월</label>
                             <input type="radio" name="signedAt" value="90" id="s3"><label for="s3">3개월</label>
@@ -67,26 +67,26 @@
 
                     <div class="filter-row"><label class="filter-label">나이</label>
                         <div class="btn-group">
-                            <input type="checkbox" name="birthday" value="10" id="a1"><label for="a1">10대</label>
-                            <input type="checkbox" name="birthday" value="20" id="a2"><label for="a2">20대</label>
-                            <input type="checkbox" name="birthday" value="30" id="a3"><label for="a3">30대</label>
-                            <input type="checkbox" name="birthday" value="40" id="a4"><label for="a4">40대</label>
-                            <input type="checkbox" name="birthday" value="50" id="a5"><label for="a5">50대</label>
-                            <input type="checkbox" name="birthday" value="60" id="a6"><label for="a6">60대▲</label>
+                            <input type="checkbox" name="birthdays" value="10" id="a1"><label for="a1">10대</label>
+                            <input type="checkbox" name="birthdays" value="20" id="a2"><label for="a2">20대</label>
+                            <input type="checkbox" name="birthdays" value="30" id="a3"><label for="a3">30대</label>
+                            <input type="checkbox" name="birthdays" value="40" id="a4"><label for="a4">40대</label>
+                            <input type="checkbox" name="birthdays" value="50" id="a5"><label for="a5">50대</label>
+                            <input type="checkbox" name="birthdays" value="60" id="a6"><label for="a6">60대▲</label>
                         </div>
                     </div>
                     
                     <div class="filter-row"><label class="filter-label">성별</label>
                         <div class="btn-group">
-                            <input type="radio" name="gender" value="남" id="g1"><label for="g1">남</label>
-                            <input type="radio" name="gender" value="여" id="g2"><label for="g2">여</label>
+                            <input type="radio" name="gender" value="male" id="g1"><label for="g1">남</label>
+                            <input type="radio" name="gender" value="female" id="g2"><label for="g2">여</label>
                         </div>
                     </div>
 
                     <div class="filter-row"><label class="filter-label">권한</label>
                         <div class="btn-group">
-                            <input type="radio" name="role" value="USER" id="r1"><label for="r1">일반</label>
-                            <input type="radio" name="role" value="ADMIN" id="r2"><label for="r2">관리자</label>
+                            <input type="radio" name="role" value="user" id="r1"><label for="r1">일반</label>
+                            <input type="radio" name="role" value="admin" id="r2"><label for="r2">관리자</label>
                         </div>
                     </div>
 
@@ -99,21 +99,21 @@
 
                     <div class="filter-row"><label class="filter-label">피부</label>
                         <div class="btn-group">
-                            <input type="checkbox" name="skinType" value="중성" id="p1"><label for="p1">중성</label>
-                            <input type="checkbox" name="skinType" value="건성" id="p2"><label for="p2">건성</label>
-                            <input type="checkbox" name="skinType" value="지성" id="p3"><label for="p3">지성</label>
-                            <input type="checkbox" name="skinType" value="민감성" id="p4"><label for="p4">민감성</label>
-                            <input type="checkbox" name="skinType" value="복합성" id="p5"><label for="p5">복합성</label>
-                            <input type="checkbox" name="skinType" value="수부지" id="p6"><label for="p6">수부지</label>
+                            <input type="checkbox" name="skinTypes" value="normal" id="p1"><label for="p1">중성</label>
+                            <input type="checkbox" name="skinTypes" value="dry" id="p2"><label for="p2">건성</label>
+                            <input type="checkbox" name="skinTypes" value="oily" id="p3"><label for="p3">지성</label>
+                            <input type="checkbox" name="skinTypes" value="sensitive" id="p4"><label for="p4">민감성</label>
+                            <input type="checkbox" name="skinTypes" value="combination" id="p5"><label for="p5">복합성</label>
+                            <input type="checkbox" name="skinTypes" value="dehydrated" id="p6"><label for="p6">수부지</label>
                         </div>
                     </div>
 
                     <div class="filter-row"><label class="filter-label">퍼스널컬러</label>
                         <div class="btn-group">
-                            <input type="checkbox" name="personalColor" value="봄웜" id="c1"><label for="c1">봄웜</label>
-                            <input type="checkbox" name="personalColor" value="가을웜" id="c2"><label for="c2">가을웜</label>
-                            <input type="checkbox" name="personalColor" value="여름쿨" id="c3"><label for="c3">여름쿨</label>
-                            <input type="checkbox" name="personalColor" value="겨울쿨" id="c4"><label for="c4">겨울쿨</label>
+                            <input type="checkbox" name="personalColors" value="spring" id="c1"><label for="c1">봄웜</label>
+                            <input type="checkbox" name="personalColors" value="fail" id="c2"><label for="c2">가을웜</label>
+                            <input type="checkbox" name="personalColors" value="summer" id="c3"><label for="c3">여름쿨</label>
+                            <input type="checkbox" name="personalColors" value="winter" id="c4"><label for="c4">겨울쿨</label>
                         </div>
                     </div>
 
@@ -238,17 +238,32 @@
                 </div>
                 <div class="pagination" th:if="${page.totalPage}">
                     <button th:if="${page.prev}"
-                        th:onclick="|location.href='@{/admin/members(tab=${tab}, page=${page.startPage - 1}, searchType=${page.searchType}, keyword=${page.keyword})}'|"
+                        th:onclick="|location.href='@{/admin/members(tab=${tab}, page=${page.startPage - 1},
+                            searchType=${page.searchType}, keyword=${page.keyword},
+                            signedAt=${analysis.signedAt}, birthdays=${analysis.birthdays},
+                            gender=${analysis.gender}, role=${analysis.role}, status=${analysis.status},
+                            skinTypes=${analysis.skinTypes}, personalColors=${analysis.personalColors},
+                            minPoint=${analysis.minPoint}, maxPoint=${analysis.maxPoint})}'|"
                         class="page-btn">&lt;</button>
                     
                     <th:block th:each="num : ${#numbers.sequence(page.startPage, page.endPage)}">
-                        <button th:onclick="|location.href='@{/admin/members(tab=${tab}, page=${num}, searchType=${page.searchType}, keyword=${page.keyword})}'|"
-                            th:text="${num}" th:classappend="${page.page == num} ? 'page-btn active' : 'page-btn'">></button>
+                        <button th:onclick="|location.href='@{/admin/members(
+                            tab=${tab}, page=${num}, searchType=${page.searchType}, keyword=${page.keyword},
+                            signedAt=${analysis.signedAt}, birthdays=${analysis.birthdays},
+                            gender=${analysis.gender}, role=${analysis.role}, status=${analysis.status},
+                            skinTypes=${analysis.skinTypes}, personalColors=${analysis.personalColors},
+                            minPoint=${analysis.minPoint}, maxPoint=${analysis.maxPoint})}'|"
+                            th:text="${num}" th:classappend="${page.page == num} ? 'page-btn active' : 'page-btn'"></button>
                     </th:block>
 
                     <button th:if="${page.next}"
-                        th:onclick="|location.href='@{/admin/member(tab=${tab}, page=${page.endPage + 1}, searchType=${page.searchType}, keyword=${page.keyword})}'|"
-                        class="page-btn">&gt;</button>
+                        th:onclick="|location.href='@{/admin/member(tab=${tab}, page=${page.endPage + 1},
+                            searchType=${page.searchType}, keyword=${page.keyword},
+                            signedAt=${analysis.signedAt}, birthdays=${analysis.birthdays},
+                            gender=${analysis.gender}, role=${analysis.role}, status=${analysis.status},
+                            skinTypes=${analysis.skinTypes}, personalColors=${analysis.personalColors},
+                            minPoint=${analysis.minPoint}, maxPoint=${analysis.maxPoint})}'|"
+                            class="page-btn">&gt;</button>
                 </div>
             </div>
         </main>
