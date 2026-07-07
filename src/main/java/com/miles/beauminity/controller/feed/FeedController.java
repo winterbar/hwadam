@@ -89,19 +89,14 @@ public class FeedController {
         feedVO.setFeedId(feedId);
 
         String content = feedVO.getFeedContent();
-        String infoLink = feedVO.getInfoLink();
 
         // 내용이 null이라면 빈 문자열로 변환
         if (content == null) {
             content = "";
         }
 
-        if (infoLink != null && !infoLink.trim().isEmpty()) {
-            feedVO.setFeedContent(content.trim() + "," + infoLink.trim());
-        } else {
-            feedVO.setFeedContent(content.trim());
-        }
-
+        feedVO.setFeedContent(content.trim());
+        
         feedService.updateFeed(feedId, feedVO, files, existingImages, tagNames);
 
         return "redirect:/feed";

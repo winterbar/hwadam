@@ -181,5 +181,25 @@
             
             LIMIT #{pageVO.offset}, #{pageVO.size}
     </select>
+    <select id="getReviewList"
+            parameterType="string">
+        SELECT
+            
+            rb.product_name,
+            rb.board_id,
+            rb.category1,
+            rb.category2,
+            mb.title,
+            mb.content,
+            mb.created_at,
+            mb.view_cnt,
+            mb.reply_cnt
+    
+        FROM review_board rb
+        JOIN master_board mb
+            on rb.board_id = mb.board_id
+        WHERE deleted=0 and mb.username=#{username}
+
+    </select>
             
 </mapper>

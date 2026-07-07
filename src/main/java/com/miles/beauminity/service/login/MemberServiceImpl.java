@@ -19,14 +19,17 @@ import com.miles.beauminity.mapper.feed.TagMapper;
 import com.miles.beauminity.mapper.login.MemberMapper;
 import com.miles.beauminity.mapper.login.MemberProfileMapper;
 import com.miles.beauminity.mapper.qna_board.QnaBoardMapper;
+import com.miles.beauminity.mapper.review_board.ReviewBoardMapper;
 import com.miles.beauminity.security.CustomUserDetails;
 import com.miles.beauminity.security.CustomUserDetailsService;
 import com.miles.beauminity.util.MemberFileUtil;
 import com.miles.beauminity.vo.feed.FeedVO;
+import com.miles.beauminity.vo.login.FeedbackVO;
 import com.miles.beauminity.vo.login.MemberVO;
 import com.miles.beauminity.vo.login.MyPageFileVO;
 import com.miles.beauminity.vo.login.MyPageVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
+import com.miles.beauminity.vo.review.ReviewBoardVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,6 +47,8 @@ public class MemberServiceImpl implements MemberService {
     private final FeedFileMapper feedFileMapper;
     private final TagMapper tagMapper;
     private final QnaBoardMapper qnaBoardMapper;
+    private final MasterBoardMapper masterBoardMapper;
+    private final ReviewBoardMapper reviewBoardMapper;
 
     // 사용자가 입력한 아이디로 가입된 계정이 있는지 확인
     @Override
@@ -182,7 +187,7 @@ public class MemberServiceImpl implements MemberService {
         
         return memberInfo;
     }
-
+    // 해당 사용자의 모든 피드 리스트 가져오기    
     @Override
     public List<FeedVO> getFeedList(String username) {
         List<FeedVO> feedList = feedMapper.getMyFeedList(username);
@@ -200,10 +205,27 @@ public class MemberServiceImpl implements MemberService {
 
         return feedList;
     }
-
+    //해당 사용자가 작성한 모든 커뮤니티 리스트 가져오기
     @Override
-    public List<QnaBoardCompleteVO> getQnaList(String username) {
+    public List<QnaBoardCompleteVO> getCommunityList(String username) {
         
-        return qnaBoardMapper.getQnaList(username);
+        return qnaBoardMapper.getCommunityList(username);
     }
+    @Override
+    public List<ReviewBoardVO> getReviewList(String username) {
+        return reviewBoardMapper.getReviewList(username);
+    }
+
+    // 탈퇴한 회원 username 변경 및 상태 변경
+    @Transactional
+    @Override
+    public void withdraw(String username, FeedbackVO feedbackVO) {
+        feedMapper.withdrawFeed(username);
+        masterBoardMapper.withdrawBoard(username);
+        memberMapper.withdrawMember(username);
+        //탈퇴한 사유 저장
+        memberMapper.feedback(feedbackVO);
+    }
+
+    
 }

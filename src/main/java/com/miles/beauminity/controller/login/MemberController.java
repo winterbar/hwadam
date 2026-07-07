@@ -1,7 +1,12 @@
 package com.miles.beauminity.controller.login;
 
+import java.security.Principal;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,6 +22,8 @@ import com.miles.beauminity.service.login.MemberService;
 import com.miles.beauminity.vo.login.FeedbackVO;
 import com.miles.beauminity.vo.login.MemberVO;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 
@@ -82,14 +89,18 @@ public class MemberController {
     public String withdrawMember(@ModelAttribute FeedbackVO feedbackVO,
                                 @RequestParam("password") String password,
                                 @AuthenticationPrincipal CustomUserDetails loginMember,
-                                RedirectAttributes rttr) {
+                                RedirectAttributes rttr,
+                                HttpServletRequest request) throws ServletException{
+        
         // 여기에 비밀번호 유효성 검사랑 피드백 테이블 튜플 삽입
         // 그리고 각 테이블 deleted 업데이트, username을 #deleted로 바꾸기
         boolean isChecked = memberService.findPassword(loginMember.getUsername(), password);
         if(isChecked) {
-            // memberService.withdraw(loginMember.getUsername(),feedbackVO);
-            return "redirect:/";
+            memberService.withdraw(loginMember.getUsername(),feedbackVO);
+            request.logout();            
+            return "mypage/withdraw_complete";
         }else {
+            rttr.addFlashAttribute("isChecked",false);
             return "redirect:/mypage/withdraw";
         }
         

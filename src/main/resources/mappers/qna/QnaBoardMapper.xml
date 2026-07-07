@@ -124,14 +124,14 @@
     </update>
 
     <!-- 해당 사용자의 게시글 가져오기-->
-    <select id="getQnaList"
+    <select id="getCommunityList"
             parameterType="string"
             resultType="com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO">
         select mb.title, mb.content, mb.created_at, mb.view_cnt,mb.reply_cnt,qb.category,qb.board_id
         from master_board mb
         join qna_board qb
             on mb.board_id = qb.board_id
-        where username=#{username}
+        where username=#{username} and deleted=0
         ORDER BY mb.created_at DESC
     </select>
 </mapper>
