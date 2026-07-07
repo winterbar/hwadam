@@ -174,43 +174,69 @@
             <div class="tab-content">
 
                 <!-- 리뷰 -->
-                <div class="tab-panel review-panel">
-                    <div class="tab-header">
-                        <div>
-                            <h3>내가 작성한 리뷰</h3>
-                            <p>화담 스토어 상품에 남긴 리뷰를 확인해요.</p>
-                        </div>
+<!-- 리뷰 -->
+<div class="tab-panel review-panel">
+    <div class="tab-header">
+        <div>
+            <h3>내 리뷰 활동</h3>
+            <p>내가 작성한 리뷰를 확인해보세요.</p>
+        </div>
 
-                        <span th:text="${reviewList != null ? reviewList.size() : 0}">0</span>
-                    </div>
+        <span class="review-count-box"
+              th:text="${reviewList != null ? reviewList.size() : 0}">0</span>
+    </div>
 
-                    <div class="empty-box" th:if="${reviewList == null or reviewList.size() == 0}">
-                        <p>작성한 리뷰가 없습니다.</p>
-                    </div>
+    <div class="empty-box" th:if="${reviewList == null or reviewList.size() == 0}">
+        <p>작성한 리뷰가 없습니다.</p>
+    </div>
 
-                    <div class="mypage-list" th:if="${reviewList != null and reviewList.size() > 0}">
-                        <a class="mypage-row"
-                           th:each="review : ${reviewList}"
-                           th:href="@{/store/review/{id}(id=${review.reviewId})}">
+    <div class="review-page-wrap" th:if="${reviewList != null and reviewList.size() > 0}">
 
-                            <div class="row-main">
-                                <strong class="row-title" th:text="${review.productName}">상품명</strong>
-                                <p class="row-desc" th:text="${review.content}">리뷰 내용</p>
+        <!-- 리뷰 목록 -->
+        <div class="mypage-list review-page-list" id="mypageReviewTrack">
 
-                                <div class="row-meta">
-                                    <span th:text="'평점 ' + ${review.rating} + '점'">평점 5점</span>
+            <a class="mypage-row review-row"
+               th:each="review : ${reviewList}"
+               th:href="@{/review/detail/{id}(id=${review.boardId})}">
 
-                                    <span th:if="${review.createdAt != null}"
-                                          th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd')}">
-                                        2026-07-06
-                                    </span>
-                                </div>
-                            </div>
+                <!-- 오른쪽 카테고리 -->
+                <div class="review-category-box">
+                    <span class="review-category-badge" th:text="${review.category1}">메이크업</span>
+                    <span class="review-category-arrow">›</span>
+                    <span class="review-category-badge" th:text="${review.category2}">쿠션/팩트</span>
+                </div>
 
-                            <span class="row-badge">리뷰</span>
-                        </a>
+                <div class="row-main">
+                    <!-- 제목 -->
+                    <strong class="row-title" th:text="${review.title}">테스트합니다</strong>
+
+                    <!-- 상품명 -->
+                    <p class="row-product" th:text="${review.productName}">
+                        [NEW] 히아로쿠션 2.0 (본품+리필+립밤 틴트 증정)
+                    </p>
+
+                    <!-- 내용 + 메타 -->
+                    <div class="review-bottom-line">
+                        <span class="review-content" th:text="${review.content}">테스트 하하하 ㅎㅎ</span>
+                        <span th:text="'조회수 ' + ${review.viewCnt}">조회수 0</span>
+                        <span th:text="'댓글 ' + ${review.replyCnt}">댓글 0</span>
+                        <span th:if="${review.createdAt != null}"
+                              th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd')}">
+                            2026-07-07
+                        </span>
                     </div>
                 </div>
+            </a>
+
+        </div>
+
+        <!-- 리뷰 숫자 페이징 버튼 들어갈 자리 -->
+        <div class="review-pagination" id="reviewPagination"
+             th:if="${reviewList.size() > 4}">
+        </div>
+
+    </div>
+</div>
 
               <!-- 커뮤니티 -->
 <div class="tab-panel community-panel">
@@ -221,24 +247,24 @@
         </div>
 
         <!-- 전체 커뮤니티 글 개수 -->
-        <span th:text="${qnaList != null ? qnaList.size() : 0}">
+        <span th:text="${communityList != null ? communityList.size() : 0}">
             0
         </span>
     </div>
 
     <!-- 커뮤니티 글 없을 때 -->
-    <div class="empty-box" th:if="${qnaList == null or qnaList.size() == 0}">
+    <div class="empty-box" th:if="${communityList == null or communityList.size() == 0}">
         <p>작성한 커뮤니티 글이 없습니다.</p>
     </div>
 
     <!-- 커뮤니티 글 있을 때 -->
-    <div class="community-page-wrap" th:if="${qnaList != null and qnaList.size() > 0}">
+    <div class="community-page-wrap" th:if="${communityList != null and communityList.size() > 0}">
 
         <!-- 커뮤니티 글 목록 -->
         <div class="mypage-list community-page-list" id="mypageQnaTrack">
 
             <a class="mypage-row"
-               th:each="qna : ${qnaList}"
+               th:each="qna : ${communityList}"
                th:href="@{/community/{id}(id=${qna.boardId})}">
 
                 <div class="row-main">
@@ -278,7 +304,7 @@
 
         <!-- 숫자 페이징 버튼 들어갈 자리 -->
         <div class="qna-pagination" id="qnaPagination"
-             th:if="${qnaList.size() > 4}">
+             th:if="${communityList.size() > 4}">
         </div>
 
     </div>

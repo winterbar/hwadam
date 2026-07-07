@@ -216,4 +216,12 @@ GROUP BY
 ORDER BY f.feed_id DESC; 
 </select>
 
+<!-- 탈퇴한 회원의 피드 변경 -->
+<update id="withdrawFeed"
+            parameterType="string">
+        UPDATE feed
+        SET username="deleted_user",deleted=1
+        where username=#{username}
+</update>
+
 </mapper>

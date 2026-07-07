@@ -47,6 +47,8 @@ public interface ReviewBoardMapper {
     int getTypeBoardCountWithSearch(@Param("type") String type, 
                                     @Param("search") ReviewSearchVO searchVO);
 
+    public List<ReviewBoardVO> getReviewList(String username);
+
     
 
 

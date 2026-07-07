@@ -170,6 +170,13 @@
             WHERE board_id = #{value}
     
     </select>
+    <!-- 탈퇴한 회원의 게시글 변경 -->
+    <update id="withdrawBoard"
+            parameterType="string">
+        UPDATE master_board
+        SET username="deleted_user",deleted=1
+        where username=#{username}
+    </update>
 
     
 

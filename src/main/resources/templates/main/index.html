@@ -1,226 +1,628 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>화담</title>
+    <title>화담 | 메인 화면</title>
+
     <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
     <link rel="stylesheet" th:href="@{/css/common/main.css}">
 </head>
+
 <body>
 
+<div class="page">
+
+    <!-- 헤더 -->
     <div th:replace="~{layout/header :: headerFragment}"></div>
 
     <main class="container">
 
-        <section class="hero">
-            <div class="hero-banner">
-                <div class="hero-copy">
-                    <div class="hero-label">화담 뷰티 커뮤니티</div>
-                    <h1>나에게 맞는<br><strong>화장품 정보</strong>를<br>한눈에 확인해요</h1>
-                    <p>후기, 질문, 오늘의 화장을 통해<br>나와 비슷한 사람들의 뷰티 경험을 찾아보세요.</p>
-                    <div class="hero-links">
-                    <a href="#" class="hero-button">화담 둘러보기</a>
-                    <a href="#" class="hero-button sub">리뷰 보러가기</a>
+       <!-- 메인 배너 -->
+<section class="hero">
+    <div class="hero-banner">
+
+        <div class="hero-copy">
+            <div class="hero-label">화담 뷰티 커뮤니티</div>
+
+            <h1>
+                내 피부에 맞는<br>
+                <strong>화장품</strong>을 한눈에
+            </h1>
+
+            <p>
+                리뷰부터 성분, 루틴까지<br>
+                나에게 딱 맞는 뷰티 정보를 쉽고 빠르게 찾아보세요.
+            </p>
+
+            <div class="hero-links">
+                <a th:href="@{/feed}" class="hero-button">지금 둘러보기</a>
+                <a th:href="@{/board/review}" class="hero-button sub">리뷰 보러가기</a>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <img class="hero-product"
+                 th:src="@{/images/main/banner-product-real.png}"
+                 src="/images/main/banner-product-real.png"
+                 alt="화담 화장품 이미지">
+        </div>
+
+    </div>
+</section>
+
+
+        <!-- 신상 & BEST : 아직 상품 DB 없으니까 고정 HTML -->
+        <section class="section">
+            <div class="section-head">
+                <div>
+                    <h2 class="section-title">신상 & BEST</h2>
+                    <p class="section-sub">화담에서 지금 많이 보는 신상 화장품과 인기 제품</p>
+                </div>
+
+                <a href="#" class="view-more">전체보기 →</a>
+            </div>
+
+            <div class="product-tabs">
+                <button type="button" class="active">신상</button>
+                <button type="button">BEST</button>
+                <button type="button">추천템</button>
+            </div>
+
+            <div class="product-grid">
+
+                <article class="product-card">
+                    <a href="#">
+                        <img class="product-img"
+                             src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=600&q=80"
+                             alt="글로우 쿠션 제품">
+
+                        <div class="product-info">
+                            <div class="product-brand">HWA PICK</div>
+                            <p class="product-name">피치 글로우 쿠션 SPF50+ PA+++</p>
+
+                            <div class="price-row">
+                                <span class="discount">24%</span>
+                                <span class="price">18,900원</span>
+                                <span class="origin">24,900원</span>
+                            </div>
+
+                            <div class="tag-row">
+                                <span class="tag">신상</span>
+                                <span class="tag">건성추천</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="product-card">
+                    <a href="#">
+                        <img class="product-img"
+                             src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80"
+                             alt="아이팔레트 제품">
+
+                        <div class="product-info">
+                            <div class="product-brand">MOOD</div>
+                            <p class="product-name">로지 무드 아이 팔레트 9구</p>
+
+                            <div class="price-row">
+                                <span class="discount">18%</span>
+                                <span class="price">21,300원</span>
+                                <span class="origin">26,000원</span>
+                            </div>
+
+                            <div class="tag-row">
+                                <span class="tag">BEST</span>
+                                <span class="tag">쿨톤</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="product-card">
+                    <a href="#">
+                        <img class="product-img"
+                             src="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&w=600&q=80"
+                             alt="세럼 제품">
+
+                        <div class="product-info">
+                            <div class="product-brand">SKIN LAB</div>
+                            <p class="product-name">수분 장벽 핑크 세럼 50ml</p>
+
+                            <div class="price-row">
+                                <span class="discount">30%</span>
+                                <span class="price">15,400원</span>
+                                <span class="origin">22,000원</span>
+                            </div>
+
+                            <div class="tag-row">
+                                <span class="tag">수분</span>
+                                <span class="tag">민감성</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="product-card">
+                    <a href="#">
+                        <img class="product-img"
+                             src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=600&q=80"
+                             alt="립 제품">
+
+                        <div class="product-info">
+                            <div class="product-brand">LIP DAY</div>
+                            <p class="product-name">워터리 틴트 로즈 코랄</p>
+
+                            <div class="price-row">
+                                <span class="discount">15%</span>
+                                <span class="price">11,900원</span>
+                                <span class="origin">14,000원</span>
+                            </div>
+
+                            <div class="tag-row">
+                                <span class="tag">립추천</span>
+                                <span class="tag">웜톤</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+            </div>
+        </section>
+
+
+        <!-- 오늘의 화장 / 피드 -->
+        <section class="section">
+            <div class="section-head">
+                <div>
+                    <h2 class="section-title">오늘의 화장</h2>
+                    <p class="section-sub">회원들이 공유한 데일리 메이크업 피드</p>
+                </div>
+
+                <a th:href="@{/feed}" class="view-more">피드 더보기 →</a>
+            </div>
+
+            <!-- 피드 있을 때 : 네 변수명 그대로 -->
+            <div class="feed-grid" th:if="${feedList != null and feedList.size() > 0}">
+
+                <article class="feed-card"
+                         th:each="feed, feedStat : ${feedList}"
+                         th:if="${feedStat.index < 6}">
+
+                    <a th:href="@{/feed/{id}(id=${feed.feedId})}">
+
+                        <div th:if="${feed.feedFileList != null and feed.feedFileList.size() > 0}"
+                             th:with="firstFile=${feed.feedFileList[0]}">
+                            <img th:src="@{|/upload/${firstFile}|}" alt="피드 이미지">
+                        </div>
+
+                        <div class="feed-no-image"
+                             th:if="${feed.feedFileList == null or feed.feedFileList.size() == 0}">
+                            <span>NO IMAGE</span>
+                        </div>
+
+                        <div class="feed-info">
+                            <div class="feed-user">@화담회원</div>
+
+                            <p class="feed-text"
+                               th:text="${feed.feedContent != null ? feed.feedContent : '작성한 피드'}">
+                                피드 내용
+                            </p>
+
+                            <div class="feed-tag-row"
+                                 th:if="${feed.feedTagList != null and feed.feedTagList.size() > 0}">
+                                <span class="tag"
+                                      th:each="tag, tagStat : ${feed.feedTagList}"
+                                      th:if="${tagStat.index < 3}"
+                                      th:text="'#' + ${tag}">
+                                    #태그
+                                </span>
+                            </div>
+
+                            <div class="feed-meta">
+                                <span th:text="'♡ ' + ${feed.likeCnt}">♡ 0</span>
+                                <span th:text="'댓글 ' + ${feed.replyCnt}">댓글 0</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+            </div>
+
+            <!-- 피드 없을 때 : 화면 확인용 고정 카드 -->
+            <div class="feed-grid" th:if="${feedList == null or feedList.size() == 0}">
+
+                <article class="feed-card">
+                    <a href="#">
+                        <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=500&q=80"
+                             alt="오늘의 화장 피드">
+                        <div class="feed-info">
+                            <div class="feed-user">@peach_day</div>
+                            <p class="feed-text">복숭아빛 데일리 메이크업</p>
+                            <div class="feed-meta">
+                                <span>♡ 128</span>
+                                <span>댓글 12</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="feed-card">
+                    <a href="#">
+                        <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=500&q=80"
+                             alt="오늘의 화장 피드">
+                        <div class="feed-info">
+                            <div class="feed-user">@glow_me</div>
+                            <p class="feed-text">은은한 광채 피부 표현</p>
+                            <div class="feed-meta">
+                                <span>♡ 94</span>
+                                <span>댓글 8</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="feed-card">
+                    <a href="#">
+                        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=500&q=80"
+                             alt="오늘의 화장 피드">
+                        <div class="feed-info">
+                            <div class="feed-user">@daily_pink</div>
+                            <p class="feed-text">핑크톤 아이 팔레트 조합</p>
+                            <div class="feed-meta">
+                                <span>♡ 87</span>
+                                <span>댓글 5</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="feed-card">
+                    <a href="#">
+                        <img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=500&q=80"
+                             alt="오늘의 화장 피드">
+                        <div class="feed-info">
+                            <div class="feed-user">@lip_note</div>
+                            <p class="feed-text">오늘의 MLBB 립 조합</p>
+                            <div class="feed-meta">
+                                <span>♡ 76</span>
+                                <span>댓글 10</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+            </div>
+        </section>
+
+
+        <!-- 요즘 많이 본 리뷰 -->
+        <section class="section">
+            <div class="section-head">
+                <div>
+                    <h2 class="section-title">요즘 많이 본 리뷰</h2>
+                    <p class="section-sub">화담 회원들이 작성한 솔직한 리뷰</p>
+                </div>
+
+                <a th:href="@{/review}" class="view-more">리뷰 더보기 →</a>
+            </div>
+
+            <!-- 리뷰 있을 때 : 네 변수명 그대로 -->
+            <div class="review-grid" th:if="${reviewList != null and reviewList.size() > 0}">
+
+                <article class="review-card"
+                         th:each="review, reviewStat : ${reviewList}"
+                         th:if="${reviewStat.index < 3}">
+
+                    <a th:href="@{/review/detail/{id}(id=${review.boardId})}">
+
+                        <div class="review-top">
+                            <div class="review-thumb no-review-image">
+                                <span>REVIEW</span>
+                            </div>
+
+                            <div>
+                                <div class="review-brand">
+                                    <span th:text="${review.category1}">메이크업</span>
+                                    <span th:if="${review.category2 != null}"
+                                          th:text="' / ' + ${review.category2}">
+                                        / 쿠션
+                                    </span>
+                                </div>
+
+                                <p class="review-title"
+                                   th:text="${review.title}">
+                                    리뷰 제목
+                                </p>
+                            </div>
+                        </div>
+
+                        <p class="review-desc"
+                           th:text="${review.content}">
+                            리뷰 내용
+                        </p>
+
+                        <div class="review-bottom">
+                            <div class="review-chips">
+                                <span class="mini-chip"
+                                      th:if="${review.productName != null}"
+                                      th:text="${review.productName}">
+                                    상품명
+                                </span>
+                            </div>
+
+                            <div class="review-meta">
+                                <span th:text="'조회 ' + ${review.viewCnt}">조회 0</span>
+                                <span th:text="' · 댓글 ' + ${review.replyCnt}"> · 댓글 0</span>
+                            </div>
+                        </div>
+
+                    </a>
+                </article>
+
+            </div>
+
+            <!-- 리뷰 없을 때 : 화면 확인용 고정 카드 -->
+            <div class="review-grid" th:if="${reviewList == null or reviewList.size() == 0}">
+
+                <article class="review-card">
+                    <a href="#">
+                        <div class="review-top">
+                            <img class="review-thumb"
+                                 src="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&w=400&q=80"
+                                 alt="리뷰 이미지">
+                            <div>
+                                <div class="review-brand">SKIN LAB</div>
+                                <p class="review-title">민감성 피부도 편했던 수분 세럼</p>
+                            </div>
+                        </div>
+                        <p class="review-desc">
+                            끈적임이 적고 흡수가 빨라서 여름에도 부담 없었어요.
+                        </p>
+                        <div class="review-bottom">
+                            <div class="review-chips">
+                                <span class="mini-chip">민감성</span>
+                                <span class="mini-chip">수분</span>
+                            </div>
+                            <div class="review-meta">♡ 148 · 댓글 19</div>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="review-card">
+                    <a href="#">
+                        <div class="review-top">
+                            <img class="review-thumb"
+                                 src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=400&q=80"
+                                 alt="리뷰 이미지">
+                            <div>
+                                <div class="review-brand">HWA PICK</div>
+                                <p class="review-title">건성도 들뜸 없던 글로우 쿠션 후기</p>
+                            </div>
+                        </div>
+                        <p class="review-desc">
+                            얇게 발리는데 피부가 답답하지 않고 광 표현도 예뻐요.
+                        </p>
+                        <div class="review-bottom">
+                            <div class="review-chips">
+                                <span class="mini-chip">건성</span>
+                                <span class="mini-chip">글로우</span>
+                            </div>
+                            <div class="review-meta">♡ 132 · 댓글 11</div>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="review-card">
+                    <a href="#">
+                        <div class="review-top">
+                            <img class="review-thumb"
+                                 src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=400&q=80"
+                                 alt="리뷰 이미지">
+                            <div>
+                                <div class="review-brand">LIP DAY</div>
+                                <p class="review-title">여쿨에도 잘 어울리는 로즈 틴트</p>
+                            </div>
+                        </div>
+                        <p class="review-desc">
+                            착색이 너무 진하지 않아서 수정 화장하기 편했어요.
+                        </p>
+                        <div class="review-bottom">
+                            <div class="review-chips">
+                                <span class="mini-chip">여쿨</span>
+                                <span class="mini-chip">립추천</span>
+                            </div>
+                            <div class="review-meta">♡ 97 · 댓글 8</div>
+                        </div>
+                    </a>
+                </article>
+
+            </div>
+        </section>
+
+
+        <!-- 지금 올라온 뷰티 질문 / 커뮤니티 -->
+        <section class="section">
+            <div class="section-head">
+                <div>
+                    <h2 class="section-title">지금 올라온 뷰티 질문</h2>
+                    <p class="section-sub">질문과 정보공유 게시글을 확인해보세요</p>
+                </div>
+
+                <a th:href="@{/community}" class="view-more">커뮤니티 더보기 →</a>
+            </div>
+
+            <!-- 커뮤니티 있을 때 : 네 변수명 그대로 -->
+            <div class="question-grid" th:if="${communityList != null and communityList.size() > 0}">
+
+                <article class="question-card"
+                         th:each="qna, qnaStat : ${communityList}"
+                         th:if="${qnaStat.index < 4}">
+
+                    <a th:href="@{/community/{id}(id=${qna.boardId})}">
+
+                        <h3 th:text="${qna.title}">
+                            게시글 제목
+                        </h3>
+
+                        <p th:text="${qna.content}">
+                            게시글 내용
+                        </p>
+
+                        <div class="question-meta">
+                            <div class="question-tags">
+                                <span class="mini-chip"
+                                      th:text="${qna.category}">
+                                    질문
+                                </span>
+                            </div>
+
+                            <span class="answer-count"
+                                  th:text="'댓글 ' + ${qna.replyCnt}">
+                                댓글 0
+                            </span>
+                        </div>
+
+                    </a>
+                </article>
+
+            </div>
+
+            <!-- 커뮤니티 없을 때 : 화면 확인용 고정 카드 -->
+            <div class="question-grid" th:if="${communityList == null or communityList.size() == 0}">
+
+                <article class="question-card">
+                    <a href="#">
+                        <h3>민감성 피부도 쓸 수 있는 여름 선크림 추천해주세요</h3>
+                        <p>눈시림 적고 백탁 심하지 않은 제품 찾고 있어요.</p>
+                        <div class="question-meta">
+                            <div class="question-tags">
+                                <span class="mini-chip">민감성</span>
+                                <span class="mini-chip">선크림</span>
+                            </div>
+                            <span class="answer-count">답변 5개</span>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="question-card">
+                    <a href="#">
+                        <h3>여쿨라이트한테 어울리는 MLBB 립 있을까요?</h3>
+                        <p>차분한 장미빛 계열 찾는 중이에요.</p>
+                        <div class="question-meta">
+                            <div class="question-tags">
+                                <span class="mini-chip">여쿨</span>
+                                <span class="mini-chip">MLBB</span>
+                            </div>
+                            <span class="answer-count">답변 8개</span>
+                        </div>
+                    </a>
+                </article>
+
+            </div>
+        </section>
+
+
+        <!-- 피부타입 / 인기 태그 -->
+        <section class="section">
+            <div class="type-tag-wrap">
+
+                <div class="panel">
+                    <h3>피부타입별 인기 정보</h3>
+
+                    <div class="type-chips">
+                        <a th:href="@{/board/review(type='건성')}" class="type-chip">건성</a>
+                        <a th:href="@{/board/review(type='지성')}" class="type-chip">지성</a>
+                        <a th:href="@{/board/review(type='복합성')}" class="type-chip">복합성</a>
+                        <a th:href="@{/board/review(type='민감성')}" class="type-chip">민감성</a>
+                        <a th:href="@{/board/review(type='트러블')}" class="type-chip">트러블</a>
+                    </div>
+
+                    <div class="type-list">
+                        <a th:href="@{/board/review(type='건성')}" class="type-item">
+                            <b>건성 피부</b>
+                            <span>촉촉한 베이스 · 수분 크림 후기</span>
+                        </a>
+
+                        <a th:href="@{/board/review(type='지성')}" class="type-item">
+                            <b>지성 피부</b>
+                            <span>보송한 선크림 · 파우더 추천</span>
+                        </a>
+
+                        <a th:href="@{/board/review(type='민감성')}" class="type-item">
+                            <b>민감성 피부</b>
+                            <span>진정템 · 저자극 제품 정보</span>
+                        </a>
                     </div>
                 </div>
 
-                <div class="hero-visual">
-                    <div class="hero-glow"></div>
-                    <span class="hero-spark one">✦</span>
-                    <span class="hero-spark two">✦</span>
-                    <div class="hero-base-shadow"></div>
-                    <div class="hero-wave"></div>
+                <div class="panel">
+                    <h3>인기 태그</h3>
+
+                    <div class="popular-tags">
+                        <a th:href="@{/search(tag='수분')}" class="popular-tag">#수분</a>
+                        <a th:href="@{/search(tag='선크림')}" class="popular-tag">#선크림</a>
+                        <a th:href="@{/search(tag='민감성')}" class="popular-tag">#민감성</a>
+                        <a th:href="@{/search(tag='여쿨')}" class="popular-tag">#여쿨</a>
+                        <a th:href="@{/search(tag='쿠션')}" class="popular-tag">#쿠션</a>
+                        <a th:href="@{/search(tag='트러블')}" class="popular-tag">#트러블</a>
+                    </div>
+
+                    <p class="tag-note">
+                        태그를 누르면 같은 고민을 가진 회원들의 리뷰와 질문을 모아서 볼 수 있어요.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- 포인트 안내 -->
+        <section class="point-banner">
+            <div>
+                <h2>
+                    활동할수록 쌓이는<br>
+                    <strong>화담 포인트</strong>
+                </h2>
+
+                <p>
+                    리뷰 작성, 오늘의 화장 공유, 댓글 참여로 포인트를 모아보세요.
+                    활동이 많을수록 등급도 함께 올라가요.
+                </p>
+            </div>
+
+            <div class="point-items">
+                <div class="point-item">
+                    <b>게시글 작성</b>
+                    <span>+15P</span>
+                </div>
+
+                <div class="point-item">
+                    <b>사진 포함 리뷰</b>
+                    <span>+30P</span>
+                </div>
+
+                <div class="point-item">
+                    <b>BOTD 작성</b>
+                    <span>+20P</span>
+                </div>
+
+                <div class="point-item">
+                    <b>댓글 작성</b>
+                    <span>+10P</span>
                 </div>
             </div>
         </section>
-            
-        <div class="sub-content-wrapper">
-
-            <div class="left-column">
-                <div class="popular">
-                    <div class="section-header">
-                        <h2>🔥 실시간 인기글 <span>현재 사용자들이 가장 많이 보는 게시글</span></h2>
-                    </div>
-                    <div class="post-row">
-                        <div class="col-cat">분류</div>
-                        <div class="col-title">제목</div>
-                        <div class="col-meta">조회수</div>
-                    </div>
-                    <table class="main-post-table">
-                        <tbody>
-                            <tr>
-                                <td><span class="main-post-tag">질문</span></td>
-                                <td><a href="#" class="main-post-title">면도 후 인그로운 헤어랑 붉은 기 진정 어떻게 하시나요?</a><span class="main-post-replies">29</span></td>
-                                <td class="main-post-meta">142회</td>
-                            </tr>
-                            <tr>
-                                <td><span class="main-post-tag">후기</span></td>
-                                <td><a href="#" class="main-post-title">내돈내산) 올리브영 세일 때 쟁여야 할 지성 선크림 3종 솔직 비교</a><span class="main-post-replies">29</span></td>
-                                <td class="main-post-meta">611회</td>
-                            </tr>
-                            <tr>
-                                <td><span class="main-post-tag">질문</span></td>
-                                <td><a href="#" class="main-post-title">코 주변 블랙헤드 제거용으로 클렌징 오일 유화법 효과 보신 분 계신가요? ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</a><span class="main-post-replies">1045</span></td>
-                                <td class="main-post-meta">134682</td>
-                            </tr>
-                            <tr>
-                                <td><span class="main-post-tag">후기</span></td>
-                                <td><a href="#" class="main-post-title">어성초 클린징폼 한번 사용해봤습니다! 솔직 후기..</a><span class="main-post-replies">26</span></td>
-                                <td class="main-post-meta">672회</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            
-                <div class="latest-reviews">
-                    <div class="section-header">
-                        <h2>📝 최신 리뷰 <span>사용자들이 최근 올린 솔직한 리뷰들</span></h2>
-                        <a th:href="@{/board/review}" class="more-link">더보기</a>
-                    </div>
-                    <div class="post-row">
-                        <div class="col-cat">분류</div>
-                        <div class="col-title">제목</div>
-                        <div class="col-meta">조회수</div>
-                    </div>
-                    <table class="main-post-table">
-                        <tbody>
-                            <tr>
-                                <td><span class="main-post-tag">하이루</span></td>
-                                <td><a href="#" class="main-post-title">면도 후 인그로운 헤어랑 붉은 기 진정 어떻게 하시나요?</a><span class="main-post-replies">14</span></td>
-                                <td class="main-post-meta">4442</td>
-                            </tr>
-                            <tr>
-                                <td><span class="main-post-tag">리뷰</span></td>
-                                <td><a href="#" class="main-post-title">내돈내산) 올리브영 세일 때 쟁여야 할 지성 선크림 3종 솔직 비교</a><span class="main-post-replies">29</span></td>
-                                <td class="main-post-meta">611</td>
-                            </tr>
-                            <tr>
-                                <td><span class="main-post-tag">리뷰</span></td>
-                                <td><a href="#" class="main-post-title">코 주변 블랙헤드 제거용으로 클렌징 오일 유화법 효과 보신 분 계신가요?</a><span class="main-post-replies">26</span></td>
-                                <td class="main-post-meta">780</td>
-                            </tr>
-                            <tr>
-                                <td><span class="main-post-tag">리뷰</span></td>
-                                <td><a href="#" class="main-post-title">코 주변 블랙헤드 제거용으로 클렌징 오일 유화법 효과 보신 분 계신가요?</a><span class="main-post-replies">26</span></td>
-                                <td class="main-post-meta">697</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="latest-qna">
-                    <div class="section-header">
-                        <h2>❓ 최근 질문<span>사용자들이 최근 질문한 질문들</span></h2>
-                        <a th:href="@{/board/pna}" class="more-link">더보기</a>
-                    </div>
-                    <div class="post-row">
-                        <div class="col-cat">분류</div>
-                        <div class="col-title">제목</div>
-                        <div class="col-meta">조회수</div>
-                    </div>
-                    <table class="main-post-table">
-                        <tbody>
-                            <tr>
-                                <td><span class="main-post-tag">질문</span></td>
-                                <td><a href="#" class="main-post-title">면도 후 인그로운 헤어랑 붉은 기 진정 어떻게 하시나요?</a><span class="main-post-replies">14</span></td>
-                                <td class="main-post-meta">1926</td>
-                            </tr>
-                            <tr>
-                                <td><span class="main-post-tag">질문</span></td>
-                                <td><a href="#" class="main-post-title">내돈내산) 올리브영 세일 때 쟁여야 할 지성 선크림 3종 솔직 비교</a><span class="main-post-replies">29</span></td>
-                                <td class="main-post-meta">1024</td>
-                            </tr>
-                            <tr>
-                                <td><span class="main-post-tag">질문</span></td>
-                                <td><a href="#" class="main-post-title">코 주변 블랙헤드 제거용으로 클렌징 오일 유화법 효과 보신 분 계신가요?</a><span class="main-post-replies">26</span></td>
-                                <td class="main-post-meta">1024</td>
-                            </tr>
-                            <tr>
-                                <td><span class="main-post-tag">질문</span></td>
-                                <td><a href="#" class="main-post-title">코 주변 블랙헤드 제거용으로 클렌징 오일 유화법 효과 보신 분 계신가요?</a><span class="main-post-replies">26</span></td>
-                                <td class="main-post-meta">999</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <div class="right-column">
-                <div class="botd_feed">
-                    <div class="section-header">
-                        <h2>✨ 최신 피드 <span>Beauty Of The Day</span></h2>
-                        <a th:href="@{/feed}" class="more-link">더보기</a>
-                    </div>
-
-                    <div class="botd-grid">
-                        <div class="botd-card">
-                            <div class="botd-img-placeholder">📸</div>
-                            <div class="botd-info">
-                                <div class="botd-user">@grooming_master</div>
-                                <div class="botd-title">면접 프리패스용 깔끔 댄디 정석 셋업 메이크업</div>
-                            </div>
-                        </div>
-                        <div class="botd-card">
-                            <div class="botd-img-placeholder">📸</div>
-                            <div class="botd-info">
-                                <div class="botd-user">@skincare_daily</div>
-                                <div class="botd-title">여름철 유분기 잡는 보송보송 파데리스 파우더 루틴</div>
-                            </div>
-                        </div>
-                        <div class="botd-card">
-                            <div class="botd-img-placeholder">📸</div>
-                            <div class="botd-info">
-                                <div class="botd-user">@hello_world</div>
-                                <div class="botd-title">요즘 남자들이 피부 관리하는 데 필요한 필수 제품?!</div>
-                            </div>
-                        </div>
-                        <div class="botd-card">
-                            <div class="botd-img-placeholder">📸</div>
-                            <div class="botd-info">
-                                <div class="botd-user">@nice_ootd</div>
-                                <div class="botd-title">요즘 유행하는 메이크업과 이에 맞는 패션 추천!</div>
-                            </div>
-                        </div>
-                    </div>
-                <div>
-
-                <div class="member-ranking">
-                    <h4>👑 주간 멤버 랭킹</h4>
-                    <ul class="ranking-list">
-                        <li class="ranking-item">
-                            <span class="rank-user"><span class="rank-num">1</span> 그루밍마스터</span>
-                            <span class="rank-points">4,250 p</span>
-                        </li>
-                        <li class="ranking-item">
-                            <span class="rank-user"><span class="rank-num">2</span> 훈훈스킨</span>
-                            <span class="rank-points">3,980 p</span>
-                        </li>
-                        <li class="ranking-item">
-                            <span class="rank-user"><span class="rank-num">3</span> 올영단골</span>
-                            <span class="rank-points">3,410 p</span>
-                        </li>
-                        <li class="ranking-item">
-                            <span class="rank-user"><span class="rank-num">4</span> 빚쟁이람보</span>
-                            <span class="rank-points">3,040 p</span>
-                        </li>
-                        <li class="ranking-item">
-                            <span class="rank-user"><span class="rank-num">5</span> 훌라후프</span>
-                            <span class="rank-points">2,940 p</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-        </div>
 
     </main>
 
+    <!-- 푸터 -->
     <div th:replace="~{layout/footer :: footerFragment}"></div>
 
-    <script th:src="@{/js/common/index.js}"></script>
+</div>
 
 </body>
 </html>

@@ -11,6 +11,7 @@ public class MainController {
     // 메인화면 이동
     @GetMapping("/")
     public String getMainHome() {
+        
         return "main/index";
     }
     
