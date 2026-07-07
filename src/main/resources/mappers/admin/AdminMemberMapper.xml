@@ -77,18 +77,202 @@
 
         SELECT count(*)
         FROM member
-        ~~
+        <where>
+            <!-- 가입일 필터링 (오늘, 7일전,...)-->
+            <choose>
+                <when test="signedAt != null and signedAt == 'today'">
+                    AND signed_at = NOW()
+                </when>
+                <when test="signedAt != null and signedAt != ''">
+                    AND signed_at >= DATE_SUB(NOW(), INTERVAL #{signedAt} DAY)
+                </when>
+            </choose>
+            <!-- 나이 필터링 (10대, 20대,...)-->
+            <if test="birthdays != null and birthdays.size() > 0">
+                AND (
+                    <foreach item="birthday" collection="birthdays" separator="or">
+                        <choose>
+                            <when test="birthday != null and birthday == '60'">
+                                (YEAR(CURDATE()) - YEAR(birthday)) >= 60
+                            </when>
+                            <otherwise>
+                                (YEAR(CURDATE()) - YEAR(birthday)) BETWEEN #{birthday} AND #{birthday} + 9
+                            </otherwise>
+                        </choose>
+                    </foreach>
+                )
+            </if>
+            <!-- 성별 필터링 -->
+            <choose>
+                <when test="gender != null and gender == 'male'">
+                    AND gender = '남'
+                </when>
+                <when test="gender != null and gender == 'female'">
+                    AND gender = '여'
+                </when>
+            </choose>
+            <!-- 권한 필터링 -->
+            <if test="role != null and (role == 'user' or role == 'admin')">
+                AND role = #{role}
+            </if>
+            <!-- 상태 필터링 -->
+            <if test="status != null and (status == 'normal' or status == 'deleted')">
+                AND status = #{status}
+            </if>
+            <!-- 피부 타입 필터링 -->
+            <if test="skinTypes != null and skinTypes.size() > 0">
+                AND (
+                    <foreach item="skinType" collection="skinTypes" separator="or">
+                        <choose>
+                            <when test="skinType != null and skinType == 'normal'">
+                                skin_type = '중성'
+                            </when>
+                            <when test="skinType != null and skinType == 'dry'">
+                                skin_type = '건성'
+                            </when>
+                            <when test="skinType != null and skinType == 'oily'">
+                                skin_type = '지성'
+                            </when>
+                            <when test="skinType != null and skinType == 'sensitive'">
+                                skin_type = '민감성'
+                            </when>
+                            <when test="skinType != null and skinType == 'combination'">
+                                skin_type = '복합성'
+                            </when>
+                            <when test="skinType != null and skinType == 'dehydrated'">
+                                skin_type = '수부지'
+                            </when>
+                        </choose>
+                    </foreach>
+                )
+            </if>
+            <!-- 퍼스널 컬러 필터링 -->
+            <if test="personalColors != null and personalColors.size() > 0">
+                AND (
+                    <foreach item="personalColor" collection="personalColors" separator="or">
+                        <choose>
+                            <when test="personalColor != null and personalColor == 'spring'">
+                                personal_color = '봄웜'
+                            </when>
+                            <when test="personalColor != null and personalColor == 'fail'">
+                                personal_color = '가을웜'
+                            </when>
+                            <when test="personalColor != null and personalColor == 'summer'">
+                                personal_color = '여름쿨'
+                            </when>
+                            <when test="personalColor != null and personalColor == 'winter'">
+                                personal_color = '겨울쿨'
+                            </when>
+                        </choose>
+                    </foreach>
+                )
+            </if>
+        </where>
     
     </select>
 
     <!-- 회원 목록 출력 (회원 통계용)-->
     <!-- 다중 검색 조건에 따른 회원 목록을 출력하기 위한 동적 쿼리 추가-->
-    <select id="selectAnalysisMember"
+    <select id="selectAnalysisMembers"
             resultType="com.miles.beauminity.vo.admin.AdminMemberVO">
 
         SELECT *
         FROM member
-
+        <where>
+            <!-- 가입일 필터링 (오늘, 7일전,...)-->
+            <choose>
+                <when test="analysisVO.signedAt != null and analysisVO.signedAt == 'today'">
+                    AND signed_at = NOW()
+                </when>
+                <when test="analysisVO.signedAt != null and analysisVO.signedAt != ''">
+                    AND signed_at >= DATE_SUB(NOW(), INTERVAL #{analysisVO.signedAt} DAY)
+                </when>
+            </choose>
+            <!-- 나이 필터링 (10대, 20대,...)-->
+            <if test="analysisVO.birthdays != null and analysisVO.birthdays.size() > 0">
+                AND (
+                    <foreach item="birthday" collection="analysisVO.birthdays" separator="or">
+                        <choose>
+                            <when test="birthday != null and birthday == '60'">
+                                (YEAR(CURDATE()) - YEAR(birthday)) >= 60
+                            </when>
+                            <otherwise>
+                                (YEAR(CURDATE()) - YEAR(birthday)) BETWEEN #{birthday} AND #{birthday} + 9
+                            </otherwise>
+                        </choose>
+                    </foreach>
+                )
+            </if>
+            <!-- 성별 필터링 -->
+            <choose>
+                <when test="analysisVO.gender != null and analysisVO.gender == 'male'">
+                    AND gender = '남'
+                </when>
+                <when test="analysisVO.gender != null and analysisVO.gender == 'female'">
+                    AND gender = '여'
+                </when>
+            </choose>
+            <!-- 권한 필터링 -->
+            <if test="analysisVO.role != null and (analysisVO.role == 'user' or analysisVO.role == 'admin')">
+                AND role = #{analysisVO.role}
+            </if>
+            <!-- 상태 필터링 -->
+            <if test="analysisVO.status != null and (analysisVO.status == 'normal' or analysisVO.status == 'deleted')">
+                AND status = #{analysisVO.status}
+            </if>
+            <!-- 피부 타입 필터링 -->
+            <if test="analysisVO.skinTypes != null and analysisVO.skinTypes.size() > 0">
+                AND (
+                    <foreach item="skinType" collection="analysisVO.skinTypes" separator="or">
+                        <choose>
+                            <when test="skinType != null and skinType == 'normal'">
+                                skin_type = '중성'
+                            </when>
+                            <when test="skinType != null and skinType == 'dry'">
+                                skin_type = '건성'
+                            </when>
+                            <when test="skinType != null and skinType == 'oily'">
+                                skin_type = '지성'
+                            </when>
+                            <when test="skinType != null and skinType == 'sensitive'">
+                                skin_type = '민감성'
+                            </when>
+                            <when test="skinType != null and skinType == 'combination'">
+                                skin_type = '복합성'
+                            </when>
+                            <when test="skinType != null and skinType == 'dehydrated'">
+                                skin_type = '수부지'
+                            </when>
+                        </choose>
+                    </foreach>
+                )
+            </if>
+            <!-- 퍼스널 컬러 필터링 -->
+            <if test="analysisVO.personalColors != null and analysisVO.personalColors.size() > 0">
+                AND (
+                    <foreach item="personalColor" collection="analysisVO.personalColors" separator="or">
+                        <choose>
+                            <when test="personalColor != null and personalColor == 'spring'">
+                                personal_color = '봄웜'
+                            </when>
+                            <when test="personalColor != null and personalColor == 'fail'">
+                                personal_color = '가을웜'
+                            </when>
+                            <when test="personalColor != null and personalColor == 'summer'">
+                                personal_color = '여름쿨'
+                            </when>
+                            <when test="personalColor != null and personalColor == 'winter'">
+                                personal_color = '겨울쿨'
+                            </when>
+                        </choose>
+                    </foreach>
+                )
+            </if>
+        </where>
+        <if test="pageVO.sort != null">
+            ORDER BY ${pageVO.sort} ${pageVO.dir}
+        </if>
+        LIMIT #{pageVO.offset}, #{pageVO.size}
 
     </select>
 
