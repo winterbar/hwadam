@@ -90,23 +90,23 @@
         </section>
 
         <section class="comment-section">
-            <h3>댓글 <span>0</span></h3>
+            <h3>댓글 <span th:text="${rCount}"></span></h3>
     
             <div class="comment-input-area">
-                <textarea placeholder="댓글을 남겨보세요." rows="2"></textarea>
+                <textarea id="comment-content" placeholder="댓글을 남겨보세요." rows="2"></textarea>
 
                 <div class="comment-btn-group">
                     <button type="button" class="btn btn-comment-cancel">취소</button>
-                    <button type="submit" class="btn btn-comment-submit">등록</button>
+                    <button id="comment-submit" type="submit" class="btn btn-comment-submit">등록</button>
                 </div>
             </div>
             
 
-            <div class="comment-list">
+            <div class="comment-list" th:each="reply : ${rList}">
                 <div class="comment-item">
                     <div class="comment-header">
                         <div class="comment-info">
-                            <span class="comment-author">그루밍왕초보</span>
+                            <span class="comment-author" th:text="${reply.nickname}"></span>
                             <span class="comment-date">2026-06-18</span>
                         </div>
 
@@ -115,7 +115,7 @@
                             <button type="button" class="btn-comment-delete">삭제</button>
                         </div>
                     </div>
-                    <div class="comment-content">도움이 많이 되는 정보네요! 감사합니다.</div>
+                    <div class="comment-content" th:text="${reply.replyContent}"></div>
                 </div>
             </div>
         </section>
@@ -129,3 +129,4 @@
 <script th:src="@{/js/qna/qna_delete.js}"></script>
 <script th:src="@{/js/qna/qna_like.js}"></script>
 <script th:src="@{/js/qna/qna_check_id.js}"></script>
+<script th:src="@{/js/qna/qna_reply.js}"></script>

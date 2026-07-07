@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.miles.beauminity.mapper.qna_board.CommunityReplyMapper">
+
+    <!-- insert:: 댓글 등록 -->
+    <insert id="insertReply"
+            parameterType="com.miles.beauminity.vo.qna_board.CommunityReplyVO">
+    
+        INSERT INTO board_reply
+        (reply_id, board_id, parents_reply_id, username, reply_content)
+        VALUES (#{replyId}, #{boardId}, #{parentsReplyId}, #{username}, #{replyContent})
+    
+    </insert>
+    
+    <select id="getReplyList"
+            parameterType="Long"
+            resultType="com.miles.beauminity.vo.qna_board.CommunityReplyVO">
+    
+        SELECT *
+        FROM board_reply
+        WHERE board_id = #{value}
+
+    </select>
+
+    <!-- 회원의 게시글에 등록한 댓글 수 조회 -->
+    <select id="getReplyCountByBoardId"
+    
+            parameterType="Long"
+            resultType="Int">
+
+            SELECT count(*)
+            FROM board_reply
+            WHERE board_id = #{value}
+    
+    </select>
+
+
+</mapper>
