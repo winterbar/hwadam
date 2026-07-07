@@ -121,7 +121,7 @@
 
                         <div class="card-profile">
                             <img th:if="${review.memberProfilePath != null and !#strings.isEmpty(review.memberProfilePath)}" 
-                                th:src="${review.memberProfilePath}" 
+                                th:src="@{|/upload/profile/${review.memberProfileSavedName}|}" 
                                 alt="프로필 이미지" class="profile-img"/>
                             <div th:unless="${review.memberProfilePath != null and !#strings.isEmpty(review.memberProfilePath)}" 
                                 class="profile-default"></div>
