@@ -1,0 +1,24 @@
+[33mb178b52[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mjaeeun[m[33m)[m HEAD@{0}: checkout: moving from jaeeun to main
+[33m1793ae8[m[33m ([m[1;31morigin/jaeeun[m[33m)[m HEAD@{1}: reset: moving to HEAD
+[33m1793ae8[m[33m ([m[1;31morigin/jaeeun[m[33m)[m HEAD@{2}: commit: feat : 마이페이지 리뷰 목록 보기 기능 및 회원 탈퇴 기능 구현
+[33mb178b52[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mjaeeun[m[33m)[m HEAD@{3}: checkout: moving from main to jaeeun
+[33mb178b52[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mjaeeun[m[33m)[m HEAD@{4}: pull origin main: Fast-forward
+[33mc8bce5a[m HEAD@{5}: checkout: moving from jaeeun to main
+[33m6fd4f8a[m HEAD@{6}: commit: feat : 마이페이지 커뮤티니, 오늘의 화장 목록 확인 기능 및 회원 탈퇴 기능 구현
+[33m4ddaab3[m HEAD@{7}: commit: fix : 오류 수정
+[33m56e2ead[m HEAD@{8}: pull origin jaeeun: Fast-forward
+[33m9f61d70[m HEAD@{9}: checkout: moving from jaeeun to jaeeun
+[33m9f61d70[m HEAD@{10}: commit: fix : 부모 - 자식 댓글 삭제 및 동기화 오류 수정
+[33m418c0d6[m HEAD@{11}: commit: feat : "퍼스널컬러, 피부타입, 나이대 필터 구현 , 공유 기능 구현 완료"
+[33mc8bce5a[m HEAD@{12}: checkout: moving from main to jaeeun
+[33mc8bce5a[m HEAD@{13}: pull origin main: Fast-forward
+[33m1e6db0f[m HEAD@{14}: checkout: moving from jaeeun to main
+[33m72f280f[m HEAD@{15}: commit: feat : "피드 퍼스널컬러/피부타입/나이대 필터 기능 구현"
+[33m1e6db0f[m HEAD@{16}: checkout: moving from jaeeun2 to jaeeun
+[33m1e6db0f[m HEAD@{17}: checkout: moving from jaeeun to jaeeun2
+[33m1e6db0f[m HEAD@{18}: checkout: moving from jaeeun2 to jaeeun
+[33m1e6db0f[m HEAD@{19}: checkout: moving from jaeeun to jaeeun2
+[33m1e6db0f[m HEAD@{20}: checkout: moving from jaeeun to jaeeun
+[33m1e6db0f[m HEAD@{21}: checkout: moving from jaeeun to jaeeun
+[33m1e6db0f[m HEAD@{22}: checkout: moving from main to jaeeun
+[33m1e6db0f[m HEAD@{23}: clone: from https://github.com/winterbar/hwadam.git

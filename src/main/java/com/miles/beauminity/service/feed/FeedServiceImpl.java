@@ -250,4 +250,9 @@ public class FeedServiceImpl implements FeedService {
 
         return feedList;
     }
+
+    @Override
+    public List<FeedVO> getMainFeed() {
+        return feedMapper.getMainFeed();
+    }
 }

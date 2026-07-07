@@ -35,4 +35,10 @@ public interface FeedMapper {
 
     public List<FeedVO> getMyFeedList(String username);
 
+
+
+    public void withdrawFeed(String username);
+
+    public List<FeedVO> getMainFeed();
+
 }

@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.miles.beauminity.vo.feed.FeedLikeVO;
 import com.miles.beauminity.vo.feed.FeedReplyVO;
 import com.miles.beauminity.vo.feed.FeedVO;
-import com.miles.beauminity.vo.login.MemberVO;
+
 
 public interface FeedService {
     public void postFeed(FeedVO feedVO, MultipartFile[] files, List<String> tagNames);
@@ -32,4 +32,6 @@ public interface FeedService {
     public void deleteReply(Long replyId);
     
     public List<FeedVO> getShareFeedlist(Long feedId);
+
+    public List<FeedVO> getMainFeed();
 }
