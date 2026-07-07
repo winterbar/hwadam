@@ -38,5 +38,5 @@ public interface QnaBoardMapper {
     public void updateQna(QnaBoardVO qnaBoardVO);
     
     // 해당 사용자의 게시물 리스트 가져오기 
-    public List<QnaBoardCompleteVO> getQnaList(String username);
+    public List<QnaBoardCompleteVO> getCommunityList(String username);
 }

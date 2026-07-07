@@ -294,4 +294,97 @@ document.addEventListener("DOMContentLoaded", () => {
     showPage(0);
 });
 
+document.addEventListener("DOMContentLoaded",()=>{
+        // 리뷰 페이징 (4개씩 보이게)
+        const mypageReviewTrack = document.getElementById("mypageReviewTrack");
+        const reviewPagination = document.getElementById("reviewPagination");
+
+        if(!mypageReviewTrack || !reviewPagination) return;
+
+        const card = Array.from(mypageReviewTrack.querySelectorAll(".mypage-row"));
+        const pageSize = 4;
+        const pageGroupSize =5;
+
+        let currentPage =0;
+        const totalPage = Math.ceil(card.length/pageSize);
+
+        function showPage(page){
+            currentPage = page;
+            const start = currentPage*pageSize;
+            const end = start + pageSize;
+            card.forEach(function (card,index){
+            if(index>=start&& index<end){
+                card.style.display="flex";
+            }else {
+                card.style.display="none";
+            }
+        });
+            createPageButton();
+
+        }
+        function createPageButton() {
+            if(card.length<=pageSize){
+                reviewPagination.style.display="none";
+                return;
+            }
+            reviewPagination.style.display="flex";
+            reviewPagination.innerHTML="";
+            const currentGroup = Math.floor(currentPage/pageGroupSize);
+                   // 현재 그룹의 시작 페이지
+        const groupStart = currentGroup * pageGroupSize;
+
+        // 현재 그룹의 끝 페이지
+        const groupEnd = Math.min(groupStart + pageGroupSize, totalPage);
+
+        // 이전 그룹 버튼
+        if (currentGroup > 0) {
+            const prevButton = document.createElement("button");
+            prevButton.type = "button";
+            prevButton.className = "review-page-btn review-arrow-btn";
+            prevButton.textContent = "<";
+
+            prevButton.addEventListener("click", function () {
+                showPage(groupStart - pageGroupSize);
+            });
+
+            reviewPagination.appendChild(prevButton);
+        }
+
+        // 숫자 페이지 버튼
+        for (let i = groupStart; i < groupEnd; i++) {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "qna-page-btn";
+            button.textContent = i + 1;
+
+            if (i === currentPage) {
+                button.classList.add("active");
+            }
+
+            button.addEventListener("click", function () {
+                showPage(i);
+            });
+
+            reviewPagination.appendChild(button);
+        }
+
+        // 다음 그룹 버튼
+        if (groupEnd < totalPage) {
+            const nextButton = document.createElement("button");
+            nextButton.type = "button";
+            nextButton.className = "review-page-btn review-arrow-btn";
+            nextButton.textContent = ">";
+
+            nextButton.addEventListener("click", function () {
+                showPage(groupEnd);
+            });
+
+            reviewPagination.appendChild(nextButton);
+        }
+    }
+
+    showPage(0);
+});
+
+
     

@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.miles.beauminity.service.qna_board.QnaService;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.MasterBoardLikeVO;
+import com.miles.beauminity.vo.board.MasterBoardReplyVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.login.MemberVO;
+import com.miles.beauminity.vo.qna_board.CommunityReplyVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 
 import jakarta.servlet.http.HttpSession;
@@ -202,5 +204,33 @@ public class QnaApiController {
 
         return ResponseEntity.ok(result);
     }
+
+    // 댓글 등록
+    @PostMapping("/reply")
+    public ResponseEntity<Map<String, Object>> insertReply(@RequestBody MasterBoardReplyVO masterBoardReplyVO){
+
+        qnaService.insertReply(masterBoardReplyVO);
+
+        return ResponseEntity.ok().build();
+    }
+
+    // 댓글 갱신
+    @GetMapping("/reply/{boardId}")
+    public ResponseEntity<Map<String, Object>> getReplyList(@PathVariable Long boardId) {
+
+
+        Map<String, Object> result = new HashMap<>();
+
+        List<CommunityReplyVO> replyList = qnaService.getReplyList(boardId);
+        int replyCount = qnaService.getReplyCountByBoardId(boardId);
+
+        result.put("reList", replyList);
+        result.put("rCount", replyCount);
+
+        return ResponseEntity.ok(result);
+    }
+    
+        
+    
 
 }

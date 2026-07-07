@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>화담 : 회원 탈퇴 완료</title>
+
+    <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
+        <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage/withdraw-complete.css}">
+</head>
+<body>
+
+<main class="withdraw-complete-wrap">
+
+    <section class="withdraw-complete-box">
+
+        <!-- 로고 -->
+        <div class="complete-logo-area">
+            <img th:src="@{/images/common/title.png}" alt="화담 로고">
+        </div>
+
+        <h1>회원 탈퇴가 완료되었습니다.</h1>
+
+        <p class="complete-main-text">
+            그동안 <strong>화담</strong>을 이용해주셔서 감사합니다.
+        </p>
+
+        <div class="complete-message">
+    <p>남겨주신 소중한 의견은 더 나은 서비스를</p>
+    <p>만드는 데 참고하겠습니다.</p>
+    <p>언제든 다시 화담에서 만날 수 있기를 기다릴게요.</p>
+</div>
+
+        <div class="complete-info-box">
+            <p>탈퇴 처리된 계정은 더 이상 로그인할 수 없습니다.</p>
+            <p>작성된 일부 게시글과 댓글은 서비스 운영 정책에 따라 보관될 수 있습니다.</p>
+        </div>
+
+        <a th:href="@{/}" class="btn-main">메인 화면으로 이동</a>
+    </section>
+
+</main>
+
+</body>
+</html>

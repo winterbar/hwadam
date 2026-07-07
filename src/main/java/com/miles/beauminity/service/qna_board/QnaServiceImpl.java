@@ -12,15 +12,18 @@ import com.miles.beauminity.mapper.board.MasterBoardFileMapper;
 import com.miles.beauminity.mapper.board.MasterBoardLikeMapper;
 import com.miles.beauminity.mapper.board.MasterBoardMapper;
 import com.miles.beauminity.mapper.login.MemberMapper;
+import com.miles.beauminity.mapper.qna_board.CommunityReplyMapper;
 import com.miles.beauminity.mapper.qna_board.QnaBoardMapper;
 import com.miles.beauminity.util.MasterFileUtil;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.MasterBoardLikeVO;
+import com.miles.beauminity.vo.board.MasterBoardReplyVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.board.SearchVO;
 import com.miles.beauminity.vo.board.TypeOffsetVO;
 import com.miles.beauminity.vo.login.MemberVO;
+import com.miles.beauminity.vo.qna_board.CommunityReplyVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardVO;
 
@@ -39,6 +42,7 @@ public class QnaServiceImpl implements QnaService {
     private MasterBoardLikeMapper masterBoardLikeMapper;
     private QnaBoardMapper qnaBoardMapper;
     private MemberMapper memberMapper;
+    private CommunityReplyMapper communityReplyMapper;
 
     // 게시글 등록
     @Override
@@ -94,7 +98,7 @@ public class QnaServiceImpl implements QnaService {
             nQ.setTitle(q.getTitle());
             nQ.setCreatedAt(q.getCreatedAt());
             nQ.setViewCnt(q.getViewCnt());
-            nQ.setReplyCnt(q.getReplyCnt());
+            nQ.setReplyCnt(getReplyCountByBoardId(q.getBoardId()));
             nQ.setCategory(qnaBoardMapper.getCategoryById(q.getBoardId()));
             finalList.add(nQ);
         }
@@ -324,6 +328,22 @@ public class QnaServiceImpl implements QnaService {
     @Override
     public MemberVO getMemberInfo(String username) {
         return memberMapper.findLoginId(username);
+    }
+
+    @Override
+    public List<CommunityReplyVO> getReplyList(Long id) {
+        return communityReplyMapper.getReplyList(id);
+    }
+
+    @Override
+    public void insertReply(MasterBoardReplyVO masterBoardReplyVO) {
+        communityReplyMapper.insertReply(masterBoardReplyVO);
+    }
+
+    @Override
+    public int getReplyCountByBoardId(Long id) {
+
+        return communityReplyMapper.getReplyCountByBoardId(id);
     }
 
 

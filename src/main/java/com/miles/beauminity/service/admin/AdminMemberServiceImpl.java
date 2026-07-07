@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.miles.beauminity.mapper.admin.AdminMemberMapper;
+import com.miles.beauminity.vo.admin.AdminMemberAnalysisVO;
 import com.miles.beauminity.vo.admin.AdminMemberBatchVO;
 import com.miles.beauminity.vo.admin.AdminMemberVO;
 import com.miles.beauminity.vo.admin.AdminPageVO;
@@ -21,12 +22,19 @@ public class AdminMemberServiceImpl implements AdminMemberService {
     private final AdminMemberMapper adminMemberMapper;
     private final PasswordEncoder passwordEncoder;
 
+    // 회원 조회 필터링 결과 회원 수 (페이징에 사용)
     @Override
     public long countMembers(AdminPageVO adminPageVO) {
         return adminMemberMapper.countMembers(adminPageVO);
     }
 
-    // 검색 필터링
+    // 회원 통계 필터링 결과 회원 수 (페이징에 사용)
+    @Override
+    public long countAnalysisMember(AdminMemberAnalysisVO adminMemberAnalysisVO) {
+        return adminMemberMapper.countAnalysisMember(adminMemberAnalysisVO);
+    }
+
+    // 회원 조회 필터링
     @Override
     public List<AdminMemberVO> searchMembers(AdminPageVO adminPageVO) {
         // 검색어가 null일 경우 DB에서 검색하지 않음
@@ -56,6 +64,34 @@ public class AdminMemberServiceImpl implements AdminMemberService {
         // searchType이 all일 경우 전체 목록을 검색
         // searchType이 있고 검색어가 있을 경우 조건에 따라 검색 (단, 키워드가 빈칸이면 검색X)
         List<AdminMemberVO> members = adminMemberMapper.selectMembers(adminPageVO);
+        convertText(members);
+        return members;
+    }
+    
+    // 회원 분석 필터링
+    @Override
+    public List<AdminMemberVO> analysisMembers(AdminMemberAnalysisVO adminMemberAnalysisVO, AdminPageVO adminPageVO) {
+        // 정렬 기준 칼럼이 null이 아닐 경우
+        if (adminPageVO.getSort() != null) {
+            switch (adminPageVO.getSort()) {
+                case "1":
+                    adminPageVO.setSort("username");
+                    break;
+                case "2":
+                    adminPageVO.setSort("name");
+                    break;
+                case "3":
+                    adminPageVO.setSort("nickname");
+                    break;
+                case "4":
+                    adminPageVO.setSort("point");
+                    break;
+                case "5":
+                    adminPageVO.setSort("signed_at");
+                    break;
+            }
+        }
+        List<AdminMemberVO> members = adminMemberMapper.selectAnalysisMembers(adminMemberAnalysisVO, adminPageVO);
         convertText(members);
         return members;
     }
