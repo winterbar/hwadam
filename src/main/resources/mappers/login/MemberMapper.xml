@@ -110,4 +110,27 @@
 
     </update>
 
+    <!-- 탈퇴한 회원 아이디 변경 -->
+    <update id="withdrawMember"
+            parameterType="string">
+        UPDATE member
+        SET status = "deleted"
+        where username=#{username}
+    </update>
+
+    <!--회원 탈퇴 사유 저장-->
+    <insert id="feedback"
+            parameterType="com.miles.beauminity.vo.login.FeedbackVO"
+            keyProperty="feedbackId"
+            >
+        INSERT INTO feedback(
+            reason,
+            improvement
+        )
+        VALUES (
+            #{reason},
+            #{improvement}
+        )
+    </insert>
+
 </mapper>
