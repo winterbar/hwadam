@@ -106,6 +106,7 @@
         GROUP BY board_type
 
     </select>
+    
 
     <!-- 닉네임 조회 -->
     <select id="getNicknameByBoardId"
