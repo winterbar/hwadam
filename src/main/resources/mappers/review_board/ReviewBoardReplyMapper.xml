@@ -8,7 +8,7 @@
 <insert id="saveReply"
         parameterType="com.miles.beauminity.vo.review.ReviewReplyVO">
     INSERT INTO board_reply (board_id, username, reply_content)
-    VALUES ( {#boardId}, #{userName}, #{replyContent} )
+    VALUES ( #{boardId}, #{userName}, #{replyContent} )
 </insert>
 
 <select id="getReplyList"
@@ -23,6 +23,8 @@
     WHERE board_id = #{boardId}
     ORDER BY reply_id DESC;
 </select>
+
+
 
 
 

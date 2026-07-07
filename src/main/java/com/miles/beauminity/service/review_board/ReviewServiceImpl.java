@@ -292,11 +292,17 @@ public class ReviewServiceImpl implements ReviewService {
         reviewBoardReplyMapper.saveReply(replyVO);
     }
 
-
     //역할: 게시글 댓글 조회
     @Override
     public List<ReviewReplyVO> getReplyList(Long boardId) {
     
         return reviewBoardReplyMapper.getReplyList(boardId);
+    }
+
+    //역할: 게시글 댓글 상승
+    @Override
+    public void replyUp(Long boardId) {
+
+        masterBoardMapper.replyUp(boardId);
     }
 }
