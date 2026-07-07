@@ -53,6 +53,8 @@ public interface MasterBoardMapper {
     public String getUsernameByBoardId (Long id);
 
     public int getCountSearchBoardByTitle(SearchVO searchVO);
+    
+    public void withdrawBoard(String username);
 
 }
 
