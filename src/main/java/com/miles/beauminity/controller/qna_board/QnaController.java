@@ -3,6 +3,7 @@ package com.miles.beauminity.controller.qna_board;
 import java.io.File;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.core.io.FileSystemResource;
@@ -20,8 +21,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.miles.beauminity.service.qna_board.QnaService;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
+import com.miles.beauminity.vo.board.MasterBoardReplyVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
+import com.miles.beauminity.vo.qna_board.CommunityReplyVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 
 import lombok.AllArgsConstructor;
@@ -136,10 +139,29 @@ public class QnaController {
 
         String nickname = qnaService.getNicknameByBoardId(id);
 
+        // 댓글수
+        int replyCount = qnaService.getReplyCountByBoardId(id);
+
+        // 댓글 가져오기
+        List<CommunityReplyVO> reList = qnaService.getReplyList(id);
+
+        List<CommunityReplyVO> fReList = new ArrayList<>();
+
+        for(CommunityReplyVO c : reList){
+            String reNickname = qnaService.getNicknameByBoardId(c.getBoardId());
+            c.setNickname(reNickname);
+            fReList.add(c);
+        }
+
+
+
         model.addAttribute("qna", qna);
         model.addAttribute("flist", qnaFiles);
         model.addAttribute("nickname", nickname);
         model.addAttribute("likecnt", qnaService.getLikeCount(id));
+        model.addAttribute("rList", fReList);
+        model.addAttribute("rCount", replyCount);
+
 
 
         return "qna_board/detail";
