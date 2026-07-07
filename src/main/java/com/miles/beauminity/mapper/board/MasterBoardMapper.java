@@ -31,6 +31,9 @@ public interface MasterBoardMapper {
     // UPDATE3 - 게시글 수정
     public void updateBoard(MasterBoardVO masterBoardVO);
 
+    // UPDATE4 - 게시글 댓글수 증가;
+    public void replyUp(Long id);
+
     // SELECT1 - 게시판 별 회원이 등록한 게시글 수 조회
     public List<Map<String, Object>> countBoard(String username);
 
