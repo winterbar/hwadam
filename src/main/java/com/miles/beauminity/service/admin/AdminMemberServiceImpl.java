@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.miles.beauminity.mapper.admin.AdminMemberMapper;
+import com.miles.beauminity.vo.admin.AdminMemberAnalysisVO;
 import com.miles.beauminity.vo.admin.AdminMemberBatchVO;
 import com.miles.beauminity.vo.admin.AdminMemberConditionVO;
 import com.miles.beauminity.vo.admin.AdminMemberStatsVO;

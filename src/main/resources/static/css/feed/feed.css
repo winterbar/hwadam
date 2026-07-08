@@ -33,10 +33,7 @@
 
 body {
   margin: 0;
-  background:
-    radial-gradient(circle at 12% 18%, rgba(255, 161, 193, 0.16), transparent 26%),
-    radial-gradient(circle at 85% 8%, rgba(255, 220, 232, 0.72), transparent 22%),
-    linear-gradient(180deg, #fff6fa 0%, #fffafc 45%, #ffffff 100%);
+  background: #ffffff !important;
   color: var(--hw-text);
 }
 
@@ -1527,13 +1524,16 @@ main {
    RESPONSIVE
    ========================================================= */
 
-@media (max-width: 1120px) {
+@media (max-width: 900px) {
   main {
     grid-template-columns: 1fr;
   }
 
   .feed-right-sidebar {
-    position: static;
+    /* 기존: position: static; */
+    /* 수정: 고정 기능을 유지하고 싶다면 아래처럼 변경 */
+    position: sticky; 
+    top: 96px;
     width: 100%;
   }
 
@@ -2219,6 +2219,201 @@ main {
 .feed-tag-more-toggle:checked ~ .feed-tag-more-btn .close-text {
   display: inline !important;
 }
+/* =========================================================
+   FINAL FIX - TOP5 / 필터 / 푸터 정리본
+   ========================================================= */
 
+/* 전체 배경은 흰색 */
+html,
+body {
+  margin: 0 !important;
+  min-height: 100vh !important;
+  background: #ffffff !important;
+}
 
+/* body flex 절대 금지: 상단 배너 길이 이상해짐 */
+body {
+  display: block !important;
+  background: #ffffff !important;
+}
 
+/* 상단 해시태그 배너 원래 크기 유지 */
+.feed-filter-bar {
+  max-width: 1240px !important;
+  margin: 0 auto !important;
+  padding: 26px 28px 0 !important;
+  position: relative !important;
+  z-index: 100 !important;
+}
+
+/* 상단 펼치기 박스 원래 형태 유지 */
+.feed-filter-summary {
+  min-height: 145px !important;
+  padding: 26px 38px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+/* 해시태그 펼침 영역 */
+.feed-filter-inner {
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* 메인 레이아웃 원래 형태 유지 */
+main.feed-page-layout {
+  max-width: 1240px !important;
+  margin: 28px auto 90px !important;
+  padding: 0 28px !important;
+
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 300px !important;
+  gap: 34px !important;
+  align-items: flex-start !important;
+
+  overflow: visible !important;
+
+  /* 피드가 없을 때 푸터가 너무 위로 올라오지 않게 */
+  min-height: 380px !important;
+}
+
+/* 왼쪽 영역 */
+main.feed-page-layout .main-left-content,
+main.feed-page-layout .dashboard-section {
+  overflow: visible !important;
+}
+
+/* 오른쪽 TOP5 자리 확보 */
+main.feed-page-layout .feed-right-sidebar {
+  position: relative !important;
+  width: 300px !important;
+  min-width: 300px !important;
+  height: 1px !important;
+  overflow: visible !important;
+  z-index: 20 !important;
+}
+
+/* TOP5는 스크롤해도 무조건 따라오게 */
+main.feed-page-layout .feed-trend-box {
+  position: fixed !important;
+
+  /* 화면에서 보이는 위치 */
+  top: 270px !important;
+
+  /* 1240px 레이아웃 기준 오른쪽 위치 */
+  left: calc(50% + 292px) !important;
+
+  width: 300px !important;
+  max-width: 300px !important;
+
+  z-index: 20 !important;
+}
+
+/* 필터 설정 버튼 줄은 TOP5보다 앞으로 */
+.feed-sort-select-wrap {
+  position: relative !important;
+  z-index: 9999999 !important;
+  overflow: visible !important;
+}
+
+/* details 자체도 앞으로 */
+.feed-filter-details {
+  position: relative !important;
+  z-index: 9999999 !important;
+  overflow: visible !important;
+}
+
+/* 필터 열렸을 때 */
+.feed-filter-details[open] {
+  z-index: 2147483000 !important;
+}
+
+/* 실제 필터 패널 */
+.feed-filter-panel {
+  position: absolute !important;
+  top: 46px !important;
+  left: 0 !important;
+
+  width: 250px !important;
+  padding: 14px 14px 16px !important;
+
+  background: #ffffff !important;
+  border: 1px solid #dfe3ea !important;
+  border-radius: 4px !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+
+  z-index: 2147483000 !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+}
+
+/* 필터가 부모한테 잘리지 않게 */
+main,
+.feed-page-layout,
+.main-left-content,
+.dashboard-section {
+  overflow: visible !important;
+}
+
+/* 피드 카드는 필터보다 뒤 */
+.feed-list,
+.feed-card {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* 필터 열었을 때 푸터랑 겹치지 않도록 공간만 추가 */
+main.feed-page-layout:has(.feed-filter-details[open]) {
+  min-height: 560px !important;
+}
+
+/* 푸터는 원래 흐름대로, 가로 길이 건드리지 않음 */
+footer,
+.footer {
+  position: relative !important;
+  width: 100% !important;
+  z-index: 1 !important;
+  margin-top: 0 !important;
+}
+
+/* 화면이 작아지면 TOP5 고정 해제 */
+@media (max-width: 1120px) {
+  main.feed-page-layout {
+    grid-template-columns: 1fr !important;
+    min-height: 420px !important;
+  }
+
+  main.feed-page-layout .feed-right-sidebar {
+    position: static !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+  }
+
+  main.feed-page-layout .feed-trend-box {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* 모바일 기존 구조 유지 */
+@media (max-width: 768px) {
+  .feed-filter-bar {
+    padding: 24px 16px 0 !important;
+  }
+
+  .feed-filter-summary {
+    min-height: auto !important;
+    padding: 28px 24px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  main.feed-page-layout {
+    padding: 0 16px !important;
+    margin-top: 24px !important;
+    grid-template-columns: 1fr !important;
+  }
+}

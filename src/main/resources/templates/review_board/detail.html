@@ -603,6 +603,70 @@ button, input, textarea, select {
 }
 
 /* ==========================================================================
+   수정 모드(자바스크립트 동적 생성) 컴포넌트 디자인
+   ========================================================================== */
+
+/* 수정 버튼 클릭 시 .comment-body 안에 교체되어 들어갈 textarea */
+.edit-textarea {
+    width: 100%;
+    height: 75px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    resize: none;
+    box-sizing: border-box;
+    font-size: 14px;
+    color: var(--text);
+    margin-top: 5px;
+}
+
+/* 수정창 포커스 시 작성창과 동일하게 핑크 테두리 적용 */
+.edit-textarea:focus {
+    outline: none;
+    border-color: var(--pink);
+}
+
+/* 수정 모드 하단 버튼 배치용 랩퍼 */
+.edit-btn-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+/* 수정 모드 - 취소 버튼 */
+.btn-cancel {
+    padding: 6px 14px;
+    background-color: #f0f0f0;
+    color: var(--sub);
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    background-color: #e5e5e5;
+}
+
+/* 수정 모드 - 저장 버튼 */
+.btn-save {
+    padding: 6px 14px;
+    background-color: var(--text); /* 본문 메인 컬러로 무게감 부여 */
+    color: var(--bg);
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-save:hover {
+    background-color: #333;
+}
+
+/* ==========================================================================
    [유지 및 보완] 모바일 및 태블릿 환경 대응 (반응형 미디어 쿼리)
    ========================================================================== */
 @media (max-width: 768px) {

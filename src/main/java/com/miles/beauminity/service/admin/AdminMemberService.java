@@ -2,6 +2,7 @@ package com.miles.beauminity.service.admin;
 
 import java.util.List;
 
+import com.miles.beauminity.vo.admin.AdminMemberAnalysisVO;
 import com.miles.beauminity.vo.admin.AdminMemberBatchVO;
 import com.miles.beauminity.vo.admin.AdminMemberConditionVO;
 import com.miles.beauminity.vo.admin.AdminMemberStatsVO;
