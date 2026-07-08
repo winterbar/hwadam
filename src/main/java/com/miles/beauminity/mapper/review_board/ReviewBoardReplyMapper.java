@@ -14,4 +14,7 @@ public interface ReviewBoardReplyMapper {
 
     // 리뷰 게시글 댓글 가져오기
     List<ReviewReplyVO> getReplyList(Long boardId);
+
+    // 리뷰 게시글 삭제
+    void removeReply(Long boardId);
 }
