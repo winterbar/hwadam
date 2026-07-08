@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.miles.beauminity.service.qna_board.QnaService;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
-import com.miles.beauminity.vo.board.MasterBoardReplyVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.qna_board.CommunityReplyVO;
@@ -220,7 +219,7 @@ public class QnaController {
 
         qnaService.updateBoard(masterBoardVO, files, category);
         
-        return "redirect:/board/qna";
+        return "redirect:/community";
     }
 
     // 파일 첨부 메서드
