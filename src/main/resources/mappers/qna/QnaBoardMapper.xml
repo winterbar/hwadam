@@ -134,4 +134,13 @@
         where username=#{username} and deleted=0
         ORDER BY mb.created_at DESC
     </select>
+    <select id="getTipList"
+            resultType="com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO">
+        select mb.title,qb.board_id,mb.view_cnt
+        from master_board mb
+        join qna_board qb
+            on mb.board_id = qb.board_id
+        where qb.category="꿀팁" and deleted=0
+        ORDER BY mb.view_cnt DESC
+    </select>
 </mapper>

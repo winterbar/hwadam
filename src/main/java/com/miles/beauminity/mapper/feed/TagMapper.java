@@ -23,5 +23,6 @@ public interface TagMapper {
     public void deleteTag(Long feedId);
 
     public void deleteFeedTag(FeedVO feedVO);
+    public List<FeedVO> getTopTagList();
 
 }

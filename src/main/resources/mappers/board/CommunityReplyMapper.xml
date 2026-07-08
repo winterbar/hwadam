@@ -28,7 +28,6 @@
 
     <!-- 회원의 게시글에 등록한 댓글 수 조회 -->
     <select id="getReplyCountByBoardId"
-
             parameterType="Long"
             resultType="Int">
 

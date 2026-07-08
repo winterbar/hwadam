@@ -213,13 +213,6 @@ document.addEventListener("DOMContentLoaded", function () {
             ".feed-comment-bubble, .comment-child-bubble",
           );
 
-          // @멘션 클릭 시 해당 댓글로 이동
-          if (mentionEl) {
-            event.stopPropagation();
-            moveToMentionTarget(mentionEl);
-            return;
-          }
-
           // 댓글 말풍선 클릭 시 답글 대상 설정
           if (commentBubble) {
             event.stopPropagation();
