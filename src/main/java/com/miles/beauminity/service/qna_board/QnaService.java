@@ -63,5 +63,9 @@ public interface QnaService {
     List<CommunityReplyVO> getReplyList(Long id);
 
     int getReplyCountByBoardId(Long id);
+
+    void updateReply(MasterBoardReplyVO masterBoardReplyVO);
+
+    void deleteReply(Long id);
     
 }
