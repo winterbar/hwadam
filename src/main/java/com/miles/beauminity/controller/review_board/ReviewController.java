@@ -22,6 +22,7 @@ import com.miles.beauminity.vo.review.ReviewSearchVO;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
@@ -206,6 +207,33 @@ public class ReviewController { // 역할: 후기 게시판에 대한 사용자�
         return "redirect:/review/detail/" + boardId;
     }
 
+    // 리뷰 게시판 댓글 삭제 요청 처리
+    @PostMapping("/review/detail/{boardId}/reply/delete/{replyId}")
+    @ResponseBody
+    public String deleteReply(@PathVariable Long boardId,
+                              @PathVariable Long replyId
+    ) {
+        reviewService.removeReply(replyId);
+        reviewService.replyDown(boardId);
+        
+        return "success";
+    }
+    
+    //리뷰 게시판 내냇글 등록 요청 처리
+    @PostMapping("/review/detail/{boardId}/reply/wirite")
+    @ResponseBody
+    public String postCommentReply(@PathVariable Long boardId,
+                                   @RequestBody ReviewReplyVO replyVO,
+                                   Principal principal
+    ) {
+        replyVO.setBoardId(boardId);
+        replyVO.setUserName(principal.getName());
+
+        reviewService.registerReply(replyVO);
+        
+        return "success";
+    }
+    
     
     
    
