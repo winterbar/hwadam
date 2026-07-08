@@ -31,8 +31,8 @@
 
             <div id="member-search" class="content-container">
                 <form th:action="@{/admin/members}" method="GET" class="filter-box">
-                    <input type="hidden" name="page" value="1">
                     <input type="hidden" name="tab" th:value="${tab}">
+                    <input type="hidden" name="page" value="1">
                     <select name="searchType" class="category">
                         <option value="all">전체목록</option>
                         <option value="username">아이디</option>
@@ -47,80 +47,73 @@
             </div>
 
             <div id="member-analysis" class="content-container" hidden>
-                <form th:action="@{/admin/members}" id="memberFilterForm" method="GET" class="filter-box">
-                    <input type="hidden" name="page" value="1">
+                <form th:action="@{/admin/members}" th:object="${analysis}" id="memberFilterForm" method="GET" class="filter-box">
                     <input type="hidden" name="tab" th:value="${tab}">
+                    <input type="hidden" name="page" value="1">
                     <div class="filter-row">
                         <label class="filter-label">가입일</label>
                         <div class="btn-group">
-                            <input type="radio" name="signedAt" value="today" id="s0"><label for="s0">오늘</label>
-                            <input type="radio" name="signedAt" value="7" id="s1"><label for="s1">7일</label>
-                            <input type="radio" name="signedAt" value="30" id="s2"><label for="s2">1개월</label>
-                            <input type="radio" name="signedAt" value="90" id="s3"><label for="s3">3개월</label>
-                            <input type="radio" name="signedAt" value="180" id="s4"><label for="s4">6개월</label>
-                            <input type="radio" name="signedAt" value="365" id="s5"><label for="s5">1년</label>
-                            <div class="date-input">
-                                <input type="date"> ~ <input type="date">
-                            </div>
+                            <input type="radio" name="signedAt" th:field="*{signedAt}" value="today" id="s0"><label for="s0">오늘</label>
+                            <input type="radio" name="signedAt" th:field="*{signedAt}" value="7" id="s1"><label for="s1">7일</label>
+                            <input type="radio" name="signedAt" th:field="*{signedAt}" value="30" id="s2"><label for="s2">1개월</label>
+                            <input type="radio" name="signedAt" th:field="*{signedAt}" value="90" id="s3"><label for="s3">3개월</label>
+                            <input type="radio" name="signedAt" th:field="*{signedAt}" value="180" id="s4"><label for="s4">6개월</label>
+                            <input type="radio" name="signedAt" th:field="*{signedAt}" value="365" id="s5"><label for="s5">1년</label>
                         </div>
                     </div>
 
                     <div class="filter-row"><label class="filter-label">나이</label>
                         <div class="btn-group">
-                            <input type="checkbox" name="birthdays" value="10" id="a1"><label for="a1">10대</label>
-                            <input type="checkbox" name="birthdays" value="20" id="a2"><label for="a2">20대</label>
-                            <input type="checkbox" name="birthdays" value="30" id="a3"><label for="a3">30대</label>
-                            <input type="checkbox" name="birthdays" value="40" id="a4"><label for="a4">40대</label>
-                            <input type="checkbox" name="birthdays" value="50" id="a5"><label for="a5">50대</label>
-                            <input type="checkbox" name="birthdays" value="60" id="a6"><label for="a6">60대▲</label>
+                            <th:block th:each="age : *{ageList}">
+                                <input type="checkbox" name="birthdays" th:value="${age.code}" th:id="${'skin_' + age.code}" th:checked="${age.checked}">
+                                <label th:for="${'skin_' + age.code}" th:text="${age.label}"></label>
+                            </th:block>
                         </div>
                     </div>
                     
                     <div class="filter-row"><label class="filter-label">성별</label>
                         <div class="btn-group">
-                            <input type="radio" name="gender" value="male" id="g1"><label for="g1">남</label>
-                            <input type="radio" name="gender" value="female" id="g2"><label for="g2">여</label>
+                            <input type="radio" name="gender" th:field="*{gender}" value="male" id="g1"><label for="g1">남</label>
+                            <input type="radio" name="gender" th:field="*{gender}" value="female" id="g2"><label for="g2">여</label>
                         </div>
                     </div>
 
                     <div class="filter-row"><label class="filter-label">권한</label>
                         <div class="btn-group">
-                            <input type="radio" name="role" value="user" id="r1"><label for="r1">일반</label>
-                            <input type="radio" name="role" value="admin" id="r2"><label for="r2">관리자</label>
+                            <input type="radio" name="role" th:field="*{role}" value="user" id="r1"><label for="r1">일반</label>
+                            <input type="radio" name="role" th:field="*{role}" value="admin" id="r2"><label for="r2">관리자</label>
                         </div>
                     </div>
 
                     <div class="filter-row"><label class="filter-label">상태</label>
                         <div class="btn-group">
-                            <input type="radio" name="status" value="normal" id="st1"><label for="st1">정상</label>
-                            <input type="radio" name="status" value="deleted" id="st2"><label for="st2">탈퇴</label>
+                            <input type="radio" name="status" th:field="*{status}" value="normal" id="st1"><label for="st1">정상</label>
+                            <input type="radio" name="status" th:field="*{status}" value="deleted" id="st2"><label for="st2">탈퇴</label>
                         </div>
                     </div>
 
                     <div class="filter-row"><label class="filter-label">피부</label>
                         <div class="btn-group">
-                            <input type="checkbox" name="skinTypes" value="normal" id="p1"><label for="p1">중성</label>
-                            <input type="checkbox" name="skinTypes" value="dry" id="p2"><label for="p2">건성</label>
-                            <input type="checkbox" name="skinTypes" value="oily" id="p3"><label for="p3">지성</label>
-                            <input type="checkbox" name="skinTypes" value="sensitive" id="p4"><label for="p4">민감성</label>
-                            <input type="checkbox" name="skinTypes" value="combination" id="p5"><label for="p5">복합성</label>
-                            <input type="checkbox" name="skinTypes" value="dehydrated" id="p6"><label for="p6">수부지</label>
+                            <th:block th:each="skinType : *{skinTypeList}">
+                                <input type="checkbox" name="skinTypes" th:value="${skinType.code}" th:id="${'skin_' + skinType.code}" th:checked="${skinType.checked}">
+                                <label th:for="${'skin_' + skinType.code}" th:text="${skinType.label}"></label>
+                            </th:block>
                         </div>
                     </div>
 
                     <div class="filter-row"><label class="filter-label">퍼스널컬러</label>
                         <div class="btn-group">
-                            <input type="checkbox" name="personalColors" value="spring" id="c1"><label for="c1">봄웜</label>
-                            <input type="checkbox" name="personalColors" value="fail" id="c2"><label for="c2">가을웜</label>
-                            <input type="checkbox" name="personalColors" value="summer" id="c3"><label for="c3">여름쿨</label>
-                            <input type="checkbox" name="personalColors" value="winter" id="c4"><label for="c4">겨울쿨</label>
+                            <th:block th:each="personalColor : *{personalColorList}">
+                                <input type="checkbox" name="personalColors" th:value="${personalColor.code}" th:id="${'skin_' + personalColor.code}" th:checked="${personalColor.checked}">
+                                <label th:for="${'skin_' + personalColor.code}" th:text="${personalColor.label}"></label>
+                            </th:block>
                         </div>
                     </div>
 
                     <div class="filter-row">
                         <label class="filter-label">포인트</label>
-                        <input type="number" name="minPoint" placeholder="최소"> ~
-                        <input type="number" name="maxPoint" placeholder="최대">
+                        <input type="number" name="minPoint" th:field="*{minPoint}" min="0" placeholder="최소"> ~
+                        <input type="number" name="maxPoint" th:field="*{maxPoint}" placeholder="최대">
                     </div>
 
                     <div class="filter-actions">
@@ -128,6 +121,46 @@
                         <button type="submit" class="btn-primary">검색</button>
                     </div>
                 </form>
+
+               <div class="stat-container" th:if="${analysis.hasSearchCondition()}">
+                    <div class="stat-header">
+                        총 검색 결과: <span class="total-count" th:text="${page.totalCount + '명'}"></span>
+                    </div>
+                    
+                    <div class="stat-grid">
+                        <div class="stat-column" th:if="${stats.genderStats != null and !#maps.isEmpty(stats.genderStats)}">
+                            <h4 class="stat-title">성별</h4>
+                            <div class="stat-row"><span>남</span> <span th:text="${(stats.genderStats['남'] ?: 0) + '명'}"></span></div>
+                            <div class="stat-row"><span>여</span> <span th:text="${(stats.genderStats['여'] ?: 0) + '명'}"></span></div>
+                        </div>
+                        <div class="stat-column" th:if="${stats.roleStats != null and !#maps.isEmpty(stats.roleStats)}">
+                            <h4 class="stat-title">권한</h4>
+                            <div class="stat-row"><span>일반</span> <span th:text="${(stats.roleStats['USER'] ?: 0) + '명'}"></span></div>
+                            <div class="stat-row"><span>관리자</span> <span th:text="${(stats.roleStats['ADMIN'] ?: 0) + '명'}"></span></div>
+                        </div>
+                        <div class="stat-column" th:if="${stats.statusStats != null and !#maps.isEmpty(stats.statusStats)}">
+                            <h4 class="stat-title">상태</h4>
+                            <div class="stat-row"><span>정상</span> <span th:text="${(stats.statusStats['normal'] ?: 0) + '명'}"></span></div>
+                            <div class="stat-row"><span>탈퇴</span> <span th:text="${(stats.statusStats['deleted'] ?: 0) + '명'}"></span></div>
+                        </div>
+                        <div class="stat-column" th:if="${stats.skinTypeStats != null and !#maps.isEmpty(stats.skinTypeStats)}">
+                            <h4 class="stat-title">피부 타입</h4>
+                            <div class="stat-row"><span>중성</span> <span th:text="${(stats.skinTypeStats['중성'] ?: 0) + '명'}"></span></div>
+                            <div class="stat-row"><span>건성</span> <span th:text="${(stats.skinTypeStats['건성'] ?: 0) + '명'}"></span></div>
+                            <div class="stat-row"><span>지성</span> <span th:text="${(stats.skinTypeStats['지성'] ?: 0) + '명'}"></span></div>
+                            <div class="stat-row"><span>민감성</span> <span th:text="${(stats.skinTypeStats['민감성'] ?: 0) + '명'}"></span></div>
+                            <div class="stat-row"><span>복합성</span> <span th:text="${(stats.skinTypeStats['복합성'] ?: 0) + '명'}"></span></div>
+                            <div class="stat-row"><span>수부지</span> <span th:text="${(stats.skinTypeStats['수부지'] ?: 0) + '명'}"></span></div>
+                        </div>
+                        <div class="stat-column" th:if="${stats.personalColorStats != null and !#maps.isEmpty(stats.personalColorStats)}">
+                            <h4 class="stat-title">퍼스널 컬러</h4>
+                            <div class="stat-row"><span>봄웜</span> <span th:text="${(stats.personalColorStats['봄웜'] ?: 0) + '명'}"></span></div>
+                            <div class="stat-row"><span>가을웜</span> <span th:text="${(stats.personalColorStats['가을웜'] ?: 0) + '명'}"></span></div>
+                            <div class="stat-row"><span>여름쿨</span> <span th:text="${(stats.personalColorStats['여름쿨'] ?: 0) + '명'}"></span></div>
+                            <div class="stat-row"><span>겨울쿨</span> <span th:text="${(stats.personalColorStats['겨울쿨'] ?: 0) + '명'}"></span></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="table-div">
@@ -162,24 +195,36 @@
                                 <th><input id="all-check" type="checkbox"></th>
                                 <th>
                                     <a th:href="@{/admin/members(
-                                        tab=${tab},page=${page.page}, searchType=${page.searchType},
-                                        keyword=${page.keyword}, sort='1', dir=${page.sort == 'username' && page.dir == 'desc' ? 'asc' : 'desc'})}"
+                                        tab=${tab},page=${page.page}, searchType=${page.searchType}, keyword=${page.keyword},
+                                        signedAt=${analysis.signedAt}, birthdays=${analysis.birthdays},
+                                        gender=${analysis.gender}, role=${analysis.role}, status=${analysis.status},
+                                        skinTypes=${analysis.skinTypes}, personalColors=${analysis.personalColors},
+                                        minPoint=${analysis.minPoint}, maxPoint=${analysis.maxPoint},
+                                        sort='username', dir=${page.sort == 'username' && page.dir == 'desc' ? 'asc' : 'desc'})}"
                                         th:classappend="${page.dir !=null && page.sort == 'username' ? page.dir : ''}"
                                         class="sort-link">아이디
                                     </a>
                                 </th>
                                 <th>
                                     <a th:href="@{/admin/members(
-                                        tab=${tab},page=${page.page}, searchType=${page.searchType},
-                                        keyword=${page.keyword}, sort='2', dir=${page.sort == 'name' && page.dir == 'desc' ? 'asc' : 'desc'})}"
+                                        tab=${tab},page=${page.page}, searchType=${page.searchType}, keyword=${page.keyword},
+                                        signedAt=${analysis.signedAt}, birthdays=${analysis.birthdays},
+                                        gender=${analysis.gender}, role=${analysis.role}, status=${analysis.status},
+                                        skinTypes=${analysis.skinTypes}, personalColors=${analysis.personalColors},
+                                        minPoint=${analysis.minPoint}, maxPoint=${analysis.maxPoint},
+                                        sort='name', dir=${page.sort == 'name' && page.dir == 'desc' ? 'asc' : 'desc'})}"
                                         th:classappend="${page.dir !=null && page.sort == 'name' ? page.dir : ''}"
                                         class="sort-link">이름
                                     </a>
                                 </th>
                                 <th>
                                     <a th:href="@{/admin/members(
-                                        tab=${tab},page=${page.page}, searchType=${page.searchType},
-                                        keyword=${page.keyword}, sort='3',dir=${page.sort == 'nickname' && page.dir == 'desc' ? 'asc' : 'desc'})}"
+                                        tab=${tab},page=${page.page}, searchType=${page.searchType}, keyword=${page.keyword},
+                                        signedAt=${analysis.signedAt}, birthdays=${analysis.birthdays},
+                                        gender=${analysis.gender}, role=${analysis.role}, status=${analysis.status},
+                                        skinTypes=${analysis.skinTypes}, personalColors=${analysis.personalColors},
+                                        minPoint=${analysis.minPoint}, maxPoint=${analysis.maxPoint},
+                                        sort='nickname',dir=${page.sort == 'nickname' && page.dir == 'desc' ? 'asc' : 'desc'})}"
                                         th:classappend="${page.dir !=null && page.sort == 'nickname' ? page.dir : ''}"
                                         class="sort-link">닉네임
                                     </a>
@@ -192,17 +237,25 @@
                                 <th>컬러</th>
                                 <th>
                                     <a th:href="@{/admin/members(
-                                        tab=${tab},page=${page.page}, searchType=${page.searchType},
-                                        keyword=${page.keyword}, sort='4', dir=${page.sort == 'point' && page.dir == 'desc' ? 'asc' : 'desc'})}"
+                                        tab=${tab},page=${page.page}, searchType=${page.searchType}, keyword=${page.keyword},
+                                        signedAt=${analysis.signedAt}, birthdays=${analysis.birthdays},
+                                        gender=${analysis.gender}, role=${analysis.role}, status=${analysis.status},
+                                        skinTypes=${analysis.skinTypes}, personalColors=${analysis.personalColors},
+                                        minPoint=${analysis.minPoint}, maxPoint=${analysis.maxPoint},
+                                        sort='point', dir=${page.sort == 'point' && page.dir == 'desc' ? 'asc' : 'desc'})}"
                                         th:classappend="${page.dir !=null && page.sort == 'point' ? page.dir : ''}"
                                         class="sort-link">포인트
                                     </a>
                                 </th>
                                 <th>
                                     <a th:href="@{/admin/members(
-                                        tab=${tab},page=${page.page}, searchType=${page.searchType},
-                                        keyword=${page.keyword}, sort='5', dir=${page.sort == 'signed_at' && page.dir == 'desc' ? 'asc' : 'desc'})}"
-                                        th:classappend="${page.dir !=null && page.sort == 'signed_at' ? page.dir : ''}"
+                                        tab=${tab},page=${page.page}, searchType=${page.searchType}, keyword=${page.keyword},
+                                        signedAt=${analysis.signedAt}, birthdays=${analysis.birthdays},
+                                        gender=${analysis.gender}, role=${analysis.role}, status=${analysis.status},
+                                        skinTypes=${analysis.skinTypes}, personalColors=${analysis.personalColors},
+                                        minPoint=${analysis.minPoint}, maxPoint=${analysis.maxPoint},
+                                        sort='signedAt', dir=${page.sort == 'signedAt' && page.dir == 'desc' ? 'asc' : 'desc'})}"
+                                        th:classappend="${page.dir !=null && page.sort == 'signedAt' ? page.dir : ''}"
                                         class="sort-link">가입일
                                     </a>
                                 </th>
@@ -252,7 +305,8 @@
                             signedAt=${analysis.signedAt}, birthdays=${analysis.birthdays},
                             gender=${analysis.gender}, role=${analysis.role}, status=${analysis.status},
                             skinTypes=${analysis.skinTypes}, personalColors=${analysis.personalColors},
-                            minPoint=${analysis.minPoint}, maxPoint=${analysis.maxPoint})}'|"
+                            minPoint=${analysis.minPoint}, maxPoint=${analysis.maxPoint},
+                            sort=${page.sort}, dir=${page.dir})}'|"
                             th:text="${num}" th:classappend="${page.page == num} ? 'page-btn active' : 'page-btn'"></button>
                     </th:block>
 

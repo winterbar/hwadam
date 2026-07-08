@@ -138,7 +138,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 선택한 필터링 조건 초기화
     resetBtn.addEventListener('click', (e) => {
-        memberFilterForm.reset();
+        memberFilterForm.querySelectorAll('input[type="checkbox"], input[type="radio"]')
+            .forEach(item => {
+                item.checked = false;
+        })
+        memberFilterForm.querySelectorAll('input[type="number"]').forEach(input => {
+            input.value = '';
+        })
+    });
+
+    // 다중 조건 필터링 (회원 통계)에서 포인트 범위를 하나만 적을 경우를 방지
+    memberFilterForm.addEventListener('submit', function(e) {
+        const min = document.querySelector('[name=minPoint]').value;
+        const max = document.querySelector('[name=maxPoint]').value;
+
+        if((min && !max) || (!min && max)) {
+            e.preventDefault(); // 전송 취소
+            alert("포인트는 최솟값과 최댓값을 모두 작성해야 합니다.");
+            if(!max) document.querySelector('[name=maxPoint]').focus();
+            else document.querySelector('[name=minPoint]').focus();
+        }
     });
 
     // 선택된 체크박스 계산
