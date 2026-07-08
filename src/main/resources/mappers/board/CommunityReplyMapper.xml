@@ -7,11 +7,11 @@
 
     <!-- insert:: 댓글 등록 -->
     <insert id="insertReply"
-            parameterType="com.miles.beauminity.vo.qna_board.CommunityReplyVO">
+            parameterType="com.miles.beauminity.vo.board.MasterBoardReplyVO">
     
         INSERT INTO board_reply
-        (reply_id, board_id, parents_reply_id, username, reply_content)
-        VALUES (#{replyId}, #{boardId}, #{parentsReplyId}, #{username}, #{replyContent})
+        (board_id, parents_reply_id, username, reply_content)
+        VALUES (#{boardId}, #{parentsReplyId}, #{username}, #{replyContent})
     
     </insert>
     
@@ -22,12 +22,13 @@
         SELECT *
         FROM board_reply
         WHERE board_id = #{value}
+        ORDER BY reply_id
 
     </select>
 
     <!-- 회원의 게시글에 등록한 댓글 수 조회 -->
     <select id="getReplyCountByBoardId"
-    
+
             parameterType="Long"
             resultType="Int">
 
@@ -36,6 +37,25 @@
             WHERE board_id = #{value}
     
     </select>
+
+    <!-- 댓글 갱신 -->
+    <update id="updateCommunityReply"
+            parameterType="com.miles.beauminity.vo.board.MasterBoardReplyVO">
+
+        UPDATE board_reply
+        SET reply_content = #{replyContent}
+        WHERE reply_id = #{replyId}
+    
+    </update>
+
+    <!-- 댓글 삭제 -->
+    <update id="deleteReply"
+            parameterType="Long">
+
+        UPDATE board_reply
+        SET deleted = 1
+        WHERE reply_id = #{value}
+    </update>
 
 
 </mapper>
