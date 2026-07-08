@@ -67,5 +67,6 @@ public interface QnaService {
     void updateReply(MasterBoardReplyVO masterBoardReplyVO);
 
     void deleteReply(Long id);
+    public List<QnaBoardCompleteVO> getTipList();
     
 }

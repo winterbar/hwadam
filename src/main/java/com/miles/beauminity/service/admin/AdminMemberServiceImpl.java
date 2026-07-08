@@ -2,7 +2,6 @@ package com.miles.beauminity.service.admin;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.miles.beauminity.mapper.admin.AdminMemberMapper;
-import com.miles.beauminity.vo.admin.AdminMemberAnalysisVO;
 import com.miles.beauminity.vo.admin.AdminMemberBatchVO;
 import com.miles.beauminity.vo.admin.AdminMemberConditionVO;
 import com.miles.beauminity.vo.admin.AdminMemberStatsVO;
