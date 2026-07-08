@@ -14,7 +14,7 @@ public interface FeedService {
 
     public List<String> getTagNameList();
 
-    public List<FeedVO> getFeedList(String username);
+    public List<FeedVO> getFeedList();
 
     public FeedVO loadFeedData(Long feedId);
 
@@ -33,5 +33,7 @@ public interface FeedService {
     
     public List<FeedVO> getShareFeedlist(Long feedId);
 
-    public List<FeedVO> getMainFeed();
+    public List<FeedVO> getTopTagList();
+
+
 }

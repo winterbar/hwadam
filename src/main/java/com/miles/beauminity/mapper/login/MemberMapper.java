@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.miles.beauminity.vo.feed.FeedVO;
+import com.miles.beauminity.vo.login.FeedbackVO;
 import com.miles.beauminity.vo.login.MemberVO;
 
 @Mapper
@@ -16,6 +17,8 @@ public interface MemberMapper {
     public MemberVO findLoginId(String username);
     public String findGradeName(String gradeId);
     public String findPasswordById(String username);
+    public void withdrawMember(String username);
+    public void feedback(FeedbackVO feedbackVO);
     
 
 }

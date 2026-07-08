@@ -12,6 +12,7 @@ import com.miles.beauminity.security.CustomUserDetails;
 import com.miles.beauminity.service.login.MemberService;
 import com.miles.beauminity.vo.feed.FeedVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
+import com.miles.beauminity.vo.review.ReviewBoardVO;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,11 +46,11 @@ public class MemberPageController {
             memberService.getMemberInfo(loginMember.getUsername())
         );
         List<FeedVO> feedList = memberService.getFeedList(loginMember.getUsername());
-        List<QnaBoardCompleteVO> qnaList = memberService.getQnaList(loginMember.getUsername());
+        List<QnaBoardCompleteVO> communityList = memberService.getCommunityList(loginMember.getUsername());
+        List<ReviewBoardVO> reviewList = memberService.getReviewList(loginMember.getUsername());
         model.addAttribute("feedList",feedList);
-        model.addAttribute("qnaList", qnaList);
-        model.addAttribute("communityList", new ArrayList<>());
-        model.addAttribute("orderList", new ArrayList<>());
+        model.addAttribute("communityList", communityList);
+        model.addAttribute("reviewList", reviewList);
         return "mypage/info";
     }
     

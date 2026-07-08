@@ -30,6 +30,9 @@ public interface ReviewService { // 역할: 후기 게시판에 대한 서비스
     // 후기 게시글 조회수 상승 명세
     void viewUp(Long boardId);
 
+    // 리뷰 게시글 댓글수 상승 명세
+    void replyUp(Long boardId);
+
     // 리뷰 게시판 댓글 등록 명세
     void registerReply(ReviewReplyVO replyVO);
 

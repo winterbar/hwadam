@@ -54,4 +54,14 @@
     where feed_id=#{feedId}
 </delete>
 
+<!-- 인기 TOP 10개 태그 가져오기 -->
+<select id="getTopTagList"
+        resultType="com.miles.beauminity.vo.feed.FeedVO">
+    select t.tag_name
+    from tag t
+    group by tag_name
+    order by count(*) desc
+    LIMIT 10
+</select>
+
 </mapper>

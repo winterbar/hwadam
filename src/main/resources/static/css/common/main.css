@@ -1,338 +1,586 @@
+/* =========================
+   기본 설정
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
 :root {
     --pink: #FFA1C1;
     --pink-deep: #f06f9f;
+    --pink-hot: #f54283;
     --pink-soft: #fff4f8;
     --line: #ededed;
-    --text: #333;
-    --sub: #666;
-    --bg: #fff;
-    --mint: #e8faf5;
+    --text: #111111;
+    --sub: #666666;
+    --bg: #ffffff;
     --sky: #eef7ff;
+    --mint: #24b59f;
+    --coral: #ff796a;
 }
 
 html,
 body {
+    margin: 0;
     overflow-x: hidden;
 }
 
 body {
     font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-    margin: 0;
-    padding: 0;
     color: var(--text);
     background: var(--bg);
-    line-height: 1.6;
 }
 
-/* main container */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font-family: inherit;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+.page {
+    background: #ffffff;
+}
+
 .container {
-    max-width: 1240px;
+    max-width: 1320px;
     margin: 0 auto;
     padding: 0 3%;
 }
 
 
-
 /* =========================
-   메인 배너
+   메인 배너 슬라이더
 ========================= */
 
-
-.hero {
-    padding-top: 0;
+.main-banner-slider {
+    position: relative;
+    width: 100vw;
+    height: 500px;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
-}
-
-.hero-banner {
     overflow: hidden;
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-    background: linear-gradient(90deg, #fff 0%, #fff6fa 45%, #ffe0ea 100%);
-    min-height: 470px;
-    display: grid;
-
-    grid-template-columns: 42% 58%;
-    align-items: center;
-    position: relative;
-
-    grid-template-columns: 45% 55%;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    border-bottom: 1px solid var(--line);
-    background:
-        radial-gradient(circle at 70% 50%, rgba(255, 161, 193, 0.18) 0%, rgba(255, 161, 193, 0.08) 34%, transparent 60%),
-        linear-gradient(90deg, #ffffff 0%, #fff9fc 45%, #ffeef5 100%);
-
+    background: #fff7fb;
 }
 
-/* 왼쪽 문구 영역 */
-.hero-copy {
-    padding: 52px 44px 52px 58px;
-    position: relative;
-    z-index: 10;
+.banner-slide {
+    display: none;
+    width: 100%;
+    height: 100%;
 }
 
-.hero-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 22px;
-    color: #ca6a8b;
-    font-size: 0.98rem;
-    font-weight: 900;
-    letter-spacing: -0.02em;
-
-
-}
-
-.hero-label::before {
-    content: "";
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--pink);
-
-}
-
-.hero-label::after {
-    content: "";
+.banner-slide.active {
     display: block;
-    width: 36px;
-    height: 1px;
-    background: currentColor;
-    opacity: 0.45;
 }
 
-.hero-copy h1 {
-    margin: 0;
-    font-size: 3.2rem;
-    line-height: 1.16;
-    letter-spacing: -0.08em;
-    font-weight: 500;
+
+/* =========================
+   1번 배너 : 이미지 배너
+========================= */
+
+.hero-image-banner {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    background: #fff7fb;
 }
 
-.hero-copy h1 strong {
-    color: var(--pink);
-    font-weight: 900;
+.hero-banner-image {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center -50px;
 }
 
-.hero-copy p {
-    margin: 18px 0 0;
-    font-size: 1.08rem;
-    line-height: 1.75;
-    color: #333;
-    letter-spacing: -0.03em;
-}
 
-/* 버튼 */
-.hero-links {
-    display: flex;
-    gap: 12px;
+/* =========================
+   1번 배너 네모 카드
+========================= */
 
-    margin-top: 28px;
+.hero-card {
+    position: absolute;
+    z-index: 20;
 
-    margin-top: 26px;
+    width: 264px;
+    min-height: 92px;
+    padding: 16px 17px;
 
-    flex-wrap: wrap;
-}
-
-.hero-button {
-
-    display: inline-flex;
+    display: grid;
+    grid-template-columns: 54px 1fr 18px;
     align-items: center;
-    justify-content: center;
-    padding: 13px 22px;
-    font-size: 0.96rem;
-    font-weight: 800;
-    border: 1px solid var(--pink);
+    gap: 13px;
 
-    min-width: 150px;
-    height: 46px;
-    padding: 0 24px;
-    background: linear-gradient(90deg, #f875a7 0%, #ffa1c1 100%);
-    color: #fff;
-    border: 1px solid transparent;
-    font-size: 0.94rem;
-    font-weight: 900;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 12px 24px rgba(255, 126, 170, 0.26);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.84);
+    border: 1px solid rgba(255, 161, 193, 0.36);
+    box-shadow:
+        0 16px 34px rgba(120, 52, 78, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
+
     transition: 0.2s ease;
 }
 
-.hero-button::after {
-    content: "›";
-    margin-left: 10px;
-    font-size: 1.4rem;
+.hero-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 22px 44px rgba(120, 52, 78, 0.17),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.hero-card-review {
+    right: 430px;
+    top: 150px;
+}
+
+.hero-card-question {
+    right: 70px;
+    top: 235px;
+}
+
+.hero-card-icon {
+    width: 54px;
+    height: 54px;
+
+    border-radius: 13px;
+    background: linear-gradient(135deg, #FFA1C1 0%, #ff7fac 100%);
+    box-shadow: 0 12px 20px rgba(255, 161, 193, 0.35);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-card-icon svg {
+    width: 28px;
+    height: 28px;
+    fill: #ffffff;
+}
+
+.hero-card-content {
+    min-width: 0;
+}
+
+.hero-card-content em {
+    display: block;
+    margin-bottom: 6px;
+
+    color: var(--pink);
+    font-size: 0.76rem;
+    font-style: normal;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+}
+
+.hero-card-content strong {
+    display: block;
+
+    color: #151515;
+    font-size: 0.98rem;
+    font-weight: 900;
+    line-height: 1.35;
+    letter-spacing: -0.045em;
+}
+
+.hero-card-content small {
+    display: block;
+    margin-top: 6px;
+
+    color: #666666;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    letter-spacing: -0.04em;
+}
+
+.hero-card-arrow {
+    color: #222222;
+    font-size: 1.7rem;
+    line-height: 1;
+    font-weight: 400;
+}
+
+
+/* =========================
+   2번 배너 : 포인트 이미지 배너
+========================= */
+
+.point-image-banner {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    background: #fffaf3;
+}
+
+.point-banner-image {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center -20px;
+}
+
+.point-image-button-wrap {
+    position: absolute;
+    left: max(50px, calc((100vw - 1320px) / 2 + 80px));
+    bottom: 92px;
+    z-index: 20;
+}
+
+.point-button {
+    min-width: 210px;
+    height: 56px;
+    padding: 0 26px;
+
+    border-radius: 8px;
+    background: linear-gradient(90deg, #24b59f 0%, #35c7b3 100%);
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 900;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+
+    box-shadow: 0 18px 34px rgba(36, 181, 159, 0.28);
+    transition: 0.2s ease;
+}
+
+.point-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 22px 42px rgba(36, 181, 159, 0.36);
+}
+
+.point-button span {
+    font-size: 1.8rem;
     line-height: 1;
 }
 
-.hero-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 16px 30px rgba(255, 126, 170, 0.34);
+
+/* 2번 배너 포인트 카드 */
+.point-image-card-grid {
+    position: absolute;
+    right: max(56px, calc((100vw - 1320px) / 2 + 56px));
+    top: 58px;
+    z-index: 20;
+
+    width: 420px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
 }
 
-.hero-button.sub {
+.point-card {
+    min-height: 150px;
+    padding: 24px 18px 20px;
+
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(220, 220, 220, 0.65);
+    box-shadow: 0 18px 38px rgba(90, 72, 62, 0.08);
+    backdrop-filter: blur(10px);
+
+    text-align: center;
+    transition: 0.2s ease;
+}
+
+.point-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 48px rgba(90, 72, 62, 0.12);
+}
+
+.point-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 16px;
+
+    border-radius: 50%;
+    font-size: 1.8rem;
+    font-weight: 900;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.point-icon.mint {
+    background: rgba(36, 181, 159, 0.15);
+    color: #24b59f;
+}
+
+.point-icon.coral {
+    background: rgba(255, 121, 106, 0.15);
+    color: #ff796a;
+}
+
+.point-icon.yellow {
+    background: rgba(243, 198, 76, 0.22);
+    color: #e2ad1b;
+}
+
+.point-icon.purple {
+    background: rgba(157, 139, 217, 0.17);
+    color: #8d7ac9;
+}
+
+.point-card p {
+    margin: 0;
+
+    color: #111111;
+    font-size: 0.96rem;
+    font-weight: 900;
+    letter-spacing: -0.045em;
+}
+
+.point-card strong {
+    display: block;
+    margin-top: 9px;
+
+    font-size: 1.7rem;
+    line-height: 1;
+    font-weight: 900;
+    color: #ff796a;
+}
+
+.point-card:nth-child(1) strong {
+    color: #24b59f;
+}
+
+.point-card:nth-child(3) strong {
+    color: #e2ad1b;
+}
+
+.point-card:nth-child(4) strong {
+    color: #8d7ac9;
+}
+
+
+/* =========================
+   3번 배너 : 여름 선케어 이미지 배너
+========================= */
+
+.summer-image-banner {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    background: #0aa7ef;
+}
+
+.summer-image {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center -40px;
+}
+
+.summer-store-button {
+    position: absolute;
+    left: max(50px, calc((100vw - 1320px) / 2 + 50px));
+    top: 360px;
+    z-index: 20;
+
+    height: 50px;
+    padding: 0 34px;
+
+    border-radius: 10px;
+    background: #fff0a8;
+    color: #1684c8;
+
+    font-size: 1.05rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 14px 28px rgba(0, 92, 150, 0.22);
+    transition: 0.2s ease;
+}
+
+.summer-store-button:hover {
+    transform: translateY(-2px);
+    background: #fff6c9;
+    box-shadow: 0 18px 36px rgba(0, 92, 150, 0.32);
+}
+
+
+/* =========================
+   배너 페이지 표시
+========================= */
+
+.banner-pager {
+    position: absolute;
+    z-index: 30;
+
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.banner-page {
+    min-width: 74px;
+    height: 44px;
+    padding: 0 18px;
+
+    border-radius: 999px;
     background: rgba(255, 255, 255, 0.86);
-    color: #d85f8c;
-    border: 1px solid rgba(255, 161, 193, 0.6);
+    color: #a7a7a7;
+    font-size: 1rem;
+    font-weight: 800;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 10px 24px rgba(120, 80, 90, 0.08);
+}
+
+.banner-page strong {
+    font-size: 1.15rem;
+    font-weight: 900;
+}
+
+.banner-dots {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.banner-dot {
+    width: 11px;
+    height: 11px;
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+    background: #dedede;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.banner-dot.active {
+    transform: scale(1.15);
+}
+
+/* 1번 */
+.hero-pager {
+    left: max(52px, calc((100vw - 1320px) / 2 + 52px));
+    bottom: 28px;
+}
+
+
+.hero-pager .banner-dot.active {
+    color: var(--pink);
+    background-color: var(--pink);
+}
+
+/* 2번 */
+.point-pager {
+    left: max(50px, calc((100vw - 1320px) / 2 + 50px));
+    bottom: 30px;
+}
+
+.point-pager .banner-page strong {
+    color: var(--mint);
+}
+
+.point-pager .banner-dot.active {
+    background: var(--mint);
+}
+
+/* 3번 */
+.summer-image-pager {
+    left: max(50px, calc((100vw - 1320px) / 2 + 50px));
+    bottom: 30px;
+}
+
+.summer-image-pager .banner-page {
+    background: rgba(255, 255, 255, 0.16);
+    color: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.38);
     box-shadow: none;
 }
 
-.hero-button.sub::after {
-    display: none;
+.summer-image-pager .banner-page strong {
+    color: #ffffff;
 }
 
-.hero-button.sub:hover {
-    background: #fff;
-    color: #f06f9f;
+.summer-image-pager .banner-dot {
+    background: rgba(255, 255, 255, 0.35);
 }
+
+.summer-image-pager .banner-dot.active {
+    background: #ffffff;
+}
+
 
 /* =========================
-   오른쪽 제품 비주얼 영역
+   배너 좌우 버튼
 ========================= */
 
-.hero-visual {
-    height: 360px;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    pointer-events: none;
-    isolation: isolate;
-}
-
-/* 뒤 핑크 아치 */
-.product-arch {
+.main-banner-arrow {
     position: absolute;
-    right: 128px;
-    bottom: 18px;
-    width: 430px;
-    height: 292px;
-    border-radius: 220px 220px 42px 42px;
-    background: linear-gradient(
-        180deg,
-        rgba(255, 202, 218, 0.78) 0%,
-        rgba(255, 239, 246, 0.95) 100%
-    );
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7);
-    z-index: 1;
-}
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 40;
 
-/* 오른쪽 세로 라인 장식 */
-.product-stripe {
-    position: absolute;
-    right: 82px;
-    top: 34px;
-    width: 122px;
-    height: 210px;
-    border-radius: 90px 90px 28px 28px;
-    opacity: 0.42;
-    background: repeating-linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.72) 0,
-        rgba(255, 255, 255, 0.72) 6px,
-        transparent 6px,
-        transparent 15px
-    );
-    z-index: 2;
-}
-
-/* 제품 아래 받침대 */
-.product-platform {
-    position: absolute;
-    right: 116px;
-    bottom: 12px;
-    width: 520px;
-    height: 54px;
-    border-radius: 50%;
-    background: radial-gradient(
-        ellipse at center,
-        rgba(255, 255, 255, 0.96) 0%,
-        rgba(255, 230, 239, 0.86) 45%,
-        rgba(255, 161, 193, 0.20) 72%,
-        transparent 100%
-    );
-    box-shadow:
-        0 18px 34px rgba(120, 52, 78, 0.13),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    z-index: 2;
-}
-
-/* 제품 이미지 */
-.hero-product {
-    position: relative;
-    z-index: 5;
-    height: 320px;
-    width: auto;
-    max-width: 540px;
-    object-fit: contain;
-    object-position: center bottom;
-    transform: translateX(-48px) translateY(8px);
-    filter:
-        drop-shadow(0 18px 18px rgba(90, 45, 65, 0.16))
-        drop-shadow(0 5px 6px rgba(90, 45, 65, 0.08));
-}
-
-/* =========================
-   구름 말풍선 이미지
-========================= */
-
-.speech-img {
-    position: absolute;
-    z-index: 4;
-    pointer-events: none;
-    opacity: 1;
-
-    /* 말풍선 자체 그림자 강하게 */
-    filter:
-        drop-shadow(0 16px 22px rgba(120, 52, 78, 0.32))
-        drop-shadow(0 6px 8px rgba(0, 0, 0, 0.14));
-}
-
-.speech-left {
-    left: -10px;
-    top: 28px;
-    width: 185px;
-    transform: rotate(-7deg);
-}
-
-.speech-right {
-    right: 70px;
-    top: 72px;
-    width: 220px;
-    transform: rotate(8deg);
-}
-
-/* 작은 원 장식 */
-.bubble-dot {
-    position: absolute;
-    border-radius: 50%;
-    z-index: 3;
-}
-
-.dot-one {
-    left: 180px;
-    top: 54px;
     width: 42px;
-    height: 42px;
-    background: rgba(255, 214, 228, 0.82);
+    height: 50px;
+
+    border: none;
+    border-radius: 0;
+    background: rgba(120, 120, 120, 0.2);
+    color: #ffffff;
+
+    font-size: 2.2rem;
+    font-weight: 300;
+    line-height: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    box-shadow: none;
+    padding: 0 0 5px 0;
+    transition: 0.2s ease;
 }
 
-.dot-two {
-    right: 162px;
-    top: 28px;
-    width: 26px;
-    height: 26px;
-    background: rgba(255, 255, 255, 0.58);
-    border: 1px solid rgba(255, 214, 228, 0.9);
+.main-banner-arrow:hover {
+    background: rgba(120, 120, 120, 0.55);
 }
+
+.main-banner-prev {
+    left: 0;
+}
+
+.main-banner-next {
+    right: 0;
+}
+
 
 /* =========================
    공통 섹션
@@ -352,6 +600,7 @@ body {
 
 .section-title {
     margin: 0;
+
     font-size: 2rem;
     line-height: 1.25;
     letter-spacing: -0.06em;
@@ -359,19 +608,55 @@ body {
 
 .section-sub {
     margin: 8px 0 0;
-    color: #777;
+
+    color: #777777;
     font-size: 0.98rem;
 }
 
 .view-more {
-    font-weight: 800;
+    color: #111111;
     font-size: 0.95rem;
-    color: #111;
+    font-weight: 800;
 }
 
 .view-more:hover {
     color: var(--pink-deep);
 }
+
+
+/* =========================
+   메인 콘텐츠 2단 레이아웃
+========================= */
+
+.home-content-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 310px;
+    gap: 34px;
+    align-items: start;
+}
+
+.home-main-content {
+    min-width: 0;
+}
+
+.home-main-content .section {
+    padding-top: 52px;
+}
+
+.home-main-content .section:first-child {
+    padding-top: 48px;
+}
+
+.home-side-content {
+    position: sticky;
+    top: 92px;
+
+    padding-top: 48px;
+
+    display: grid;
+    gap: 18px;
+}
+
 
 /* =========================
    상품 카드
@@ -379,41 +664,47 @@ body {
 
 .product-tabs {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
     flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
 .product-tabs button {
-    border: 1px solid #e7e7e7;
-    background: #fff;
+    min-width: 96px;
     padding: 10px 18px;
+
+    border: 1px solid #e7e7e7;
+    border-radius: 7px;
+    background: #ffffff;
+
     font-weight: 800;
     cursor: pointer;
 }
 
 .product-tabs button.active {
-    background: #111;
-    color: #fff;
-    border-color: #111;
+    background: #111111;
+    color: #ffffff;
+    border-color: #111111;
 }
 
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 22px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
 }
 
 .product-card {
     border: 1px solid var(--line);
-    background: #fff;
+    border-radius: 9px;
+    background: #ffffff;
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    transition: 0.2s ease;
 }
 
 .product-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 18px 36px rgba(0,0,0,0.08);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.08);
 }
 
 .product-img {
@@ -428,60 +719,41 @@ body {
 }
 
 .product-brand {
+    margin-bottom: 6px;
+
+    color: var(--pink-hot);
     font-size: 0.82rem;
     font-weight: 900;
-    color: var(--pink-deep);
-    margin-bottom: 6px;
 }
 
 .product-name {
+    min-height: 44px;
     margin: 0 0 12px;
+
     font-size: 1rem;
     line-height: 1.45;
     font-weight: 700;
-    min-height: 46px;
 }
 
 .price-row {
     display: flex;
     align-items: baseline;
-    gap: 8px;
     flex-wrap: wrap;
-}
-
-.discount {
-    color: #ff4f8d;
-    font-weight: 900;
-    font-size: 1rem;
+    gap: 12px;
 }
 
 .price {
-    color: #111;
-    font-size: 1.18rem;
+    color: #111111;
+    font-size: 1.05rem;
     font-weight: 900;
 }
 
-.origin {
-    color: #aaa;
-    text-decoration: line-through;
-    font-size: 0.88rem;
+.discount {
+    color: var(--pink-hot);
+    font-size: 0.92rem;
+    font-weight: 900;
 }
 
-.tag-row {
-    display: flex;
-    gap: 6px;
-    margin-top: 12px;
-    flex-wrap: wrap;
-}
-
-.tag {
-    font-size: 0.76rem;
-    background: #fff1f6;
-    color: #cc5e83;
-    border-radius: 999px;
-    padding: 5px 8px;
-    font-weight: 800;
-}
 
 /* =========================
    피드 카드
@@ -489,43 +761,65 @@ body {
 
 .feed-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
 }
 
 .feed-card {
     border: 1px solid var(--line);
-    background: #fff;
+    border-radius: 9px;
+    background: #ffffff;
     overflow: hidden;
+
+    transition: 0.2s ease;
 }
 
 .feed-card:hover {
-    box-shadow: 0 14px 30px rgba(0,0,0,0.07);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.07);
 }
 
-.feed-card img {
+.feed-card a {
+    display: block;
+}
+
+.feed-card img,
+.feed-no-image {
     width: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
     background: #f6f6f6;
 }
 
+.feed-no-image {
+    color: var(--pink-deep);
+    background: #fff4f8;
+    font-size: 0.82rem;
+    font-weight: 900;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .feed-info {
     padding: 12px;
 }
 
-.feed-user {
+.feed-user,
+.feed-nickname {
+    margin-bottom: 6px;
+
+    color: #111111;
     font-size: 0.82rem;
     font-weight: 900;
-    color: #111;
-    margin-bottom: 6px;
 }
 
 .feed-text {
     margin: 0;
+
+    color: #555555;
     font-size: 0.86rem;
     line-height: 1.45;
-    color: #555;
 
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -533,32 +827,35 @@ body {
     overflow: hidden;
 }
 
-.feed-meta {
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
-    color: #999;
-    font-size: 0.78rem;
-}
 
-.feed-no-image {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background: #fff4f8;
-    color: #f06f9f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.82rem;
-    font-weight: 900;
-}
-
-.feed-tag-row {
+/* 피드 태그 */
+.feed-main-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
-    margin-top: 9px;
+    margin: 0 0 10px;
 }
+
+.feed-main-tags span {
+   
+    color: #cc5e83;
+
+    font-size: 0.76rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.feed-meta {
+    margin-top: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+
+    color: #000000;
+    font-size: 0.78rem;
+}
+
 
 /* =========================
    리뷰 카드
@@ -566,18 +863,22 @@ body {
 
 .review-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
 }
 
 .review-card {
-    border: 1px solid var(--line);
-    background: #fff;
     padding: 22px;
+
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: #ffffff;
+
+    transition: 0.2s ease;
 }
 
 .review-card:hover {
-    box-shadow: 0 14px 30px rgba(0,0,0,0.07);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.07);
 }
 
 .review-top {
@@ -590,6 +891,7 @@ body {
 .review-thumb {
     width: 72px;
     height: 72px;
+
     border-radius: 18px;
     object-fit: cover;
     flex-shrink: 0;
@@ -597,23 +899,27 @@ body {
 
 .no-review-image {
     background: #fff4f8;
-    color: #f06f9f;
+    color: var(--pink-deep);
+    font-size: 0.72rem;
+    font-weight: 900;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.72rem;
-    font-weight: 900;
 }
 
 .review-brand {
-    font-size: 0.8rem;
-    color: #d06085;
-    font-weight: 900;
     margin-bottom: 4px;
+
+    color: var(--pink);
+    font-size: 0.8rem;
+    font-weight: 900;
 }
 
 .review-title {
     margin: 0;
+
+    color: #222222;
     font-size: 1rem;
     line-height: 1.45;
     font-weight: 800;
@@ -621,7 +927,8 @@ body {
 
 .review-desc {
     margin: 0;
-    color: #555;
+
+    color: #555555;
     font-size: 0.92rem;
     line-height: 1.65;
 
@@ -632,36 +939,17 @@ body {
 }
 
 .review-bottom {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-    justify-content: space-between;
-    border-top: 1px solid #f1f1f1;
-    padding-top: 12px;
     margin-top: 14px;
-}
-
-.review-chips {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-}
-
-.mini-chip {
-    font-size: 0.75rem;
-    background: #fff4f8;
-    color: #c86186;
-    padding: 5px 8px;
-    border-radius: 999px;
-    font-weight: 800;
+    padding-top: 12px;
+    border-top: 1px solid #f1f1f1;
 }
 
 .review-meta {
-    color: #999;
+    color: #999999;
     font-size: 0.8rem;
     font-weight: 700;
 }
+
 
 /* =========================
    질문 카드
@@ -669,22 +957,28 @@ body {
 
 .question-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 50px;
 }
 
 .question-card {
-    border: 1px solid var(--line);
-    background: #fff;
     padding: 22px;
+
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: #ffffff;
+
+    transition: 0.2s ease;
 }
 
 .question-card:hover {
-    box-shadow: 0 14px 30px rgba(0,0,0,0.07);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.07);
 }
 
 .question-card h3 {
     margin: 0 0 12px;
+
     font-size: 1.08rem;
     line-height: 1.45;
     letter-spacing: -0.04em;
@@ -692,7 +986,8 @@ body {
 
 .question-card p {
     margin: 0 0 14px;
-    color: #666;
+
+    color: #666666;
     font-size: 0.92rem;
     line-height: 1.6;
 
@@ -712,283 +1007,273 @@ body {
 
 .question-tags {
     display: flex;
-    gap: 6px;
     flex-wrap: wrap;
+    gap: 6px;
+}
+
+.mini-chip {
+    padding: 5px 8px;
+
+    border-radius: 999px;
+    background: #fff4f8;
+    color: var(--pink);
+
+    font-size: 0.75rem;
+    font-weight: 800;
 }
 
 .answer-count {
-    color: #111;
-    font-weight: 900;
+    color: #111111;
     font-size: 0.84rem;
+    font-weight: 900;
 }
+
 
 /* =========================
-   피부타입 / 태그
+   오른쪽 사이드
 ========================= */
 
-.type-tag-wrap {
+.side-panel {
+    padding: 22px 20px;
+
+    border: 1px solid #eeeeee;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.045);
+}
+
+.side-panel-head {
+    margin-bottom: 18px;
+}
+
+.side-panel-head h3 {
+    margin: 0;
+
+    color: #111111;
+    font-size: 1.08rem;
+    font-weight: 900;
+    letter-spacing: -0.055em;
+}
+
+.side-panel-head p {
+    margin: 7px 0 0;
+
+    color: #888888;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    letter-spacing: -0.035em;
+}
+
+
+/* 피부 타입별 인기 정보 */
+.side-type-list {
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 22px;
+    gap: 10px;
 }
 
-.panel {
-    border: 1px solid var(--line);
-    background: #fff;
-    padding: 24px;
+.side-type-item {
+    padding: 12px;
+
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+
+    border-radius: 12px;
+    background: #fafafa;
+
+    transition: 0.2s ease;
 }
 
-.panel h3 {
-    margin: 0 0 16px;
-    font-size: 1.18rem;
+.side-type-item:hover {
+    background: #fff4f8;
+    transform: translateY(-2px);
+}
+
+.side-type-item span {
+    height: 30px;
+
+    border-radius: 999px;
+    background: #fff1f6;
+    color: #cc5e83;
+
+    font-size: 0.78rem;
+    font-weight: 900;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.side-type-item strong {
+    min-width: 0;
+
+    color: #222222;
+    font-size: 0.86rem;
+    font-weight: 850;
+    letter-spacing: -0.04em;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.side-type-item em {
+    color: #999999;
+    font-size: 0.76rem;
+    font-style: normal;
+    font-weight: 800;
+}
+
+
+/* 인기 태그 */
+.side-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.side-tag {
+    padding: 8px 11px;
+
+    border-radius: 999px;
+    background: var(--sky);
+    color: #2a79b4;
+
+    font-size: 0.8rem;
+    font-weight: 850;
+    letter-spacing: -0.03em;
+
+    transition: 0.2s ease;
+}
+
+.side-tag:hover {
+    background: #d8ecff;
+    transform: translateY(-2px);
+}
+
+
+/* 이번주 키워드 */
+.side-keyword-panel {
+    background: linear-gradient(180deg, #ffffff 0%, #fff8fb 100%);
+    border-color: rgba(255, 161, 193, 0.25);
+}
+
+.side-keyword-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    display: grid;
+    gap: 12px;
+}
+
+.side-keyword-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.side-keyword-list span {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+
+    border-radius: 50%;
+    background: var(--pink);
+    color: #ffffff;
+
+    font-size: 0.76rem;
+    font-weight: 900;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.side-keyword-list strong {
+    color: #333333;
+    font-size: 0.88rem;
+    font-weight: 850;
     letter-spacing: -0.04em;
 }
 
-.type-chips,
-.popular-tags {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.type-chip {
-    padding: 11px 16px;
-    border-radius: 999px;
-    background: #fff6fa;
-    color: #cc6186;
-    font-weight: 800;
-    font-size: 0.9rem;
-}
-
-.type-chip:hover {
-
-    background: var(--pink);
-    color: #fff;
-}
-
-.hero-button.sub {
-    background: rgba(255,255,255,0.75);
-    color: #c46082;
-    border-color: rgba(244, 170, 196, 0.75);
-}
-
-.hero-visual {
-    min-height: 470px;
-    position: relative;
-    overflow: hidden;
-    padding: 0;
-}
-
-.hero-glow {
-    position: absolute;
-    width: 430px;
-    height: 430px;
-    right: 70px;
-    top: 10px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0) 74%);
-    z-index: 1;
-}
-
-.hero-wave {
-    position: absolute;
-    right: -110px;
-    bottom: -110px;
-    width: 760px;
-    height: 280px;
-    background: linear-gradient(180deg, #ffc9dd 0%, #ffa1c1 100%);
-    border-radius: 58% 42% 0 0 / 100% 100% 0 0;
-    z-index: 1;
-}
-
-.hero-badge {
-    position: absolute;
-    right: 42px;
-    top: 34px;
-    width: 116px;
-    height: 116px;
-    border-radius: 50%;
-    background: #fff064;
-    color: #2569d7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-weight: 900;
-    line-height: 1.08;
-    box-shadow: 0 18px 36px rgba(0,0,0,0.08);
-    transform: rotate(-9deg);
-    z-index: 5;
-}
-
-.hero-spark {
-    position: absolute;
-    color: rgba(255,255,255,0.78);
-    font-size: 28px;
-    font-weight: 700;
-    z-index: 2;
-}
-
-.hero-spark.one {
-    right: 318px;
-    top: 54px;
-}
-
-.hero-spark.two {
-    right: 42px;
-    top: 168px;
-    font-size: 18px;
-}
-
-.hero-floating {
-    position: absolute;
-    left: 56px;
-    top: 54px;
-    padding: 14px 18px;
-    border-radius: 18px;
-    background: rgba(255,255,255,0.88);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.06);
-    backdrop-filter: blur(6px);
-    z-index: 4;
-}
-
-.hero-floating b {
-    display: block;
-    color: #cd6e90;
-    font-size: 0.8rem;
-    margin-bottom: 5px;
-    letter-spacing: 0.03em;
-}
-
-.hero-floating span {
-    font-size: 0.94rem;
-    color: #444;
-    font-weight: 700;
-}
-
-
-.hero-base-shadow {
-    position: absolute;
-    right: 38px;
-    bottom: 24px;
-    width: 420px;
-    height: 34px;
-    border-radius: 50%;
-    background: rgba(99, 44, 64, 0.18);
-    filter: blur(14px);
-    z-index: 2;
-
-/* =========================
-   기타
-========================= */
-
-.main-board-box {
-    border: 1px solid var(--line);
-    background: #fff;
-    padding: 18px 22px;
-}
 
 /* =========================
    반응형
 ========================= */
 
-@media (max-width: 1100px) {
-    .hero-banner {
-        height: 340px;
-        grid-template-columns: 48% 52%;
+@media (max-width: 1180px) {
+    .home-content-layout {
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 24px;
     }
 
-    .hero-copy {
-        padding-left: 36px;
-        padding-right: 16px;
-    }
-
-    .hero-copy h1 {
-        font-size: 2.35rem;
-    }
-
-    .hero-copy p {
-        font-size: 0.92rem;
-    }
-
-    .hero-button {
-        min-width: 130px;
-        height: 42px;
-        font-size: 0.88rem;
-    }
-
-    .hero-visual {
-        height: 340px;
-    }
-
-    .product-arch {
-        right: 70px;
-        width: 360px;
-        height: 250px;
-    }
-
-    .product-stripe {
-        right: 34px;
-        width: 92px;
-        height: 170px;
-    }
-
-    .product-platform {
-        right: 60px;
-        width: 410px;
-    }
-
-    .hero-product {
-        height: 292px;
-        max-width: 470px;
-        transform: translateX(-32px) translateY(8px);
-    }
-
-    .speech-left {
-        left: -8px;
-        top: 36px;
-        width: 140px;
-    }
-
-    .speech-right {
-        right: 34px;
-        top: 80px;
-        width: 165px;
-    }
-
-    .dot-one {
-        left: 130px;
-        top: 52px;
-        width: 34px;
-        height: 34px;
-    }
-
-    .dot-two {
-        right: 122px;
-        top: 28px;
-        width: 22px;
-        height: 22px;
-    }
-
-    .product-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
+    .product-grid,
     .feed-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .review-grid {
-        grid-template-columns: 1fr;
-    }
-
+    .review-grid,
     .question-grid {
         grid-template-columns: 1fr;
     }
 
-    .type-tag-wrap,
-    .point-banner {
+    .point-image-card-grid {
+        width: 380px;
+        gap: 14px;
+    }
+
+    .point-card {
+        min-height: 130px;
+        padding: 18px 14px;
+    }
+
+    .point-icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 12px;
+        font-size: 1.45rem;
+    }
+
+    .point-card strong {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .main-banner-slider,
+    .hero-image-banner,
+    .point-image-banner,
+    .summer-image-banner {
+        height: 430px;
+    }
+
+    .home-content-layout {
         grid-template-columns: 1fr;
+    }
+
+    .home-side-content {
+        position: static;
+        padding-top: 24px;
+    }
+
+    .point-image-card-grid {
+        display: none;
+    }
+
+    .hero-card-review {
+        right: 300px;
+        top: 140px;
+    }
+
+    .hero-card-question {
+        right: 36px;
+        top: 220px;
+    }
+
+    .summer-store-button {
+        top: 300px;
     }
 }
 
@@ -997,153 +1282,240 @@ body {
         padding: 0 20px;
     }
 
-    .hero {
-        margin-left: -20px;
-        margin-right: -20px;
+    .main-banner-slider,
+    .hero-image-banner,
+    .point-image-banner,
+    .summer-image-banner {
+        height: 320px;
     }
 
-    .hero-banner {
-        height: auto;
-        grid-template-columns: 1fr;
-        padding: 32px 20px 0;
+    .hero-banner-image,
+    .point-banner-image {
+        object-position: center;
     }
 
-    .hero-copy {
-        padding: 0;
+    .summer-image {
+        object-position: center;
     }
 
-    .hero-label {
-        margin-bottom: 14px;
-        font-size: 0.82rem;
+    .hero-card {
+        display: none;
     }
 
-    .hero-copy h1 {
-        font-size: 2rem;
+    .main-banner-arrow {
+        width: 34px;
+        height: 42px;
+        font-size: 1.7rem;
     }
 
-    .hero-copy p {
-        font-size: 0.9rem;
+    .banner-pager {
+        gap: 12px;
     }
 
-    .hero-links {
-        margin-top: 20px;
+    .banner-page {
+        min-width: 62px;
+        height: 36px;
+        padding: 0 14px;
+        font-size: 0.86rem;
     }
 
-    .hero-button {
-        min-width: 126px;
-        height: 40px;
+    .banner-page strong {
+        font-size: 1rem;
+    }
+
+    .banner-dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .hero-pager,
+    .point-pager,
+    .summer-image-pager {
+        left: 20px;
+        bottom: 18px;
+    }
+
+    .point-image-button-wrap {
+        left: 20px;
+        bottom: 72px;
+    }
+
+    .point-button {
+        min-width: 160px;
+        height: 42px;
+        padding: 0 18px;
         font-size: 0.84rem;
     }
 
-    .hero-visual {
-        height: 230px;
-        margin-top: 12px;
-    }
-
-    .product-arch {
-        right: 50%;
-        bottom: 8px;
-        width: 300px;
-        height: 190px;
-        transform: translateX(50%);
-    }
-
-    .product-stripe {
-        right: 18px;
-        top: 28px;
-        width: 82px;
-        height: 150px;
-    }
-
-    .product-platform {
-        right: 50%;
-        bottom: 0;
-        width: 330px;
-        height: 42px;
-        transform: translateX(50%);
-    }
-
-    .hero-product {
-        height: 215px;
-        max-width: 340px;
-        transform: translateX(0) translateY(6px);
-    }
-
-    .speech-left {
-        left: 0;
-        top: 24px;
-        width: 96px;
-    }
-
-    .speech-right {
-        right: 0;
-        top: 58px;
-        width: 118px;
-    }
-
-    .dot-one {
-        left: 92px;
-        top: 38px;
-        width: 28px;
-        height: 28px;
-    }
-
-    .dot-two {
-        right: 74px;
-        top: 22px;
-        width: 18px;
-        height: 18px;
+    .summer-store-button {
+        left: 20px;
+        top: 220px;
+        height: 40px;
+        padding: 0 22px;
+        font-size: 0.86rem;
     }
 
     .section {
         padding-top: 42px;
     }
 
-    .section-title {
-        font-size: 1.6rem;
-    }
-
     .section-head {
-        align-items: flex-start;
         flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
     }
 
-    .product-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
+    .section-title {
+        font-size: 1.55rem;
     }
 
+    .section-sub {
+        font-size: 0.9rem;
+    }
+
+    .product-grid,
     .feed-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .review-grid,
+    .question-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-tabs {
+        gap: 8px;
+    }
+
+    .product-tabs button {
+        min-width: auto;
+        padding: 8px 14px;
+        font-size: 0.84rem;
+    }
+
+    .product-info,
+    .feed-info {
+        padding: 10px;
     }
 
     .product-name {
-        min-height: auto;
-        font-size: 0.92rem;
+        font-size: 0.86rem;
+        min-height: 38px;
     }
 
-    .point-items {
-        grid-template-columns: 1fr;
+    .price {
+        font-size: 0.9rem;
+    }
+
+    .discount {
+        font-size: 0.8rem;
+    }
+
+    .side-panel {
+        padding: 20px 18px;
+    }
+
+    .side-type-item {
+        grid-template-columns: 52px minmax(0, 1fr) auto;
     }
 }
-.hero-banner::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 39%;
-    width: 24%;
-    height: 100%;
+/* =========================
+   신상 & BEST 5개 카드
+========================= */
 
-    background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 249, 252, 0.65) 35%,
-        rgba(255, 238, 245, 0.45) 70%,
-        rgba(255, 238, 245, 0) 100%
-    );
-
-    z-index: 3;
-    pointer-events: none;
-
+.product-grid-five {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
 }
+
+.product-grid-five .product-card {
+    border-radius: 10px;
+}
+
+.product-grid-five .product-img {
+    aspect-ratio: 1 / 1;
+}
+
+.product-grid-five .product-info {
+    padding: 12px 10px 14px;
+}
+
+.product-grid-five .product-brand {
+    font-size: 0.72rem;
+    margin-bottom: 5px;
+}
+
+.product-grid-five .product-name {
+    min-height: 38px;
+    font-size: 0.84rem;
+    line-height: 1.35;
+    margin-bottom: 9px;
+}
+
+.product-grid-five .price-row {
+    gap: 6px;
+}
+
+.product-grid-five .price {
+    font-size: 0.88rem;
+}
+
+.product-grid-five .discount {
+    font-size: 0.76rem;
+}
+@media (max-width: 1180px) {
+    .product-grid-five {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 720px) {
+    .product-grid-five {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+}
+/* =========================
+   오른쪽 사이드 뷰티 팁 배너
+========================= */
+
+
+
+.side-beauty-tip-banner img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.banner-slide {
+    display: none;
+}
+
+.banner-slide.active {
+    display: block;
+}
+/* 배너 JS 클릭 강제 보정 */
+.main-banner-slider {
+    position: relative;
+}
+
+.banner-slide {
+    display: none !important;
+}
+
+.banner-slide.active {
+    display: block !important;
+}
+
+.main-banner-arrow {
+    z-index: 9999 !important;
+    pointer-events: auto !important;
+}
+
+.banner-dot {
+    pointer-events: auto !important;
+}
+.summer-store-button span {
+    font-size: 1.8rem;
+    line-height: 1;
 }

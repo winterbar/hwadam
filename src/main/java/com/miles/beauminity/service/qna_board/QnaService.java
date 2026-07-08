@@ -7,9 +7,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.MasterBoardLikeVO;
+import com.miles.beauminity.vo.board.MasterBoardReplyVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.login.MemberVO;
+import com.miles.beauminity.vo.qna_board.CommunityReplyVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 
 // 스프링에서 쓸 거니까 서비스 걸어줍니다.
@@ -55,5 +57,13 @@ public interface QnaService {
     void deleteFilesForUpdate (Long id);
 
     MemberVO getMemberInfo(String username);
+
+    void insertReply(MasterBoardReplyVO masterBoardReplyVO);
+
+    List<CommunityReplyVO> getReplyList(Long id);
+
+    int getReplyCountByBoardId(Long id);
+
+    public List<QnaBoardCompleteVO> getTipList();
     
 }
