@@ -7,7 +7,7 @@
 
     <!-- insert:: 댓글 등록 -->
     <insert id="insertReply"
-            parameterType="com.miles.beauminity.vo.qna_board.CommunityReplyVO">
+            parameterType="com.miles.beauminity.vo.board.MasterBoardReplyVO">
     
         INSERT INTO board_reply
         (board_id, parents_reply_id, username, reply_content)
@@ -22,6 +22,7 @@
         SELECT *
         FROM board_reply
         WHERE board_id = #{value}
+        ORDER BY reply_id
 
     </select>
 
@@ -36,6 +37,25 @@
             WHERE board_id = #{value}
     
     </select>
+
+    <!-- 댓글 갱신 -->
+    <update id="updateCommunityReply"
+            parameterType="com.miles.beauminity.vo.board.MasterBoardReplyVO">
+
+        UPDATE board_reply
+        SET reply_content = #{replyContent}
+        WHERE reply_id = #{replyId}
+    
+    </update>
+
+    <!-- 댓글 삭제 -->
+    <update id="deleteReply"
+            parameterType="Long">
+
+        UPDATE board_reply
+        SET deleted = 1
+        WHERE reply_id = #{value}
+    </update>
 
 
 </mapper>

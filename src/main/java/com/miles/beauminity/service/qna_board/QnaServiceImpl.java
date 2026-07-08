@@ -356,5 +356,15 @@ public class QnaServiceImpl implements QnaService {
         return communityReplyMapper.getReplyCountByBoardId(id);
     }
 
+    @Override
+    public void updateReply(MasterBoardReplyVO masterBoardReplyVO) {
+        communityReplyMapper.updateCommunityReply(masterBoardReplyVO);
+    }
+
+    @Override
+    public void deleteReply(Long id) {
+        communityReplyMapper.deleteReply(id);
+    }
+
 
 }

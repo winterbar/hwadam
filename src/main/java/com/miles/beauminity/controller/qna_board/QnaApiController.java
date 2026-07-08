@@ -31,6 +31,8 @@ import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @AllArgsConstructor
@@ -233,6 +235,25 @@ public class QnaApiController {
         result.put("rCount", replyCount);
 
         return ResponseEntity.ok(result);
+    }
+
+    // 댓글 수정
+    @PutMapping("/reply")
+    public ResponseEntity<Map<String, Object>> updateReply(@RequestBody MasterBoardReplyVO masterBoardReplyVO) {
+        qnaService.updateReply(masterBoardReplyVO);
+        
+        return ResponseEntity.ok().build();
+    }
+
+    // 댓글 수정
+    @PutMapping("/reply/delete")
+    public ResponseEntity<Map<String, Object>> deleteReply(@RequestBody MasterBoardReplyVO masterBoardReplyVO) {
+        
+        long id = masterBoardReplyVO.getReplyId();
+
+        qnaService.deleteReply(id);
+        
+        return ResponseEntity.ok().build();
     }
     
         
