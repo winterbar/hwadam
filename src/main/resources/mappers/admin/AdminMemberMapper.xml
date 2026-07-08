@@ -62,9 +62,23 @@
                 </when>
             </choose>
         </where>
-        <if test="sort != null">
-            ORDER BY ${sort} ${dir}
-        </if>
+        <choose>
+            <when test="sort != null and sort == 'username'">
+                ORDER BY username ${dir}
+            </when>
+            <when test="sort != null and sort == 'name'">
+                ORDER BY name ${dir}
+            </when>
+            <when test="sort != null and sort == 'nickname'">
+                ORDER BY nickname ${dir}
+            </when>
+            <when test="sort != null and sort == 'point'">
+                ORDER BY point ${dir}
+            </when>
+            <when test="sort != null and sort == 'signedAt'">
+                ORDER BY signed_at ${dir}
+            </when>
+        </choose>
         LIMIT #{offset}, #{size}
 
     </select>
@@ -72,7 +86,7 @@
     <!-- 등록된 멤버 수 계산 -->
     <!-- 다중 검색 조건에 따른 페이지 번호를 위해 동적 쿼리 추가 -->
     <select id="countAnalysisMember"
-            parameterType="com.miles.beauminity.vo.admin.AdminMemberAnalysisVO"
+            parameterType="com.miles.beauminity.vo.admin.AdminMemberConditionVO"
             resultType="long">
 
         SELECT count(*)
@@ -167,14 +181,18 @@
                     </foreach>
                 )
             </if>
+            <!-- 포인트 필터링 -->
+            <if test="minPoint != null and maxPoint != null">
+                AND point BETWEEN #{minPoint} AND #{maxPoint}
+            </if>
         </where>
     
     </select>
 
-    <!-- 회원 목록 출력 (회원 통계용)-->
+    <!-- SQL 프래그먼트 적용 -->
+    <!-- limit 절만 제거하여 통계에 사용하기 위함 -->
     <!-- 다중 검색 조건에 따른 회원 목록을 출력하기 위한 동적 쿼리 추가-->
-    <select id="selectAnalysisMembers"
-            resultType="com.miles.beauminity.vo.admin.AdminMemberVO">
+    <sql id="selectAnlaysisMembersBase">
 
         SELECT *
         FROM member
@@ -268,12 +286,46 @@
                     </foreach>
                 )
             </if>
+            <!-- 포인트 필터링 -->
+            <if test="analysisVO.minPoint != null and analysisVO.maxPoint != null">
+                AND point BETWEEN #{analysisVO.minPoint} AND #{analysisVO.maxPoint}
+            </if>
         </where>
-        <if test="pageVO.sort != null">
-            ORDER BY ${pageVO.sort} ${pageVO.dir}
-        </if>
+
+    </sql>
+
+    <!-- 회원 목록 출력 (회원 통계용)-->
+    <select id="selectAnalysisMembers"
+            resultType="com.miles.beauminity.vo.admin.AdminMemberVO">
+
+        <include refid="selectAnlaysisMembersBase"/>
+        <choose>
+            <when test="pageVO.sort != null and pageVO.sort == 'username'">
+                ORDER BY username ${pageVO.dir}
+            </when>
+            <when test="pageVO.sort != null and pageVO.sort == 'name'">
+                ORDER BY name ${pageVO.dir}
+            </when>
+            <when test="pageVO.sort != null and pageVO.sort == 'nickname'">
+                ORDER BY nickname ${pageVO.dir}
+            </when>
+            <when test="pageVO.sort != null and pageVO.sort == 'point'">
+                ORDER BY point ${pageVO.dir}
+            </when>
+            <when test="pageVO.sort != null and pageVO.sort == 'signedAt'">
+                ORDER BY signed_at ${pageVO.dir}
+            </when>
+        </choose>
         LIMIT #{pageVO.offset}, #{pageVO.size}
 
+    </select>
+
+    <select id="selectAnalysisAllMember"
+            parameterType="com.miles.beauminity.vo.admin.AdminMemberConditionVO"
+            resultType="com.miles.beauminity.vo.admin.AdminMemberVO">
+
+        <include refid="selectAnlaysisMembersBase"/>
+    
     </select>
 
     <!-- 한 명의 회원 정보 검색 -->

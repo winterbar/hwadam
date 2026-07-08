@@ -140,7 +140,7 @@ public class QnaController {
         String nickname = qnaService.getNicknameByBoardId(id);
 
         // 댓글수
-        int replyCount = qnaService.getReplyCountByBoardId(id);
+        
 
         // 댓글 가져오기
         List<CommunityReplyVO> reList = qnaService.getReplyList(id);
@@ -160,7 +160,6 @@ public class QnaController {
         model.addAttribute("nickname", nickname);
         model.addAttribute("likecnt", qnaService.getLikeCount(id));
         model.addAttribute("rList", fReList);
-        model.addAttribute("rCount", replyCount);
 
 
 
@@ -221,7 +220,7 @@ public class QnaController {
 
         qnaService.updateBoard(masterBoardVO, files, category);
         
-        return "redirect:/board/qna";
+        return "redirect:/community";
     }
 
     // 파일 첨부 메서드

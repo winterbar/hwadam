@@ -12,9 +12,12 @@
       th:content="${_csrf.headerName}"
     />
     <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
-    <link rel="stylesheet" th:href="@{/css/feed/feed.css}" />
+    
     <link rel="stylesheet" th:href="@{/css/common/main.css}" />
     <link rel="stylesheet" th:href="@{/css/common/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/feed/feed.css}" />
+   
 
     <style>
       .feed-card > .feed-profile-header {
@@ -212,7 +215,7 @@
       </div>
     </div>
 
-    <main>
+    <main class="feed-page-layout">
       <div class="main-left-content">
         <section class="dashboard-section">
           <div class="section-header feed-section-header">
@@ -853,7 +856,7 @@
           </div>
 
           <ol class="feed-trend-list" id="feed-trend-list">
-            <li class="feed-trend-empty">아직 인기 태그가 없습니다.</li>
+            <li class="feed-trend-empty">아직 인기 태그가 없습니다.</li> 
           </ol>
         </div>
       </aside>
@@ -885,6 +888,7 @@
     </div>
 
     <footer th:replace="~{layout/footer :: footer}"></footer>
+    
 
     <script th:src="@{/js/feed/feed_list.js}"></script>
     <script th:src="@{/js/feed/feed_like.js}"></script>

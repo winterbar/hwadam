@@ -193,10 +193,6 @@ body {
     border: 1px solid #ddd;
 }
 
-.btn-group .date-input {
-    display: none;
-}
-
 .btn-group label {
     display: inline-block;
     padding: 3px 8px;
@@ -238,6 +234,63 @@ body {
     border: 1px solid #ddd;
     background: #fff;
     cursor: pointer;
+}
+
+/* 통계 박스 */
+.stat-container {
+    background: #fff;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    margin: 20px auto; /* 컨테이너 중앙 정렬 */
+    max-width: 600px;  /* 너무 넓어지지 않도록 최대 너비 제한 */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* 약간의 그림자 추가 */
+}
+
+.stat-header {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: center; /* 헤더 텍스트 중앙 정렬 */
+}
+
+.total-count {
+    color: #e83e8c;
+}
+
+.stat-grid {
+    display: flex;
+    justify-content: center; /* 내부 항목들을 가로로 중앙 정렬 */
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.stat-column {
+    text-align: center; /* 제목과 아래 항목들 모두 가운데 정렬 */
+}
+
+.stat-title {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #f8f8f8;
+    padding-bottom: 8px;
+    min-width: 80px; /* 제목 너비 유지 */
+}
+
+.stat-row {
+    display: flex;
+    justify-content: center; /* 남/여, 일반/관리자 등 텍스트 중앙 정렬 */
+    gap: 15px; /* 항목 간격 */
+    font-size: 0.95rem;
+    padding: 3px 0;
+}
+
+.stat-row span:last-child {
+    font-weight: bold;
+    color: #333;
 }
 
 /* 테이블 스타일 */

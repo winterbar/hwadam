@@ -34,6 +34,9 @@ public interface MasterBoardMapper {
     // UPDATE4 - 게시글 댓글수 증가;
     public void replyUp(Long id);
 
+    // UPDATE5 - 게시글 댓글수 감소:
+    public void replyDown(Long id);
+
     // SELECT1 - 게시판 별 회원이 등록한 게시글 수 조회
     public List<Map<String, Object>> countBoard(String username);
 

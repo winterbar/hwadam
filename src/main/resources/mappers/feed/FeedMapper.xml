@@ -12,7 +12,6 @@
         ) </insert>
     <!-- 피드 내용 전체 가져오기-->
     <select id="getFeedList"
-        parameterType="string"
         resultType="com.miles.beauminity.vo.feed.FeedVO"> 
     SELECT
     f.feed_id,
@@ -49,7 +48,6 @@ LEFT JOIN feed_like fl_all
 
 LEFT JOIN feed_like fl_me
     ON f.feed_id = fl_me.feed_id
-    AND fl_me.username = #{username}
 
 WHERE f.deleted = 0
 
@@ -71,7 +69,7 @@ GROUP BY
 
     fl_me.like_id
 
-ORDER BY f.feed_id DESC; 
+ORDER BY f.feed_id DESC
 </select>
 
     <!-- 특정 피드 데이터 불러오기-->
@@ -174,7 +172,7 @@ ORDER BY
         WHEN f.feed_id = #{feedId} THEN 0
         ELSE 1
     END,
-    f.feed_id DESC; 
+    f.feed_id DESC
         
 </select>
  <!-- 해당 사용자의 피드 내용 전체 가져오기-->

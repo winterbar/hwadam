@@ -326,6 +326,18 @@
     gap: 6px;
 }
 
+.btn-comment-reply {
+    background: none;
+    border: none;
+    color: #777;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.btn-comment-reply:hover {
+    color: var(--color-accent);
+}
+
 .btn-comment-edit {
     background: none;
     border: none;
@@ -350,6 +362,48 @@
     color: #e74c3c;
 }
 
+.comment-edit-item {
+    width: 50%;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-row);
+ }
+
+.comment-edit-area textarea {
+    flex: 1;
+    box-sizing: border-box;
+    padding: 0.8rem;
+    border-radius: 2px;
+    width: 100%;
+    font-size: 0.9rem;
+    font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif;
+}
+
+.comment-btn-edit-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.btn-comment-update {
+    width: 90px;
+    height: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #ff8c92;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-comment-update:hover {
+    background: #ff7b82;
+}
+
 .comment-info {
     font-size: 0.8rem;
     color: var(--text-muted);
@@ -365,6 +419,58 @@
 .comment-content {
     font-size: 0.9rem;
     line-height: 1.5;
+}
+
+.child-comment{
+
+    margin-left:40px;
+
+    padding-left:16px;
+
+    border-left:3px solid #ffdbe7;
+
+}
+
+.reply-mention{
+
+    color:#ff7b9d;
+
+    font-weight:600;
+
+    margin-right:6px;
+
+}
+
+.child-reply-input{
+
+    margin-left:40px;
+    margin-top:12px;
+    margin-bottom:12px;
+
+}
+
+.reply-target{
+
+    margin-bottom:8px;
+
+    font-size:14px;
+
+}
+
+.reply-arrow{
+
+    color:#999;
+
+    margin-right:4px;
+
+}
+
+.reply-mention{
+
+    color:#ff7ca2;
+
+    font-weight:600;
+
 }
 
 /* 반응형 처리 (기존 1024px 미디어쿼리와 호환) */
