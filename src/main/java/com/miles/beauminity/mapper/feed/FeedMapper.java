@@ -6,14 +6,13 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.miles.beauminity.vo.feed.FeedLikeVO;
-import com.miles.beauminity.vo.feed.FeedReplyVO;
 import com.miles.beauminity.vo.feed.FeedVO;
 
 @Mapper
 public interface FeedMapper {
     public void postFeed(FeedVO feedVO);
 
-    public List<FeedVO> getFeedList(String username);
+    public List<FeedVO> getFeedList();
 
     public FeedVO loadFeedData(Long feedId);
 

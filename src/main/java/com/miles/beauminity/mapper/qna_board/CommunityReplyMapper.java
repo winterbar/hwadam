@@ -14,4 +14,8 @@ public interface CommunityReplyMapper {
     public List<CommunityReplyVO> getReplyList(Long id);
 
     public int getReplyCountByBoardId(Long id);
+
+    public void updateCommunityReply(MasterBoardReplyVO masterBoardReplyVO);
+    
+    public void deleteReply(Long id);
 }

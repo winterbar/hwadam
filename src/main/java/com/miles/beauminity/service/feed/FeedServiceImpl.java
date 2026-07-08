@@ -18,7 +18,7 @@ import com.miles.beauminity.vo.feed.FeedLikeVO;
 import com.miles.beauminity.vo.feed.FeedReplyVO;
 import com.miles.beauminity.vo.feed.FeedVO;
 import com.miles.beauminity.vo.feed.TagVO;
-import com.miles.beauminity.vo.login.MemberVO;
+
 
 import lombok.AllArgsConstructor;
 
@@ -62,8 +62,8 @@ public class FeedServiceImpl implements FeedService {
 
     // 작성된 피드 가져오기
     @Override
-    public List<FeedVO> getFeedList(String username) {
-        List<FeedVO> feedList = feedMapper.getFeedList(username);
+    public List<FeedVO> getFeedList() {
+        List<FeedVO> feedList = feedMapper.getFeedList();
         // 특정 피드에 작성된 해시태그 가져오기
         // 피드 전체 길이 만큼 반복
         for (FeedVO feed : feedList) {
@@ -250,4 +250,11 @@ public class FeedServiceImpl implements FeedService {
 
         return feedList;
     }
+    //가장 많이 달린 해시태그 10개 가져오기
+    @Override
+    public List<FeedVO> getTopTagList() {
+        return tagMapper.getTopTagList();
+    }
+
+  
 }

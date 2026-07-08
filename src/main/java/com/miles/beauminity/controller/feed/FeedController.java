@@ -33,14 +33,10 @@ public class FeedController {
 
     // 피드 버튼 눌렀을때 화면 호출
     @GetMapping("/feed")
-    public String getMainFeed(Model model, Principal principal) {
-        String username = null;
-        if (principal != null) {
-            username = principal.getName();
-        }
+    public String getMainFeed(Model model) {
 
         // 작성된 피드 리스트로 가져와서 화면 띄우기
-        List<FeedVO> feedList = feedService.getFeedList(username);
+        List<FeedVO> feedList = feedService.getFeedList();
         // 저장되어있는 전체 태그 리스트로 가져와서 화면 띄우기
         List<String> tagList = feedService.getTagNameList();
 
