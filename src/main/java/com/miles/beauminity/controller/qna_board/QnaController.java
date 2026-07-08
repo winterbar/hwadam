@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.miles.beauminity.service.qna_board.QnaService;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
-import com.miles.beauminity.vo.board.MasterBoardReplyVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.qna_board.CommunityReplyVO;
@@ -140,7 +139,7 @@ public class QnaController {
         String nickname = qnaService.getNicknameByBoardId(id);
 
         // 댓글수
-        int replyCount = qnaService.getReplyCountByBoardId(id);
+        
 
         // 댓글 가져오기
         List<CommunityReplyVO> reList = qnaService.getReplyList(id);
@@ -160,7 +159,6 @@ public class QnaController {
         model.addAttribute("nickname", nickname);
         model.addAttribute("likecnt", qnaService.getLikeCount(id));
         model.addAttribute("rList", fReList);
-        model.addAttribute("rCount", replyCount);
 
 
 
@@ -221,7 +219,7 @@ public class QnaController {
 
         qnaService.updateBoard(masterBoardVO, files, category);
         
-        return "redirect:/board/qna";
+        return "redirect:/community";
     }
 
     // 파일 첨부 메서드

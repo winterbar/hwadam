@@ -332,7 +332,17 @@ public class QnaServiceImpl implements QnaService {
 
     @Override
     public List<CommunityReplyVO> getReplyList(Long id) {
-        return communityReplyMapper.getReplyList(id);
+        List<CommunityReplyVO> reList = communityReplyMapper.getReplyList(id);
+        List<CommunityReplyVO> finList = new ArrayList<>();
+
+        for(CommunityReplyVO c : reList){
+            String nickname=memberMapper.findLoginId(c.getUsername()).getNickname();
+            c.setNickname(nickname);
+            finList.add(c);
+        }
+
+        return finList;
+
     }
 
     @Override
@@ -344,6 +354,16 @@ public class QnaServiceImpl implements QnaService {
     public int getReplyCountByBoardId(Long id) {
 
         return communityReplyMapper.getReplyCountByBoardId(id);
+    }
+
+    @Override
+    public void updateReply(MasterBoardReplyVO masterBoardReplyVO) {
+        communityReplyMapper.updateCommunityReply(masterBoardReplyVO);
+    }
+
+    @Override
+    public void deleteReply(Long id) {
+        communityReplyMapper.deleteReply(id);
     }
 
 
