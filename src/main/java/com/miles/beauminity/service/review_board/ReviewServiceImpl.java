@@ -299,10 +299,24 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewBoardReplyMapper.getReplyList(boardId);
     }
 
-    //역할: 게시글 댓글 상승
+    //역할: 게시글 댓글수 상승
     @Override
     public void replyUp(Long boardId) {
 
         masterBoardMapper.replyUp(boardId);
+    }
+
+    //역할: 게시글 댓글수 하락
+    @Override
+    public void replyDown(Long boardId) {
+
+        masterBoardMapper.replyDown(boardId);
+    }
+
+    //역할: 게시글 댓글 삭제(소프트 삭제)
+    @Override
+    public void removeReply(Long replyId) {
+
+        reviewBoardReplyMapper.removeReply(replyId);
     }
 }
