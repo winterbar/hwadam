@@ -1,6 +1,5 @@
 package com.miles.beauminity.controller.login;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,7 +14,6 @@ import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller

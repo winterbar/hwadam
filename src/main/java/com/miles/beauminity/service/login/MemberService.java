@@ -21,6 +21,7 @@ public interface MemberService {
     public void updateMemberProfile(CustomUserDetails loginMember, MultipartFile file);
     public void resetMemberProfile(String username);
     public boolean findPassword(String username, String password);
+    public boolean findEmail(String email);
     public List<FeedVO> getFeedList(String username);
     public List<QnaBoardCompleteVO> getCommunityList(String username);
     public List<ReviewBoardVO> getReviewList(String username);
