@@ -134,7 +134,9 @@
         where username=#{username} and deleted=0
         ORDER BY mb.created_at DESC
     </select>
-    <select id="getTipList"
+
+    <!-- 조회수 높은 꿀팁 리스트 가져오기-->
+    <select id="getTopTipList"
             resultType="com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO">
         select mb.title,qb.board_id,mb.view_cnt
         from master_board mb
@@ -143,4 +145,16 @@
         where qb.category="꿀팁" and deleted=0
         ORDER BY mb.view_cnt DESC
     </select>
+
+    <select id="getRecentqnaList"
+            resultType="com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO">
+        select mb.title,mb.view_cnt,mb.content,mb.view_cnt,mb.reply_cnt,qb.board_id
+        from master_board mb
+        join qna_board qb
+            on mb.board_id = qb.board_id
+        where qb.category="질문" and deleted=0
+        ORDER BY mb.created_at DESC
+    </select>
+
+
 </mapper>

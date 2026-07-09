@@ -44,6 +44,8 @@ public interface ReviewService { // 역할: 후기 게시판에 대한 서비스
 
     // 리뷰 게시글 댓글 삭제 명세
     void removeReply(Long replyId);
+
+    List<ReviewBoardVO> getTopReviewList();
     
   
 }

@@ -319,4 +319,10 @@ public class ReviewServiceImpl implements ReviewService {
 
         reviewBoardReplyMapper.removeReply(replyId);
     }
+
+
+    @Override
+    public List<ReviewBoardVO> getTopReviewList() {
+        return reviewBoardMapper.getTopReviewList();
+    }
 }

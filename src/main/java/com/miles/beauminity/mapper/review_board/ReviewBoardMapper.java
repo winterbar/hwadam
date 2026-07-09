@@ -46,8 +46,11 @@ public interface ReviewBoardMapper {
     // 개수 구하기 매퍼 선언
     int getTypeBoardCountWithSearch(@Param("type") String type, 
                                     @Param("search") ReviewSearchVO searchVO);
-
+    // 해당 사용자의 리뷰 가져오기
     public List<ReviewBoardVO> getReviewList(String username);
+
+    //조회수 높은 리뷰 리스트 가져오기
+    public List<ReviewBoardVO> getTopReviewList();
 
     
 

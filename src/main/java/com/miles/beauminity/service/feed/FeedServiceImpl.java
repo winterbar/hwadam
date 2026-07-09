@@ -1,5 +1,6 @@
 package com.miles.beauminity.service.feed;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -19,24 +20,32 @@ import com.miles.beauminity.vo.feed.FeedReplyVO;
 import com.miles.beauminity.vo.feed.FeedVO;
 import com.miles.beauminity.vo.feed.TagVO;
 
-
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
 public class FeedServiceImpl implements FeedService {
+
     private final FeedMapper feedMapper;
     private final FeedFileMapper feedFileMapper;
     private final TagMapper tagMapper;
     private final FeedReplyMapper feedReplyMapper;
 
+    // 피드 내용 저장하기 
     @Override
     public void postFeed(FeedVO feedVO, MultipartFile[] files, List<String> tagNames) {
         // 파일 저장
         feedMapper.postFeed(feedVO);
         Long feedId = feedVO.getFeedId();
-        String uploadPath = "c:/upload";
+        String uploadPath = "C:/upload/feed/";
+
+        File dir = new File(uploadPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
         List<FeedFileVO> fileList = FileUploadUtil.saveFiles(files, uploadPath);
+        
         for (FeedFileVO f : fileList) {
             f.setFeedId((feedId));
             feedFileMapper.postFile(f);
@@ -76,7 +85,7 @@ public class FeedServiceImpl implements FeedService {
             feed.setFeedTagList(feedTagList);
             feed.setFeedReplyList(feedReplyList);
             feed.setReplyCnt(feedReplyList.size());
-            
+
             String ageGroup = BirthdayToAgeGroup(feed.getBirthday());
             feed.setAgeGroup(ageGroup);
 
@@ -84,20 +93,21 @@ public class FeedServiceImpl implements FeedService {
 
         return feedList;
     }
-    
+
+    // 생년월일로 나이대 그룹 생성
     private String BirthdayToAgeGroup(String birthday) {
-        if(birthday== null || birthday.trim().isEmpty()) {
+        if (birthday == null || birthday.trim().isEmpty()) {
             return "나이대";
         }
         try {
             LocalDate birthDate = LocalDate.parse(birthday);
 
-            int age = Period.between(birthDate,LocalDate.now()).getYears();
-            if(age>=10 && age<20){
+            int age = Period.between(birthDate, LocalDate.now()).getYears();
+            if (age >= 10 && age < 20) {
                 return "10대";
-            } else if(age<40 && age>=20){
+            } else if (age < 40 && age >= 20) {
                 return "20~30대";
-            }else if(age<60 && age>=40){
+            } else if (age < 60 && age >= 40) {
                 return "40~50대";
             }
         } catch (Exception e) {
@@ -106,6 +116,7 @@ public class FeedServiceImpl implements FeedService {
         return "나이대";
     }
 
+    //피드 데이터 불러오기
     @Override
     public FeedVO loadFeedData(Long feedId) {
         FeedVO feed = feedMapper.loadFeedData(feedId);
@@ -117,12 +128,14 @@ public class FeedServiceImpl implements FeedService {
         return feed;
     }
 
+    // 해당 피드 삭제
     @Override
     public void deleteFeedId(Long feedId) {
         feedMapper.deleteFeedId(feedId);
         tagMapper.deleteTag(feedId);
     }
-
+    
+    // 피드 수정하기
     @Override
     @Transactional
     public void updateFeed(Long feedId, FeedVO feedVO,
@@ -152,15 +165,20 @@ public class FeedServiceImpl implements FeedService {
 
         // 새로 추가한 사진 저장
         if (files != null) {
-            String uploadPath = "c:/upload";
+    String uploadPath = "C:/upload/feed/";
 
-            List<FeedFileVO> fileList = FileUploadUtil.saveFiles(files, uploadPath);
+    File dir = new File(uploadPath);
+    if (!dir.exists()) {
+        dir.mkdirs();
+    }
 
-            for (FeedFileVO f : fileList) {
-                f.setFeedId(feedId);
-                feedFileMapper.postFile(f);
-            }
-        }
+    List<FeedFileVO> fileList = FileUploadUtil.saveFiles(files, uploadPath);
+
+    for (FeedFileVO f : fileList) {
+        f.setFeedId(feedId);
+        feedFileMapper.postFile(f);
+    }
+}
 
         // 태그는 기존 연결 삭제 후 다시 등록
         tagMapper.deleteTag(feedId);
@@ -182,6 +200,7 @@ public class FeedServiceImpl implements FeedService {
         }
     }
 
+    // 피드 좋아요
     @Override
     public int getFeedLike(Boolean liked, FeedLikeVO feedLikeVO) {
         if (liked) {
@@ -195,6 +214,7 @@ public class FeedServiceImpl implements FeedService {
 
     }
 
+    // 댓글 및 대댓글 등록
     @Override
     public List<FeedReplyVO> getFeedReply(FeedReplyVO feedReplyVO) {
         feedReplyMapper.postReply(feedReplyVO);
@@ -202,33 +222,35 @@ public class FeedServiceImpl implements FeedService {
         return feedReplyMapper.getReply(feedReplyVO.getFeedId());
     }
 
+    // 댓글 및 대댓글 수정 
     @Override
     public List<FeedReplyVO> updateReply(FeedReplyVO feedReplyVO) {
         feedReplyMapper.updateReply(feedReplyVO);
         return feedReplyMapper.getReply(feedReplyVO.getFeedId());
     }
 
+    // 댓글 및 대댓글 삭제
     @Override
     public void deleteReply(Long replyId) {
         Long parentsReplyId = feedReplyMapper.parentsReplyFindId(replyId);
-        // 자식 댓글 여부 확인 
+        // 자식 댓글 여부 확인
         Long parentReplyId = feedReplyMapper.hasChildren(replyId);
         int parentsReplyCnt = feedReplyMapper.parentsReplyCnt(replyId);
-           
+
         // 자식 댓글이 없다면 삭제
-        if(parentReplyId == null) {
+        if (parentReplyId == null) {
             feedReplyMapper.deleteReply(replyId);
-            if(parentsReplyCnt==1){
-            feedReplyMapper.parentsDelete(parentsReplyId);
+            if (parentsReplyCnt == 1) {
+                feedReplyMapper.parentsDelete(parentsReplyId);
             }
-        
-        }else{ // 자식이 존재한다면 deleted = 1로 업데이트
+
+        } else { // 자식이 존재한다면 deleted = 1로 업데이트
             feedReplyMapper.updateDeleteReply(replyId);
         }
-        
-        
+
     }
 
+    //피드 공유하기 버튼 기능 
     @Override
     public List<FeedVO> getShareFeedlist(Long feedId) {
         List<FeedVO> feedList = feedMapper.getShareFeedlist(feedId);
@@ -242,7 +264,7 @@ public class FeedServiceImpl implements FeedService {
             feed.setFeedTagList(feedTagList);
             feed.setFeedReplyList(feedReplyList);
             feed.setReplyCnt(feedReplyList.size());
-            
+
             String ageGroup = BirthdayToAgeGroup(feed.getBirthday());
             feed.setAgeGroup(ageGroup);
 
@@ -250,11 +272,35 @@ public class FeedServiceImpl implements FeedService {
 
         return feedList;
     }
-    //가장 많이 달린 해시태그 10개 가져오기
+
+    // 가장 많이 달린 해시태그 10개 가져오기
     @Override
     public List<FeedVO> getTopTagList() {
         return tagMapper.getTopTagList();
     }
+    
+    // 태그 검색 기능 
+    @Override
+    public List<FeedVO> getSearchTag(String tagName) {
+        List<FeedVO> feedList = tagMapper.getSearchTag(tagName);
+        for (FeedVO feed : feedList) {
+            // 특정 피드 아이디에 해당하는 해시태그를 가져와서 리스트로 저장
+            List<String> feedTagList = tagMapper.getFeedTagList(feed.getFeedId());
+            // 특정 피드 아이디에 해당하는 사진 가져와서 리스트로 저장
+            List<String> feedFileList = feedFileMapper.getFeedFileList(feed.getFeedId());
+            List<String> feedReplyList = feedReplyMapper.getFeedReplyList(feed.getFeedId());
+            feed.setFeedFileList(feedFileList);
+            feed.setFeedTagList(feedTagList);
+            feed.setFeedReplyList(feedReplyList);
+            feed.setReplyCnt(feedReplyList.size());
 
-  
+            String ageGroup = BirthdayToAgeGroup(feed.getBirthday());
+            feed.setAgeGroup(ageGroup);
+
+        }
+
+        return feedList;
+
+    }
+
 }
