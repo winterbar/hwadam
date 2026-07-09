@@ -12,5 +12,7 @@ public class ReviewReplyVO {
     private boolean deleted;
 
     private String nickName;
+
+    private String targetNickName;
   
 }

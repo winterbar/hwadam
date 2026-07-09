@@ -459,6 +459,21 @@ button, input, textarea, select {
     margin-top: 0px;
 }
 
+/* 대댓글(자식 댓글) 스타일 */
+.comment-item.child-reply {
+    margin-left: 30px; /* 오른쪽으로 30px 들여쓰기 */
+    background-color: #f9f9f9; /* 대댓글은 바탕색을 살짝 다르게 구별 */
+    border-left: 3px solid var(--pink); /* 왼쪽에 시그니처 핑크 선으로 포인트 */
+    padding-left: 15px;
+}
+
+/* 대댓글 닉네임 앞에 화살표 붙여주기 기믹 */
+.comment-item.child-reply .comment-meta strong::before {
+    content: "↳ ";
+    color: var(--pink);
+    margin-right: 4px;
+}
+
 .btn-reply-toggle {
 
     background-color: var(--bg); !important;
@@ -536,6 +551,15 @@ button, input, textarea, select {
     border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
+}
+
+.reply-target-info {
+    font-size: 0.85rem;
+    color: var(--text);
+    font-weight: bold;
+    margin-bottom: 0.6rem;
+    padding-left: 2px;
+
 }
 
 /* ==========================================================================
@@ -670,49 +694,49 @@ button, input, textarea, select {
    [유지 및 보완] 모바일 및 태블릿 환경 대응 (반응형 미디어 쿼리)
    ========================================================================== */
 @media (max-width: 768px) {
-    /* 전체 컨테이너 여백 조정으로 모바일 화면 넓게 쓰기 */
-    .detail-container, 
-    .comment-section {
-        padding: 20px;
-        margin: 20px 10px;
-    }
+/* 전체 컨테이너 여백 조정으로 모바일 화면 넓게 쓰기 */
+.detail-container, 
+.comment-section {
+    padding: 20px;
+    margin: 20px 10px;
+}
 
-    /* 가로로 나열되던 요소들을 세로(column)로 안전하게 배치 변경 */
-    .detail-meta-row, 
-    .product-info-card, 
-    .detail-actions-row { 
-        flex-direction: column; 
-        align-items: flex-start; /* 왼쪽 정렬로 통일 */
-        gap: 12px; 
-    }
+/* 가로로 나열되던 요소들을 세로(column)로 안전하게 배치 변경 */
+.detail-meta-row, 
+.product-info-card, 
+.detail-actions-row { 
+    flex-direction: column; 
+    align-items: flex-start; /* 왼쪽 정렬로 통일 */
+    gap: 12px; 
+}
 
-    /* 모바일에서는 조회수/댓글수 구역을 아래로 자연스럽게 내림 */
-    .stats-group {
-        margin-top: 5px;
-    }
-    .stats-group span:first-child {
-        margin-left: 0; /* 모바일 첫 요소 간격 초기화 */
-    }
+/* 모바일에서는 조회수/댓글수 구역을 아래로 자연스럽게 내림 */
+.stats-group {
+    margin-top: 5px;
+}
+.stats-group span:first-child {
+    margin-left: 0; /* 모바일 첫 요소 간격 초기화 */
+}
 
-    /* 하단 버튼 구역 모바일 최적화 */
-    .detail-actions-row {
-        align-items: stretch; /* 버튼들이 가로로 꽉 차게 설정 */
-        width: 100%;
-    }
+/* 하단 버튼 구역 모바일 최적화 */
+.detail-actions-row {
+    align-items: stretch; /* 버튼들이 가로로 꽉 차게 설정 */
+    width: 100%;
+}
 
-    /* 버튼 옆에 붙은 마진이나 정렬 그룹들 모바일 맞춤 변경 */
-    .detail-actions-row > div {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        width: 100%;
-    }
-    
-    .detail-actions-row .btn,
-    .btn-list-go {
-        text-align: center; /* 모바일 버튼 글씨 가운데 정렬 */
-        width: 100%;       /* 누르기 편하게 100% 폭 확장 */
-    }
+/* 버튼 옆에 붙은 마진이나 정렬 그룹들 모바일 맞춤 변경 */
+.detail-actions-row > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.detail-actions-row .btn,
+.btn-list-go {
+    text-align: center; /* 모바일 버튼 글씨 가운데 정렬 */
+    width: 100%;       /* 누르기 편하게 100% 폭 확장 */
+}
    
 
 
@@ -738,8 +762,7 @@ button, input, textarea, select {
                 </div>
                 <div class="detail-meta-row">
                     <div>
-                        작성자: <strong th:text="${detail.nickName}">작성자 닉네임</strong>
-                        <span style="margin: 0 0.5rem; color: var(--border-color);">|</span>
+                        작성자: <strong th:text="${detail.nickName}"> 작성자 닉네임</strong>
                         등록일: <span th:text="${#temporals.format(detail.createdAt, 'yyyy-MM-dd HH:mm')}">2026-06-19</span>
                         수정일: <span th:text="${detail.editedAt != null} ? ${#temporals.format(detail.editedAt, 'yyyy-MM-dd HH:mm')} : '수정 안 됨'"></span>
                     </div>
@@ -755,6 +778,7 @@ button, input, textarea, select {
                     <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.3rem;">리뷰 대상</span>
                     <span class="product-name" th:text="${detail.productName}">제품명 정보</span>
                 </div>
+             
                 <div class="product-image-wrapper">
                     <img th:if="${detail.productImage}" th:src="${detail.productImage}" alt="제품 사진">
                     <span th:unless="${detail.productImage}" style="font-size: 0.8rem; color: var(--text-muted);">사진 없음</span>
@@ -813,6 +837,7 @@ button, input, textarea, select {
             </div>
 
         </div> 
+
         <div style="max-width: 1200px; margin: 1rem auto 0 auto; background: #f8d7da; padding: 0.5rem; font-size: 0.8rem; color: #721c24; text-align: center; border-radius: 4px;">
             현재 로그인 계정 ID: <strong th:text="${#authentication.name}">로그인ID</strong> | 
             게시글 작성자 ID: <strong th:text="${detail.userName}">작성자ID</strong>
@@ -823,16 +848,22 @@ button, input, textarea, select {
             <h5>댓글 <span th:text="${detail.replyCnt}">0</span></h5>
             
             <div class="comment-list-box">
-                <div th:if="${#lists.isEmpty(replyList)}" class="comment-empty-box">
+                <div th:if="${#lists.isEmpty(replyList)}" 
+                     class="comment-empty-box">
                     등록된 댓글이 없습니다. 첫 댓글을 남겨보세요!
                 </div>
                 
                 <div th:unless="${#lists.isEmpty(replyList)}" 
                     th:each="reply : ${replyList}" 
+                    th:classappend="${reply.parentsReplyId != null} ? 'child-reply' : ''"
                     class="comment-item">
                     
                     <div class="comment-meta">
                         <strong th:text="${reply.nickName}">작성자 닉네임</strong>
+                        <span th:if="${reply.parentsReplyId != null}" 
+                            th:text="|@${reply.targetNickName}|" 
+                            style="color: #ff6b81; font-weight: bold; font-size: 0.9rem;">@사용자 b</span>
+
                     </div>
                     
                     <div class="comment-content-flex">
@@ -849,10 +880,13 @@ button, input, textarea, select {
                     <div class="reply-form-box hidden">
                         <form class="reply-submit-form">
 
+                            <div class="reply-target-info">
+                            </div>
+
                             <input type="hidden" name="boardId" th:value="${detail.boardId}">
                             <input type="hidden" name="parentsReplyId" th:value="${reply.replyId}">
                             
-                            <textarea class="reply-textarea" placeholder="답글을 입력하세요..." required></textarea>
+                            <textarea class="reply-textarea" placeholder="답글을 입력하세요..."></textarea>
                             
                             <div class="reply-form-btns">
                                 <button type="button" class="btn-reply-cancel">취소</button>
@@ -861,6 +895,8 @@ button, input, textarea, select {
                                     등록
                                 </button>
                             </div>
+
+                           
 
                         </form>
                     </div>
@@ -880,6 +916,7 @@ button, input, textarea, select {
                             삭제하기
                             </button>
                         </div>
+
                     </div>
 
                 </div>
@@ -891,8 +928,7 @@ button, input, textarea, select {
                     method="post">
                     <textarea name="replyContent" 
                             required 
-                            placeholder="댓글을 입력해주세요. 타인을 비방하는 글은 삭제될 수 있습니다.">
-                    </textarea>
+                            placeholder="댓글을 입력해주세요. 타인을 비방하는 글은 삭제될 수 있습니다."></textarea>
                     
                     <div class="comment-btn-row">
                         <button type="submit" class="btn-reply-submit">
@@ -902,6 +938,7 @@ button, input, textarea, select {
 
                 </form>
             </div>
+
         </div>
 
     </main>
@@ -989,7 +1026,13 @@ document.addEventListener("DOMContentLoaded", function () {
             
             // ② 그 댓글 상자 안 구역에 숨겨져 있는 답글 창(.reply-form-box)을 조준합니다.
             const replyForm = commentBox.querySelector(".reply-form-box");
+
+            //   현재 댓글 상자 안에서 작성자의 닉네임 텍스트를 낚아챈다.
+            const targetNickName = commentBox.querySelector(".comment-meta strong").textContent;
             
+            replyForm.querySelector(".reply-target-info").textContent = `${targetNickName}님에게 답글을 남기는 중...`;
+
+
             // ③ [핵심] hidden 클래스가 있으면 빼버리고, 없으면 넣어줍니다. (왔다 갔다 스위치)
             replyForm.classList.toggle("hidden");
             
@@ -998,7 +1041,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-// 댓글 수정 버튼을 클릭하면
+// 댓글 삭제 버튼을 클릭하면
 function deleteReply(boardId, replyId, btn) {
     
     // 1. 사용자 확인창
