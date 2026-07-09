@@ -404,6 +404,26 @@
     background: #ff7b82;
 }
 
+.btn-comment-reply-submit{
+    width: 90px;
+    height: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #ff8c92;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-comment-reply-submit:hover {
+    background: #ff7b82;
+}
+
 .comment-info {
     font-size: 0.8rem;
     color: var(--text-muted);
@@ -446,7 +466,18 @@
     margin-left:40px;
     margin-top:12px;
     margin-bottom:12px;
+    width: 50%;
 
+}
+
+.child-reply-input textarea {
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.8rem;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif;
 }
 
 .reply-target{
