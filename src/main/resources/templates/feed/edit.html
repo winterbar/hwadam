@@ -67,9 +67,9 @@
                 data-image-type="existing"
               >
                 <img
-                  th:src="@{'/upload/' + ${savedName}}"
-                  alt="기존 피드 이미지"
-                />
+  th:src="@{|/upload/feed/${savedName}|}"
+  alt="기존 피드 이미지"
+/>
 
                 <button
                   type="button"
