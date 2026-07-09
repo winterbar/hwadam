@@ -15,7 +15,7 @@
             
             <div class="register-header">
                 <a th:href="@{/}">
-                    <img th:src="@{/images/common/title2.png}" alt="Beauminity" class="register-logo">
+                    <img th:src="@{/images/common/title.png}" alt="Hwadam" class="register-logo">
                 </a>
             </div>
 
@@ -23,129 +23,40 @@
                 <div class="find-type-tab active" onclick="switchFindType('id')">아이디 찾기</div>
                 <div class="find-type-tab" onclick="switchFindType('pw')">비밀번호 찾기</div>
             </div>
-
-
+            
             <div id="findIdSection" class="find-section active">
-                <form onsubmit="return handleFindId(event);">
-                    
-                    <div class="form-group" style="margin-bottom: 0.75rem;">
-                        <div class="auth-radio-group">
-                            <label class="auth-label">
-                                <input type="radio" name="idAuthType" value="email" checked onchange="toggleInputType('id', 'email')"> 이메일 인증
-                            </label>
-                            <label class="auth-label">
-                                <input type="radio" name="idAuthType" value="phone" onchange="toggleInputType('id', 'phone')"> 전화번호 인증
-                            </label>
-                        </div>
+
+                <div class="auth-title">
+                    가입하신 이메일로 인증하여 아이디를 찾습니다.
+                </div>
+
+                <form th:action="@{/find/send-email}" method="POST" id="emailForm" class="flex-group">
+                    <div class="input-box">
+                        <input type="email" id="emailInput" name="email" placeholder="example@naver.com" oninput="validateEmail()" required>
                     </div>
-
-                    <div class="form-group">
-                        <div id="idEmailFormRow" class="input-with-btn">
-                            <input type="email" id="idEmailInput" class="form-input" placeholder="example@naver.com" oninput="validateInput('id')" required>
-                            <button type="button" id="idEmailBtn" class="inline-action-btn" disabled onclick="sendVerificationCode('id')">인증 요청</button>
-                        </div>
-
-                        <div id="idPhoneFormRow" class="input-with-btn" style="display: none;">
-                            <input type="tel" id="idPhoneInput" class="form-input" placeholder="010-1234-5678" maxlength="13" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" oninput="validateInput('id');">
-                            <button type="button" id="idPhoneBtn" class="inline-action-btn" disabled onclick="handlePhoneAuthClick('id')">인증번호 발급</button>
-                        </div>
-                    </div>
-
-                    <div id="idVerificationRow" class="verification-row">
-                        <div class="form-group" style="margin-bottom: 0;">
-                            
-                            <div id="idEmailVerifyWrapper">
-                                <div class="input-with-btn">
-                                    <input type="text" id="idVerifyInput" class="form-input" placeholder="인증번호 6자리 입력" maxlength="6" pattern="[0-9]{6}">
-                                    <button type="button" class="inline-action-btn" onclick="confirmVerificationCode('id')">확인</button>
-                                </div>
-                                <div id="idTimer" class="timer-text">남은 시간 : 3분 00초</div>
-                            </div>
-
-                            <div id="idPhoneVerifyWrapper" style="display: none;">
-                                <div class="generated-code-box">발급된 인증번호 : <span id="idGeneratedNum" class="generated-code-num">000000</span></div>
-                                <div class="sms-instruction-text"><span class="highlight-phone">1666-3538</span>로 인증번호를 메시지로 전송하고 확인버튼을 누르세요.</div>
-                            </div>
-
-                            <span id="idAuthMessage" class="error-text" style="display: none;"></span>
-                        </div>
-                    </div>
-
-                    <div id="idResultContainer" class="result-container" style="display: none;">
-                        <div class="result-title">가입된 아이디 목록</div>
-                        <ul class="result-list">
-                            <li class="result-item">
-                                <span class="result-username">user_beauty01</span>
-                                <span class="result-date">가입일: 2026.04.12</span>
-                            </li>
-                            <li class="result-item">
-                                <span class="result-username">beauminity_test</span>
-                                <span class="result-date">가입일: 2026.05.20</span>
-                            </li>
-                        </ul>
-                    </div>
-
+                    <button type="submit" id="emailBtn" class="check-btn" disabled>인증 요청</button>
                 </form>
-            </div>
 
-
-            <div id="findPwSection" class="find-section">
-                <form onsubmit="return handleFindPw(event);">
-                    
-                    <div class="form-group">
-                        <input type="text" id="pwUsernameInput" class="form-input" placeholder="아이디를 입력해주세요" oninput="validateInput('pw')" required>
+                <form th:action="@{/find/verify-email}" method="POST" id="verifyForm" class="flex-group" style="display: none;">
+                    <div class="input-box">
+                        <input type="hidden" id="hiddenEmailInput" name="email">
+                        <input type="text" name="code" id="verifyCode" placeholder="인증번호 6자리" maxlength="6" oninput="validateVerifyBtn()">
                     </div>
-
-                    <div class="form-group" style="margin-bottom: 0.75rem;">
-                        <div class="auth-radio-group">
-                            <label class="auth-label">
-                                <input type="radio" name="pwAuthType" value="email" checked onchange="toggleInputType('pw', 'email')"> 이메일 인증
-                            </label>
-                            <label class="auth-label">
-                                <input type="radio" name="pwAuthType" value="phone" onchange="toggleInputType('pw', 'phone')"> 전화번호 인증
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div id="pwEmailFormRow" class="input-with-btn">
-                            <input type="email" id="pwEmailInput" class="form-input" placeholder="example@naver.com" oninput="validateInput('pw')" required>
-                            <button type="button" id="pwEmailBtn" class="inline-action-btn" disabled onclick="sendVerificationCode('pw')">인증 요청</button>
-                        </div>
-
-                        <div id="pwPhoneFormRow" class="input-with-btn" style="display: none;">
-                            <input type="tel" id="pwPhoneInput" class="form-input" placeholder="010-1234-5678" maxlength="13" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" oninput="validateInput('pw');">
-                            <button type="button" id="pwPhoneBtn" class="inline-action-btn" disabled onclick="handlePhoneAuthClick('pw')">인증번호 발급</button>
-                        </div>
-                    </div>
-
-                    <div id="pwVerificationRow" class="verification-row">
-                        <div class="form-group" style="margin-bottom: 0;">
-                            
-                            <div id="pwEmailVerifyWrapper">
-                                <div class="input-with-btn">
-                                    <input type="text" id="pwVerifyInput" class="form-input" placeholder="인증번호 6자리 입력" maxlength="6" pattern="[0-9]{6}">
-                                    <button type="button" class="inline-action-btn" onclick="confirmVerificationCode('pw')">확인</button>
-                                </div>
-                                <div id="pwTimer" class="timer-text">남은 시간 : 3분 00초</div>
-                            </div>
-                            
-                            <div id="pwPhoneVerifyWrapper" style="display: none;">
-                                <div class="generated-code-box">발급된 인증번호 : <span id="pwGeneratedNum" class="generated-code-num">000000</span></div>
-                                <div class="sms-instruction-text"><span class="highlight-phone">1666-3538</span>로 인증번호를 메시지로 전송하고 확인버튼을 누르세요.</div>
-                            </div>
-
-                            <span id="pwAuthMessage" class="error-text" style="display: none;"></span>
-                        </div>
-                    </div>
-
+                    <button type="submit" id="verifyBtn" class="check-btn" disabled>확인</button>
                 </form>
+
+                <div id="timerDisplay" style="display: none;">
+                    남은 시간 : 5분 00초
+                </div>
+
             </div>
 
             <a th:href="@{/login}" class="register-submit-btn back-to-login-btn">로그인으로 돌아가기</a>
 
         </div>
     </main>
+
+    <div id="toast" class="toast"></div>
 
     <script th:src="@{/js/login/find.js}"></script>
 </body>
