@@ -22,11 +22,11 @@
         <!-- 프로필 영역 -->
         <section class="profile-section">
             <div class="profile-img-container">
-                <img th:src="${memberInfo.profile != null}
-                        ? @{'/upload/profile/' + ${memberInfo.profile.savedName}}
-                        : @{/images/common/base_profile.png}"
-                     alt="프로필 사진">
-            </div>
+    <img th:src="${memberInfo.profile != null}
+            ? @{'/upload/profile/' + ${memberInfo.profile.savedName}}
+            : @{/images/common/default-profile.png}"
+         alt="프로필 사진">
+</div>
 
             <div class="profile-info">
                 <p class="mypage-label">MY PAGE</p>
@@ -343,7 +343,7 @@
                                 <div class="mini-feed-img"
                                      th:if="${feed.feedFileList != null and feed.feedFileList.size() > 0}"
                                      th:with="firstFile=${feed.feedFileList[0]}">
-                                    <img th:src="@{|/upload/${firstFile}|}" alt="피드 이미지">
+                                    <img th:src="@{|/upload/feed/${firstFile}|}" alt="피드 이미지">
                                 </div>
 
                                 <!-- 이미지 없을 때 -->

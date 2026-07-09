@@ -25,14 +25,20 @@
     SELECT 
         r.reply_id AS replyId,
         r.board_id AS boardId,
-        r.username,
+        r.username AS userName,
         r.reply_content AS replyContent,
         r.deleted,
-        m.nickname AS nickName
+        r.parents_reply_id AS parentsReplyId,
+        m.nickname AS nickName,
+        pm.nickname AS targetNickName
     FROM board_reply r
     LEFT JOIN member m ON r.username = m.username
+    LEFT JOIN board_reply br ON r.parents_reply_id = br.reply_id
+    LEFT JOIN member pm ON br.username = pm.username
     WHERE r.board_id = #{boardId} AND r.deleted = 0
-    ORDER BY r.reply_id DESC;
+    ORDER BY 
+        IFNULL(r.parents_reply_id, r.reply_id) ASC,
+        r.reply_id ASC;
 
 </select>
 
