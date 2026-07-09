@@ -71,5 +71,7 @@ public interface QnaService {
     public List<QnaBoardCompleteVO> getTopTipList();
 
     public List<QnaBoardCompleteVO> getRecentqnaList();
+
+    String getCategoryById(Long id);
     
 }
