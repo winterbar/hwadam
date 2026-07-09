@@ -568,20 +568,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const profileImage = getProfileImage(reply);
 
+        const img = document.createElement("img");
+        img.alt = "프로필 이미지";
+
         if (profileImage) {
-          const img = document.createElement("img");
           img.src = "/upload/profile/" + profileImage;
-          img.alt = "프로필 이미지";
-
-          img.onerror = function () {
-            img.remove();
-            avatar.textContent = writerName ? writerName.substring(0, 1) : "회";
-          };
-
-          avatar.appendChild(img);
         } else {
-          avatar.textContent = writerName ? writerName.substring(0, 1) : "회";
+          img.src = "/images/common/default-profile.png";
         }
+
+        img.onerror = function () {
+          img.onerror = null;
+          img.src = "/images/common/default-profile.png";
+        };
+
+        avatar.appendChild(img);
 
         const main = document.createElement("div");
         main.className = "feed-comment-main";
@@ -600,6 +601,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         bubble.appendChild(avatar);
         bubble.appendChild(main);
+
         const moreWrap = createCommentMoreWrap(reply);
 
         if (moreWrap) {
@@ -658,20 +660,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const profileImage = getProfileImage(reply);
 
+        const img = document.createElement("img");
+        img.alt = "프로필 이미지";
+
         if (profileImage) {
-          const img = document.createElement("img");
           img.src = "/upload/profile/" + profileImage;
-          img.alt = "프로필 이미지";
-
-          img.onerror = function () {
-            img.remove();
-            avatar.textContent = writerName ? writerName.substring(0, 1) : "회";
-          };
-
-          avatar.appendChild(img);
         } else {
-          avatar.textContent = writerName ? writerName.substring(0, 1) : "회";
+          img.src = "/images/common/default-profile.png";
         }
+
+        img.onerror = function () {
+          img.onerror = null;
+          img.src = "/images/common/default-profile.png";
+        };
+
+        avatar.appendChild(img);
 
         const main = document.createElement("div");
         main.className = "comment-child-main";

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>화담 | 메인 화면</title>
+    <title>화담</title>
 
     <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
@@ -34,8 +34,8 @@
 
                     <!-- 배너 배경 이미지 -->
                     <img class="hero-banner-image"
-                         th:src="@{/images/main/hwadam-main-banner.png}"
-                         src="/images/main/hwadam-main-banner.png"
+                         th:src="@{/images/main/mainbanner1.png}"
+                         src="/images/main/mainbanner1.png"
                          alt="화담 뷰티 커뮤니티 메인 배너">
 
                     <!-- REVIEW 카드 -->
@@ -49,7 +49,7 @@
                         <span class="hero-card-content">
                             <em>REVIEW</em>
                             <strong>실제 사용 후기</strong>
-                            <small>건성 쿠션 후기 128개</small>
+                            <small>건성 쿠션 회신 후기</small>
                         </span>
 
                         <span class="hero-card-arrow">›</span>
@@ -66,7 +66,7 @@
                         <span class="hero-card-content">
                             <em>오늘의 화장</em>
                             <strong>화담 피드 구경하기</strong>
-                            <small>나와 비슷한 뷰티 루틴 보기</small>
+                            <small>#화담 #봄웜 #메이크업</small>
                         </span>
 
                         <span class="hero-card-arrow">›</span>
@@ -97,8 +97,8 @@
 
                     <!-- 배너 배경 이미지 -->
                     <img class="point-banner-image"
-                         th:src="@{/images/main/point-benefit-banner.png}"
-                         src="/images/main/point-benefit-banner.png"
+                         th:src="@{/images/main/mainbanner2.png}"
+                         src="/images/main/mainbanner2.png"
                          alt="활동할수록 쌓이는 화담 포인트 배너">
 
                     <!-- 버튼은 요소로 따로 사용 -->
@@ -170,8 +170,8 @@
 
                     <!-- 배너 이미지 -->
                     <img class="summer-image"
-                         th:src="@{/images/main/summer-suncare-banner.png}"
-                         src="/images/main/summer-suncare-banner.png"
+                         th:src="@{/images/main/mainbanner3.png}"
+                         src="/images/main/mainbanner3.png"
                          alt="여름 선케어 추천 배너">
 
                     <!-- 스토어 이동 버튼 -->
@@ -232,7 +232,7 @@
                             <p class="section-sub">화담에서 지금 많이 보는 신상 화장품과 인기 제품</p>
                         </div>
 
-                        <a href="#" class="view-more">전체보기 →</a>
+                        <a th:href="@{/store}" class="view-more">전체보기 →</a>
                     </div>
 
                     <div class="product-tabs">
@@ -357,9 +357,10 @@
                             <a th:href="@{/feed/{id}(id=${feed.feedId})}">
 
                                 <div th:if="${feed.feedFileList != null and feed.feedFileList.size() > 0}"
-                                     th:with="firstFile=${feed.feedFileList[0]}">
-                                    <img th:src="@{|/upload/${firstFile}|}" alt="피드 이미지">
-                                </div>
+     th:with="firstFile=${feed.feedFileList[0]}">
+    <img th:src="@{/upload/feed/{fileName}(fileName=${firstFile})}"
+         alt="피드 이미지">
+</div>
 
                                 <div class="feed-no-image"
                                      th:if="${feed.feedFileList == null or feed.feedFileList.size() == 0}">
@@ -479,184 +480,118 @@
                     </div>
 
                     <!-- 실제 리뷰 데이터 있을 때 -->
-                    <div class="review-grid" th:if="${reviewList != null and reviewList.size() > 0}">
+                   <div class="review-grid" th:if="${reviewList != null and reviewList.size() > 0}">
 
-                        <article class="review-card"
-                                 th:each="review, reviewStat : ${reviewList}"
-                                 th:if="${reviewStat.index < 2}">
+    <article class="review-card"
+             th:each="review, reviewStat : ${reviewList}"
+             th:if="${reviewStat.index < 2}">
 
-                            <a th:href="@{/review/detail/{id}(id=${review.boardId})}">
+        <a th:href="@{/review/detail/{id}(id=${review.boardId})}">
 
-                                <div class="review-top">
-                                    <div class="review-thumb no-review-image">
-                                        <span>REVIEW</span>
-                                    </div>
+            <div class="review-top">
 
-                                    <div>
-                                        <div class="review-brand">
-                                            <span th:text="${review.category1}">메이크업</span>
-                                        </div>
+                <!-- 리뷰 이미지 있을 때 -->
+                <div class="review-thumb"
+                     th:if="${review.savedName != null}">
+                    <img th:src="@{|/upload/review/${review.savedName}|}"
+                         alt="리뷰 이미지">
+                </div>
 
-                                        <p class="review-title"
-                                           th:text="${review.title}">
-                                            리뷰 제목
-                                        </p>
-                                    </div>
-                                </div>
+                <!-- 리뷰 이미지 없을 때 -->
+                <div class="review-thumb no-review-image"
+                     th:if="${review.savedName == null}">
+                    <span>REVIEW</span>
+                </div>
 
-                                <p class="review-desc"
-                                   th:text="${review.content}">
-                                    리뷰 내용
-                                </p>
-
-                                <div class="review-bottom">
-                                    <div class="review-meta">
-                                        <span th:text="'조회 ' + ${review.viewCnt}">조회 0</span>
-                                        <span th:text="' · 댓글 ' + ${review.replyCnt}"> · 댓글 0</span>
-                                    </div>
-                                </div>
-
-                            </a>
-                        </article>
-
+                <div class="review-info">
+                    <div class="review-brand">
+                        <span th:text="${review.category1}">메이크업</span>
                     </div>
 
-                    <!-- 리뷰 데이터 없을 때 샘플 -->
-                    <div class="review-grid" th:if="${reviewList == null or reviewList.size() == 0}">
+                    <!-- 제품명 추가 -->
+                    <p class="review-product"
+                       th:text="${review.productName}">
+                        제품명
+                    </p>
 
-                        <article class="review-card">
-                            <a href="#">
-                                <div class="review-top">
-                                    <img class="review-thumb"
-                                         src="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&w=400&q=80"
-                                         alt="리뷰 이미지">
-
-                                    <div>
-                                        <div class="review-brand">SKIN LAB</div>
-                                        <p class="review-title">민감성 피부도 편했던 수분 세럼</p>
-                                    </div>
-                                </div>
-
-                                <p class="review-desc">
-                                    자극 없이 촉촉하게 마무리돼서 데일리로 쓰기 좋았어요.
-                                </p>
-
-                                <div class="review-bottom">
-                                    <div class="review-meta">
-                                        <span>조회 148 · 댓글 19</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </article>
-
-                        <article class="review-card">
-                            <a href="#">
-                                <div class="review-top">
-                                    <img class="review-thumb"
-                                         src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=400&q=80"
-                                         alt="리뷰 이미지">
-
-                                    <div>
-                                        <div class="review-brand">HWA PICK</div>
-                                        <p class="review-title">건성도 들뜸 없던 글로우 쿠션 후기</p>
-                                    </div>
-                                </div>
-
-                                <p class="review-desc">
-                                    오후에도 무너짐이 지저분하지 않고 광이 예쁘게 남았어요.
-                                </p>
-
-                                <div class="review-bottom">
-                                    <div class="review-meta">
-                                        <span>조회 132 · 댓글 11</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </article>
-
-                    </div>
-                </section>
-
-
-                <!-- 지금 올라온 뷰티 질문 -->
-                <section class="section">
-                    <div class="section-head">
-                        <div>
-                            <h2 class="section-title">지금 올라온 뷰티 질문</h2>
-                            <p class="section-sub">질문과 정보공유 게시글을 확인해보세요</p>
-                        </div>
-
-                        <a th:href="@{/community}" class="view-more">커뮤니티 더보기 →</a>
-                    </div>
-
-                    <!-- 실제 커뮤니티 데이터 있을 때 -->
-                    <div class="question-grid" th:if="${communityList != null and communityList.size() > 0}">
-
-                        <article class="question-card"
-                                 th:each="qna, qnaStat : ${communityList}"
-                                 th:if="${qnaStat.index < 4}">
-
-                            <a th:href="@{/community/{id}(id=${qna.boardId})}">
-                                <h3 th:text="${qna.title}">게시글 제목</h3>
-                                <p th:text="${qna.content}">게시글 내용</p>
-
-                                <div class="question-meta">
-                                    <div class="question-tags">
-                                        <span class="mini-chip"
-                                              th:text="${qna.category}">
-                                            질문
-                                        </span>
-                                    </div>
-
-                                    <span class="answer-count"
-                                          th:text="'댓글 ' + ${qna.replyCnt}">
-                                        댓글 0
-                                    </span>
-                                </div>
-                            </a>
-                        </article>
-
-                    </div>
-
-                    <!-- 커뮤니티 데이터 없을 때 샘플 -->
-                    <div class="question-grid" th:if="${communityList == null or communityList.size() == 0}">
-
-                        <article class="question-card">
-                            <a href="#">
-                                <h3>민감성 피부도 쓸 수 있는 여름 선크림 추천해주세요</h3>
-                                <p>눈시림 적고 백탁 심하지 않은 제품 찾고 있어요.</p>
-
-                                <div class="question-meta">
-                                    <div class="question-tags">
-                                        <span class="mini-chip">민감성</span>
-                                        <span class="mini-chip">선크림</span>
-                                    </div>
-
-                                    <span class="answer-count">답변 5개</span>
-                                </div>
-                            </a>
-                        </article>
-
-                        <article class="question-card">
-                            <a href="#">
-                                <h3>여쿨라이트한테 어울리는 MLBB 립 있을까요?</h3>
-                                <p>차분한 장미빛 계열 찾는 중이에요.</p>
-
-                                <div class="question-meta">
-                                    <div class="question-tags">
-                                        <span class="mini-chip">여쿨</span>
-                                        <span class="mini-chip">MLBB</span>
-                                    </div>
-
-                                    <span class="answer-count">답변 8개</span>
-                                </div>
-                            </a>
-                        </article>
-
-                    </div>
-                </section>
-
+                </div>
             </div>
+
+            <p class="review-desc"
+               th:text="${review.content}">
+                리뷰 내용
+            </p>
+
+            
+
+        </a>
+    </article>
+
+</div>
+</section>
+
+               <section class="section community-question-section">
+    <div class="section-head">
+        <div>
+            <h2 class="section-title">지금 올라온 뷰티 질문</h2>
+            <p class="section-sub">질문과 정보공유 게시글을 확인해보세요</p>
+        </div>
+
+        <a th:href="@{/community}" class="view-more">커뮤니티 더보기 →</a>
+    </div>
+
+    <!-- 실제 커뮤니티 데이터 있을 때 -->
+    <div class="question-grid"
+         th:if="${qnaList != null and qnaList.size() > 0}">
+
+        <article class="question-card"
+                 th:each="qna, qnaStat : ${qnaList}"
+                 th:if="${qnaStat.index < 2}">
+
+            <a class="question-link"
+               th:href="@{/community/{id}(id=${qna.boardId})}">
+
+                <div class="question-card-top">
+                    <span class="question-q">Q</span>
+
+                    <span class="mini-chip"
+                          th:text="${qna.category}">
+                        질문
+                    </span>
+                </div>
+
+                <h3 th:text="${qna.title}">
+                    게시글 제목
+                </h3>
+
+                <p th:text="${qna.content}">
+                    게시글 내용
+                </p>
+
+                <div class="question-meta">
+                    <span class="question-stat"
+                          th:text="${'조회 ' + (qna.viewCnt != null ? qna.viewCnt : 0)}">
+                        조회 0
+                    </span>
+
+                    <span class="question-stat"
+                          th:text="${'댓글 ' + (qna.replyCnt != null ? qna.replyCnt : 0)}">
+                        댓글 0
+                    </span>
+                </div>
+
+            </a>
+        </article>
+
+    </div>
+
+    <!-- 데이터 없을 때 -->
+    <div class="question-empty"
+         th:if="${qnaList == null or qnaList.size() == 0}">
+        아직 등록된 질문이 없습니다.
+    </div>
+</section>
+</div>
 
 
             <!-- =========================
@@ -676,7 +611,7 @@
 
         <a class="side-type-item"
            th:each="tip, tipStat : ${tipList}"
-           th:if="${tipStat.index < 4}"
+           th:if="${tipStat.index < 5}"
            th:href="@{|/community/${tip.boardId}|}">
 
             <span th:text="${tipStat.index + 1}">1</span>
@@ -736,66 +671,34 @@
         <p>지금 화담에서 자주 찾는 키워드예요.</p>
     </div>
 
-    <!-- topTagList 있을 때 -->
     <div class="side-tag-list"
-         th:if="${topTagList != null and topTagList.size() > 0}">
+     th:if="${topTagList != null and topTagList.size() > 0}">
 
-        <a class="side-tag"
-           th:each="tag : ${topTagList}"
-           th:href="@{/search(tag=${tag.tagName})}"
-           th:text="'#' + ${tag.tagName}">
-            #수분
-        </a>
+    <a class="side-tag"
+       th:each="tag, tagStat : ${topTagList}"
+       th:if="${tagStat.index < 10}"
+       th:href="@{/search/{tagName}(tagName=${tag.tagName})}"
+       th:text="'#' + ${tag.tagName}">
+        #수분
+    </a>
 
-    </div>
+</div>
 
-    <!-- topTagList 없을 때 기본값 -->
-    <div class="side-tag-list"
-         th:if="${topTagList == null or topTagList.size() == 0}">
+<!-- topTagList 없을 때 -->
+<div class="side-tag-list"
+     th:if="${topTagList == null or topTagList.size() == 0}">
 
-        <a th:href="@{/search(tag='수분')}" class="side-tag">#수분</a>
-        <a th:href="@{/search(tag='선크림')}" class="side-tag">#선크림</a>
-        <a th:href="@{/search(tag='민감성')}" class="side-tag">#민감성</a>
-        <a th:href="@{/search(tag='여쿨')}" class="side-tag">#여쿨</a>
-        <a th:href="@{/search(tag='쿠션')}" class="side-tag">#쿠션</a>
-        <a th:href="@{/search(tag='트러블')}" class="side-tag">#트러블</a>
-        <a th:href="@{/search(tag='립추천')}" class="side-tag">#립추천</a>
-        <a th:href="@{/search(tag='여름메이크업')}" class="side-tag">#여름메이크업</a>
+    <p class="empty-tag-text">인기 태그가 없습니다.</p>
 
-    </div>
+</div>
 </section>
 
-
-                <!-- 이번주 화담 키워드 -->
-                <section class="side-panel side-keyword-panel">
-                    <div class="side-panel-head">
-                        <h3>이번주 화담 키워드</h3>
-                        <p>많이 언급된 뷰티 관심사예요.</p>
-                    </div>
-
-                    <ol class="side-keyword-list">
-                        <li>
-                            <span>01</span>
-                            <strong>여름 선케어</strong>
-                        </li>
-                        <li>
-                            <span>02</span>
-                            <strong>무너짐 없는 쿠션</strong>
-                        </li>
-                        <li>
-                            <span>03</span>
-                            <strong>민감성 진정템</strong>
-                        </li>
-                        <li>
-                            <span>04</span>
-                            <strong>수분 앰플 추천</strong>
-                        </li>
-                        <li>
-                            <span>05</span>
-                            <strong>데일리 립 조합</strong>
-                        </li>
-                    </ol>
-                </section>
+<div class="side-image-banner">
+    <img th:src="@{/images/main/sidebanner2.png}"
+         src="/images/main/sidebanner2.png"
+         alt="화담 사이드 배너">
+</div>
+                
 
             </aside>
 

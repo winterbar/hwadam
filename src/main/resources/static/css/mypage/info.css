@@ -1527,3 +1527,10 @@ button {
     width: 100%;
     margin-top: 18px;
 }
+header,
+.header,
+.site-header,
+.header-wrap,
+.header-container {
+    background: #ffffff !important;
+}
