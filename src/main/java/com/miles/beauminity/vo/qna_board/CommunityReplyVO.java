@@ -15,4 +15,5 @@ public class CommunityReplyVO {
     private String replyContent;
     private boolean deleted;
     private String nickname;
+    private String parentNickname;
 }

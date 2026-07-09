@@ -19,10 +19,30 @@
             parameterType="Long"
             resultType="com.miles.beauminity.vo.qna_board.CommunityReplyVO">
     
-        SELECT *
-        FROM board_reply
-        WHERE board_id = #{value}
-        ORDER BY reply_id
+        SELECT
+            r.reply_id,
+            r.board_id,
+            r.parents_reply_id,
+            r.username,
+            r.reply_content,
+            r.deleted,
+            m.nickname,
+            pm.nickname AS parent_nickname
+
+        FROM board_reply r
+
+        LEFT JOIN member m
+        ON r.username = m.username
+
+        LEFT JOIN board_reply pr
+        ON pr.reply_id = r.parents_reply_id
+
+        LEFT JOIN member pm
+        ON pr.username = pm.username
+
+        WHERE r.board_id = #{value}
+
+        ORDER BY r.reply_id
 
     </select>
 

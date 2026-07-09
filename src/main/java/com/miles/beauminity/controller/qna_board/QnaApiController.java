@@ -228,11 +228,13 @@ public class QnaApiController {
         List<CommunityReplyVO> replyList = qnaService.getReplyList(boardId);
         System.out.println(replyList.get(0).toString());
         int replyCount = qnaService.getReplyCountByBoardId(boardId);
+        String nowUser = getUsername();
 
         System.out.println("댓글수: "+replyCount);
 
         result.put("reList", replyList);
         result.put("rCount", replyCount);
+        result.put("nowUse", nowUser);
 
         return ResponseEntity.ok(result);
     }
