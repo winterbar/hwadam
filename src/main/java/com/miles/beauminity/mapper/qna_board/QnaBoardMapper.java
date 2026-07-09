@@ -41,5 +41,8 @@ public interface QnaBoardMapper {
     public List<QnaBoardCompleteVO> getCommunityList(String username);
     
     //메인 화면에 넣을 꿀팁 커뮤니티 가져오기
-    public List<QnaBoardCompleteVO> getTipList();
+    public List<QnaBoardCompleteVO> getTopTipList();
+
+    public List<QnaBoardCompleteVO> getRecentqnaList();
+    
 }

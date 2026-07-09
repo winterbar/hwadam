@@ -4,26 +4,29 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.miles.beauminity.mapper.feed.TagMapper">
+
 <!--사용자가 작성한 태그 DB에 저장-->
 <insert id="postTag"
         parameterType="com.miles.beauminity.vo.feed.TagVO"
         useGeneratedKeys="true"
         keyProperty="tagId">
-    insert into tag(
+    INSERT INTO tag(
         tag_name
     )
-    values(
+    VALUES(
         #{tagName}
     )
 </insert>
+
 <!--DB에 저장된 태그 이름 불러오기-->
 <select id="getTagNameList">
-    select distinct tag_name
-    from tag t
-    join feed_tag ft
-    on t.tag_id = ft.tag_id
-    order by t.tag_id
+    SELECT distinct tag_name
+    FROM tag t
+    JOIN feed_tag ft
+        ON t.tag_id = ft.tag_id
+    ORDER BY t.tag_id
 </select>
+
 <!--해당 피드의 해시태그 리스트 가져오기-->
     <select id="getFeedTagList" parameterType="long" resultType="string">
         select
@@ -34,6 +37,7 @@
         where ft.feed_id = #{feedId}
         order by t.tag_id asc
     </select>
+
 <!-- 태그피드 테이블에 피드아이디와 태그아이디 저장-->
 <insert id="tagFeed"
     parameterType="com.miles.beauminity.vo.feed.FeedTagVO"
@@ -47,6 +51,7 @@
         #{tagId}
     )
 </insert>
+
 <!-- 해당 피드 태그 삭제 -->
 <delete id="deleteTag"
         parameterType="long">
@@ -62,6 +67,72 @@
     group by tag_name
     order by count(*) desc
     LIMIT 10
+</select>
+
+<!--해당 해시태그가 포함된 피드 정보 가져오기-->
+<select id="getSearchTag" resultType="FeedVO">
+    SELECT
+    f.feed_id,
+    f.username,
+    f.feed_content,
+    f.created_at,
+    f.reply_cnt,
+
+    m.nickname,
+    m.skin_type,
+    m.personal_color,
+    m.birthday,
+
+    mp.saved_name AS profileImage,
+    mp.file_path AS profilePath,
+
+    COUNT(DISTINCT fl_all.like_id) AS likeCnt,
+
+    CASE
+        WHEN COUNT(DISTINCT fl_me.like_id) = 0 THEN FALSE
+        ELSE TRUE
+    END AS liked
+
+FROM feed f
+
+JOIN member m
+    ON f.username = m.username
+
+LEFT JOIN member_profile mp
+    ON f.username = mp.username
+
+JOIN feed_tag ft
+    ON f.feed_id = ft.feed_id
+
+JOIN tag t
+    ON ft.tag_id = t.tag_id
+
+LEFT JOIN feed_like fl_all
+    ON f.feed_id = fl_all.feed_id
+
+LEFT JOIN feed_like fl_me
+    ON f.feed_id = fl_me.feed_id
+
+WHERE f.deleted = 0
+  AND t.tag_name = #{tagName}
+
+GROUP BY
+    f.feed_id,
+    f.username,
+    f.feed_content,
+    f.created_at,
+    f.deleted,
+    f.reply_cnt,
+
+    m.nickname,
+    m.skin_type,
+    m.personal_color,
+    m.birthday,
+
+    mp.saved_name,
+    mp.file_path
+
+ORDER BY f.feed_id DESC
 </select>
 
 </mapper>

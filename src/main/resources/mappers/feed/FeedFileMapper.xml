@@ -8,7 +8,7 @@
     <!-- 파일 등록 -->
     <insert id="postFile"
             keyProperty="fileId">
-        insert into feed_file(
+        INSERT INTO feed_file(
             feed_id,
             original_name,
             saved_name,
@@ -16,7 +16,7 @@
             file_type,
             file_size
         )
-        values(
+        VALUES(
             #{feedId},
             #{originalName},
             #{savedName},
@@ -29,24 +29,24 @@
     <!--해당 피드의 파일 저장명 가져오기-->
     <select id="getFeedFileList" parameterType="long" 
     resultType="string">
-        select saved_name
-        from feed_file
-        where feed_id = #{feedId}
-        order by file_id asc
+        SELECT saved_name
+        FROM feed_file
+        WHERE feed_id = #{feedId}
+        ORDER BY file_id asc
     </select>
 
     <!--특정 피드 파일 삭제-->
     <delete id="deleteFile"
             parameterType="com.miles.beauminity.vo.feed.FeedVO">
-        delete from feed_file
-        where feed_id=#{feedId}
+        DELETE FROM feed_file
+        WHERE feed_id=#{feedId}
     </delete>
 
     <!-- 저장된 파일 리스트 가져오기 -->
     <select id="getFileListByFeedId"
         parameterType="long"
         resultType="com.miles.beauminity.vo.feed.FeedFileVO">
-    select
+    SELECT
         file_id,
         feed_id,
         original_name,
@@ -54,9 +54,9 @@
         file_path,
         file_type,
         file_size
-    from feed_file
-    where feed_id = #{feedId}
-    order by file_id asc
+    FROM feed_file
+    WHERE feed_id = #{feedId}
+    ORDER BY file_id asc
 </select>
 
 </mapper>

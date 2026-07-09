@@ -11,13 +11,13 @@
       name="_csrf_header"
       th:content="${_csrf.headerName}"
     />
-    <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
-    
+
+    <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}" />
+
     <link rel="stylesheet" th:href="@{/css/common/main.css}" />
     <link rel="stylesheet" th:href="@{/css/common/header.css}" />
     <link rel="stylesheet" th:href="@{/css/common/footer.css}" />
     <link rel="stylesheet" th:href="@{/css/feed/feed.css}" />
-   
 
     <style>
       .feed-card > .feed-profile-header {
@@ -160,6 +160,7 @@
       .feed-profile-header .feed-more-btn:hover {
         color: #333333 !important;
       }
+      
     </style>
   </head>
 
@@ -177,6 +178,7 @@
           <strong>해시태그로 피드 보기</strong>
           <span>궁금한 태그를 열어서 관련 피드만 모아보세요.</span>
         </div>
+
         <em id="feed-filter-toggle-icon">펼치기 ＋</em>
       </div>
 
@@ -359,21 +361,21 @@
               <div class="feed-card-top feed-profile-header">
                 <div class="feed-profile-left">
                   <div class="feed-profile-avatar">
-                    <img
-                      th:if="${feed.profileImage != null and feed.profileImage != ''}"
-                      th:src="@{/upload/profile/{fileName}(fileName=${feed.profileImage})}"
-                      alt="프로필 이미지"
-                      onerror="this.style.display='none'; this.parentElement.querySelector('.avatar-fallback').style.display='flex';"
-                    />
+  <!-- 사용자가 등록한 프로필 이미지가 있을 때 -->
+  <img
+    th:if="${feed.profileImage != null and feed.profileImage != ''}"
+    th:src="@{/upload/profile/{fileName}(fileName=${feed.profileImage})}"
+    alt="프로필 이미지"
+    onerror="this.src='/images/common/default-profile.png';"
+  />
 
-                    <span
-                      class="avatar-fallback"
-                      th:style="${feed.profileImage != null and feed.profileImage != '' ? 'display:none;' : 'display:flex;'}"
-                      th:text="${feed.nickname != null and feed.nickname != '' ? #strings.substring(feed.nickname, 0, 1) : 'O'}"
-                    >
-                      O
-                    </span>
-                  </div>
+  <!-- 프로필 이미지가 없을 때 기본 이미지 -->
+  <img
+    th:if="${feed.profileImage == null or feed.profileImage == ''}"
+    th:src="@{/images/common/default-profile.png}"
+    alt="기본 프로필 이미지"
+  />
+</div>
 
                   <div class="feed-profile-info">
                     <div
@@ -423,11 +425,8 @@
                 </div>
               </div>
 
+              <!-- 피드 이미지 영역 : 중복 제거 완료 -->
               <div class="feed-card-image">
-                <button type="button" class="feed-photo-arrow feed-photo-prev">
-                  ‹
-                </button>
-
                 <img
                   alt="피드 이미지"
                   class="feed-image js-feed-image"
@@ -436,8 +435,13 @@
                 />
 
                 <div class="feed-image-placeholder js-feed-placeholder">
-                  📸 <span>이미지 준비중</span>
+                  ✦
+                  <span>NO IMAGE</span>
                 </div>
+
+                <button type="button" class="feed-photo-arrow feed-photo-prev">
+                  ‹
+                </button>
 
                 <button type="button" class="feed-photo-arrow feed-photo-next">
                   ›
@@ -512,7 +516,10 @@
                   ></span>
                 </p>
 
-                <div class="feed-card-tags">
+                <div
+                  class="feed-card-tags"
+                  th:if="${feed.feedTagList != null and !#lists.isEmpty(feed.feedTagList)}"
+                >
                   <button
                     type="button"
                     class="feed-hashtag-btn"
@@ -553,19 +560,21 @@
                       >
                         <div class="feed-comment-bubble">
                           <div class="feed-comment-avatar">
-                            <img
-                              th:if="${reply.profileImage != null and reply.profileImage != ''}"
-                              th:src="@{/upload/profile/{fileName}(fileName=${reply.profileImage})}"
-                              alt="프로필 이미지"
-                            />
+  <!-- 댓글 작성자 프로필 이미지가 있을 때 -->
+  <img
+    th:if="${reply.profileImage != null and reply.profileImage != ''}"
+    th:src="@{/upload/profile/{fileName}(fileName=${reply.profileImage})}"
+    alt="프로필 이미지"
+    onerror="this.src='/images/common/default-profile.png';"
+  />
 
-                            <span
-                              th:if="${reply.profileImage == null or reply.profileImage == ''}"
-                              th:text="${reply.nickname != null and reply.nickname != '' ? #strings.substring(reply.nickname, 0, 1) : '회'}"
-                            >
-                              회
-                            </span>
-                          </div>
+  <!-- 프로필 이미지가 없을 때 기본 프로필 이미지 -->
+  <img
+    th:if="${reply.profileImage == null or reply.profileImage == ''}"
+    th:src="@{/images/common/default-profile.png}"
+    alt="기본 프로필 이미지"
+  />
+</div>
 
                           <div class="feed-comment-main">
                             <strong
@@ -631,19 +640,22 @@
                             >
                               <div class="comment-child-bubble">
                                 <div class="comment-child-avatar">
-                                  <img
-                                    th:if="${child.profileImage != null and child.profileImage != ''}"
-                                    th:src="@{/upload/profile/{fileName}(fileName=${child.profileImage})}"
-                                    alt="프로필 이미지"
-                                  />
+                                  
+  <!-- 댓글 작성자 프로필 이미지가 있을 때 -->
+  <img
+    th:if="${reply.profileImage != null and reply.profileImage != ''}"
+    th:src="@{/upload/profile/{fileName}(fileName=${reply.profileImage})}"
+    alt="프로필 이미지"
+    onerror="this.src='/images/common/default-profile.png';"
+  />
 
-                                  <span
-                                    th:if="${child.profileImage == null or child.profileImage == ''}"
-                                    th:text="${child.nickname != null and child.nickname != '' ? #strings.substring(child.nickname, 0, 1) : '회'}"
-                                  >
-                                    회
-                                  </span>
-                                </div>
+  <!-- 프로필 이미지가 없을 때 기본 프로필 이미지 -->
+  <img
+    th:if="${reply.profileImage == null or reply.profileImage == ''}"
+    th:src="@{/images/common/default-profile.png}"
+    alt="기본 프로필 이미지"
+  />
+</div>
 
                                 <div class="comment-child-main">
                                   <strong
@@ -667,7 +679,7 @@
                                     <span
                                       class="comment-mention"
                                       th:if="${child.parentNickname != null and child.parentNickname != ''}"
-                                      th:text="'@' + ${child.parentNickname}"
+                                      th:text="${'@' + child.parentNickname}"
                                       th:data-target-reply-id="${child.parentsReplyId}"
                                     ></span>
 
@@ -751,7 +763,7 @@
                                           <span
                                             class="comment-mention"
                                             th:if="${grandChild.parentNickname != null and grandChild.parentNickname != ''}"
-                                            th:text="'@' + ${grandChild.parentNickname}"
+                                            th:text="${'@' + grandChild.parentNickname}"
                                             th:data-target-reply-id="${grandChild.parentsReplyId}"
                                           ></span>
 
@@ -822,7 +834,7 @@
 
                     <input
                       type="text"
-                      name="replyContent"  
+                      name="replyContent"
                       placeholder="댓글 달기..."
                       autocomplete="off"
                     />
@@ -847,18 +859,23 @@
       </div>
 
       <aside class="feed-right-sidebar">
-        <div class="feed-trend-box">
-          <div class="feed-trend-title">
-            <span class="feed-hashtag-title-icon">
-              <img th:src="@{/images/feed/hashtag.png}" alt="해시태그 아이콘" />
-            </span>
-            <strong>해시태그 TOP 5</strong>
-          </div>
+       <div class="feed-trend-box" style="padding: 22px 20px !important; box-sizing: border-box !important;">
+  <div class="feed-trend-title">
+    <span class="feed-hashtag-title-icon">
+      <img th:src="@{/images/feed/hashtag.png}" alt="해시태그 아이콘" />
+    </span>
+    <strong>해시태그 TOP 5</strong>
+  </div>
 
-          <ol class="feed-trend-list" id="feed-trend-list">
-            <li class="feed-trend-empty">아직 인기 태그가 없습니다.</li> 
-          </ol>
-        </div>
+  <ol class="feed-trend-list" id="feed-trend-list">
+    <li th:if="${#lists.isEmpty(topTagList)}" class="feed-trend-empty">
+        아직 인기 태그가 없습니다.
+    </li>
+    
+    <li th:each="tag : ${topTagList}" th:unless="${#lists.isEmpty(topTagList)}">
+        </li>
+  </ol>
+</div>
       </aside>
     </main>
 
@@ -888,7 +905,6 @@
     </div>
 
     <footer th:replace="~{layout/footer :: footer}"></footer>
-    
 
     <script th:src="@{/js/feed/feed_list.js}"></script>
     <script th:src="@{/js/feed/feed_like.js}"></script>
