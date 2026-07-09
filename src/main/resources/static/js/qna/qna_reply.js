@@ -7,6 +7,8 @@ const boardId = Number(window.location.pathname.split("/").pop());
 let editingReplyId = null;
 // 대댓용 변수 선언
 let replyingReplyId = null;
+// 닉네임 저장하는 변수 선언 
+let replyingNickname = null;
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -21,8 +23,6 @@ commentInsertBtn.addEventListener('click', () => {
     // 내용을 가져온다
     const content = document.getElementById('comment-content').value.trim();
 
-    // 내용을 가져오긴 했는데... 뭐해야해?
-
     if (!content) {
         alert("댓글을 입력하세요.");
         return;
@@ -36,8 +36,6 @@ commentInsertBtn.addEventListener('click', () => {
 const commentList = document.querySelector(".comment-list");
 
 commentList.addEventListener("click", function (e) {
-
-    console.log(e.target);
 
     if (e.target.classList.contains("btn-comment-edit")) {
 
@@ -77,20 +75,26 @@ commentList.addEventListener("click", function (e) {
 
         editingReplyId = null;
 
+        replyingReplyId = null;
+
 
     }
     if (e.target.classList.contains("btn-comment-cancel")) {
         editingReplyId = null;
-
 
         replyingReplyId = null;
 
         getReplyList();
     }
 
-    if (e.target.classList.contains("btn-comment-reply")){
+    // 답글 버튼 
+
+    if (e.target.classList.contains("btn-comment-reply")) {
 
         replyingReplyId = Number(e.target.dataset.replyId);
+
+
+        replyingNickname = e.target.dataset.nickname;
 
         editingReplyId = null;
 
@@ -98,10 +102,11 @@ commentList.addEventListener("click", function (e) {
 
     }
 
-    // 답글
+    // 답글 전송
 
     if (e.target.classList.contains("btn-comment-reply-submit")) {
-        const parentsReplyId = Number(e.target.dataset.replyId);
+
+        // const replyingReplyId = Number(e.target.dataset.replyId);
 
         const replyInput = e.target
             .closest(".child-reply-input")
@@ -114,7 +119,9 @@ commentList.addEventListener("click", function (e) {
             return;
         }
 
-        insertReply(content, parentsReplyId)
+        insertReply(content, replyingReplyId);
+
+        replyingReplyId = null;
     }
 
 });
@@ -122,6 +129,7 @@ commentList.addEventListener("click", function (e) {
 // 댓글 삽입
 function insertReply(content, parentsReplyId = null) {
 
+    // fetch - 객체 전달
     fetch(`/api/board/reply`, {
 
         method: "POST",
@@ -163,6 +171,7 @@ function insertReply(content, parentsReplyId = null) {
 // 댓글 수정
 function updateReply(replyId, content) {
 
+    // fetch - 객체 전달
     fetch("/api/board/reply", {
         method: "PUT",
 
@@ -199,6 +208,7 @@ function updateReply(replyId, content) {
 // 댓글 삭제(사실 상태 변경), 댓글 아이디만 전송한다
 function deleteReply(replyId) {
 
+    // fetch - 객체 전달
     fetch("/api/board/reply/delete", {
         method: "PUT",
 
@@ -233,71 +243,126 @@ function deleteReply(replyId) {
 
 // 댓글 목록 가져오기
 function getReplyList() {
+
+    // fetch - 객체 받아옴 
     fetch(`/api/board/reply/${boardId}`,
 
         { method: "GET" }
     ).then(res => res.json())
         .then(data => {
 
-            drawReplyList(data.reList);
+            drawReplyList(data.reList, data.nowUse);
             document.getElementById("replyCount").textContent = data.rCount;
 
         });
 }
 
 // 댓글목록 그리기
-function drawReplyList(replyList) {
+function drawReplyList(replyList, logOn) {
+
+    console.log(replyList);
 
     let html = "";
 
     const parentList =
-        replyList.filter(reply => (reply.parentsReplyId === null && reply.deleted === false));
+        replyList.filter(reply => reply.parentsReplyId === null);
+
+    console.log(parentList);
 
     parentList.forEach(parent => {
 
         if (parent.replyId === editingReplyId) {
 
-            html += createReplyEditHtml(parent);
+            html += createReplyEditHtml(parent, replyList);
 
         } else {
 
-            html += createReplyHtml(parent);
+            html += createReplyHtml(parent, replyList, logOn);
 
         }
 
         if (parent.replyId === replyingReplyId) {
 
-            html += createReplyInputHtml(parent);
+            html += createReplyInputHtml();
 
         }
 
-        const childList =
-            replyList.filter(
-                reply => (reply.parentsReplyId === parent.replyId
-                    && reply.deleted === false));
-
-        childList.forEach(function (child) {
-
-            if (child.replyId === editingReplyId) {
-
-                html += createReplyEditHtml(child);
-
-            } else {
-
-                html += createReplyHtml(child);
-
-            }
-
-        });
+        html += drawChildReply(parent.replyId, replyList, logOn);
 
     });
 
     document.querySelector(".comment-list").innerHTML = html;
 }
 
+// 자식들을 모두 그린다.
+function drawChildReply(parentId, replyList, logOn) {
+
+    let html = "";
+
+    const childList =
+        replyList.filter(
+            reply => reply.parentsReplyId === parentId);
+
+    childList.forEach(function (child) {
+
+        if (child.replyId === editingReplyId) {
+
+            html += createReplyEditHtml(child, replyList);
+
+        } else {
+
+            html += createReplyHtml(child, replyList, logOn);
+
+        }
+
+        if (child.replyId === replyingReplyId) {
+
+            html += createReplyInputHtml();
+
+        }
+
+        html += drawChildReply(child.replyId, replyList);
+
+    });
+
+    return html;
+
+}
+
+// 잠깐 대댓을 보유중인가?
+function hasChildReply(reply, replyList) {
+
+    return replyList.some(child =>
+        child.parentsReplyId === reply.replyId &&
+        !child.deleted
+    );
+
+}
+
 // 댓글 html
 // 대댓이냐 아니냐를 가른다. 
-function createReplyHtml(reply) {
+function createReplyHtml(reply, replyList, logOn) {
+
+    if (reply.deleted) {
+
+        if (!hasChildReply(reply, replyList)) {
+
+            return "";
+
+        }
+
+        return `
+        <div class="comment-item deleted-comment">
+
+            <div class="comment-content">
+                삭제된 댓글입니다.
+            </div>
+
+        </div>
+    `;
+
+    }
+
     const isChild = reply.parentsReplyId != null;
 
     const html = `
@@ -311,23 +376,18 @@ function createReplyHtml(reply) {
                         ${reply.nickname}
                     </span>
 
-                    <span class="comment-date">
-                        ${reply.createdAt}
-                    </span>
-
                 </div>
 
                 <div class="comment-actions">
 
-                    ${!isChild ? `
-                        <button
-                            type="button"
-                            class="btn-comment-reply"
-                            data-reply-id="${reply.replyId}">
-                            답글
-                        </button>
-                    ` : ""}
-
+                    <button
+                        type="button"
+                        class="btn-comment-reply"
+                        data-reply-id="${reply.replyId}"
+                        data-nickname="${reply.nickname}">
+                        답글
+                    </button>
+                    ${logOn == reply.username ? `
                     <button
                         type="button"
                         class="btn-comment-edit"
@@ -341,6 +401,7 @@ function createReplyHtml(reply) {
                         data-reply-id="${reply.replyId}">
                         삭제
                     </button>
+                    ` : ""}
 
                 </div>
 
@@ -350,7 +411,7 @@ function createReplyHtml(reply) {
 
                 ${isChild ? `
                     <span class="reply-mention">
-                        부모댓글닉네임아직없어요어어
+                        @${reply.parentNickname}
                     </span>
                 ` : ""}
 
@@ -364,7 +425,7 @@ function createReplyHtml(reply) {
     return html;
 }
 
-function createReplyEditHtml(reply) {
+function createReplyEditHtml(reply, replyList) {
     const isChild = reply.parentsReplyId != null;
 
     const html = `
@@ -376,10 +437,6 @@ function createReplyEditHtml(reply) {
 
                     <span class="comment-author">
                         ${reply.nickname}
-                    </span>
-
-                    <span class="comment-date">
-                        ${reply.createdAt}
                     </span>
 
                 </div>
@@ -423,7 +480,7 @@ function createReplyEditHtml(reply) {
     return html;
 }
 
-function createReplyInputHtml(parent) {
+function createReplyInputHtml() {
 
     const html = `
         <div class="child-reply-input">
@@ -433,7 +490,7 @@ function createReplyInputHtml(parent) {
                 <span class="reply-arrow">↳</span>
 
                 <span class="reply-mention">
-                    @${parent.nickname}
+                    @${replyingNickname}
                 </span>
 
             </div>
@@ -447,14 +504,13 @@ function createReplyInputHtml(parent) {
 
                 <button
                     type="button"
-                    class="btn btn-comment-cancel">
+                    class="btn-comment-cancel">
                     취소
                 </button>
 
                 <button
                     type="button"
-                    class="btn btn-comment-reply-submit"
-                    data-reply-id="${parent.replyId}">
+                    class="btn-comment-reply-submit">
                     등록
                 </button>
 
@@ -465,3 +521,4 @@ function createReplyInputHtml(parent) {
 
     return html;
 }
+

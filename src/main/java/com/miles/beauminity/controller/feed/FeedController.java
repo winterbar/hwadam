@@ -119,6 +119,7 @@ public class FeedController {
         return feedService.getFeedReply(feedReplyVO);
     }
 
+    // 좋아요 눌렀을 때 저장 및 화면 반영
     @PostMapping("/feed/{feedId}/like")
     @ResponseBody // 메서드 반환 값을 http 응답 본문에 직접 담아 클라이언트 전송
     public int getFeedLike(@PathVariable("feedId") Long feedId,
@@ -133,6 +134,7 @@ public class FeedController {
         int likeCnt = feedService.getFeedLike(liked, feedLikeVO);
         return likeCnt;
     }
+
     //본인 특정 댓글 수정
     @PostMapping("/feed/reply/{replyId}/edit")
     @ResponseBody
@@ -144,6 +146,7 @@ public class FeedController {
 
         return feedService.updateReply(feedReplyVO);
     }
+
     //본인 특정 댓글 삭제
     @PostMapping("/feed/reply/{replyId}/delete")
     public String getMethodName(@PathVariable("replyId") Long replyId) {
@@ -151,6 +154,7 @@ public class FeedController {
         return "redirect:/feed/list";
 
     }
+
     //공유 링크로 들어 올 경우 -> 해당 피드 먼저 보기
     @GetMapping("/feed/{feedId}")
     public String shareFeedById(@PathVariable("feedId") Long feedId,Model model) {
@@ -158,6 +162,13 @@ public class FeedController {
         model.addAttribute("feedList",feedList);
         return "feed/list";
     }
-    
 
+    //메인화면에서 피드 검색하기
+    @GetMapping("/search/{tagName}")
+    public String getMethodName(@PathVariable("tagName") String tagName,Model model) {
+        List<FeedVO> feedList = feedService.getSearchTag(tagName);
+        model.addAttribute("feedList",feedList);
+        return "feed/list";
+    }
+    
 }

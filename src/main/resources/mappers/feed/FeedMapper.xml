@@ -10,6 +10,7 @@
         keyProperty="feedId"> INSERT INTO feed ( username, feed_content, reply_cnt,created_at,
         edited_at) VALUES ( #{username}, #{feedContent}, #{replyCnt},NOW(), NOW()
         ) </insert>
+
     <!-- 피드 내용 전체 가져오기-->
     <select id="getFeedList"
         resultType="com.miles.beauminity.vo.feed.FeedVO"> 
@@ -82,10 +83,11 @@ ORDER BY f.feed_id DESC
     <select id="countFeed"
         parameterType="String"
         resultType="long"> SELECT count(*) FROM feed WHERE username = #{username} AND deleted = 0 </select>
-    <!--특정
-    피드 삭제-->
+
+    <!--특정 피드 삭제-->
     <update id="deleteFeedId"
         parameterType="long"> UPDATE feed SET deleted=1 WHERE feed_id=#{feedId} </update>
+
     <!-- 피드 내용 수정 -->
     <update id="updateFeed"
         parameterType="com.miles.beauminity.vo.feed.FeedVO"> UPDATE feed SET feed_content =
@@ -102,12 +104,12 @@ ORDER BY f.feed_id DESC
         keyProperty="likeId"> INSERT INTO feed_like( feed_id, username ) VALUES (
          #{feedId}, #{username} ) </insert>
 
-
     <!-- 좋아요 개수 가져오기 -->
     <select id="getLikeCnt"
         parameterType="long"
         resultType="int"> SELECT count(*) FROM feed_like WHERE feed_id=#{feedId} </select>
-
+    
+    <!-- 해당 피드 먼저 보기 -->
     <select id="getShareFeedlist"
         parameterType="long"
         resultType="com.miles.beauminity.vo.feed.FeedVO"> 
@@ -173,8 +175,8 @@ ORDER BY
         ELSE 1
     END,
     f.feed_id DESC
-        
 </select>
+
  <!-- 해당 사용자의 피드 내용 전체 가져오기-->
     <select id="getMyFeedList"
         parameterType="string"
