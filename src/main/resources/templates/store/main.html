@@ -1,389 +1,437 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>화담 : 스토어</title>
 
-  <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}" />
-  <link rel="stylesheet" th:href="@{/css/common/header.css}" />
-  <link rel="stylesheet" th:href="@{/css/common/footer.css}" />
-  <link rel="stylesheet" th:href="@{/css/store/store.css}" />
+  <link rel="icon"
+        type="image/png"
+        th:href="@{/images/common/icon.png}">
+
+  <link rel="stylesheet"
+        th:href="@{/css/common/header.css}">
+
+  <link rel="stylesheet"
+        th:href="@{/css/common/footer.css}">
+
+  <link rel="stylesheet"
+        th:href="@{/css/store/store.css}">
 </head>
 
 <body>
-  <header th:replace="~{layout/header :: header}"></header>
 
-  <main class="store-container">
-<section class="store-category beauty-category-zone">
-      <div class="beauty-category-head">
-        <div>
-          <span>SHOP BY CATEGORY</span>
-          <h2>화담 STORE</h2>
-          <p>필요한 상품만 빠르게 찾아보세요.</p>
-        </div>
+<header th:replace="~{layout/header :: header}"></header>
 
-        <a href="#" class="beauty-category-more">전체 카테고리 보기 →</a>
+<main class="store-container">
+
+  <!-- =====================================================
+       카테고리 영역
+       ===================================================== -->
+  <section class="store-category beauty-category-zone">
+
+    <div class="beauty-category-head">
+      <div>
+        <span>SHOP BY CATEGORY</span>
+        <h2>화담 STORE</h2>
+        <p>필요한 상품만 빠르게 찾아보세요.</p>
       </div>
 
-      <div class="beauty-category-layout">
-        <div class="beauty-category-tabs">
-          <a href="#" class="beauty-category-tab active">스킨케어</a>
-          <a href="#" class="beauty-category-tab">메이크업</a>
-          <a href="#" class="beauty-category-tab">클렌징</a>
-          <a href="#" class="beauty-category-tab">선케어</a>
-          <a href="#" class="beauty-category-tab">헤어/바디</a>
-          <a href="#" class="beauty-category-tab">향수</a>
-          <a href="#" class="beauty-category-tab">소품/툴</a>
+      <a th:href="@{/store}"
+         class="beauty-category-more">
+        전체 카테고리 보기 →
+      </a>
+    </div>
+
+    <div class="beauty-category-layout">
+
+      <!-- category1 기준 검색 -->
+      <div class="beauty-category-tabs">
+
+        <a th:href="@{/store(category1='스킨케어')}"
+           class="beauty-category-tab">
+          스킨케어
+        </a>
+
+        <a th:href="@{/store(category1='메이크업')}"
+           class="beauty-category-tab">
+          메이크업
+        </a>
+
+        <a th:href="@{/store(category1='클렌징')}"
+           class="beauty-category-tab">
+          클렌징
+        </a>
+
+        <a th:href="@{/store(category1='선케어')}"
+           class="beauty-category-tab">
+          선케어
+        </a>
+
+        <a th:href="@{/store(category1='헤어/바디')}"
+           class="beauty-category-tab">
+          헤어/바디
+        </a>
+
+        <a th:href="@{/store(category1='향수')}"
+           class="beauty-category-tab">
+          향수
+        </a>
+
+        <a th:href="@{/store(category1='소품/툴')}"
+           class="beauty-category-tab">
+          소품/툴
+        </a>
+
+      </div>
+
+      <div class="beauty-category-main">
+
+        <div class="beauty-category-feature">
+          <span>SKINCARE REVIEW</span>
+
+          <h3>
+            피부 고민별<br>
+            솔직 리뷰 찾기
+          </h3>
+
+          <p>
+            수분, 장벽 케어가 궁금하다면<br>
+            화담 회원들의 찐 리뷰를<br>
+            확인해보세요.
+          </p>
+
+          <a th:href="@{/review}"
+             class="beauty-feature-btn">
+            리뷰 보러가기
+          </a>
         </div>
 
-        <div class="beauty-category-main">
-          <div class="beauty-category-feature">
-  <span>SKINCARE REVIEW</span>
+        <!-- category2 기준 검색 -->
+        <div class="beauty-subcategory-grid">
 
-  <h3>
-    피부 고민별<br>
-    솔직 리뷰 찾기
-  </h3>
+          <a th:href="@{/store(category2='토너/패드')}"
+             class="beauty-subcategory-card">
 
-  <p>
-    수분, 장벽 케어가 궁금하다면<br>
-    화담 회원들의 찐 리뷰를 <br>
-    확인해보세요.
-  </p>
+            <div class="beauty-product-shape toner"></div>
 
-  <a th:href="@{/review}" class="beauty-feature-btn">리뷰 보러가기</a>
-</div>
+            <strong>토너/패드</strong>
+            <span>결 정돈 · 진정</span>
+          </a>
 
-          <div class="beauty-subcategory-grid">
-            <a href="#" class="beauty-subcategory-card">
-              <div class="beauty-product-shape toner"></div>
-              <strong>토너/패드</strong>
-              <span>결 정돈 · 진정</span>
-            </a>
+          <a th:href="@{/store(category2='세럼/앰플')}"
+             class="beauty-subcategory-card">
 
-            <a href="#" class="beauty-subcategory-card">
-              <div class="beauty-product-shape serum"></div>
-              <strong>세럼/앰플</strong>
-              <span>수분 · 장벽</span>
-            </a>
+            <div class="beauty-product-shape serum"></div>
 
-            <a href="#" class="beauty-subcategory-card">
-              <div class="beauty-product-shape cream"></div>
-              <strong>크림</strong>
-              <span>보습 · 영양</span>
-            </a>
+            <strong>세럼/앰플</strong>
+            <span>수분 · 장벽</span>
+          </a>
 
-            <a href="#" class="beauty-subcategory-card">
-              <div class="beauty-product-shape sun"></div>
-              <strong>선크림</strong>
-              <span>톤업 · 자외선 차단</span>
-            </a>
+          <a th:href="@{/store(category2='크림')}"
+             class="beauty-subcategory-card">
 
-            <a href="#" class="beauty-subcategory-card">
-              <div class="beauty-product-shape cushion"></div>
-              <strong>쿠션/파데</strong>
-              <span>베이스 메이크업</span>
-            </a>
+            <div class="beauty-product-shape cream"></div>
 
-            <a href="#" class="beauty-subcategory-card">
-              <div class="beauty-product-shape lip"></div>
-              <strong>립틴트</strong>
-              <span>데일리 · 무드립</span>
-            </a>
+            <strong>크림</strong>
+            <span>보습 · 영양</span>
+          </a>
+
+          <a th:href="@{/store(category2='선크림')}"
+             class="beauty-subcategory-card">
+
+            <div class="beauty-product-shape sun"></div>
+
+            <strong>선크림</strong>
+            <span>톤업 · 자외선 차단</span>
+          </a>
+
+          <a th:href="@{/store(category2='쿠션/파운데이션')}"
+             class="beauty-subcategory-card">
+
+            <div class="beauty-product-shape cushion"></div>
+
+            <strong>쿠션/파데</strong>
+            <span>베이스 메이크업</span>
+          </a>
+
+          <a th:href="@{/store(category2='립틴트')}"
+             class="beauty-subcategory-card">
+
+            <div class="beauty-product-shape lip"></div>
+
+            <strong>립틴트</strong>
+            <span>데일리 · 무드립</span>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="beauty-category-keywords">
+      <strong>추천 카테고리</strong>
+
+      <a th:href="@{/store(category2='토너/패드')}">
+        #토너패드
+      </a>
+
+      <a th:href="@{/store(category2='세럼/앰플')}">
+        #세럼앰플
+      </a>
+
+      <a th:href="@{/store(category2='크림')}">
+        #보습크림
+      </a>
+
+      <a th:href="@{/store(category2='선크림')}">
+        #선케어
+      </a>
+
+      <a th:href="@{/store(category1='메이크업')}">
+        #메이크업
+      </a>
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       상품 목록
+       Controller에서 storeList라는 이름으로 전달
+       ===================================================== -->
+  <section class="store-section">
+
+    <div class="store-section-head">
+
+      <div class="store-section-title">
+        <h2>화담 상품</h2>
+        <p>화담에서 판매 중인 다양한 뷰티 상품을 만나보세요.</p>
+      </div>
+
+      <a th:href="@{/store}"
+         class="store-view-more">
+        전체보기 →
+      </a>
+
+    </div>
+
+
+    <!-- 상단 카테고리 탭 -->
+    <div class="store-tabs category-tabs">
+
+      <a th:href="@{/store}"
+         class="store-tab"
+         th:classappend="${param.category1 == null} ? ' active' : ''">
+        전체
+      </a>
+
+      <a th:href="@{/store(category1='스킨케어')}"
+         class="store-tab"
+         th:classappend="${param.category1 != null
+                          and param.category1[0] == '스킨케어'}
+                          ? ' active' : ''">
+        스킨케어
+      </a>
+
+      <a th:href="@{/store(category1='메이크업')}"
+         class="store-tab"
+         th:classappend="${param.category1 != null
+                          and param.category1[0] == '메이크업'}
+                          ? ' active' : ''">
+        메이크업
+      </a>
+
+      <a th:href="@{/store(category1='클렌징')}"
+         class="store-tab"
+         th:classappend="${param.category1 != null
+                          and param.category1[0] == '클렌징'}
+                          ? ' active' : ''">
+        클렌징
+      </a>
+
+      <a th:href="@{/store(category1='선케어')}"
+         class="store-tab"
+         th:classappend="${param.category1 != null
+                          and param.category1[0] == '선케어'}
+                          ? ' active' : ''">
+        선케어
+      </a>
+
+      <a th:href="@{/store(category1='헤어/바디')}"
+         class="store-tab"
+         th:classappend="${param.category1 != null
+                          and param.category1[0] == '헤어/바디'}
+                          ? ' active' : ''">
+        헤어/바디
+      </a>
+
+    </div>
+
+
+    <!-- 상품이 없는 경우 -->
+    <div class="store-empty"
+         th:if="${storeList == null or #lists.isEmpty(storeList)}">
+
+      <p>등록된 상품이 없습니다.</p>
+
+    </div>
+
+
+    <!-- 상품 반복 출력 -->
+    <div class="product-grid"
+         th:if="${storeList != null and !#lists.isEmpty(storeList)}">
+
+      <article class="product-card"
+               th:each="product : ${storeList}"
+               th:data-product-id="${product.productId}">
+
+        <!-- 상품 상세 페이지 -->
+        <a class="product-main-link"
+           th:href="@{/store/detail/{productId}
+                    (productId=${product.productId})}">
+
+          <!-- 상품 이미지 -->
+          <div class="product-img-box">
+
+            <button type="button"
+                    class="btn-icon product-like"
+                    th:data-product-id="${product.productId}"
+                    aria-label="상품 찜하기">
+              ♡
+            </button>
+
+            <img th:src="${product.image != null
+                          and !#strings.isEmpty(product.image)
+                          ? product.image
+                          : '/images/store/no-image.png'}"
+                 th:alt="${product.title != null
+                          ? product.title
+                          : '상품 이미지'}"
+                 onerror="this.onerror=null;
+                          this.src='/images/store/no-image.png';">
+
           </div>
-        </div>
-      </div>
 
-      <div class="beauty-category-keywords">
-        <strong>추천 키워드</strong>
-        <a href="#">#수분진정</a>
-        <a href="#">#민감성추천</a>
-        <a href="#">#여름쿨톤</a>
-        <a href="#">#지성피부</a>
-        <a href="#">#포인트구매</a>
-      </div>
-    </section>
 
-    <section class="store-section">
-      <div class="store-section-head">
-        <div class="store-section-title">
-          <h2>화담 추천템</h2>
-          <p>회원 리뷰와 관심 데이터를 바탕으로 고른 상품이에요.</p>
-        </div>
+          <!-- 상품 정보 -->
+          <div class="product-info">
 
-        <a href="#" class="store-view-more">전체보기 →</a>
-      </div>
+            <!-- category1 · category2 -->
+            <div class="product-brand">
 
-      <div class="store-tabs category-tabs">
-        <button type="button" class="store-tab active">전체</button>
-        <button type="button" class="store-tab">스킨케어</button>
-        <button type="button" class="store-tab">선케어</button>
-        <button type="button" class="store-tab">베이스</button>
-        <button type="button" class="store-tab">립</button>
-        <button type="button" class="store-tab">아이</button>
-        <button type="button" class="store-tab">클렌징</button>
-      </div>
+              <span th:if="${product.category1 != null
+                            and !#strings.isEmpty(product.category1)}"
+                    th:text="${product.category1}">
+                스킨케어
+              </span>
 
-      <div class="product-grid">
-        <article class="product-card">
-          <a href="#">
-            <div class="product-img-box">
-              <span class="product-badge">BEST</span>
-              <button type="button" class="btn-icon product-like">♡</button>
-              <button type="button" class="product-quick">빠른 장바구니</button>
-              <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80" alt="세럼 상품">
+              <span th:if="${product.category2 != null
+                            and !#strings.isEmpty(product.category2)}"
+                    th:text="${' · ' + product.category2}">
+                · 세럼/앰플
+              </span>
+
             </div>
 
-            <div class="product-info">
-              <div class="product-brand">SKIN LAB</div>
-              <p class="product-name">수분 장벽 핑크 세럼 50ml</p>
 
-              <div class="product-price-row">
-                <span class="product-discount">28%</span>
-                <span class="product-price">18,900원</span>
-              </div>
+            <!-- 상품명 -->
+            <p class="product-name"
+               th:text="${product.title}">
+              상품 이름
+            </p>
 
-              <div class="product-origin-price">26,000원</div>
-              <div class="product-review">리뷰 128 · 건성 추천</div>
 
-              <div class="product-bottom-actions">
-                <button type="button" class="mini-cart-btn">장바구니</button>
-                <button type="button" class="mini-buy-btn">바로구매</button>
-              </div>
+            <!-- 판매 가격 -->
+            <div class="product-price-row">
+
+              <span class="product-price"
+                    th:text="${#numbers.formatInteger(
+                                product.lprice,
+                                1,
+                                'COMMA'
+                              ) + '원'}">
+                0원
+              </span>
+
             </div>
+
+
+            <!-- 등록 날짜 -->
+            <div class="product-review"
+                 th:if="${product.createAt != null}">
+
+              <span>등록일 </span>
+
+              <span th:text="${#temporals.format(
+                                product.createAt,
+                                'yyyy.MM.dd'
+                              )}">
+                2026.07.10
+              </span>
+
+            </div>
+
+          </div>
+
+        </a>
+
+
+        <!-- 버튼 영역 -->
+        <div class="product-bottom-actions">
+
+          <button type="button"
+                  class="mini-cart-btn"
+                  th:data-product-id="${product.productId}">
+            장바구니
+          </button>
+
+          <a class="mini-buy-btn"
+             th:href="@{/store/detail/{productId}
+                      (productId=${product.productId})}">
+            구매하기
           </a>
-        </article>
 
-        <article class="product-card">
-          <a href="#">
-            <div class="product-img-box">
-              <span class="product-badge">SALE</span>
-              <button type="button" class="btn-icon product-like">♡</button>
-              <button type="button" class="product-quick">빠른 장바구니</button>
-              <img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=600&q=80" alt="선크림 상품">
-            </div>
-
-            <div class="product-info">
-              <div class="product-brand">SUN DAY</div>
-              <p class="product-name">데일리 톤업 선크림 SPF50+</p>
-
-              <div class="product-price-row">
-                <span class="product-discount">21%</span>
-                <span class="product-price">15,800원</span>
-              </div>
-
-              <div class="product-origin-price">20,000원</div>
-              <div class="product-review">리뷰 96 · 여름 필수템</div>
-
-              <div class="product-bottom-actions">
-                <button type="button" class="mini-cart-btn">장바구니</button>
-                <button type="button" class="mini-buy-btn">바로구매</button>
-              </div>
-            </div>
-          </a>
-        </article>
-
-        <article class="product-card">
-          <a href="#">
-            <div class="product-img-box">
-              <span class="product-badge">NEW</span>
-              <button type="button" class="btn-icon product-like">♡</button>
-              <button type="button" class="product-quick">빠른 장바구니</button>
-              <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=600&q=80" alt="메이크업 상품">
-            </div>
-
-            <div class="product-info">
-              <div class="product-brand">MOOD PICK</div>
-              <p class="product-name">로지 무드 아이 팔레트</p>
-
-              <div class="product-price-row">
-                <span class="product-discount">17%</span>
-                <span class="product-price">22,400원</span>
-              </div>
-
-              <div class="product-origin-price">27,000원</div>
-              <div class="product-review">리뷰 72 · 봄웜 추천</div>
-
-              <div class="product-bottom-actions">
-                <button type="button" class="mini-cart-btn">장바구니</button>
-                <button type="button" class="mini-buy-btn">바로구매</button>
-              </div>
-            </div>
-          </a>
-        </article>
-
-        <article class="product-card">
-          <a href="#">
-            <div class="product-img-box">
-              <span class="product-badge">HOT</span>
-              <button type="button" class="btn-icon product-like">♡</button>
-              <button type="button" class="product-quick">빠른 장바구니</button>
-              <img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=600&q=80" alt="립 상품">
-            </div>
-
-            <div class="product-info">
-              <div class="product-brand">LIP DAY</div>
-              <p class="product-name">워터리 글로우 틴트 코랄</p>
-
-              <div class="product-price-row">
-                <span class="product-discount">15%</span>
-                <span class="product-price">11,900원</span>
-              </div>
-
-              <div class="product-origin-price">14,000원</div>
-              <div class="product-review">리뷰 61 · 데일리 립</div>
-
-              <div class="product-bottom-actions">
-                <button type="button" class="mini-cart-btn">장바구니</button>
-                <button type="button" class="mini-buy-btn">바로구매</button>
-              </div>
-            </div>
-          </a>
-        </article>
-      </div>
-    </section>
-
-    <section class="store-event-banner">
-      <div class="event-text">
-        <em>POINT BENEFIT</em>
-        <h2>
-          활동으로 모은 포인트,<br>
-          스토어에서 바로 사용하세요
-        </h2>
-        <p>리뷰 작성, 피드 등록, 댓글 활동으로 쌓은 포인트를 상품 구매에 사용할 수 있어요.</p>
-        <a href="/mypage" class="btn btn-pink">포인트 확인하기 →</a>
-      </div>
-
-      <div class="event-visual"></div>
-    </section>
-
-    <section class="store-section">
-      <div class="store-section-head">
-        <div class="store-section-title">
-          <h2>요즘 많이 담은 상품</h2>
-          <p>화담 회원들이 장바구니에 많이 담은 제품이에요.</p>
         </div>
 
-        <a href="#" class="store-view-more">전체보기 →</a>
-      </div>
+      </article>
 
-      <div class="product-grid">
-        <article class="product-card">
-          <a href="#">
-            <div class="product-img-box">
-              <button type="button" class="btn-icon product-like">♡</button>
-              <button type="button" class="product-quick">빠른 장바구니</button>
-              <img src="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&w=600&q=80" alt="토너 상품">
-            </div>
+    </div>
 
-            <div class="product-info">
-              <div class="product-brand">CLEAR SKIN</div>
-              <p class="product-name">어성초 진정 토너 300ml</p>
+  </section>
 
-              <div class="product-price-row">
-                <span class="product-discount">30%</span>
-                <span class="product-price">13,900원</span>
-              </div>
 
-              <div class="product-origin-price">19,900원</div>
-              <div class="product-review">리뷰 84 · 민감성 추천</div>
+  <!-- =====================================================
+       포인트 안내 배너
+       ===================================================== -->
+  <section class="store-event-banner">
 
-              <div class="product-bottom-actions">
-                <button type="button" class="mini-cart-btn">장바구니</button>
-                <button type="button" class="mini-buy-btn">바로구매</button>
-              </div>
-            </div>
-          </a>
-        </article>
+    <div class="event-text">
+      <em>POINT BENEFIT</em>
 
-        <article class="product-card">
-          <a href="#">
-            <div class="product-img-box">
-              <button type="button" class="btn-icon product-like">♡</button>
-              <button type="button" class="product-quick">빠른 장바구니</button>
-              <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=600&q=80" alt="크림 상품">
-            </div>
+      <h2>
+        활동으로 모은 포인트,<br>
+        스토어에서 바로 사용하세요
+      </h2>
 
-            <div class="product-info">
-              <div class="product-brand">MOIST LAB</div>
-              <p class="product-name">장벽 보습 크림 80ml</p>
+      <p>
+        리뷰 작성, 피드 등록, 댓글 활동으로 쌓은 포인트를
+        상품 구매에 사용할 수 있어요.
+      </p>
 
-              <div class="product-price-row">
-                <span class="product-discount">24%</span>
-                <span class="product-price">16,900원</span>
-              </div>
+      <a th:href="@{/mypage}"
+         class="btn btn-pink">
+        포인트 확인하기 →
+      </a>
+    </div>
 
-              <div class="product-origin-price">22,300원</div>
-              <div class="product-review">리뷰 103 · 속건조 추천</div>
+    <div class="event-visual"></div>
 
-              <div class="product-bottom-actions">
-                <button type="button" class="mini-cart-btn">장바구니</button>
-                <button type="button" class="mini-buy-btn">바로구매</button>
-              </div>
-            </div>
-          </a>
-        </article>
+  </section>
 
-        <article class="product-card">
-          <a href="#">
-            <div class="product-img-box">
-              <button type="button" class="btn-icon product-like">♡</button>
-              <button type="button" class="product-quick">빠른 장바구니</button>
-              <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80" alt="파우더 상품">
-            </div>
+</main>
 
-            <div class="product-info">
-              <div class="product-brand">BASE FIX</div>
-              <p class="product-name">보송 픽싱 파우더 팩트</p>
+<footer th:replace="~{layout/footer :: footer}"></footer>
 
-              <div class="product-price-row">
-                <span class="product-discount">19%</span>
-                <span class="product-price">12,900원</span>
-              </div>
-
-              <div class="product-origin-price">15,900원</div>
-              <div class="product-review">리뷰 57 · 지성 추천</div>
-
-              <div class="product-bottom-actions">
-                <button type="button" class="mini-cart-btn">장바구니</button>
-                <button type="button" class="mini-buy-btn">바로구매</button>
-              </div>
-            </div>
-          </a>
-        </article>
-
-        <article class="product-card">
-          <a href="#">
-            <div class="product-img-box">
-              <button type="button" class="btn-icon product-like">♡</button>
-              <button type="button" class="product-quick">빠른 장바구니</button>
-              <img src="https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=600&q=80" alt="클렌징 상품">
-            </div>
-
-            <div class="product-info">
-              <div class="product-brand">CLEAN DAY</div>
-              <p class="product-name">딥 클렌징 오일 200ml</p>
-
-              <div class="product-price-row">
-                <span class="product-discount">22%</span>
-                <span class="product-price">14,800원</span>
-              </div>
-
-              <div class="product-origin-price">19,000원</div>
-              <div class="product-review">리뷰 43 · 꼼꼼클렌징</div>
-
-              <div class="product-bottom-actions">
-                <button type="button" class="mini-cart-btn">장바구니</button>
-                <button type="button" class="mini-buy-btn">바로구매</button>
-              </div>
-            </div>
-          </a>
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <footer th:replace="~{layout/footer :: footer}"></footer>
 </body>
 </html>
