@@ -53,17 +53,19 @@ public class MemberServiceImpl implements MemberService {
     // 사용자가 입력한 아이디로 가입된 계정이 있는지 확인
     @Override
     public boolean findMember(String username) {
-        if(memberMapper.findMemberById(username) > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return (memberMapper.findMemberById(username) > 0) ? true : false;
     }
     
     // 사용자가 입력한 비밀번호가 일치하는지 확인
     @Override
     public boolean findPassword(String username, String password) {
         return passwordEncoder.matches(password, memberMapper.findPasswordById(username));
+    }
+
+    // 사용자가 입력한 이메일로 가입된 계정이 있는지 확인
+    @Override
+    public boolean findEmail(String email) {
+        return (memberMapper.findMemberByEmail(email) > 0) ? true : false;
     }
 
     // 새로운 회원 정보를 등록 (회원가입)
@@ -227,5 +229,4 @@ public class MemberServiceImpl implements MemberService {
         memberMapper.feedback(feedbackVO);
     }
 
-    
 }

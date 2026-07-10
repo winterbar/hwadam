@@ -1302,17 +1302,53 @@ main {
    ========================================================= */
 
 .feed-right-sidebar {
+  
   position: sticky;
   top: 96px;
   width: 300px;
 }
 
+/* 부모 박스: 패딩을 안정적으로 확보 */
 .feed-trend-box {
-  position: relative;
-  padding: 22px 20px;
-  border: 1px solid var(--hw-line-soft);
-  background: #ffffff;
-  box-shadow: var(--hw-card-shadow);
+    position: relative;
+    width: 300px; /* 고정 너비 권장 */
+    padding: 22px 20px;
+    border: 1px solid var(--hw-line-soft);
+    background: #ffffff;
+    box-shadow: var(--hw-card-shadow);
+    box-sizing: border-box; /* 필수 */
+    overflow: hidden;       /* 내부 자식들이 튀어나가는 것 방지 */
+}
+.feed-trend-box {
+    padding: 22px 20px !important;
+    box-sizing: border-box !important;
+    border: 1px solid var(--hw-line-soft) !important;
+    overflow: hidden !important;
+}
+
+.feed-trend-list {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* 리스트 전체 설정: 패딩 제거 */
+.feed-trend-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+/* 비어있을 때 메시지: !important 제거하고 구조에 맞춤 */
+.feed-trend-empty {
+    display: block;
+    width: 100%;
+    padding: 20px 0; /* 부모 패딩이 있으므로 좌우 패딩은 0 */
+    color: #aaa;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    border: none !important; /* 아래 테두리 제거 */
 }
 
 .feed-trend-title {
@@ -1413,7 +1449,8 @@ main {
 
 .feed-trend-empty {
   display: block !important;
-  padding: 18px 4px !important;
+  /* padding: 18px 4px !important; <- 이 줄을 과감히 삭제하거나 주석 처리하세요! */
+  padding: 20px 0 10px 0; /* 부모 패딩이 있으므로 내부 여백은 정렬용으로만 살짝 조정 */
   color: #aaa;
   font-size: 13px;
   font-weight: 700;
@@ -2416,4 +2453,36 @@ footer,
     margin-top: 24px !important;
     grid-template-columns: 1fr !important;
   }
+}
+.feed-card-image {
+  position: relative !important;
+  width: 100% !important;
+  aspect-ratio: 4 / 5 !important;
+  max-height: 620px !important;
+  overflow: hidden !important;
+  display: block !important;
+}
+
+.feed-card-image .feed-image {
+  position: absolute !important;
+  inset: 0 !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  object-fit: cover !important;
+  object-position: center !important;
+
+  display: block;
+  z-index: 2 !important;
+}
+.my-custom-box {
+    position: relative !important;
+    width: 300px !important;
+    padding: 22px 20px !important;
+    border: 1px solid var(--hw-line-soft) !important;
+    background: #ffffff !important;
+    box-shadow: var(--hw-card-shadow) !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
 }

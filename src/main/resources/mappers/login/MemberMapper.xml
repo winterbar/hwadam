@@ -16,6 +16,17 @@
     
     </select>
 
+    <!-- 입력된 이메일로 가입된 계정이 있는지 확인 -->
+    <select id="findMemberByEmail"
+            parameterType="String"
+            resultType="long">
+
+        SELECT count(*)
+        FROM member
+        WHERE email = #{email}
+
+    </select>
+
     <!-- 로그인된 회원의 정보 검색 -->
     <select id="findLoginId"
             parameterType="String"

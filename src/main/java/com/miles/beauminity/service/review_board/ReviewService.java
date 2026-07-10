@@ -59,6 +59,7 @@ public interface ReviewService { // 역할: 후기 게시판에 대한 서비스
     int getLikeCount(Long boardId);
 
 
+    List<ReviewBoardVO> getTopReviewList();
     
   
 }
