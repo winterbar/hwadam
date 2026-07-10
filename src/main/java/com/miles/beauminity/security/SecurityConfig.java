@@ -29,14 +29,14 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth ->
                 auth
                 .requestMatchers("/", "/login",
-                    "/register", "/chkid-dup/{username}", "/find",
-                    "/css/**", "/images/**", "/js/**",
-                    "/review", "/review/detail/**", "/api/**", "/upload/**"
+                    "/register", "/chkid-dup/{username}", "/find/**",
+                    "/css/**", "/images/**", "/js/**", "/api/**", "/upload/**",
+                    "/review", "/review/detail/**", "/community", "/community/{id}"
                 ) // 클라이언트 요청이 이것과 일치한다면
                 .permitAll() // 접근을 허가
                 .requestMatchers(
                     "/review/write", "/review/edit/**",
-                    "/community/**", "/feed/**", "/mypage/**"
+                    "/community/**", "/reply/**", "/feed/**", "/mypage/**"
                 ).hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated() // 위에서 허가하지 않은 요청은 인가와 인증을 받음

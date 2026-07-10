@@ -196,6 +196,8 @@
             
             LIMIT #{pageVO.offset}, #{pageVO.size}
     </select>
+    
+    <!--사용자 본인의 리뷰 리스트 가져오기-->
     <select id="getReviewList"
             parameterType="string">
         SELECT
@@ -214,6 +216,34 @@
         JOIN master_board mb
             on rb.board_id = mb.board_id
         WHERE deleted=0 and mb.username=#{username}
+        ORDER BY mb.created_at DESC
+    </select>
+    
+    <!--조회수 높은 리뷰 가져오기-->
+    <select id="getTopReviewList"
+            resultType="com.miles.beauminity.vo.review.ReviewBoardVO">
+        SELECT
+            
+            rb.product_name,
+            rb.board_id,
+            rb.category1,
+            rb.category2,
+            mb.title,
+            mb.content,
+            mb.created_at,
+            mb.view_cnt,
+            mb.reply_cnt,
+            bf.saved_name AS savedName
+            
+
+    
+        FROM review_board rb
+        JOIN master_board mb
+            on rb.board_id = mb.board_id
+        JOIN board_file bf
+            on rb.board_id=bf.board_id
+        WHERE deleted=0 
+        ORDER BY mb.view_cnt DESC
 
     </select>
             

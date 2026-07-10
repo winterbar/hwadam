@@ -365,9 +365,14 @@ public class QnaServiceImpl implements QnaService {
     public void deleteReply(Long id) {
         communityReplyMapper.deleteReply(id);
     }
-    public List<QnaBoardCompleteVO> getTipList() {
-        return qnaBoardMapper.getTipList();
+    public List<QnaBoardCompleteVO> getTopTipList() {
+        return qnaBoardMapper.getTopTipList();
     }
 
+    @Override
+    public List<QnaBoardCompleteVO> getRecentqnaList() {
+        return qnaBoardMapper.getRecentqnaList();
+    }
+    
 
 }

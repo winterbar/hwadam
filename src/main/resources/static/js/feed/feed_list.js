@@ -86,7 +86,7 @@ function renderFeedImages() {
 
       // 이미지가 있을 때
       if (imageEl) {
-        imageEl.src = "/upload/" + images[currentIndex];
+        imageEl.src = "/upload/feed/" + images[currentIndex];
         imageEl.style.display = "block";
       }
 

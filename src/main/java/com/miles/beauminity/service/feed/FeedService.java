@@ -35,5 +35,7 @@ public interface FeedService {
 
     public List<FeedVO> getTopTagList();
 
+    public List<FeedVO> getSearchTag(String tagName);
+
 
 }

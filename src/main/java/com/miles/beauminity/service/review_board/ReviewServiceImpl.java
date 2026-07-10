@@ -385,4 +385,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 
 
+    public List<ReviewBoardVO> getTopReviewList() {
+        return reviewBoardMapper.getTopReviewList();
+    }
 }
