@@ -9,11 +9,11 @@
 }
 
 .detail-layout{
-  max-width:880px;
-  margin:90px auto 90px;
+  max-width:800px;
+  margin:90px auto;
   display:flex;
   flex-direction:column;
-  gap:22px;
+  gap:40px;
 }
 
 .detail-container,
@@ -41,7 +41,7 @@
 }
 
 .post-title{
-  font-size:33px;
+  font-size:28px;
   line-height:1.35;
   margin:0 0 18px;
   font-weight:800;
@@ -129,6 +129,10 @@
 
 /* 댓글 */
 
+.comment-list{
+    margin-top:24px;
+}
+
 .comment-section h3{
   margin:0 0 18px;
   font-size:22px;
@@ -148,6 +152,14 @@
   resize:vertical;
   transition:.2s;
 }
+
+.comment-input-area{
+    margin-top:18px;
+}
+
+.comment-input-area textarea{
+    min-height:88px;
+}
 .comment-input-area textarea:focus,
 .comment-edit-content:focus,
 .child-reply-content:focus{
@@ -156,7 +168,34 @@
   box-shadow:0 0 0 3px rgba(255,124,162,.12);
 }
 
-.comment-btn-group,
+.comment-btn-group{
+  margin-top:18px;
+  margin-bottom: 24px;
+   display:block;
+}
+
+.btn-comment-submit{
+   width:100%;
+    height:46px;
+
+    border:none;
+    border-radius:10px;
+
+    background:var(--point);
+    color:#fff;
+
+    font-size:15px;
+    font-weight:600;
+
+    cursor:pointer;
+    transition:.2s;
+}
+
+.btn-comment-submit:hover{
+    background:var(--point-hover);
+}
+
+
 .comment-btn-edit-group{
   display:flex;
   justify-content:flex-end;
@@ -164,7 +203,7 @@
   margin-top:10px;
 }
 
-.btn-comment-submit,
+
 .btn-comment-update,
 .btn-comment-reply-submit{
   background:var(--point);
@@ -244,10 +283,78 @@
   font-style:italic;
 }
 
-@media(max-width:768px){
-  .detail-layout{max-width:95%;}
-  .detail-container,.comment-section{padding:20px;}
-  .post-title{font-size:27px;}
-  .post-meta-info{flex-direction:column;align-items:flex-start;gap:6px;}
-  .child-comment,.child-reply-input{margin-left:14px;}
+/* 반응형: 태블릿 */
+@media (max-width:1199px){
+
+    .detail-layout{
+        width:90%;
+        max-width:800px;
+        gap:34px;
+    }
+
+    .detail-container,
+    .comment-section{
+        padding:26px;
+    }
+
+    .post-title{
+        font-size:30px;
+    }
+
+}
+
+/* 반응형: 모바일 */
+
+@media (max-width:768px){
+
+    .detail-layout{
+        width:95%;
+        gap:30px;
+        margin:40px auto;
+    }
+
+    .detail-container,
+    .comment-section{
+        padding:22px;
+    }
+
+    .post-title{
+        font-size:22px;
+    }
+
+    .post-meta-info{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:6px;
+    }
+
+    .meta-left{
+        flex-wrap:wrap;
+    }
+
+    .comment-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .comment-actions{
+        margin-top:8px;
+    }
+
+    .child-comment,
+    .child-reply-input{
+        margin-left:18px;
+    }
+
+    .comment-input-area .comment-btn-group{
+        display:block;
+        margin-top:16px;
+        margin-bottom:24px;
+    }
+
+    .comment-input-area .btn-comment-submit{
+        width:100%;
+        height:46px;
+    }
+
 }

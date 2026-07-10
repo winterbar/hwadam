@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +34,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/board")
@@ -56,10 +56,10 @@ public class QnaApiController {
     public ResponseEntity<Map<String, Object>> filterBoard(
             @RequestParam(value = "category", defaultValue = "전체보기") String category, @ModelAttribute PageVO pageVO,
             @RequestParam(value = "sort", defaultValue = "최신순") String sort,
-            @RequestParam(required = false) LocalDateTime startDate,
-            @RequestParam(required = false) LocalDateTime endDate,
+            @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
             @RequestParam(value = "searchType", defaultValue = "titleContent") String searchType,
-            @RequestParam(required = false) String keyword) {
+            @RequestParam(value = "keyword", required = false) String keyword) {
         Map<String, Object> result = new HashMap<>();
         // 카테고리에 맞는 리스트를 DB에서 조회해서 반환
 
@@ -193,12 +193,12 @@ public class QnaApiController {
 
         MemberVO memberVO = qnaService.getMemberInfo(username);
 
-        String role = memberVO.getRole();
-
-        if (role == null) {
+        if (memberVO == null) {
             result.put("isAdmin", false);
             return ResponseEntity.ok(result);
         }
+
+        String role = memberVO.getRole();
 
         boolean isAdmin = role.equals("ADMIN");
 
@@ -209,7 +209,7 @@ public class QnaApiController {
 
     // 댓글 등록
     @PostMapping("/reply")
-    public ResponseEntity<Map<String, Object>> insertReply(@RequestBody MasterBoardReplyVO masterBoardReplyVO){
+    public ResponseEntity<Map<String, Object>> insertReply(@RequestBody MasterBoardReplyVO masterBoardReplyVO) {
 
         String username = getUsername();
         masterBoardReplyVO.setUsername(username);
@@ -220,8 +220,9 @@ public class QnaApiController {
 
     // 댓글 갱신
     @GetMapping("/reply/{boardId}")
-    public ResponseEntity<Map<String, Object>> getReplyList(@PathVariable Long boardId) {
+    public ResponseEntity<Map<String, Object>> getReplyList(@PathVariable("boardId") Long boardId) {
 
+        System.out.println("★★★★ getReplyList 진입 ★★★★");
 
         Map<String, Object> result = new HashMap<>();
 
@@ -230,9 +231,15 @@ public class QnaApiController {
         int replyCount = qnaService.getReplyCountByBoardId(boardId);
         String nowUser = getUsername();
 
-        String role = qnaService.getMemberInfo(nowUser).getRole();
+        String role = "GUEST";
 
-        System.out.println("댓글수: "+replyCount);
+        MemberVO memberVO = qnaService.getMemberInfo(nowUser);
+        
+        if (memberVO != null) {
+            role = memberVO.getRole();
+        }
+
+        System.out.println("댓글수: " + replyCount);
 
         result.put("reList", replyList);
         result.put("rCount", replyCount);
@@ -246,22 +253,19 @@ public class QnaApiController {
     @PutMapping("/reply")
     public ResponseEntity<Map<String, Object>> updateReply(@RequestBody MasterBoardReplyVO masterBoardReplyVO) {
         qnaService.updateReply(masterBoardReplyVO);
-        
+
         return ResponseEntity.ok().build();
     }
 
     // 댓글 수정
     @PutMapping("/reply/delete")
     public ResponseEntity<Map<String, Object>> deleteReply(@RequestBody MasterBoardReplyVO masterBoardReplyVO) {
-        
+
         long id = masterBoardReplyVO.getReplyId();
 
         qnaService.deleteReply(id);
-        
+
         return ResponseEntity.ok().build();
     }
-    
-        
-    
 
 }
