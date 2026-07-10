@@ -32,7 +32,7 @@ public class AdminPageController {
     @GetMapping("/admin/members")
     public String getAdminMembersPage(@ModelAttribute AdminPageVO adminPageVO,
             @ModelAttribute AdminMemberConditionVO adminMemberConditionVO,
-            @RequestParam(required = false, defaultValue = "search") String tab, Model model) {
+            @RequestParam(name="tab", required = false, defaultValue = "search") String tab, Model model) {
         
         List<AdminMemberVO> members; // 회원 정보
         AdminMemberStatsVO stats; // 회원 정보에 대한 통계

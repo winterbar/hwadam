@@ -18,7 +18,9 @@ public class VerificationStorage {
         new ConcurrentHashMap<>();
 
     // 이메일과 인증번호, 인증번호 생성시간을 저장
-    public void putVerificationStorage(String email, EmailAuthCodeVO emailAuthCodeVO) {
+    public void putVerificationStorage(String email, String type,
+                                        EmailAuthCodeVO emailAuthCodeVO) {
+        emailAuthCodeVO.setType(type);
         storage.put(email, emailAuthCodeVO);
     }
 
