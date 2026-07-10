@@ -159,16 +159,31 @@
                 FROM board_file 
                 WHERE board_id = m.board_id 
             )
-           <where>
+            <where>
                 m.board_type = #{type}
                 AND m.deleted = 0
+                
                 <if test="search.category1 != null and search.category1 != '' and search.category1 != '전체보기'">
                     AND r.category1 = #{search.category1}
                 </if>
+                
                 <if test="search.category2 != null and search.category2 != '' and search.category2 != '전체'">
                     AND r.category2 = #{search.category2}
                 </if>
-           </where>
+                
+                <if test="search.keyword != null and search.keyword != ''">
+
+                    <choose>
+                        <when test="search.searchType == 'product'">
+                            AND r.product_name LIKE CONCAT('%', #{search.keyword}, '%')
+                        </when>
+                        <when test="search.searchType == 'nickname'">
+                            AND mem.nickname LIKE CONCAT('%', #{search.keyword}, '%')
+                        </when>
+                    </choose>
+                    
+                </if>
+            </where>
             
             <choose>
                 <when test="search.sortType == 'hits'">

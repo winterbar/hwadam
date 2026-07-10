@@ -632,3 +632,57 @@ ul.rv-dropdown-menu li a {
     color: #495057;
     background-color: #e9ecef;
 }
+/*=============================================
+        검색창 부분
+===============================================*/
+
+#searchWrapper {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 25px 0;
+    font-family: 'Pretendard', sans-serif;
+}
+
+#searchWrapper select,
+#searchWrapper input,
+#searchWrapper button {
+    height: 38px;
+    font-size: 14px;
+    border-radius: 6px;
+    box-sizing: border-box;
+    outline: none;
+    border: 1px solid var(--line);
+    transition: all 0.2s;
+}
+
+/* 제품명/닉네임 선택창 */
+#searchWrapper select {
+    padding: 0 10px;
+    background-color: var(--bg);
+    color: var(--text);
+    cursor: pointer;
+}
+
+/* 검색어 입력창 */
+#searchWrapper input[type="text"] {
+    width: 240px;
+    padding: 0 12px;
+}
+#searchWrapper input:focus, 
+#searchWrapper select:focus {
+    border-color: var(--pink-deep);
+}
+
+/* 검색 버튼 */
+#searchWrapper .search-btn {
+    padding: 0 16px;
+    background-color: var(--pink);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+#searchWrapper .search-btn:hover {
+    background-color: var(--pink-deep);
+}
