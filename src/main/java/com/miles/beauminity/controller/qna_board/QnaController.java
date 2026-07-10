@@ -211,7 +211,7 @@ public class QnaController {
     public String postMethodName(@ModelAttribute MasterBoardVO masterBoardVO,
                                  @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
                                  @RequestParam("selectedFiles") MultipartFile[] files,
-                                 String category
+                                 @RequestParam("category") String category
     ) {
         
         // 모든 값이 잘 고쳐졌나 볼게요 
