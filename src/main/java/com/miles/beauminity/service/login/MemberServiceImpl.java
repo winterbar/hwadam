@@ -68,6 +68,14 @@ public class MemberServiceImpl implements MemberService {
         return (memberMapper.findMemberByEmail(email) > 0) ? true : false;
     }
 
+    // 사용자가 입력한 아이디와 이메일로 가입된 계정이 있는지 확인
+    public boolean findEmailAndId(String username, String email) {
+        MemberVO member = new MemberVO();
+        member.setUsername(username);
+        member.setEmail(email);
+        return (memberMapper.findMemberByEmailUsername(member) > 0) ? true : false;
+    }
+
     // 새로운 회원 정보를 등록 (회원가입)
     // member 테이블엔 회원 정보, member_profile에는 프로필 사진 정보
     // member와 member_profile은 식별 관계로 member 테이블에 튜플이 정상적으로 추가 되어야
@@ -189,6 +197,24 @@ public class MemberServiceImpl implements MemberService {
         
         return memberInfo;
     }
+
+    // 이메일로 가입된 회원 정보 검색
+    public List<MemberVO> findSignedMembers(String email) {
+        List<MemberVO> members = memberMapper.findSignedIdsByEmail(email);
+        for(MemberVO member : members) { maskUsername(member); }
+        return members;
+    }
+
+    // 아이디 마스킹
+    private void maskUsername(MemberVO memberVO) {
+        if (memberVO != null) {
+            String username = memberVO.getUsername();
+            String maskedUsername = username.substring(0, 4)
+                                        + "*".repeat(username.length() -3);
+            memberVO.setUsername(maskedUsername);
+        }
+    }
+
     // 해당 사용자의 모든 피드 리스트 가져오기    
     @Override
     public List<FeedVO> getFeedList(String username) {
