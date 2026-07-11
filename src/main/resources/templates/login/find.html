@@ -27,26 +27,80 @@
             <div id="findIdSection" class="find-section active">
 
                 <div class="auth-title">
-                    가입하신 이메일로 인증하여 아이디를 찾습니다.
+                    가입하신 이메일을 입력해주세요.
                 </div>
 
-                <form th:action="@{/find/send-email}" method="POST" id="emailForm" class="flex-group">
+                <form th:action="@{/find/id/send-email}" method="POST" id="emailFormId" class="flex-group">
                     <div class="input-box">
-                        <input type="email" id="emailInput" name="email" placeholder="example@naver.com" oninput="validateEmail()" required>
+                        <input type="email" id="emailInputId" name="email" placeholder="example@naver.com" oninput="validateEmail('id')" required>
                     </div>
-                    <button type="submit" id="emailBtn" class="check-btn" disabled>인증 요청</button>
+                    <button type="submit" id="emailBtnId" class="check-btn" disabled>인증 요청</button>
                 </form>
 
-                <form th:action="@{/find/verify-email}" method="POST" id="verifyForm" class="flex-group" style="display: none;">
+                <form th:action="@{/find/id/verify-email}" method="POST" id="verifyFormId" class="flex-group" style="display: none;">
                     <div class="input-box">
-                        <input type="hidden" id="hiddenEmailInput" name="email">
-                        <input type="text" name="code" id="verifyCode" placeholder="인증번호 6자리" maxlength="6" oninput="validateVerifyBtn()">
+                        <input type="hidden" id="hiddenEmailInputId" name="email">
+                        <input type="text" name="code" id="verifyCodeId" placeholder="인증번호 6자리" maxlength="6" oninput="validateVerifyBtn('id')">
                     </div>
-                    <button type="submit" id="verifyBtn" class="check-btn" disabled>확인</button>
+                    <button type="submit" id="verifyBtnId" class="check-btn" disabled>확인</button>
                 </form>
 
-                <div id="timerDisplay" style="display: none;">
+                <div id="timerDisplayId" style="display: none;">
                     남은 시간 : 5분 00초
+                </div>
+
+                <div id="resultContainerId" class="result-container">
+                    <h3 class="result-title">가입된 아이디 목록</h3>
+                    <table class="account-table">
+                        <thead>
+                            <tr>
+                                <th class="th-left">아이디</th>
+                                <th class="th-right">가입일</th>
+                            </tr>
+                        </thead>
+                        <tbody id="idTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div id="findPwSection" class="find-section active" style="display: none; ">
+
+                <div class="auth-title">
+                    가입하신 아이디와 이메일을 입력해주세요.
+                </div>
+
+                <form th:action="@{/find/pw/send-email}" method="POST" id="emailFormPw" class="flex-group">
+                    <div class="input-box">
+                        <input type="text" id="idInput" name="username" placeholder="아이디를 입력하세요." required>
+                        <input type="email" id="emailInputPw" name="email" placeholder="example@naver.com" oninput="validateEmail('pw')" required>
+                    </div>
+                    <button type="submit" id="emailBtnPw" class="check-btn" disabled>인증 요청</button>
+                </form>
+
+                <form th:action="@{/find/pw/verify-email}" method="POST" id="verifyFormPw" class="flex-group" style="display: none;">
+                    <div class="input-box">
+                        <input type="hidden" id="hiddenIdInput" name="username">
+                        <input type="hidden" id="hiddenEmailInputPw" name="email">
+                        <input type="text" name="code" id="verifyCodePw" placeholder="인증번호 6자리" maxlength="6" oninput="validateVerifyBtn('pw')">
+                    </div>
+                    <button type="submit" id="verifyBtnPw" class="check-btn" disabled>확인</button>
+                </form>
+
+                <div id="timerDisplayPw" style="display: none;">
+                    남은 시간 : 5분 00초
+                </div>
+
+                <div id="resultContainerPw" class="result-container" style="display: none;">
+                    <div class="result-card">
+                        <h2 class="result-title">비밀번호 변경 완료</h2>
+                        <p class="result-desc">
+                            임시 비밀번호가 이메일로 전송되었습니다.<br>
+                            보안을 위해 로그인 후 즉시<br>
+                            마이페이지에서 비밀번호를 변경해주세요.
+                        </p>
+                    </div>
                 </div>
 
             </div>

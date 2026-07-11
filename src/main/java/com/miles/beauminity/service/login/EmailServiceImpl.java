@@ -1,9 +1,9 @@
 package com.miles.beauminity.service.login;
 
 import com.miles.beauminity.storage.VerificationStorage;
-import java.util.Map;
+
+import java.security.SecureRandom;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -28,9 +28,23 @@ public class EmailServiceImpl implements EmailService {
         return String.format("%06d", rand.nextInt(1000000));
     }
 
+    // 10자리 무작위 비밀번호 생성
+    public String createPassword() {
+        String charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder password = new StringBuilder();
+        SecureRandom random = new SecureRandom();
+
+        for(int i = 0; i < 10; i ++) {
+            int index = random.nextInt(charSet.length());
+            password.append(charSet.charAt(index));
+        }
+
+        return password.toString();
+    }
+
     // 인증 이메일 방송 및 발송된 인증번호 반환
     @Override
-    public void sendVerificationEmail(String email) throws MessagingException {
+    public void sendVerificationEmail(String email, String type) throws MessagingException {
         String verificationCode = createCode(); // 인증번호 6자리 생성
 
         // 발송할 빈 메일 상자 생성
@@ -159,12 +173,95 @@ public class EmailServiceImpl implements EmailService {
         // 이메일, 인증번호, 인증번호 시간을 임시 저장소에 저장
         EmailAuthCodeVO emailAuthCodeVO = new EmailAuthCodeVO();
         emailAuthCodeVO.setCode(verificationCode);
-        verificationStorage.putVerificationStorage(email, emailAuthCodeVO);
+        verificationStorage.putVerificationStorage(email, type, emailAuthCodeVO);
     }
 
+    @Override
+    public void sendNoticeEmail(String email, String newPassword) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+        helper.setTo(email); // 메일을 받을 수신자의 이메일 주소 설정
+        helper.setSubject("[화담] 비밀번호 변경 안내"); // 메일 제목 설정
+
+        // 메일 본문 설정
+        String content = """
+                    <!DOCTYPE html>
+                    <html lang="ko">
+                    <head>
+                    <meta charset="UTF-8">
+                    <title>화담 이메일 인증</title>
+                    </head>
+
+                    <body style="margin:0;padding:40px 0;background:#f5f5f5;font-family:Pretendard,Arial,sans-serif;">
+
+                    <table align="center" cellpadding="0" cellspacing="0" width="600"
+                        style="background:#ffffff;border-radius:12px;padding:20px;border:1px solid #eeeeee;">
+
+                        <!-- Logo -->
+                        <tr>
+                            <td align="center" style="padding-bottom:20px;">
+                                <img src="cid:logoImage" alt="HWADAM"
+                                    style="width:190px;">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td align="center"
+                                style="font-size:28px;
+                                    font-weight:700;
+                                    color:#222;
+                                    padding-bottom:12px;">
+                                비밀번호 변경 안내
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td align="center"
+                                style="font-size:15px;
+                                    color:#666;
+                                    line-height:1.8;
+                                    padding-top: 10px;
+                                    padding-bottom:10px;">
+
+                                회원님 계정의 비밀번호가 변경되었습니다.<br>
+                                변경된 비밀번호는 <b>%s</b> 입니다.<br>
+                                보안을 위해 바로 접속하셔서 변경하시는 것을 권장드립니다.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding:15px 0;">
+                                <hr style="border:none;border-top:1px solid #eeeeee;">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td align="center"
+                                style="
+                                font-size:13px;
+                                color:#aaaaaa;
+                                line-height:1.8;">
+
+                                본 메일은 발신전용 메일로 본 메일로 회신하실 경우 답변이 되지 않습니다.<br>
+                                서비스 이용 안내메일로 수신동의 여부와 관계없이 발송되었습니다.
+                            </td>
+                        </tr>
+
+                    </table>
+
+                    </body>
+                    </html>
+                    """.formatted(newPassword);
+
+        helper.setText(content, true);
+        helper.addInline("logoImage",
+            new ClassPathResource("static/images/common/title.png"));
+        javaMailSender.send(message);
+    }
 
     @Override
-    public boolean verifyCode(String email, String userInputCode) {
+    public boolean verifyCode(String email, String type, String userInputCode) {
         // 저장된 이메일 인증번호 및 인증번호 생성시간
         EmailAuthCodeVO emailAuthCodeVO = verificationStorage.getVerificationStorage(email);
         
@@ -173,12 +270,13 @@ public class EmailServiceImpl implements EmailService {
             return false;
         }
         // 인증번호가 만료되었는지 확인
-        if (emailAuthCodeVO.isExpired()) {
+        if(emailAuthCodeVO.isExpired()) {
             verificationStorage.removeVerificationStorage(email); // 만료되었다면 스토리지에서 삭제
             return false;
         }
         // 인증번호가 일치하는지 확인
-        if (emailAuthCodeVO.getCode().equals(userInputCode)) {
+        // 타입을 통해서 아이디 찾기용인지 비밀번호 찾기용인지 검증
+        if(type.equals(emailAuthCodeVO.getType()) && emailAuthCodeVO.getCode().equals(userInputCode)) {
             verificationStorage.removeVerificationStorage(email); // 인증 성공 시 삭제
             return true;
         }
@@ -186,6 +284,4 @@ public class EmailServiceImpl implements EmailService {
         return false;
     }
 
-    
-    
 }
