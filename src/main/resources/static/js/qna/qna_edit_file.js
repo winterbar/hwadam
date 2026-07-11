@@ -9,16 +9,12 @@ let deletedFileIds = [] //삭제될 파일 아이디 담는 배열
         const boardId = previewList.dataset.id;
 
         document.addEventListener("DOMContentLoaded", function(){
-            
-
-            console.log(boardId);
 
             // 기존 파일 렌더링
             fetch(`/api/board/${boardId}/render-file`)
             .then(res => res.json())
             .then(data=>{
-                
-                console.log("매핑 성공");
+
                 existingFiles = data.files;
 
                 renderFileItems(); //렌더링 함수 사용.
@@ -78,18 +74,12 @@ let deletedFileIds = [] //삭제될 파일 아이디 담는 배열
         // 새로운 파일 화면에 같이 출력
         function renderFileItems() {
 
-            console.log("함수 접근");
-
             previewList.innerHTML = "";
 
             // 기존 파일 렌더링
             existingFiles.forEach((file, index) => {
 
-                console.log("함수 접근");
-
                 const imgUrl = '/download/'+file.savedName;
-
-                console.log(imgUrl);
 
                 const div = document.createElement("div");
 
@@ -105,13 +95,10 @@ let deletedFileIds = [] //삭제될 파일 아이디 담는 배열
 
                 // 파일 삭제
                 div.querySelector(".remove-btn").addEventListener("click", function(){
-                    console.log(file.fileId);
                     deletedFileIds.push(file.fileId);
                     existingFiles = existingFiles.filter(f => f!== file);
                     div.remove();
                     // 또 패치 써야한다고...?
-
-                    console.log("삭제될 기존 파일 ID 목록:", deletedFileIds);
                 });
                 
                 previewList.appendChild(div);
@@ -138,14 +125,13 @@ let deletedFileIds = [] //삭제될 파일 아이디 담는 배열
                     div.querySelector(".remove-btn").addEventListener("click", function(){
                     selectedFiles = selectedFiles.filter(f => f!== file);
                     div.remove();
-                    console.log("남은 새 파일 목록:", selectedFiles);
                 });
                 previewList.appendChild(div);
             });
 
         }
 
-        const updateForm = document.querySelector("form[action*='/board/qna/update']");
+        const updateForm = document.querySelector("form[action*='/community/update']");
 
         if(updateForm){
 
@@ -170,8 +156,6 @@ let deletedFileIds = [] //삭제될 파일 아이디 담는 배열
 
                 const fileInputForUpdate = document.getElementById("file-input");
                 fileInputForUpdate.files = dataTransfer.files;
-
-                console.log("동기화된 파일: ", fileInputForUpdate.files)
 
                 updateForm.submit();
 
