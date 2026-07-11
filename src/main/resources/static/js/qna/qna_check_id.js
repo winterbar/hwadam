@@ -7,8 +7,6 @@ document.addEventListener("DOMContentLoaded", function(){
     .then(res =>res.json())
     .then(data =>{
 
-        console.log(data.isOwner);
-
         if(!data.isOwner){
             buttonField.hidden = true;
         }

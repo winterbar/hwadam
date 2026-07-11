@@ -24,8 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(res => res.json())
         .then(data =>{
 
-            console.log(data);
-
             if (data.isLikeOn){
                 like.textContent = '♥';
                 like.classList.add('on-like');

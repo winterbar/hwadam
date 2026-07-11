@@ -153,6 +153,8 @@ public class QnaController {
             fReList.add(c);
         }
 
+        
+
 
 
         model.addAttribute("qna", qna);
@@ -192,8 +194,11 @@ public class QnaController {
         // 수정하는 거에 사진도 같이 넣으려면 어떻게 해야하나 
         List<MasterBoardFileVO> files = qnaService.getBoardFileById(id);
 
+        String category = qnaService.getCategoryById(id);
+
         model.addAttribute("qnaEdit", qnaEdit);
         model.addAttribute("qnaFiles", files);
+        model.addAttribute("category", category);
 
         System.out.println("테스트: "+qnaEdit.toString());
 
@@ -206,7 +211,7 @@ public class QnaController {
     public String postMethodName(@ModelAttribute MasterBoardVO masterBoardVO,
                                  @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
                                  @RequestParam("selectedFiles") MultipartFile[] files,
-                                 String category
+                                 @RequestParam("category") String category
     ) {
         
         // 모든 값이 잘 고쳐졌나 볼게요 

@@ -45,8 +45,6 @@ function loadBoardList(){
 
     params.append("page", searchCondition.page);
 
-    console.log(`/api/board/filter?${params.toString()}`);
-
     // 스프링 API 호출
     fetch(`/api/board/filter?${params.toString()}`)
         .then(response => response.json())
