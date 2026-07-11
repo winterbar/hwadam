@@ -35,7 +35,8 @@
     LEFT JOIN member m ON r.username = m.username
     LEFT JOIN board_reply br ON r.parents_reply_id = br.reply_id
     LEFT JOIN member pm ON br.username = pm.username
-    WHERE r.board_id = #{boardId} AND r.deleted = 0
+    WHERE r.board_id = #{boardId}
+        AND (r.parents_reply_id IS NULL OR r.deleted = 0)
     ORDER BY 
         IFNULL(r.parents_reply_id, r.reply_id) ASC,
         r.reply_id ASC;

@@ -243,15 +243,15 @@ public class QnaServiceImpl implements QnaService {
     @Override
     public boolean isLikeON(Long id, String username) {
 
-        MasterBoardLikeVO masterBoardLikeVO = new MasterBoardLikeVO();
-        masterBoardLikeVO.setBoardId(id);
-        masterBoardLikeVO.setUsername(username);
+        MasterBoardLikeVO vo = new MasterBoardLikeVO();
+        vo.setBoardId(id);
+        vo.setUsername(username);
 
-        if (masterBoardLikeMapper.isLikeON(masterBoardLikeVO).isEmpty())
-            return false;
-        else
-            return true;
-
+        // 💡 List 타입으로 결과를 받습니다.
+        List<MasterBoardLikeVO> result = masterBoardLikeMapper.isLikeON(vo);
+        
+        // 💡 List가 null이 아니고, 비어있지 않으면 좋아요가 눌린 상태(true)
+        return result != null && !result.isEmpty();
     }
 
     @Override
