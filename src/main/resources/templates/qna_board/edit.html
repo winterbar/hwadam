@@ -29,10 +29,14 @@
                         <label for="post-category">카테고리</label>
                         <select id="post-category" name="category" class="form-control" required>
                             <option value="" disabled selected>카테고리를 선택해주세요</option>
-                            <option value="자유">자유</option>
-                            <option value="질문">질문</option>
-                            <option value="꿀팁">꿀팁</option>
-                            <option value="공지사항">공지사항</option>
+                            <option value="자유"
+                                    th:selected="${category == '자유'}">자유</option>
+                            <option value="질문"
+                                    th:selected="${category == '질문'}">질문</option>
+                            <option value="꿀팁"
+                                    th:selected="${category == '꿀팁'}">꿀팁</option>
+                            <option value="공지사항"
+                                    th:selected="${category == '공지사항'}">공지사항</option>
                         </select>
                     </div>
                 </div>
@@ -50,7 +54,7 @@
                 <div class="form-group">
                     <label>사진 첨부</label>
                     <label for="file-input" class="file-upload-wrapper" id="dropZone">
-                        <input type="file" id="file-input" multiple name="selectedFiles">
+                        <input type="file" id="file-input" multiple name="selectedFiles" accept=".jpg,.jpeg,.png,.gif,.webp">
                         <span class="upload-icon">📁</span>
                         <span class="upload-text">클릭하거나 파일을 여기로 드래그하여 업로드</span>
                         <span class="upload-hint">JPG, PNG, GIF 파일 가능 (최대 10MB)</span>

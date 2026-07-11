@@ -158,7 +158,7 @@ public class QnaServiceImpl implements QnaService {
     public void deleteBoard(Long id) {
 
         List<MasterBoardFileVO> fileList = masterBoardFileMapper.getBoardFileById(id);
-        String prevPath = "c:/uploads";
+        String prevPath = "c:/uploads/qna";
         String nextPath = "c:/deleted/qna";
 
         masterBoardMapper.deleteBoard(id);
@@ -316,7 +316,7 @@ public class QnaServiceImpl implements QnaService {
 
         MasterBoardFileVO getFile = masterBoardFileMapper.getFileById(id);
 
-        String prevPath = "c:/uploads";
+        String prevPath = "c:/uploads/qna";
         String nextPath = "c:/deleted/qna";
 
         // 삭제 이전에 삭제할 파일 복사
@@ -372,6 +372,11 @@ public class QnaServiceImpl implements QnaService {
     @Override
     public List<QnaBoardCompleteVO> getRecentqnaList() {
         return qnaBoardMapper.getRecentqnaList();
+    }
+
+    @Override
+    public String getCategoryById(Long id) {
+        return qnaBoardMapper.getCategoryById(id);
     }
     
 

@@ -7,7 +7,7 @@
 
 body {
     font-family: "Pretendard", sans-serif;
-    background: #fafafa;
+    background: #fff;
     color: #222;
 }
 
@@ -16,9 +16,8 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
-    transform: translateY(-40px);
+    align-items: flex-start;
+    padding: 150px 20px 40px 20px;
 }
 
 .register-container {
@@ -39,7 +38,7 @@ body {
 }
 
 .register-logo {
-    width: 210px;
+    width: 200px;
     display: block;
 }
 
@@ -83,7 +82,8 @@ body {
     font-size: 0.9rem;
 }
 
-#timerDisplay {
+#timerDisplayId, 
+#timerDisplayPw {
     font-size: 0.8rem;
     color: #FA6E68;
 }
@@ -191,6 +191,122 @@ input[readonly] {
     border-left: 4px solid #28a745;
 }
 
+.toast.waiting {
+    border-left: 4px solid #adadad;
+}
+
 .toast.error {
     border-left: 4px solid #dc3545;
+}
+
+/* 아이디 찾기 결과 */
+.result-container {
+    display: none;
+    margin-top: 30px;
+    width: 100%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.result-title {
+    font-size: 18px;
+    color: #222222;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-align: left;
+}
+
+/* 계정 목록 테이블 메인 스타일 */
+.account-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+/* 테이블 헤더 */
+.account-table thead tr {
+    background: #FFF5F8;
+    border-bottom: 2px solid #FFA1C1;
+}
+
+.account-table th {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #4a5568;
+    font-weight: 600;
+}
+
+.account-table th.th-left {
+    text-align: left;
+}
+
+.account-table th.th-right {
+    text-align: right;
+}
+
+/* 테이블 바디 (동적 데이터 영역) */
+.account-table tbody tr {
+    border-bottom: 1px solid #edf2f7;
+}
+
+.account-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* 아이디 열 스타일 */
+.account-id {
+    padding: 14px 16px;
+    font-size: 15px;
+    color: #2d3748;
+    font-weight: 500;
+    text-align: left;
+}
+
+/* 가입일 열 스타일 */
+.account-date {
+    padding: 14px 16px;
+    font-size: 14px;
+    color: #718096;
+    text-align: right;
+}
+
+/* 비밀번호 변경 완료 문구 */
+.result-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #fff;
+}
+
+.result-card {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    max-width: 450px;
+    background-color: #fcfcfc; /* 좀 더 화담스러운 밝은 배경 */
+    border: 1px solid #eee;    /* 테두리 추가 */
+    border-radius: 12px;
+    padding: 0px 15px;
+}
+
+.result-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #000;
+    text-align: center;
+    margin: 10px 0 15px 0;
+}
+
+.result-desc {
+    font-size: 0.95rem;
+    color: #444;
+    text-align: center;
+    margin: 0 0 10px 0;
 }

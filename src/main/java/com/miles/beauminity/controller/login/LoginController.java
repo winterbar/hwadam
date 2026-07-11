@@ -1,5 +1,6 @@
 package com.miles.beauminity.controller.login;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -11,12 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miles.beauminity.service.login.EmailService;
 import com.miles.beauminity.service.login.MemberService;
-import com.miles.beauminity.storage.VerificationStorage;
-import com.miles.beauminity.vo.login.EmailAuthCodeVO;
+import com.miles.beauminity.vo.login.MemberVO;
 
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-
 
 @Controller
 @RequiredArgsConstructor
@@ -31,12 +30,13 @@ public class LoginController {
         return "login/login";
     }
     
-    // 계정 찾기용 인증 메일 발송
-    @PostMapping("/find/send-email")
+    // 아이디 찾기용 인증 메일 발송
+    @PostMapping("/find/id/send-email")
     @ResponseBody
-    public ResponseEntity<Map<String, String>> sendEmail(@RequestParam("email") String email) {
+    public ResponseEntity<Map<String, String>> sendEmailFindId(@RequestParam("email") String email) {
         
-        // 가입된 이메일이 있는지 확인하고 없으면 인증번호 메일을 전송하지 않음
+        // 입력된 이메일로 가입된 계정이 있는지 확인하고
+        // 없으면 인증번호 메일을 전송하지 않음
         // 단, 이메일 존재 여부는 클라이언트에게 보안상 전달하지 않음
         if(!memberService.findEmail(email)) {
             return ResponseEntity.ok(Map.of(
@@ -45,7 +45,7 @@ public class LoginController {
         }
         // 가입된 이메일이 있다면 인증번호 메일을 전송
         try {
-            emailService.sendVerificationEmail(email);
+            emailService.sendVerificationEmail(email, "id");
             return ResponseEntity.ok(Map.of(
                 "message", "성공적으로 인증번호가 발송되었습니다."
             ));
@@ -56,25 +56,89 @@ public class LoginController {
         }
     }
 
-    @PostMapping("/find/verify-email")
-    public String verifyEmail(@RequestParam("email") String email,
+    // 
+    @PostMapping("/find/id/verify-email")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> verifyEmailFindId(@RequestParam("email") String email,
                               @RequestParam("code") String userInputCode) {
         
         // 데이터 잘 들어오는 거 확인 완료
-        boolean verified = emailService.verifyCode(email, userInputCode);
+        boolean verified = emailService.verifyCode(email, "id", userInputCode);
 
         if(verified) {
-            System.out.println("성공");
-            // 인증번호가 일치하면 아이디 정보 memberService로 가져오기
+            List<MemberVO> members = memberService.findSignedMembers(email);
+            return ResponseEntity.ok(Map.of(
+                "message", "인증한 이메일로 가입하신 아이디 목록입니다.",
+                "members", members
+            ));
         } else {
-            System.out.println("실패");
-            // 인증번호가 불일치하면 어떻게 할지 생각하기
-            // 1. 페이지를 새롭게 띄운다.
-            // 2. 데이터만 보낸다.
+            return ResponseEntity.status(400).body(Map.of(
+                "message", "인증번호가 일치하지 않습니다. 다시 시도해주세요."
+            ));
         }
-                
-        return "login/login";
     }
+    
+    @PostMapping("/find/pw/send-email")
+    public ResponseEntity<Map<String, String>> sendEmailFindPw(
+        @RequestParam("username") String username, @RequestParam("email") String email) {
+
+        // 입력된 아이디와 이메일로 가입된 계정이 있는지 확인하고
+        // 없으면 인증번호 메일을 전송하지 않음
+        // 단, 이메일 존재 여부는 클라이언트에게 보안상 전달하지 않음
+        if(!memberService.findEmailAndId(username, email)) {
+            return ResponseEntity.ok(Map.of(
+               "message", "성공적으로 인증번호가 발송되었습니다." 
+            ));
+        }
+        try {
+            emailService.sendVerificationEmail(email, "pw");
+            return ResponseEntity.ok(Map.of(
+                "message", "성공적으로 인증번호가 발송되었습니다."
+            ));
+        } catch(MessagingException e) {
+            return ResponseEntity.status(500).body(Map.of(
+                "message", "인증번호 전송에 실패했습니다. 다시 시도해주세요."
+            ));
+        }
+    }
+
+    @PostMapping("/find/pw/verify-email")
+    public ResponseEntity<Map<String, String>> verifyEmailFindPw(
+        @RequestParam("username") String username, @RequestParam("email") String email,
+                                @RequestParam("code") String userInputCode) {
+        
+        boolean verified = emailService.verifyCode(email, "pw", userInputCode);
+
+        if(verified) {
+            // 10자리의 무작위 비밀번호 생성
+            String newPassword = emailService.createPassword();
+            try {
+                String isSent;
+                emailService.sendNoticeEmail(email, newPassword);
+                MemberVO member = new MemberVO();
+                member.setUsername(username);
+                member.setPassword(newPassword);
+                if(memberService.updatePassword(member)) {
+                    isSent = "success";
+                } else {
+                    isSent = "fail";
+                }
+                return ResponseEntity.ok().body(Map.of(
+                    "message", "변경된 임시 비밀번호가 회원님의 메일로 전송되었습니다.",
+                    "isSent", isSent
+                ));
+            } catch(MessagingException e) {
+                return ResponseEntity.status(500).body(Map.of(
+                    "message", "메일 전송에 실패했습니다. 다시 시도해주세요."
+                ));
+            }
+        } else {
+            return ResponseEntity.status(400).body(Map.of(
+                "message", "인증번호가 일치하지 않습니다. 다시 시도해주세요."
+            ));
+        }
+    }
+    
     
     
 
