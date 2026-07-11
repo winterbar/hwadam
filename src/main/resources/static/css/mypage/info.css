@@ -1166,46 +1166,6 @@ button {
 }
 
 
-/* =========================
-   커뮤니티 숫자 페이징
-========================= */
-
-.qna-pagination {
-    display: flex;
-    justify-content: center;
-    gap: 7px;
-
-    margin-top: 18px;
-}
-
-.review-pagination .qna-page-btn {
-    min-width: 32px;
-    height: 32px;
-    padding: 0 10px;
-
-    border: 1px solid var(--hw-line-soft);
-    background: #ffffff;
-    color: #9a7b87;
-
-    font-size: 13px;
-    font-weight: 900;
-
-    cursor: pointer;
-    transition: 0.18s ease;
-}
-
-.review-pagination .qna-page-btn:hover {
-    border-color: var(--hw-pink);
-    background: var(--hw-pink-light);
-    color: var(--hw-pink-deep);
-}
-
-.review-pagination .qna-page-btn.active {
-    border-color: var(--hw-pink);
-    background: var(--hw-pink);
-    color: #ffffff;
-}
-
 
 /* =========================
    피드 / 구매내역 썸네일
@@ -1533,4 +1493,71 @@ header,
 .header-wrap,
 .header-container {
     background: #ffffff !important;
+}
+/* =========================
+   리뷰 + 커뮤니티 숫자 페이징 공통
+========================= */
+
+/* 페이징 전체 영역 */
+.review-pagination,
+.qna-pagination {
+    width: 100%;
+    margin-top: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+/* 리뷰와 커뮤니티 페이지 버튼 공통 */
+.review-pagination .qna-page-btn,
+.qna-pagination .qna-page-btn {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    padding: 0;
+
+    border: 1px solid var(--hw-line-soft);
+    border-radius: 0;
+
+    background: #ffffff;
+    color: #9a7b87;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 13px;
+    font-weight: 900;
+    line-height: 1;
+
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
+
+    transition: 0.18s ease;
+}
+
+/* 마우스를 올렸을 때 */
+.review-pagination .qna-page-btn:hover,
+.qna-pagination .qna-page-btn:hover {
+    border-color: var(--hw-pink);
+    background: var(--hw-pink-light);
+    color: var(--hw-pink-deep);
+}
+
+/* 현재 선택된 페이지 */
+.review-pagination .qna-page-btn.active,
+.qna-pagination .qna-page-btn.active {
+    border-color: var(--hw-pink);
+    background: var(--hw-pink);
+    color: #ffffff;
+}
+
+/* 비활성 버튼이 있을 경우 */
+.review-pagination .qna-page-btn:disabled,
+.qna-pagination .qna-page-btn:disabled {
+    opacity: 0.45;
+    cursor: default;
 }

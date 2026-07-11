@@ -240,8 +240,10 @@
                             <img th:if="${review.memberProfilePath != null and !#strings.isEmpty(review.memberProfilePath)}" 
                                 th:src="@{|/upload/profile/${review.memberProfileSavedName}|}" 
                                 alt="프로필 이미지" class="profile-img"/>
-                            <div th:unless="${review.memberProfilePath != null and !#strings.isEmpty(review.memberProfilePath)}" 
-                                class="profile-default"></div>
+                            <img th:unless="${review.memberProfilePath != null and !#strings.isEmpty(review.memberProfilePath)}"
+     th:src="@{/images/common/default-profile.png}"
+     alt="기본 프로필 이미지"
+     class="profile-img"/>
                             <span class="nickname" th:text="${review.nickName}">작성자 닉네임</span>
                         </div>
 
