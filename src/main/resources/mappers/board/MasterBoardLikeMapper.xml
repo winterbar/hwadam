@@ -39,4 +39,6 @@
         WHERE board_id = #{value};
    </select> 
 
+   
+
 </mapper>
