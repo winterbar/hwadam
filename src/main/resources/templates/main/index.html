@@ -4,11 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>화담</title>
 
     <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
+
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
+
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+
     <link rel="stylesheet" th:href="@{/css/common/main.css}">
 </head>
 
@@ -26,102 +30,130 @@
         ========================= -->
             <section class="main-banner-slider js-main-banner-slider" data-interval="10000">
 
-                <!-- =========================
-                 1번 배너 : 메인 화담 이미지 배너
-            ========================= -->
+                <!-- 1번 배너 -->
                 <div class="banner-slide active">
+
                     <div class="hero-banner hero-image-banner">
 
                         <a th:href="@{/community}">
-                        <img class="hero-banner-image" th:src="@{/images/main/mainbanner1.png}"
-                            src="/images/main/mainbanner1.png" alt="화담 뷰티 커뮤니티 메인 배너">
-                            </a>
-                        
-                            <span class="hero-card-arrow">›</span>
+
+                            <img class="hero-banner-image" th:src="@{/images/main/mainbanner1.png}"
+                                src="/images/main/mainbanner1.png" alt="화담 뷰티 커뮤니티 메인 배너">
+
                         </a>
 
-                        <!-- 1번 배너 페이지 표시 -->
                         <div class="banner-pager hero-pager">
+
                             <span class="banner-page">
                                 <strong>1</strong> / 3
                             </span>
 
                             <div class="banner-dots">
+
                                 <button type="button" class="banner-dot active js-banner-dot" data-index="0"
-                                    aria-label="1번 배너"></button>
+                                    aria-label="1번 배너">
+                                </button>
+
                                 <button type="button" class="banner-dot js-banner-dot" data-index="1"
-                                    aria-label="2번 배너"></button>
+                                    aria-label="2번 배너">
+                                </button>
+
                                 <button type="button" class="banner-dot js-banner-dot" data-index="2"
-                                    aria-label="3번 배너"></button>
+                                    aria-label="3번 배너">
+                                </button>
+
                             </div>
+
                         </div>
 
                     </div>
+
                 </div>
 
 
-                <!-- =========================
-                 2번 배너 : 포인트 이미지 배너
-            ========================= -->
+                <!-- 2번 배너 -->
                 <div class="banner-slide">
+
                     <div class="point-banner point-image-banner">
 
                         <a th:href="@{/mypage}">
-                        <!-- 배너 배경 이미지 -->
-                        <img class="point-banner-image" th:src="@{/images/main/mainbanner2.png}"
-                            src="/images/main/mainbanner2.png" alt="활동할수록 쌓이는 화담 포인트 배너">
-                            </a>
-                        <!-- 2번 배너 페이지 표시 -->
+
+                            <img class="point-banner-image" th:src="@{/images/main/mainbanner2.png}"
+                                src="/images/main/mainbanner2.png" alt="활동할수록 쌓이는 화담 포인트 배너">
+
+                        </a>
+
                         <div class="banner-pager point-pager">
+
                             <span class="banner-page">
                                 <strong>2</strong> / 3
                             </span>
 
                             <div class="banner-dots">
+
                                 <button type="button" class="banner-dot js-banner-dot" data-index="0"
-                                    aria-label="1번 배너"></button>
+                                    aria-label="1번 배너">
+                                </button>
+
                                 <button type="button" class="banner-dot active js-banner-dot" data-index="1"
-                                    aria-label="2번 배너"></button>
+                                    aria-label="2번 배너">
+                                </button>
+
                                 <button type="button" class="banner-dot js-banner-dot" data-index="2"
-                                    aria-label="3번 배너"></button>
+                                    aria-label="3번 배너">
+                                </button>
+
                             </div>
+
                         </div>
 
                     </div>
+
                 </div>
 
 
-                <!-- =========================
-                 3번 배너 : 여름 선케어 이미지 배너
-            ========================= -->
+                <!-- 3번 배너 -->
                 <div class="banner-slide">
+
                     <div class="summer-image-banner">
 
                         <a th:href="@{/store}">
+
                             <img class="summer-image" th:src="@{/images/main/mainbanner3.png}"
                                 src="/images/main/mainbanner3.png" alt="여름 선케어 추천 배너">
+
                         </a>
 
-                        <!-- 3번 배너 페이지 표시 -->
                         <div class="banner-pager summer-image-pager">
+
                             <span class="banner-page">
                                 <strong>3</strong> / 3
                             </span>
 
                             <div class="banner-dots">
+
                                 <button type="button" class="banner-dot js-banner-dot" data-index="0"
-                                    aria-label="1번 배너"></button>
+                                    aria-label="1번 배너">
+                                </button>
+
                                 <button type="button" class="banner-dot js-banner-dot" data-index="1"
-                                    aria-label="2번 배너"></button>
+                                    aria-label="2번 배너">
+                                </button>
+
                                 <button type="button" class="banner-dot active js-banner-dot" data-index="2"
-                                    aria-label="3번 배너"></button>
+                                    aria-label="3번 배너">
+                                </button>
+
                             </div>
+
                         </div>
 
                     </div>
+
                 </div>
 
-                <!-- 슬라이더 좌우 버튼 -->
+
+                <!-- 배너 좌우 버튼 -->
                 <button type="button" class="main-banner-arrow main-banner-prev js-main-banner-prev" aria-label="이전 배너">
                     ‹
                 </button>
@@ -134,478 +166,567 @@
 
 
             <!-- =========================
-             배너 아래 메인 콘텐츠 2단 구조
+             배너 아래 메인 콘텐츠
         ========================= -->
             <div class="home-content-layout">
+
 
                 <!-- =========================
                  왼쪽 메인 콘텐츠
             ========================= -->
                 <div class="home-main-content">
 
-                    <!-- 신상 & BEST -->
-                    <section class="section">
+
+                    <!-- =========================
+                     신상 & BEST
+                ========================= -->
+                    <section class="section product-section">
+
                         <div class="section-head">
+
                             <div>
-                                <h2 class="section-title">신상 & BEST</h2>
-                                <p class="section-sub">화담에서 지금 많이 보는 신상 화장품과 인기 제품</p>
+                                <h2 class="section-title">
+                                    신상 &amp; BEST
+                                </h2>
+
+                                <p class="section-sub">
+                                    화담에서 지금 많이 보는 신상 화장품과 인기 제품
+                                </p>
                             </div>
 
-                            <a th:href="@{/store}" class="view-more">전체보기 →</a>
+                            <a th:href="@{/store/all}" class="view-more">
+                                전체보기 →
+                            </a>
+
                         </div>
+
 
                         <div class="product-tabs">
-                            <button type="button" class="active">신상</button>
-                            <button type="button">BEST</button>
-                            <button type="button">추천템</button>
+
+                            <button type="button" class="active">
+                                신상
+                            </button>
+
+                            <button type="button">
+                                BEST
+                            </button>
+
+                            <button type="button">
+                                추천템
+                            </button>
+
                         </div>
 
-                        <div class="product-grid product-grid-five">
 
-                            <article class="product-card">
-                                <a href="#">
-                                    <img class="product-img"
-                                        src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=600&q=80"
-                                        alt="글로우 쿠션 제품">
+                        <!-- 실제 상품 데이터가 있을 때 -->
+                        <div class="product-grid product-grid-five"
+                            th:if="${storeList != null and !#lists.isEmpty(storeList)}">
+
+                            <article class="product-card" th:each="product, productStat : ${storeList}"
+                                th:if="${productStat.index < 5}">
+
+                                <a th:href="@{/store/all}" class="product-link">
+
+                                    <div class="product-image-box">
+
+                                        <!-- 상품 이미지가 있을 때 -->
+                                        <img class="product-img"
+                                            th:if="${product.image != null and !#strings.isEmpty(product.image)}"
+                                            th:src="${product.image}" th:alt="${product.title}">
+
+                                        <!-- 상품 이미지가 없을 때 -->
+                                        <img class="product-img"
+                                            th:unless="${product.image != null and !#strings.isEmpty(product.image)}"
+                                            th:src="@{/images/store/no-image.png}" alt="상품 이미지 없음">
+
+                                    </div>
+
 
                                     <div class="product-info">
-                                        <div class="product-brand">HWA PICK</div>
-                                        <p class="product-name">피치 글로우 쿠션</p>
+
+                                        <div class="product-brand" th:text="${product.brand != null and !#strings.isEmpty(product.brand)
+                                                    ? product.brand
+                                                    : '브랜드 정보 없음'}">
+                                            브랜드
+                                        </div>
+
+
+                                        <p class="product-name" th:text="${product.title != null and !#strings.isEmpty(product.title)
+                                                  ? product.title
+                                                  : '상품명 정보 없음'}">
+                                            상품명
+                                        </p>
+
 
                                         <div class="price-row">
-                                            <span class="price">18,900원</span>
-                                            <span class="discount">24%</span>
+
+                                            <span class="price"
+                                                th:text="${#numbers.formatInteger(product.lprice, 1, 'COMMA') + '원'}">
+                                                0원
+                                            </span>
+
+                                            <span class="discount"
+                                                th:if="${product.category2 != null and !#strings.isEmpty(product.category2)}"
+                                                th:text="${product.category2}">
+                                                스킨케어
+                                            </span>
+
                                         </div>
+
                                     </div>
+
                                 </a>
+
                             </article>
 
-                            <article class="product-card">
-                                <a href="#">
-                                    <img class="product-img"
-                                        src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80"
-                                        alt="아이팔레트 제품">
+                        </div>
 
-                                    <div class="product-info">
-                                        <div class="product-brand">MOOD</div>
-                                        <p class="product-name">로지 무드 아이 팔레트</p>
 
-                                        <div class="price-row">
-                                            <span class="price">21,300원</span>
-                                            <span class="discount">18%</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </article>
+                        <!-- 상품 데이터가 없을 때 -->
+                        <div class="product-empty" th:if="${storeList == null or #lists.isEmpty(storeList)}">
 
-                            <article class="product-card">
-                                <a href="#">
-                                    <img class="product-img"
-                                        src="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&w=600&q=80"
-                                        alt="세럼 제품">
-
-                                    <div class="product-info">
-                                        <div class="product-brand">SKIN LAB</div>
-                                        <p class="product-name">수분 장벽 핑크 세럼</p>
-
-                                        <div class="price-row">
-                                            <span class="price">15,400원</span>
-                                            <span class="discount">30%</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </article>
-
-                            <article class="product-card">
-                                <a href="#">
-                                    <img class="product-img"
-                                        src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=600&q=80"
-                                        alt="립 제품">
-
-                                    <div class="product-info">
-                                        <div class="product-brand">LIP DAY</div>
-                                        <p class="product-name">워터리 틴트 로즈 코랄</p>
-
-                                        <div class="price-row">
-                                            <span class="price">11,900원</span>
-                                            <span class="discount">15%</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </article>
-
-                            <article class="product-card">
-                                <a href="#">
-                                    <img class="product-img"
-                                        src="https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=600&q=80"
-                                        alt="토너 제품">
-
-                                    <div class="product-info">
-                                        <div class="product-brand">SKIN CARE</div>
-                                        <p class="product-name">어성초 진정 토너</p>
-
-                                        <div class="price-row">
-                                            <span class="price">13,900원</span>
-                                            <span class="discount">BEST</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </article>
+                            <p>등록된 상품이 없습니다.</p>
 
                         </div>
 
                     </section>
-                    <!-- 오늘의 화장 / 피드 -->
+
+
+                    <!-- =========================
+                     오늘의 화장
+                ========================= -->
                     <section class="section">
+
                         <div class="section-head">
+
                             <div>
-                                <h2 class="section-title">오늘의 화장</h2>
-                                <p class="section-sub">회원들이 공유한 데일리 메이크업 피드</p>
+                                <h2 class="section-title">
+                                    오늘의 화장
+                                </h2>
+
+                                <p class="section-sub">
+                                    회원들이 공유한 데일리 메이크업 피드
+                                </p>
                             </div>
 
-                            <a th:href="@{/feed}" class="view-more">피드 더보기 →</a>
+                            <a th:href="@{/feed}" class="view-more">
+                                피드 더보기 →
+                            </a>
+
                         </div>
 
-                        <!-- 실제 피드 데이터 있을 때 -->
-                        <div class="feed-grid" th:if="${feedList != null and feedList.size() > 0}">
+
+                        <!-- 실제 피드 데이터가 있을 때 -->
+                        <div class="feed-grid" th:if="${feedList != null and !#lists.isEmpty(feedList)}">
 
                             <article class="feed-card" th:each="feed, feedStat : ${feedList}"
                                 th:if="${feedStat.index < 3}">
 
                                 <a th:href="@{/feed/{id}(id=${feed.feedId})}">
 
-                                    <div th:if="${feed.feedFileList != null and feed.feedFileList.size() > 0}"
+                                    <!-- 피드 이미지가 있을 때 -->
+                                    <div th:if="${feed.feedFileList != null and !#lists.isEmpty(feed.feedFileList)}"
                                         th:with="firstFile=${feed.feedFileList[0]}">
+
                                         <img th:src="@{/upload/feed/{fileName}(fileName=${firstFile})}" alt="피드 이미지">
+
                                     </div>
 
-                                    <div class="feed-no-image"
-                                        th:if="${feed.feedFileList == null or feed.feedFileList.size() == 0}">
-                                        <span>NO IMAGE</span>
-                                    </div>
 
                                     <div class="feed-info">
+
                                         <div class="feed-nickname" th:text="${feed.nickname}">
                                             @화담회원
                                         </div>
 
+
+                                        <!-- 피드 태그가 있을 때 -->
                                         <div class="feed-main-tags"
-                                            th:if="${feed.feedTagList != null and feed.feedTagList.size() > 0}">
+                                            th:if="${feed.feedTagList != null and !#lists.isEmpty(feed.feedTagList)}">
+
                                             <span th:each="tag, tagStat : ${feed.feedTagList}"
-                                                th:if="${tagStat.index < 3}" th:text="'#' + ${tag}">
+                                                th:if="${tagStat.index < 3}" th:text="${'#' + tag}">
                                                 #태그
                                             </span>
+
                                         </div>
 
-                                        <div class="feed-main-tags"
-                                            th:if="${feed.feedTagList == null or feed.feedTagList.size() == 0}">
-                                            <span>#데일리메이크업</span>
-                                        </div>
 
                                         <div class="feed-meta">
-                                            <span th:text="'♡ ' + ${feed.likeCnt}">♡ 0</span>
-                                            <span th:text="'댓글 ' + ${feed.replyCnt}">댓글 0</span>
+
+                                            <span th:text="${'♡ ' + (feed.likeCnt != null ? feed.likeCnt : 0)}">
+                                                ♡ 0
+                                            </span>
+
+                                            <span th:text="${'댓글 ' + (feed.replyCnt != null ? feed.replyCnt : 0)}">
+                                                댓글 0
+                                            </span>
+
                                         </div>
+
                                     </div>
 
                                 </a>
+
                             </article>
 
                         </div>
 
-                        <!-- 피드 데이터 없을 때 샘플 -->
-                        <div class="feed-grid" th:if="${feedList == null or feedList.size() == 0}">
 
-                            <article class="feed-card">
-                                <a href="#">
-                                    <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=500&q=80"
-                                        alt="오늘의 화장 피드">
+                        <!-- 오늘의 화장 데이터가 없을 때 -->
+                        <div class="feed-empty" th:if="${feedList == null or #lists.isEmpty(feedList)}">
 
-                                    <div class="feed-info">
-                                        <div class="feed-user">@peach_day</div>
-
-                                        <div class="feed-main-tags">
-                                            <span>#데일리메이크업</span>
-                                            <span>#복숭아메이크업</span>
-                                        </div>
-
-                                        <div class="feed-meta">
-                                            <span>♡ 128</span>
-                                            <span>댓글 12</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </article>
-
-                            <article class="feed-card">
-                                <a href="#">
-                                    <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=500&q=80"
-                                        alt="오늘의 화장 피드">
-
-                                    <div class="feed-info">
-                                        <div class="feed-user">@glow_me</div>
-
-                                        <div class="feed-main-tags">
-                                            <span>#광채피부</span>
-                                            <span>#촉촉베이스</span>
-                                        </div>
-
-                                        <div class="feed-meta">
-                                            <span>♡ 94</span>
-                                            <span>댓글 8</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </article>
-
-                            <article class="feed-card">
-                                <a href="#">
-                                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=500&q=80"
-                                        alt="오늘의 화장 피드">
-
-                                    <div class="feed-info">
-                                        <div class="feed-user">@daily_pink</div>
-
-                                        <div class="feed-main-tags">
-                                            <span>#핑크톤</span>
-                                            <span>#아이팔레트</span>
-                                        </div>
-
-                                        <div class="feed-meta">
-                                            <span>♡ 87</span>
-                                            <span>댓글 5</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </article>
+                            아직 등록된 오늘의 화장이 없습니다.
 
                         </div>
                     </section>
 
+                    <article class="feed-card">
 
-                    <!-- 요즘 많이 본 리뷰 -->
-                    <section class="section">
-                        <div class="section-head">
-                            <div>
-                                <h2 class="section-title">요즘 많이 본 리뷰</h2>
-                                <p class="section-sub">화담 회원들이 작성한 솔직한 리뷰</p>
+                        <a href="#">
+
+                            <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=500&q=80"
+                                alt="오늘의 화장 피드">
+
+                            <div class="feed-info">
+
+                                <div class="feed-user">
+                                    @glow_me
+                                </div>
+
+                                <div class="feed-main-tags">
+                                    <span>#광채피부</span>
+                                    <span>#촉촉베이스</span>
+                                </div>
+
+                                <div class="feed-meta">
+                                    <span>♡ 94</span>
+                                    <span>댓글 8</span>
+                                </div>
+
                             </div>
 
-                            <a th:href="@{/review}" class="view-more">리뷰 더보기 →</a>
-                        </div>
+                        </a>
 
-                        <!-- 실제 리뷰 데이터 있을 때 -->
-                        <div class="review-grid" th:if="${reviewList != null and reviewList.size() > 0}">
-
-                            <article class="review-card" th:each="review, reviewStat : ${reviewList}"
-                                th:if="${reviewStat.index < 2}">
-
-                                <a th:href="@{/review/detail/{id}(id=${review.boardId})}">
-
-                                    <div class="review-top">
-
-                                        <!-- 리뷰 이미지 있을 때 -->
-                                        <div class="review-thumb" th:if="${review.savedName != null}">
-                                            <img th:src="@{|/upload/review/${review.savedName}|}" alt="리뷰 이미지">
-                                        </div>
-
-                                        <!-- 리뷰 이미지 없을 때 -->
-                                        <div class="review-thumb no-review-image" th:if="${review.savedName == null}">
-                                            <span>REVIEW</span>
-                                        </div>
-
-                                        <div class="review-info">
-                                            <div class="review-brand">
-                                                <span th:text="${review.category1}">메이크업</span>
-                                            </div>
-
-                                            <!-- 제품명 추가 -->
-                                            <p class="review-product" th:text="${review.productName}">
-                                                제품명
-                                            </p>
-
-                                        </div>
-                                    </div>
-
-                                    <p class="review-desc" th:text="${review.content}">
-                                        리뷰 내용
-                                    </p>
+                    </article>
 
 
+                    <article class="feed-card">
 
-                                </a>
-                            </article>
+                        <a href="#">
 
-                        </div>
-                    </section>
+                            <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=500&q=80"
+                                alt="오늘의 화장 피드">
 
-                    <section class="section community-question-section">
-                        <div class="section-head">
-                            <div>
-                                <h2 class="section-title">지금 올라온 뷰티 질문</h2>
-                                <p class="section-sub">질문과 정보공유 게시글을 확인해보세요</p>
+                            <div class="feed-info">
+
+                                <div class="feed-user">
+                                    @daily_pink
+                                </div>
+
+                                <div class="feed-main-tags">
+                                    <span>#핑크톤</span>
+                                    <span>#아이팔레트</span>
+                                </div>
+
+                                <div class="feed-meta">
+                                    <span>♡ 87</span>
+                                    <span>댓글 5</span>
+                                </div>
+
                             </div>
 
-                            <a th:href="@{/community}" class="view-more">커뮤니티 더보기 →</a>
-                        </div>
+                        </a>
 
-                        <!-- 실제 커뮤니티 데이터 있을 때 -->
-                        <div class="question-grid" th:if="${qnaList != null and qnaList.size() > 0}">
+                    </article>
 
-                            <article class="question-card" th:each="qna, qnaStat : ${qnaList}"
-                                th:if="${qnaStat.index < 2}">
-
-                                <a class="question-link" th:href="@{/community/{id}(id=${qna.boardId})}">
-
-                                    <div class="question-card-top">
-                                        <span class="question-q">Q</span>
-
-                                        <span class="mini-chip" th:text="${qna.category}">
-                                            질문
-                                        </span>
-                                    </div>
-
-                                    <h3 th:text="${qna.title}">
-                                        게시글 제목
-                                    </h3>
-
-                                    <p th:text="${qna.content}">
-                                        게시글 내용
-                                    </p>
-
-                                    <div class="question-meta">
-                                        <span class="question-stat"
-                                            th:text="${'조회 ' + (qna.viewCnt != null ? qna.viewCnt : 0)}">
-                                            조회 0
-                                        </span>
-
-                                        <span class="question-stat"
-                                            th:text="${'댓글 ' + (qna.replyCnt != null ? qna.replyCnt : 0)}">
-                                            댓글 0
-                                        </span>
-                                    </div>
-
-                                </a>
-                            </article>
-
-                        </div>
-
-                        <!-- 데이터 없을 때 -->
-                        <div class="question-empty" th:if="${qnaList == null or qnaList.size() == 0}">
-                            아직 등록된 질문이 없습니다.
-                        </div>
-                    </section>
                 </div>
+
+                </section>
 
 
                 <!-- =========================
-                 오른쪽 사이드 콘텐츠
-            ========================= -->
-                <aside class="home-side-content">
-                    <!-- 피부 타입별 인기 정보 -->
-                    <section class="side-panel">
-                        <div class="side-panel-head">
-                            <h3>핫한 꿀팁 정보</h3>
-                            <p>메이크업 노하우를 지금 바로 확인해보세요.</p>
+                     요즘 많이 본 리뷰
+                ========================= -->
+                <section class="section">
+
+                    <div class="section-head">
+
+                        <div>
+                            <h2 class="section-title">
+                                요즘 많이 본 리뷰
+                            </h2>
+
+                            <p class="section-sub">
+                                화담 회원들이 작성한 솔직한 리뷰
+                            </p>
                         </div>
 
-                        <!-- getTipList로 받아온 title 출력 -->
-                        <div class="side-type-list" th:if="${tipList != null and tipList.size() > 0}">
+                        <a th:href="@{/review}" class="view-more">
+                            리뷰 더보기 →
+                        </a>
 
-                            <a class="side-type-item" th:each="tip, tipStat : ${tipList}" th:if="${tipStat.index < 5}"
-                                th:href="@{|/community/${tip.boardId}|}">
-
-                                <span th:text="${tipStat.index + 1}">1</span>
-
-                                <strong th:text="${tip.title}">
-                                    촉촉한 베이스 · 수분 크림 후기
-                                </strong>
-
-                                <em th:text="${tip.viewCnt != null ? '조회 ' + tip.viewCnt : '조회 0'}">
-                                    조회 0
-                                </em>
-                            </a>
-
-                        </div>
-
-                        <!-- 데이터 없을 때 기본값 -->
-                        <div class="side-type-list" th:if="${tipList == null or tipList.size() == 0}">
-
-                            <a th:href="@{/board/review(type='건성')}" class="side-type-item">
-                                <span>건성</span>
-                                <strong>촉촉한 베이스 · 수분 크림 후기</strong>
-                                <em>24개</em>
-                            </a>
-
-                            <a th:href="@{/board/review(type='지성')}" class="side-type-item">
-                                <span>지성</span>
-                                <strong>보송한 선크림 · 파우더 추천</strong>
-                                <em>18개</em>
-                            </a>
-
-                            <a th:href="@{/board/review(type='민감성')}" class="side-type-item">
-                                <span>민감성</span>
-                                <strong>진정템 · 저자극 제품 정보</strong>
-                                <em>31개</em>
-                            </a>
-
-                            <a th:href="@{/board/review(type='복합성')}" class="side-type-item">
-                                <span>복합성</span>
-                                <strong>베이스 메이크업 팁</strong>
-                                <em>16개</em>
-                            </a>
-
-                        </div>
-                    </section>
-                    <!-- 오늘의 뷰티 팁 배너 -->
-                    <div class="side-beauty-tip-banner">
-                        <img th:src="@{/images/main/beauty-tip-mask-banner.png}"
-                            src="/images/main/beauty-tip-mask-banner.png" alt="오늘의 뷰티 팁 - 마스크팩 냉장 보관">
-                    </div>
-
-                    <!-- 인기 태그 -->
-                    <section class="side-panel">
-                        <div class="side-panel-head">
-                            <h3>인기 태그</h3>
-                            <p>지금 화담에서 자주 찾는 키워드예요.</p>
-                        </div>
-
-                        <div class="side-tag-list" th:if="${topTagList != null and topTagList.size() > 0}">
-
-                            <a class="side-tag" th:each="tag, tagStat : ${topTagList}" th:if="${tagStat.index < 10}"
-                                th:href="@{/search/{tagName}(tagName=${tag.tagName})}" th:text="'#' + ${tag.tagName}">
-                                #수분
-                            </a>
-
-                        </div>
-
-                        <!-- topTagList 없을 때 -->
-                        <div class="side-tag-list" th:if="${topTagList == null or topTagList.size() == 0}">
-
-                            <p class="empty-tag-text">인기 태그가 없습니다.</p>
-
-                        </div>
-                    </section>
-
-                    <div class="side-image-banner">
-                        <img th:src="@{/images/main/sidebanner2.png}" src="/images/main/sidebanner2.png"
-                            alt="화담 사이드 배너">
                     </div>
 
 
-                </aside>
+                    <div class="review-grid" th:if="${reviewList != null and !#lists.isEmpty(reviewList)}">
+
+                        <article class="review-card" th:each="review, reviewStat : ${reviewList}"
+                            th:if="${reviewStat.index < 2}">
+
+                            <a th:href="@{/review/detail/{id}(id=${review.boardId})}">
+
+                                <div class="review-top">
+
+                                    <!-- 리뷰 이미지가 있을 때 -->
+                                    <div class="review-thumb"
+                                        th:if="${review.savedName != null and !#strings.isEmpty(review.savedName)}">
+
+                                        <img th:src="@{|/upload/review/${review.savedName}|}" alt="리뷰 이미지">
+
+                                    </div>
+
+
+
+
+                                    <div class="review-info">
+
+                                        <div class="review-brand">
+
+                                            <span th:text="${review.category1}">
+                                                메이크업
+                                            </span>
+
+                                        </div>
+
+                                        <p class="review-product" th:text="${review.productName}">
+                                            제품명
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                                <p class="review-desc" th:text="${review.content}">
+                                    리뷰 내용
+                                </p>
+
+                            </a>
+
+                        </article>
+
+                    </div>
+                    <!-- 리뷰가 없을 때 -->
+                    <div class="review-empty" th:if="${reviewList == null or #lists.isEmpty(reviewList)}">
+
+                        아직 등록된 리뷰가 없습니다.
+
+                    </div>
+
+                </section>
+
+
+                <!-- =========================
+                     뷰티 질문
+                ========================= -->
+                <section class="section community-question-section">
+
+                    <div class="section-head">
+
+                        <div>
+                            <h2 class="section-title">
+                                지금 올라온 뷰티 질문
+                            </h2>
+
+                            <p class="section-sub">
+                                질문과 정보공유 게시글을 확인해보세요
+                            </p>
+                        </div>
+
+                        <a th:href="@{/community}" class="view-more">
+                            커뮤니티 더보기 →
+                        </a>
+
+                    </div>
+
+
+                    <!-- 실제 커뮤니티 데이터가 있을 때 -->
+                    <div class="question-grid" th:if="${qnaList != null and !#lists.isEmpty(qnaList)}">
+
+                        <article class="question-card" th:each="qna, qnaStat : ${qnaList}" th:if="${qnaStat.index < 2}">
+
+                            <a class="question-link" th:href="@{/community/{id}(id=${qna.boardId})}">
+
+                                <div class="question-card-top">
+
+                                    <span class="question-q">
+                                        Q
+                                    </span>
+
+                                    <span class="mini-chip" th:text="${qna.category}">
+                                        질문
+                                    </span>
+
+                                </div>
+
+
+                                <h3 th:text="${qna.title}">
+                                    게시글 제목
+                                </h3>
+
+
+                                <p th:text="${qna.content}">
+                                    게시글 내용
+                                </p>
+
+
+                                <div class="question-meta">
+
+                                    <span class="question-stat"
+                                        th:text="${'조회 ' + (qna.viewCnt != null ? qna.viewCnt : 0)}">
+                                        조회 0
+                                    </span>
+
+                                    <span class="question-stat"
+                                        th:text="${'댓글 ' + (qna.replyCnt != null ? qna.replyCnt : 0)}">
+                                        댓글 0
+                                    </span>
+
+                                </div>
+
+                            </a>
+
+                        </article>
+
+                    </div>
+
+
+                    <!-- 커뮤니티 데이터가 없을 때 -->
+                    <div class="question-empty" th:if="${qnaList == null or #lists.isEmpty(qnaList)}">
+
+                        아직 등록된 질문이 없습니다.
+
+                    </div>
+
+                </section>
 
             </div>
 
-        </main>
 
-        <!-- 푸터 -->
-        <div th:replace="~{layout/footer :: footerFragment}"></div>
+            <!-- =========================
+                 오른쪽 사이드 콘텐츠
+            ========================= -->
+            <aside class="home-side-content">
+
+
+                <!-- 핫한 꿀팁 정보 -->
+                <section class="side-panel">
+
+                    <div class="side-panel-head">
+                        <h3>핫한 꿀팁 정보</h3>
+                        <p>메이크업 노하우를 지금 바로 확인해보세요.</p>
+                    </div>
+
+                    <!-- 꿀팁 정보가 있을 때 -->
+                    <div class="side-type-list" th:if="${tipList != null and !#lists.isEmpty(tipList)}">
+
+                        <a class="side-type-item" th:each="tip, tipStat : ${tipList}" th:if="${tipStat.index < 5}"
+                            th:href="@{|/community/${tip.boardId}|}">
+
+                            <span th:text="${tipStat.index + 1}">
+                                1
+                            </span>
+
+                            <strong th:text="${tip.title}">
+                                꿀팁 제목
+                            </strong>
+
+                            <em th:text="${'조회 ' + (tip.viewCnt != null ? tip.viewCnt : 0)}">
+                                조회 0
+                            </em>
+
+                        </a>
+
+                    </div>
+
+                    <!-- 꿀팁 정보가 없을 때 -->
+                    <div class="side-tip-empty" th:if="${tipList == null or #lists.isEmpty(tipList)}">
+
+                        아직 등록된 꿀팁 정보가 없습니다.
+
+                    </div>
+
+                </section>
+
+                <!-- 오늘의 뷰티 팁 배너 -->
+                <div class="side-beauty-tip-banner">
+
+                    <img th:src="@{/images/main/beauty-tip-mask-banner.png}"
+                        src="/images/main/beauty-tip-mask-banner.png" alt="오늘의 뷰티 팁 - 마스크팩 냉장 보관">
+
+                </div>
+
+
+                <!-- 인기 태그 -->
+                <section class="side-panel">
+
+                    <div class="side-panel-head">
+
+                        <h3>인기 태그</h3>
+
+                        <p>
+                            지금 화담에서 자주 찾는 키워드예요.
+                        </p>
+
+                    </div>
+
+
+                    <!-- 실제 인기 태그가 있을 때 -->
+                    <div class="side-tag-list" th:if="${topTagList != null and !#lists.isEmpty(topTagList)}">
+
+                        <a class="side-tag" th:each="tag, tagStat : ${topTagList}" th:if="${tagStat.index < 10}"
+                            th:href="@{/search/{tagName}(tagName=${tag.tagName})}" th:text="${'#' + tag.tagName}">
+                            #수분
+                        </a>
+
+                    </div>
+
+
+                    <!-- 인기 태그가 없을 때 -->
+                    <div class="side-tag-list" th:if="${topTagList == null or #lists.isEmpty(topTagList)}">
+
+                        <p class="empty-tag-text">
+                            인기 태그가 없습니다.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- 오른쪽 이미지 배너 -->
+                <div class="side-image-banner">
+
+                    <img th:src="@{/images/main/sidebanner2.png}" src="/images/main/sidebanner2.png" alt="화담 사이드 배너">
+
+                </div>
+
+            </aside>
 
     </div>
 
-    <script th:src="@{/js/main/mainBanner.js}" src="/js/main/mainBanner.js"></script>
+    </main>
 
+
+    <!-- 푸터 -->
+    <div th:replace="~{layout/footer :: footerFragment}"></div>
+
+    </div>
+
+
+    <script th:src="@{/js/main/mainBanner.js}" src="/js/main/mainBanner.js">
+    </script>
 
 </body>
 
