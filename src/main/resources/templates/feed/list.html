@@ -1,1048 +1,1348 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>화담 : 오늘의 화장</title>
 
-    <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}" />
-    <meta
-      th:if="${_csrf != null}"
-      name="_csrf_header"
-      th:content="${_csrf.headerName}"
-    />
+<head>
+  <meta charset="UTF-8" />
 
-    <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" th:href="@{/css/common/main.css}" />
-    <link rel="stylesheet" th:href="@{/css/common/header.css}" />
-    <link rel="stylesheet" th:href="@{/css/common/footer.css}" />
-    <link rel="stylesheet" th:href="@{/css/feed/feed.css}" />
+  <title>화담 : 오늘의 화장</title>
 
-    <style>
-      .feed-card > .feed-profile-header {
-        width: 100%;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        padding: 16px 18px 14px 18px !important;
-        margin: 0 !important;
-        box-sizing: border-box !important;
-        background: #ffffff !important;
-        border-bottom: 1px solid #f0f0f0 !important;
-      }
+  <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}" />
 
-      .feed-profile-left {
-        display: flex !important;
-        align-items: center !important;
-        gap: 12px !important;
-        flex: 1 !important;
-        min-width: 0 !important;
-      }
+  <meta th:if="${_csrf != null}" name="_csrf_header" th:content="${_csrf.headerName}" />
 
-      .feed-profile-avatar {
-        width: 40px !important;
-        height: 40px !important;
-        min-width: 40px !important;
-        min-height: 40px !important;
-        border-radius: 50% !important;
-        background: linear-gradient(
-          135deg,
+  <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}" />
+
+  <link rel="stylesheet" th:href="@{/css/common/main.css}" />
+
+  <link rel="stylesheet" th:href="@{/css/common/header.css}" />
+
+  <link rel="stylesheet" th:href="@{/css/common/footer.css}" />
+
+  <link rel="stylesheet" th:href="@{/css/feed/feed.css}" />
+
+  <style>
+    .feed-card>.feed-profile-header {
+      width: 100%;
+
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+
+      padding: 16px 18px 14px 18px !important;
+      margin: 0 !important;
+
+      box-sizing: border-box !important;
+
+      background: #ffffff !important;
+      border-bottom: 1px solid #f0f0f0 !important;
+    }
+
+    .feed-profile-left {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+
+      flex: 1 !important;
+      min-width: 0 !important;
+    }
+
+    .feed-profile-avatar {
+      width: 40px !important;
+      height: 40px !important;
+
+      min-width: 40px !important;
+      min-height: 40px !important;
+
+      border-radius: 50% !important;
+
+      background: linear-gradient(135deg,
           #fa6e68 0%,
-          #facb47 100%
-        ) !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        color: #ffffff !important;
-        font-size: 14px !important;
-        font-weight: 900 !important;
-        line-height: 1 !important;
-        flex: 0 0 40px !important;
-        box-shadow: 0 3px 8px rgba(250, 110, 104, 0.2) !important;
-        overflow: hidden !important;
-      }
+          #facb47 100%) !important;
 
-      .feed-profile-avatar img {
-        width: 100% !important;
-        height: 100% !important;
-        border-radius: 50% !important;
-        object-fit: cover !important;
-        display: block !important;
-      }
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
 
-      .feed-profile-avatar .avatar-fallback {
-        width: 100% !important;
-        height: 100% !important;
-        align-items: center !important;
-        justify-content: center !important;
-        color: #ffffff !important;
-        font-size: 14px !important;
-        font-weight: 900 !important;
-      }
+      color: #ffffff !important;
+      font-size: 14px !important;
+      font-weight: 900 !important;
+      line-height: 1 !important;
 
-      .feed-profile-info {
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: center !important;
-        min-width: 0 !important;
-        flex: 1 !important;
-      }
+      flex: 0 0 40px !important;
 
-      .feed-profile-nickname {
-        font-size: 14px !important;
-        font-weight: 900 !important;
-        color: #111111 !important;
-        line-height: 1.2 !important;
-        margin: 0 0 6px 0 !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-      }
+      box-shadow: 0 3px 8px rgba(250, 110, 104, 0.2) !important;
 
-      .feed-profile-tags {
-        display: flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        flex-wrap: wrap !important;
-      }
+      overflow: hidden !important;
+    }
 
-      .feed-profile-tag {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        height: 21px !important;
-        padding: 0 8px !important;
-        border-radius: 3px !important;
-        box-sizing: border-box !important;
-        font-size: 11px !important;
-        font-weight: 700 !important;
-        line-height: 1 !important;
-        white-space: nowrap !important;
-      }
+    .feed-profile-avatar img {
+      width: 100% !important;
+      height: 100% !important;
 
-      .feed-profile-tag.skin {
-        background: #fff8db !important;
-        border: 1px solid #f0df9a !important;
-        color: #7a6500 !important;
-      }
+      border-radius: 50% !important;
 
-      .feed-profile-tag.color {
-        background: #fff0ee !important;
-        border: 1px solid #f3c4bf !important;
-        color: #e1726c !important;
-      }
+      object-fit: cover !important;
 
-      .feed-profile-tag.age {
-        background: #eef5ff !important;
-        border: 1px solid #bdd7ff !important;
-        color: #3f6fa8 !important;
-      }
+      display: block !important;
+    }
 
-      .feed-profile-header .feed-more-wrap {
-        position: relative !important;
-        flex: 0 0 auto !important;
-        margin-left: 12px !important;
-      }
+    .feed-profile-avatar .avatar-fallback {
+      width: 100% !important;
+      height: 100% !important;
 
-      .feed-profile-header .feed-more-btn {
-        border: none !important;
-        background: transparent !important;
-        color: #8b8b8b !important;
-        font-size: 20px !important;
-        font-weight: 900 !important;
-        line-height: 1 !important;
-        padding: 0 2px !important;
-        margin: 0 !important;
-        cursor: pointer !important;
-      }
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
 
-      .feed-profile-header .feed-more-btn:hover {
-        color: #333333 !important;
-      }
-      
-    </style>
-  </head>
+      color: #ffffff !important;
 
-  <body th:data-login-username="${#authentication.name}">
-    <header th:replace="~{layout/header :: header}"></header>
+      font-size: 14px !important;
+      font-weight: 900 !important;
+    }
 
-    <div class="feed-filter-bar is-closed" id="feed-filter-bar">
-      <div
-        class="feed-filter-summary"
-        id="feed-filter-summary"
-        role="button"
-        tabindex="0"
-      >
-        <div>
-          <strong>해시태그로 피드 보기</strong>
-          <span>궁금한 태그를 열어서 관련 피드만 모아보세요.</span>
-        </div>
+    .feed-profile-info {
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
 
-        <em id="feed-filter-toggle-icon">펼치기 ＋</em>
+      min-width: 0 !important;
+      flex: 1 !important;
+    }
+
+    .feed-profile-nickname {
+      margin: 0 0 6px 0 !important;
+
+      color: #111111 !important;
+
+      font-size: 14px !important;
+      font-weight: 900 !important;
+      line-height: 1.2 !important;
+
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+
+    .feed-profile-tags {
+      display: flex !important;
+      align-items: center !important;
+
+      gap: 6px !important;
+      flex-wrap: wrap !important;
+    }
+
+    .feed-profile-tag {
+      height: 21px !important;
+      padding: 0 8px !important;
+
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+
+      border-radius: 3px !important;
+
+      box-sizing: border-box !important;
+
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      line-height: 1 !important;
+
+      white-space: nowrap !important;
+    }
+
+    .feed-profile-tag.skin {
+      background: #fff8db !important;
+      border: 1px solid #f0df9a !important;
+      color: #7a6500 !important;
+    }
+
+    .feed-profile-tag.color {
+      background: #fff0ee !important;
+      border: 1px solid #f3c4bf !important;
+      color: #e1726c !important;
+    }
+
+    .feed-profile-tag.age {
+      background: #eef5ff !important;
+      border: 1px solid #bdd7ff !important;
+      color: #3f6fa8 !important;
+    }
+
+    .feed-profile-header .feed-more-wrap {
+      position: relative !important;
+
+      flex: 0 0 auto !important;
+
+      margin-left: 12px !important;
+    }
+
+    .feed-profile-header .feed-more-btn {
+      padding: 0 2px !important;
+      margin: 0 !important;
+
+      border: none !important;
+      background: transparent !important;
+
+      color: #8b8b8b !important;
+
+      font-size: 20px !important;
+      font-weight: 900 !important;
+      line-height: 1 !important;
+
+      cursor: pointer !important;
+    }
+
+    .feed-profile-header .feed-more-btn:hover {
+      color: #333333 !important;
+    }
+
+    /* 피드가 없을 때 */
+    .feed-page-empty-state {
+      width: 100%;
+      min-height: 220px;
+
+      margin-top: 18px;
+      padding: 36px 24px;
+
+      border: 1px dashed #ffa1c1;
+      border-radius: 14px;
+
+      background: #fff7fa;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      box-sizing: border-box;
+    }
+
+    .feed-page-empty-state strong {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: #444444;
+
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .feed-page-empty-state span {
+      color: #999999;
+
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    /* 인기 해시태그가 없을 때 */
+    .feed-trend-list .feed-trend-empty {
+      width: 100%;
+      min-height: 110px;
+
+      padding: 20px 14px;
+
+      border: 1px dashed #ffa1c1;
+      border-radius: 12px;
+
+      background: #fff7fa;
+      color: #999999;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      box-sizing: border-box;
+      list-style: none;
+    }
+
+    .feed-trend-tag {
+      padding: 0;
+
+      border: none;
+      background: transparent;
+
+      color: inherit;
+
+      font: inherit;
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body th:data-login-username="${#authentication.name}">
+
+  <!-- 헤더 -->
+  <header th:replace="~{layout/header :: header}"></header>
+
+
+  <!-- 해시태그 필터 -->
+  <div class="feed-filter-bar is-closed" id="feed-filter-bar">
+
+    <div class="feed-filter-summary" id="feed-filter-summary" role="button" tabindex="0">
+
+      <div>
+        <strong>해시태그로 피드 보기</strong>
+
+        <span>
+          궁금한 태그를 열어서 관련 피드만 모아보세요.
+        </span>
       </div>
 
-      <div
-        class="feed-filter-inner"
-        id="feed-filter-inner"
-        aria-label="해시태그 필터"
-        style="display: none"
-      >
-        <input
-          type="checkbox"
-          id="feed-tag-more-toggle"
-          class="feed-tag-more-toggle"
-        />
+      <em id="feed-filter-toggle-icon">
+        펼치기 ＋
+      </em>
 
-        <div class="feed-tag-one-line">
-          <button type="button" class="feed-tag-btn active" data-tag="all">
-            #전체
-          </button>
-
-          <button
-            type="button"
-            class="feed-tag-btn"
-            th:each="tagName : ${tagList}"
-            th:data-tag="${tagName}"
-            th:text="'#' + ${tagName}"
-          >
-            #해시태그
-          </button>
-        </div>
-
-        <label for="feed-tag-more-toggle" class="feed-tag-more-btn">
-          <span class="more-text">+ 더보기</span>
-          <span class="close-text">- 접기</span>
-        </label>
-      </div>
     </div>
 
-    <main class="feed-page-layout">
-      <div class="main-left-content">
-        <section class="dashboard-section">
-          <div class="section-header feed-section-header">
-            <h2>
-              오늘의 화장
-              <span>사용자의 데일리 루틴과 사용샷을 모아보는 공간입니다.</span>
-            </h2>
 
-            <button
-              class="feed-write-top-btn"
-              type="button"
-              th:onclick="|location.href='@{/feed/write}'|"
-            >
-              피드 작성하기
-            </button>
-          </div>
+    <div class="feed-filter-inner" id="feed-filter-inner" aria-label="해시태그 필터" style="display: none">
 
-          <div class="feed-sort-select-wrap">
-            <select id="feed-sort-select" class="feed-sort-select">
-              <option value="latest">최신순</option>
-              <option value="oldest">오래된순</option>
-              <option value="like">좋아요순</option>
-              <option value="comment">댓글순</option>
-            </select>
+      <input type="checkbox" id="feed-tag-more-toggle" class="feed-tag-more-toggle" />
 
-            <details class="feed-filter-details">
-              <summary class="feed-filter-open-btn">
-                <span class="feed-filter-icon">
-                  <img th:src="@{/images/feed/filter.png}" alt="필터" />
-                </span>
-                필터 설정
-              </summary>
 
-              <form class="feed-filter-panel">
-                <div class="feed-filter-group">
-                  <div class="feed-filter-group-title">[퍼스널컬러별]</div>
+      <div class="feed-tag-one-line">
 
-                  <div class="feed-filter-chip-list personal-color-layout">
-                    <label class="feed-filter-chip-label">
-                      <input type="checkbox" name="personalColor" value="봄웜" />
-                      <span>봄웜</span>
-                    </label>
+        <button type="button" class="feed-tag-btn active" data-tag="all">
+          #전체
+        </button>
 
-                    <label class="feed-filter-chip-label">
-                      <input type="checkbox" name="personalColor" value="가을웜" />
-                      <span>가을웜</span>
-                    </label>
 
-                    <label class="feed-filter-chip-label">
-                      <input type="checkbox" name="personalColor" value="여름쿨" />
-                      <span>여름쿨</span>
-                    </label>
+        <button type="button" class="feed-tag-btn" th:each="tagName : ${tagList}" th:data-tag="${tagName}"
+          th:text="${'#' + tagName}">
+          #해시태그
+        </button>
 
-                    <label class="feed-filter-chip-label">
-                      <input type="checkbox" name="personalColor" value="겨울쿨" />
-                      <span>겨울쿨</span>
-                    </label>
-                  </div>
-                </div>
-
-                <div class="feed-filter-group">
-                  <div class="feed-filter-group-title">[피부타입별]</div>
-
-                  <div class="feed-filter-chip-list skin-type-layout">
-                    <label class="feed-filter-chip-label">
-                      <input type="checkbox" name="skinType" value="중성" />
-                      <span>중성</span>
-                    </label>
-
-                    <label class="feed-filter-chip-label">
-                      <input type="checkbox" name="skinType" value="건성" />
-                      <span>건성</span>
-                    </label>
-
-                    <label class="feed-filter-chip-label">
-                      <input type="checkbox" name="skinType" value="지성" />
-                      <span>지성</span>
-                    </label>
-
-                    <label class="feed-filter-chip-label">
-                      <input type="checkbox" name="skinType" value="민감성" />
-                      <span>민감성</span>
-                    </label>
-
-                    <label class="feed-filter-chip-label">
-                      <input type="checkbox" name="skinType" value="복합성" />
-                      <span>복합성</span>
-                    </label>
-
-                    <label class="feed-filter-chip-label">
-                      <input type="checkbox" name="skinType" value="수부지" />
-                      <span>수부지</span>
-                    </label>
-                  </div>
-                </div>
-
-                <div class="feed-filter-group">
-                  <div class="feed-filter-group-title">[나이대]</div>
-
-                  <div class="feed-filter-chip-list age-layout">
-                    <label class="feed-filter-chip-label">
-                      <input type="checkbox" name="ageGroup" value="10대" />
-                      <span>10대</span>
-                    </label>
-
-                    <label class="feed-filter-chip-label">
-                      <input type="checkbox" name="ageGroup" value="20~30대" />
-                      <span>20~30대</span>
-                    </label>
-
-                    <label class="feed-filter-chip-label">
-                      <input type="checkbox" name="ageGroup" value="40~50대" />
-                      <span>40~50대</span>
-                    </label>
-                  </div>
-                </div>
-
-                <div class="feed-filter-reset-wrap">
-                  <button type="reset" class="feed-filter-reset-btn">
-                    필터 초기화
-                  </button>
-                </div>
-              </form>
-            </details>
-          </div>
-
-          <div class="feed-list" id="feed-list-container">
-            <article
-              class="feed-card"
-              th:each="feed : ${feedList}"
-              th:with="totalReplyCount=${feed.feedReplyList != null ? #lists.size(feed.feedReplyList) : 0}"
-              th:data-feed-id="${feed.feedId}"
-              th:data-username="${feed.username}"
-              th:data-skin-type="${feed.skinType}"
-              th:data-personal-color="${feed.personalColor}"
-              th:data-age-group="${feed.ageGroup != null ? feed.ageGroup : ''}"
-              th:data-content="${feed.feedContent}"
-              th:data-images="${feed.feedFileList != null ? #strings.listJoin(feed.feedFileList, ',') : ''}"
-              th:data-tags="${feed.feedTagList != null ? #strings.listJoin(feed.feedTagList, ',') : ''}"
-            >
-              <div class="feed-card-top feed-profile-header">
-                <div class="feed-profile-left">
-                  <div class="feed-profile-avatar">
-  <!-- 사용자가 등록한 프로필 이미지가 있을 때 -->
-  <img
-    th:if="${feed.profileImage != null and feed.profileImage != ''}"
-    th:src="@{/upload/profile/{fileName}(fileName=${feed.profileImage})}"
-    alt="프로필 이미지"
-    onerror="this.src='/images/common/default-profile.png';"
-  />
-
-  <!-- 프로필 이미지가 없을 때 기본 이미지 -->
-  <img
-    th:if="${feed.profileImage == null or feed.profileImage == ''}"
-    th:src="@{/images/common/default-profile.png}"
-    alt="기본 프로필 이미지"
-  />
-</div>
-
-                  <div class="feed-profile-info">
-                    <div
-                      class="feed-profile-nickname"
-                      th:text="${feed.nickname != null ? feed.nickname : feed.username}"
-                    >
-                      닉네임
-                    </div>
-
-                    <div class="feed-profile-tags">
-                      <span
-                        class="feed-profile-tag skin"
-                        th:text="${feed.skinType != null ? feed.skinType : '피부타입'}"
-                      >
-                        피부타입
-                      </span>
-
-                      <span
-                        class="feed-profile-tag color"
-                        th:text="${feed.personalColor != null ? feed.personalColor : '퍼스널컬러'}"
-                      >
-                        퍼스널컬러
-                      </span>
-
-                      <span
-                        class="feed-profile-tag age"
-                        th:text="${feed.ageGroup != null ? feed.ageGroup : '나이대'}"
-                      >
-                        나이대
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="feed-more-wrap">
-                  <button type="button" class="feed-more-btn">···</button>
-
-                  <div class="feed-more-menu">
-                    <button type="button" class="feed-menu-item edit-btn">
-                      수정하기
-                    </button>
-
-                    <button type="button" class="feed-menu-item danger">
-                      삭제하기
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 피드 이미지 영역 : 중복 제거 완료 -->
-              <div class="feed-card-image">
-                <img
-                  alt="피드 이미지"
-                  class="feed-image js-feed-image"
-                  style="display: none"
-                  onerror="this.style.display='none'; this.parentElement.querySelector('.js-feed-placeholder').style.display='flex';"
-                />
-
-                <div class="feed-image-placeholder js-feed-placeholder">
-                  ✦
-                  <span>NO IMAGE</span>
-                </div>
-
-                <button type="button" class="feed-photo-arrow feed-photo-prev">
-                  ‹
-                </button>
-
-                <button type="button" class="feed-photo-arrow feed-photo-next">
-                  ›
-                </button>
-
-                <div class="feed-photo-badge js-photo-badge">1 / 1</div>
-              </div>
-
-              <div class="feed-created-date">
-                <span
-                  th:text="${feed.createdAt != null ? #temporals.format(feed.createdAt, 'yyyy.MM.dd') : ''}"
-                >
-                  2026.06.22
-                </span>
-              </div>
-
-              <div class="feed-card-content">
-                <div class="feed-card-actions">
-                  <div class="action-left">
-                    <button
-                      type="button"
-                      class="feed-like-btn"
-                      th:classappend="${feed.liked != null and feed.liked ? ' is-liked' : ''}"
-                      th:attr="data-liked=${feed.liked != null ? feed.liked : false}, data-like-count=${feed.likeCnt != null ? feed.likeCnt : 0}"
-                    >
-                      <span
-                        class="feed-like-icon"
-                        th:text="${feed.liked != null and feed.liked ? '❤️' : '🤍'}"
-                      >
-                        ♡
-                      </span>
-
-                      <span
-                        class="feed-like-count"
-                        th:text="${feed.likeCnt != null ? feed.likeCnt : 0}"
-                      >
-                        0
-                      </span>
-                    </button>
-
-                    <button
-                      type="button"
-                      class="feed-comment-toggle-btn"
-                      th:data-comment-count="${totalReplyCount}"
-                    >
-                      <span class="feed-comment-icon">💬</span>
-
-                      <span
-                        class="feed-comment-action-count"
-                        th:text="${feed.replyCnt != null ? feed.replyCnt : 0}"
-                      >
-                        0
-                      </span>
-                    </button>
-
-                    <button
-                      type="button"
-                      class="feed-share-btn"
-                      th:data-feed-id="${feed.feedId}"
-                    >
-                      <span class="feed-share-icon">
-                        <img th:src="@{/images/feed/share.png}" alt="공유" />
-                      </span>
-                    </button>
-                  </div>
-                </div>
-
-                <p class="feed-card-caption">
-                  <span
-                    class="js-caption-text"
-                    th:text="${feed.feedContent}"
-                  ></span>
-                </p>
-
-                <div
-                  class="feed-card-tags"
-                  th:if="${feed.feedTagList != null and !#lists.isEmpty(feed.feedTagList)}"
-                >
-                  <button
-                    type="button"
-                    class="feed-hashtag-btn"
-                    th:each="tagName : ${feed.feedTagList}"
-                    th:data-tag="${tagName}"
-                    th:text="'#' + ${tagName}"
-                  ></button>
-                </div>
-
-                <button
-                  type="button"
-                  class="feed-comment-count"
-                  th:data-comment-count="${totalReplyCount}"
-                >
-                  댓글 모두 보기
-                </button>
-
-                <div class="feed-comment-list">
-                  <div
-                    class="feed-comment-item feed-comment-empty"
-                    th:if="${feed.feedReplyList == null or #lists.isEmpty(feed.feedReplyList)}"
-                  >
-                    <span>아직 등록된 댓글이 없습니다.</span>
-                  </div>
-
-                  <th:block th:if="${feed.feedReplyList != null}">
-                    <th:block th:each="reply : ${feed.feedReplyList}">
-                      <div
-                        class="feed-comment-item"
-                        th:if="${reply.parentsReplyId == null}"
-                        th:with="replyDeleted=${#strings.toString(reply.deleted) == 'true' or #strings.toString(reply.deleted) == '1'}"
-                        th:data-reply-id="${reply.replyId}"
-                        th:data-root-reply-id="${reply.replyId}"
-                        th:data-reply-content="${replyDeleted ? '사용자가 삭제한 댓글입니다.' : reply.replyContent}"
-                        th:data-deleted="${replyDeleted ? 'true' : 'false'}"
-                        th:data-username="${reply.username}"
-                        th:data-nickname="${reply.nickname != null and reply.nickname != '' ? reply.nickname : reply.username}"
-                      >
-                        <div class="feed-comment-bubble">
-                          <div class="feed-comment-avatar">
-  <!-- 댓글 작성자 프로필 이미지가 있을 때 -->
-  <img
-    th:if="${reply.profileImage != null and reply.profileImage != ''}"
-    th:src="@{/upload/profile/{fileName}(fileName=${reply.profileImage})}"
-    alt="프로필 이미지"
-    onerror="this.src='/images/common/default-profile.png';"
-  />
-
-  <!-- 프로필 이미지가 없을 때 기본 프로필 이미지 -->
-  <img
-    th:if="${reply.profileImage == null or reply.profileImage == ''}"
-    th:src="@{/images/common/default-profile.png}"
-    alt="기본 프로필 이미지"
-  />
-</div>
-
-                          <div class="feed-comment-main">
-                            <strong
-                              class="feed-comment-writer"
-                              th:text="${reply.nickname != null and reply.nickname != '' ? reply.nickname : reply.username}"
-                            >
-                              닉네임
-                            </strong>
-
-                            <span
-                              class="feed-comment-content deleted-comment-text"
-                              th:if="${replyDeleted}"
-                            >
-                              사용자가 삭제한 댓글입니다.
-                            </span>
-
-                            <span
-                              class="feed-comment-content"
-                              th:unless="${replyDeleted}"
-                              th:text="${reply.replyContent}"
-                            >
-                              댓글 내용
-                            </span>
-                          </div>
-
-                          <div class="comment-more-wrap" th:unless="${replyDeleted}">
-                            <button type="button" class="comment-more-btn">
-                              ···
-                            </button>
-
-                            <div class="comment-more-menu">
-                              <button
-                                type="button"
-                                class="comment-menu-item comment-edit-btn"
-                              >
-                                수정하기
-                              </button>
-
-                              <button
-                                type="button"
-                                class="comment-menu-item danger comment-delete-btn"
-                              >
-                                삭제하기
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="comment-child-list">
-                          <th:block th:each="child : ${feed.feedReplyList}">
-                            <div
-                              class="comment-child-item"
-                              th:if="${child.parentsReplyId != null and child.parentsReplyId == reply.replyId}"
-                              th:with="childDeleted=${#strings.toString(child.deleted) == 'true' or #strings.toString(child.deleted) == '1'}"
-                              th:data-reply-id="${child.replyId}"
-                              th:data-root-reply-id="${reply.replyId}"
-                              th:data-parents-reply-id="${child.parentsReplyId}"
-                              th:data-parent-nickname="${childDeleted ? '' : child.parentNickname}"
-                              th:data-reply-content="${childDeleted ? '사용자가 삭제한 댓글입니다.' : child.replyContent}"
-                              th:data-deleted="${childDeleted ? 'true' : 'false'}"
-                              th:data-username="${child.username}"
-                              th:data-nickname="${child.nickname != null and child.nickname != '' ? child.nickname : child.username}"
-                            >
-                              <div class="comment-child-bubble">
-                                <div class="comment-child-avatar">
-                                  
-  <!-- 댓글 작성자 프로필 이미지가 있을 때 -->
-  <img
-    th:if="${reply.profileImage != null and reply.profileImage != ''}"
-    th:src="@{/upload/profile/{fileName}(fileName=${reply.profileImage})}"
-    alt="프로필 이미지"
-    onerror="this.src='/images/common/default-profile.png';"
-  />
-
-  <!-- 프로필 이미지가 없을 때 기본 프로필 이미지 -->
-  <img
-    th:if="${reply.profileImage == null or reply.profileImage == ''}"
-    th:src="@{/images/common/default-profile.png}"
-    alt="기본 프로필 이미지"
-  />
-</div>
-
-                                <div class="comment-child-main">
-                                  <strong
-                                    class="comment-child-writer"
-                                    th:text="${child.nickname != null and child.nickname != '' ? child.nickname : child.username}"
-                                  >
-                                    닉네임
-                                  </strong>
-
-                                  <span
-                                    class="comment-child-content deleted-comment-text"
-                                    th:if="${childDeleted}"
-                                  >
-                                    사용자가 삭제한 댓글입니다.
-                                  </span>
-
-                                  <span
-                                    class="comment-child-content"
-                                    th:unless="${childDeleted}"
-                                  >
-                                    <span
-                                      class="comment-mention"
-                                      th:if="${child.parentNickname != null and child.parentNickname != ''}"
-                                      th:text="${'@' + child.parentNickname}"
-                                      th:data-target-reply-id="${child.parentsReplyId}"
-                                    ></span>
-
-                                    <span th:text="${child.replyContent}"></span>
-                                  </span>
-                                </div>
-
-                                <div class="comment-more-wrap" th:unless="${childDeleted}">
-                                  <button type="button" class="comment-more-btn">
-                                    ···
-                                  </button>
-
-                                  <div class="comment-more-menu">
-                                    <button
-                                      type="button"
-                                      class="comment-menu-item comment-edit-btn"
-                                    >
-                                      수정하기
-                                    </button>
-
-                                    <button
-                                      type="button"
-                                      class="comment-menu-item danger comment-delete-btn"
-                                    >
-                                      삭제하기
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div class="comment-grandchild-list">
-                                <th:block th:each="grandChild : ${feed.feedReplyList}">
-                                  <div
-                                    class="comment-child-item comment-grandchild-item"
-                                    th:if="${grandChild.parentsReplyId != null and grandChild.parentsReplyId == child.replyId}"
-                                    th:with="grandChildDeleted=${#strings.toString(grandChild.deleted) == 'true' or #strings.toString(grandChild.deleted) == '1'}"
-                                    th:data-reply-id="${grandChild.replyId}"
-                                    th:data-root-reply-id="${reply.replyId}"
-                                    th:data-parents-reply-id="${grandChild.parentsReplyId}"
-                                    th:data-parent-nickname="${grandChildDeleted ? '' : grandChild.parentNickname}"
-                                    th:data-reply-content="${grandChildDeleted ? '사용자가 삭제한 댓글입니다.' : grandChild.replyContent}"
-                                    th:data-deleted="${grandChildDeleted ? 'true' : 'false'}"
-                                    th:data-username="${grandChild.username}"
-                                    th:data-nickname="${grandChild.nickname != null and grandChild.nickname != '' ? grandChild.nickname : grandChild.username}"
-                                  >
-                                    <div class="comment-child-bubble">
-                                      <div class="comment-child-avatar">
-                                        <img
-                                          th:if="${grandChild.profileImage != null and grandChild.profileImage != ''}"
-                                          th:src="@{/upload/profile/{fileName}(fileName=${grandChild.profileImage})}"
-                                          alt="프로필 이미지"
-                                        />
-
-                                        <span
-                                          th:if="${grandChild.profileImage == null or grandChild.profileImage == ''}"
-                                          th:text="${grandChild.nickname != null and grandChild.nickname != '' ? #strings.substring(grandChild.nickname, 0, 1) : '회'}"
-                                        >
-                                          회
-                                        </span>
-                                      </div>
-
-                                      <div class="comment-child-main">
-                                        <strong
-                                          class="comment-child-writer"
-                                          th:text="${grandChild.nickname != null and grandChild.nickname != '' ? grandChild.nickname : grandChild.username}"
-                                        >
-                                          닉네임
-                                        </strong>
-
-                                        <span
-                                          class="comment-child-content deleted-comment-text"
-                                          th:if="${grandChildDeleted}"
-                                        >
-                                          사용자가 삭제한 댓글입니다.
-                                        </span>
-
-                                        <span
-                                          class="comment-child-content"
-                                          th:unless="${grandChildDeleted}"
-                                        >
-                                          <span
-                                            class="comment-mention"
-                                            th:if="${grandChild.parentNickname != null and grandChild.parentNickname != ''}"
-                                            th:text="${'@' + grandChild.parentNickname}"
-                                            th:data-target-reply-id="${grandChild.parentsReplyId}"
-                                          ></span>
-
-                                          <span th:text="${grandChild.replyContent}"></span>
-                                        </span>
-                                      </div>
-
-                                      <div
-                                        class="comment-more-wrap"
-                                        th:unless="${grandChildDeleted}"
-                                      >
-                                        <button type="button" class="comment-more-btn">
-                                          ···
-                                        </button>
-
-                                        <div class="comment-more-menu">
-                                          <button
-                                            type="button"
-                                            class="comment-menu-item comment-edit-btn"
-                                          >
-                                            수정하기
-                                          </button>
-
-                                          <button
-                                            type="button"
-                                            class="comment-menu-item danger comment-delete-btn"
-                                          >
-                                            삭제하기
-                                          </button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </th:block>
-                              </div>
-                            </div>
-                          </th:block>
-                        </div>
-                      </div>
-                    </th:block>
-                  </th:block>
-                </div>
-
-                <div class="feed-comment-box">
-                  <div class="comment-reply-target">
-                    <div class="comment-reply-target-text">
-                      <span class="comment-reply-target-writer"></span>님에게
-                      답글 남기는 중
-                      <span class="comment-reply-target-content"></span>
-                    </div>
-
-                    <button type="button" class="comment-reply-cancel-btn">
-                      ×
-                    </button>
-                  </div>
-
-                  <form
-                    class="feed-comment-form"
-                    th:action="@{/feed/{feedId}/reply(feedId=${feed.feedId})}"
-                    method="post"
-                  >
-                    <input
-                      type="hidden"
-                      name="parentsReplyId"
-                      class="reply-parent-id-input"
-                      value=""
-                    />
-
-                    <input
-                      type="text"
-                      name="replyContent"
-                      placeholder="댓글 달기..."
-                      autocomplete="off"
-                    />
-
-                    <button type="submit" class="comment-submit-btn">
-                      게시
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <div
-            class="feed-empty"
-            id="feed-empty"
-            th:if="${feedList == null or #lists.isEmpty(feedList)}"
-          >
-            등록된 피드가 없습니다. 첫 번째 피드를 작성해보세요!
-          </div>
-        </section>
       </div>
 
-      <aside class="feed-right-sidebar">
-       <div class="feed-trend-box" style="padding: 22px 20px !important; box-sizing: border-box !important;">
-  <div class="feed-trend-title">
-    <span class="feed-hashtag-title-icon">
-      <img th:src="@{/images/feed/hashtag.png}" alt="해시태그 아이콘" />
-    </span>
-    <strong>해시태그 TOP 5</strong>
+
+      <label for="feed-tag-more-toggle" class="feed-tag-more-btn">
+        <span class="more-text">
+          + 더보기
+        </span>
+
+        <span class="close-text">
+          - 접기
+        </span>
+      </label>
+
+    </div>
+
   </div>
 
-  <ol class="feed-trend-list" id="feed-trend-list">
-    <li th:if="${#lists.isEmpty(topTagList)}" class="feed-trend-empty">
-        아직 인기 태그가 없습니다.
-    </li>
-    
-    <li th:each="tag : ${topTagList}" th:unless="${#lists.isEmpty(topTagList)}">
-        </li>
-  </ol>
-</div>
-      </aside>
-    </main>
 
-    <div class="share-modal" id="share-modal">
-      <div class="share-modal-box">
-        <div class="share-modal-header">
-          <h3>링크 공유</h3>
+  <main class="feed-page-layout">
 
-          <button type="button" class="share-modal-close" id="share-modal-close">
-            ×
+
+    <!-- 왼쪽 피드 영역 -->
+    <div class="main-left-content">
+
+      <section class="dashboard-section">
+
+
+        <!-- 제목 -->
+        <div class="section-header feed-section-header">
+
+          <h2>
+            오늘의 화장
+
+            <span>
+              사용자의 데일리 루틴과 사용샷을 모아보는 공간입니다.
+            </span>
+          </h2>
+
+
+          <button class="feed-write-top-btn" type="button" th:onclick="|location.href='@{/feed/write}'|">
+            피드 작성하기
           </button>
+
         </div>
 
-        <div class="share-modal-body">
-          <input
-            type="text"
-            class="share-url-input"
-            id="share-url-input"
-            readonly
-          />
 
-          <button type="button" class="share-copy-btn" id="share-copy-btn">
-            복사
-          </button>
+        <!-- 정렬 및 필터 -->
+        <div class="feed-sort-select-wrap">
+
+          <select id="feed-sort-select" class="feed-sort-select">
+            <option value="latest">최신순</option>
+            <option value="oldest">오래된순</option>
+            <option value="like">좋아요순</option>
+            <option value="comment">댓글순</option>
+          </select>
+
+
+          <details class="feed-filter-details">
+
+            <summary class="feed-filter-open-btn">
+
+              <span class="feed-filter-icon">
+                <img th:src="@{/images/feed/filter.png}" alt="필터" />
+              </span>
+
+              필터 설정
+
+            </summary>
+
+
+            <form class="feed-filter-panel">
+
+
+              <!-- 퍼스널컬러 필터 -->
+              <div class="feed-filter-group">
+
+                <div class="feed-filter-group-title">
+                  [퍼스널컬러별]
+                </div>
+
+
+                <div class="feed-filter-chip-list personal-color-layout">
+
+                  <label class="feed-filter-chip-label">
+                    <input type="checkbox" name="personalColor" value="봄웜" />
+
+                    <span>봄웜</span>
+                  </label>
+
+
+                  <label class="feed-filter-chip-label">
+                    <input type="checkbox" name="personalColor" value="가을웜" />
+
+                    <span>가을웜</span>
+                  </label>
+
+
+                  <label class="feed-filter-chip-label">
+                    <input type="checkbox" name="personalColor" value="여름쿨" />
+
+                    <span>여름쿨</span>
+                  </label>
+
+
+                  <label class="feed-filter-chip-label">
+                    <input type="checkbox" name="personalColor" value="겨울쿨" />
+
+                    <span>겨울쿨</span>
+                  </label>
+
+                </div>
+
+              </div>
+
+
+              <!-- 피부타입 필터 -->
+              <div class="feed-filter-group">
+
+                <div class="feed-filter-group-title">
+                  [피부타입별]
+                </div>
+
+
+                <div class="feed-filter-chip-list skin-type-layout">
+
+                  <label class="feed-filter-chip-label">
+                    <input type="checkbox" name="skinType" value="중성" />
+
+                    <span>중성</span>
+                  </label>
+
+
+                  <label class="feed-filter-chip-label">
+                    <input type="checkbox" name="skinType" value="건성" />
+
+                    <span>건성</span>
+                  </label>
+
+
+                  <label class="feed-filter-chip-label">
+                    <input type="checkbox" name="skinType" value="지성" />
+
+                    <span>지성</span>
+                  </label>
+
+
+                  <label class="feed-filter-chip-label">
+                    <input type="checkbox" name="skinType" value="민감성" />
+
+                    <span>민감성</span>
+                  </label>
+
+
+                  <label class="feed-filter-chip-label">
+                    <input type="checkbox" name="skinType" value="복합성" />
+
+                    <span>복합성</span>
+                  </label>
+
+
+                  <label class="feed-filter-chip-label">
+                    <input type="checkbox" name="skinType" value="수부지" />
+
+                    <span>수부지</span>
+                  </label>
+
+                </div>
+
+              </div>
+
+
+              <!-- 나이대 필터 -->
+              <div class="feed-filter-group">
+
+                <div class="feed-filter-group-title">
+                  [나이대]
+                </div>
+
+
+                <div class="feed-filter-chip-list age-layout">
+
+                  <label class="feed-filter-chip-label">
+                    <input type="checkbox" name="ageGroup" value="10대" />
+
+                    <span>10대</span>
+                  </label>
+
+
+                  <label class="feed-filter-chip-label">
+                    <input type="checkbox" name="ageGroup" value="20~30대" />
+
+                    <span>20~30대</span>
+                  </label>
+
+
+                  <label class="feed-filter-chip-label">
+                    <input type="checkbox" name="ageGroup" value="40~50대" />
+
+                    <span>40~50대</span>
+                  </label>
+
+                </div>
+
+              </div>
+
+
+              <div class="feed-filter-reset-wrap">
+
+                <button type="reset" class="feed-filter-reset-btn">
+                  필터 초기화
+                </button>
+
+              </div>
+
+            </form>
+
+          </details>
+
         </div>
-      </div>
+
+
+        <!-- 피드가 있을 때만 피드 목록 출력 -->
+        <div class="feed-list" id="feed-list-container" th:if="${feedList != null and !#lists.isEmpty(feedList)}">
+
+          <article class="feed-card" th:each="feed : ${feedList}"
+            th:with="totalReplyCount=${feed.feedReplyList != null ? #lists.size(feed.feedReplyList) : 0}"
+            th:data-feed-id="${feed.feedId}" th:data-username="${feed.username}" th:data-skin-type="${feed.skinType}"
+            th:data-personal-color="${feed.personalColor}"
+            th:data-age-group="${feed.ageGroup != null ? feed.ageGroup : ''}" th:data-content="${feed.feedContent}"
+            th:data-images="${feed.feedFileList != null ? #strings.listJoin(feed.feedFileList, ',') : ''}"
+            th:data-tags="${feed.feedTagList != null ? #strings.listJoin(feed.feedTagList, ',') : ''}">
+
+
+            <!-- 피드 작성자 정보 -->
+            <div class="feed-card-top feed-profile-header">
+
+              <div class="feed-profile-left">
+
+
+                <!-- 프로필 이미지 -->
+                <div class="feed-profile-avatar">
+
+                  <img th:if="${feed.profileImage != null and feed.profileImage != ''}"
+                    th:src="@{/upload/profile/{fileName}(fileName=${feed.profileImage})}" alt="프로필 이미지"
+                    onerror="this.src='/images/common/default-profile.png';" />
+
+
+                  <img th:if="${feed.profileImage == null or feed.profileImage == ''}"
+                    th:src="@{/images/common/default-profile.png}" alt="기본 프로필 이미지" />
+
+                </div>
+
+
+                <!-- 프로필 정보 -->
+                <div class="feed-profile-info">
+
+                  <div class="feed-profile-nickname" th:text="${feed.nickname != null ? feed.nickname : feed.username}">
+                    닉네임
+                  </div>
+
+
+                  <div class="feed-profile-tags">
+
+                    <span class="feed-profile-tag skin" th:text="${feed.skinType != null ? feed.skinType : '피부타입'}">
+                      피부타입
+                    </span>
+
+
+                    <span class="feed-profile-tag color"
+                      th:text="${feed.personalColor != null ? feed.personalColor : '퍼스널컬러'}">
+                      퍼스널컬러
+                    </span>
+
+
+                    <span class="feed-profile-tag age" th:text="${feed.ageGroup != null ? feed.ageGroup : '나이대'}">
+                      나이대
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <!-- 수정 및 삭제 메뉴 -->
+              <div class="feed-more-wrap">
+
+                <button type="button" class="feed-more-btn">
+                  ···
+                </button>
+
+
+                <div class="feed-more-menu">
+
+                  <button type="button" class="feed-menu-item edit-btn">
+                    수정하기
+                  </button>
+
+
+                  <button type="button" class="feed-menu-item danger">
+                    삭제하기
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- 피드 이미지 -->
+            <div class="feed-card-image">
+
+              <img alt="피드 이미지" class="feed-image js-feed-image" style="display: none"
+                onerror="this.style.display='none'; this.parentElement.querySelector('.js-feed-placeholder').style.display='flex';" />
+
+
+              <div class="feed-image-placeholder js-feed-placeholder">
+                ✦
+                <span>NO IMAGE</span>
+              </div>
+
+
+              <button type="button" class="feed-photo-arrow feed-photo-prev">
+                ‹
+              </button>
+
+
+              <button type="button" class="feed-photo-arrow feed-photo-next">
+                ›
+              </button>
+
+
+              <div class="feed-photo-badge js-photo-badge">
+                1 / 1
+              </div>
+
+            </div>
+
+
+            <!-- 작성일 -->
+            <div class="feed-created-date">
+
+              <span th:text="${feed.createdAt != null ? #temporals.format(feed.createdAt, 'yyyy.MM.dd') : ''}">
+                2026.06.22
+              </span>
+
+            </div>
+
+
+            <!-- 피드 내용 -->
+            <div class="feed-card-content">
+
+
+              <!-- 좋아요, 댓글, 공유 -->
+              <div class="feed-card-actions">
+
+                <div class="action-left">
+
+
+                  <!-- 좋아요 -->
+                  <button type="button" class="feed-like-btn"
+                    th:classappend="${feed.liked != null and feed.liked ? ' is-liked' : ''}"
+                    th:attr="data-liked=${feed.liked != null ? feed.liked : false}, data-like-count=${feed.likeCnt != null ? feed.likeCnt : 0}">
+
+                    <span class="feed-like-icon" th:text="${feed.liked != null and feed.liked ? '❤️' : '🤍'}">
+                      ♡
+                    </span>
+
+
+                    <span class="feed-like-count" th:text="${feed.likeCnt != null ? feed.likeCnt : 0}">
+                      0
+                    </span>
+
+                  </button>
+
+
+                  <!-- 댓글 -->
+                  <button type="button" class="feed-comment-toggle-btn" th:data-comment-count="${totalReplyCount}">
+
+                    <span class="feed-comment-icon">
+                      💬
+                    </span>
+
+
+                    <span class="feed-comment-action-count" th:text="${feed.replyCnt != null ? feed.replyCnt : 0}">
+                      0
+                    </span>
+
+                  </button>
+
+
+                  <!-- 공유 -->
+                  <button type="button" class="feed-share-btn" th:data-feed-id="${feed.feedId}">
+
+                    <span class="feed-share-icon">
+
+                      <img th:src="@{/images/feed/share.png}" alt="공유" />
+
+                    </span>
+
+                  </button>
+
+                </div>
+
+              </div>
+
+
+              <!-- 피드 본문 -->
+              <p class="feed-card-caption">
+
+                <span class="js-caption-text" th:text="${feed.feedContent}">
+                </span>
+
+              </p>
+
+
+              <!-- 피드 해시태그 -->
+              <div class="feed-card-tags" th:if="${feed.feedTagList != null and !#lists.isEmpty(feed.feedTagList)}">
+
+                <button type="button" class="feed-hashtag-btn" th:each="tagName : ${feed.feedTagList}"
+                  th:data-tag="${tagName}" th:text="${'#' + tagName}">
+                </button>
+
+              </div>
+
+
+              <!-- 댓글 모두 보기 -->
+              <button type="button" class="feed-comment-count" th:data-comment-count="${totalReplyCount}">
+                댓글 모두 보기
+              </button>
+
+
+              <!-- 댓글 목록 -->
+              <div class="feed-comment-list">
+
+
+                <!-- 댓글이 없을 때 -->
+                <div class="feed-comment-item feed-comment-empty"
+                  th:if="${feed.feedReplyList == null or #lists.isEmpty(feed.feedReplyList)}">
+                  <span>
+                    아직 등록된 댓글이 없습니다.
+                  </span>
+                </div>
+
+
+                <!-- 댓글이 있을 때 -->
+                <th:block th:if="${feed.feedReplyList != null}">
+
+                  <th:block th:each="reply : ${feed.feedReplyList}">
+
+
+                    <!-- 최상위 댓글 -->
+                    <div class="feed-comment-item" th:if="${reply.parentsReplyId == null}"
+                      th:with="replyDeleted=${#strings.toString(reply.deleted) == 'true' or #strings.toString(reply.deleted) == '1'}"
+                      th:data-reply-id="${reply.replyId}" th:data-root-reply-id="${reply.replyId}"
+                      th:data-reply-content="${replyDeleted ? '사용자가 삭제한 댓글입니다.' : reply.replyContent}"
+                      th:data-deleted="${replyDeleted ? 'true' : 'false'}" th:data-username="${reply.username}"
+                      th:data-nickname="${reply.nickname != null and reply.nickname != '' ? reply.nickname : reply.username}">
+
+                      <div class="feed-comment-bubble">
+
+
+                        <!-- 댓글 작성자 프로필 -->
+                        <div class="feed-comment-avatar">
+
+                          <img th:if="${reply.profileImage != null and reply.profileImage != ''}"
+                            th:src="@{/upload/profile/{fileName}(fileName=${reply.profileImage})}" alt="프로필 이미지"
+                            onerror="this.src='/images/common/default-profile.png';" />
+
+
+                          <img th:if="${reply.profileImage == null or reply.profileImage == ''}"
+                            th:src="@{/images/common/default-profile.png}" alt="기본 프로필 이미지" />
+
+                        </div>
+
+
+                        <!-- 댓글 내용 -->
+                        <div class="feed-comment-main">
+
+                          <strong class="feed-comment-writer"
+                            th:text="${reply.nickname != null and reply.nickname != '' ? reply.nickname : reply.username}">
+                            닉네임
+                          </strong>
+
+
+                          <span class="feed-comment-content deleted-comment-text" th:if="${replyDeleted}">
+                            사용자가 삭제한 댓글입니다.
+                          </span>
+
+
+                          <span class="feed-comment-content" th:unless="${replyDeleted}"
+                            th:text="${reply.replyContent}">
+                            댓글 내용
+                          </span>
+
+                        </div>
+
+
+                        <!-- 댓글 수정 삭제 -->
+                        <div class="comment-more-wrap" th:unless="${replyDeleted}">
+
+                          <button type="button" class="comment-more-btn">
+                            ···
+                          </button>
+
+
+                          <div class="comment-more-menu">
+
+                            <button type="button" class="comment-menu-item comment-edit-btn">
+                              수정하기
+                            </button>
+
+
+                            <button type="button" class="comment-menu-item danger comment-delete-btn">
+                              삭제하기
+                            </button>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+
+
+                      <!-- 답글 목록 -->
+                      <div class="comment-child-list">
+
+                        <th:block th:each="child : ${feed.feedReplyList}">
+
+
+                          <!-- 1단계 답글 -->
+                          <div class="comment-child-item"
+                            th:if="${child.parentsReplyId != null and child.parentsReplyId == reply.replyId}"
+                            th:with="childDeleted=${#strings.toString(child.deleted) == 'true' or #strings.toString(child.deleted) == '1'}"
+                            th:data-reply-id="${child.replyId}" th:data-root-reply-id="${reply.replyId}"
+                            th:data-parents-reply-id="${child.parentsReplyId}"
+                            th:data-parent-nickname="${childDeleted ? '' : child.parentNickname}"
+                            th:data-reply-content="${childDeleted ? '사용자가 삭제한 댓글입니다.' : child.replyContent}"
+                            th:data-deleted="${childDeleted ? 'true' : 'false'}" th:data-username="${child.username}"
+                            th:data-nickname="${child.nickname != null and child.nickname != '' ? child.nickname : child.username}">
+
+                            <div class="comment-child-bubble">
+
+
+                              <!-- 답글 작성자 프로필 -->
+                              <div class="comment-child-avatar">
+
+                                <img th:if="${child.profileImage != null and child.profileImage != ''}"
+                                  th:src="@{/upload/profile/{fileName}(fileName=${child.profileImage})}" alt="프로필 이미지"
+                                  onerror="this.src='/images/common/default-profile.png';" />
+
+
+                                <img th:if="${child.profileImage == null or child.profileImage == ''}"
+                                  th:src="@{/images/common/default-profile.png}" alt="기본 프로필 이미지" />
+
+                              </div>
+
+
+                              <!-- 답글 내용 -->
+                              <div class="comment-child-main">
+
+                                <strong class="comment-child-writer"
+                                  th:text="${child.nickname != null and child.nickname != '' ? child.nickname : child.username}">
+                                  닉네임
+                                </strong>
+
+
+                                <span class="comment-child-content deleted-comment-text" th:if="${childDeleted}">
+                                  사용자가 삭제한 댓글입니다.
+                                </span>
+
+
+                                <span class="comment-child-content" th:unless="${childDeleted}">
+
+                                  <span class="comment-mention"
+                                    th:if="${child.parentNickname != null and child.parentNickname != ''}"
+                                    th:text="${'@' + child.parentNickname}"
+                                    th:data-target-reply-id="${child.parentsReplyId}">
+                                  </span>
+
+                                  <span th:text="${child.replyContent}">
+                                  </span>
+
+                                </span>
+
+                              </div>
+
+
+                              <!-- 답글 수정 삭제 -->
+                              <div class="comment-more-wrap" th:unless="${childDeleted}">
+
+                                <button type="button" class="comment-more-btn">
+                                  ···
+                                </button>
+
+
+                                <div class="comment-more-menu">
+
+                                  <button type="button" class="comment-menu-item comment-edit-btn">
+                                    수정하기
+                                  </button>
+
+
+                                  <button type="button" class="comment-menu-item danger comment-delete-btn">
+                                    삭제하기
+                                  </button>
+
+                                </div>
+
+                              </div>
+
+                            </div>
+
+
+                            <!-- 2단계 답글 목록 -->
+                            <div class="comment-grandchild-list">
+
+                              <th:block th:each="grandChild : ${feed.feedReplyList}">
+
+                                <div class="comment-child-item comment-grandchild-item"
+                                  th:if="${grandChild.parentsReplyId != null and grandChild.parentsReplyId == child.replyId}"
+                                  th:with="grandChildDeleted=${#strings.toString(grandChild.deleted) == 'true' or #strings.toString(grandChild.deleted) == '1'}"
+                                  th:data-reply-id="${grandChild.replyId}" th:data-root-reply-id="${reply.replyId}"
+                                  th:data-parents-reply-id="${grandChild.parentsReplyId}"
+                                  th:data-parent-nickname="${grandChildDeleted ? '' : grandChild.parentNickname}"
+                                  th:data-reply-content="${grandChildDeleted ? '사용자가 삭제한 댓글입니다.' : grandChild.replyContent}"
+                                  th:data-deleted="${grandChildDeleted ? 'true' : 'false'}"
+                                  th:data-username="${grandChild.username}"
+                                  th:data-nickname="${grandChild.nickname != null and grandChild.nickname != '' ? grandChild.nickname : grandChild.username}">
+
+                                  <div class="comment-child-bubble">
+
+
+                                    <!-- 2단계 답글 작성자 프로필 -->
+                                    <div class="comment-child-avatar">
+
+                                      <img th:if="${grandChild.profileImage != null and grandChild.profileImage != ''}"
+                                        th:src="@{/upload/profile/{fileName}(fileName=${grandChild.profileImage})}"
+                                        alt="프로필 이미지" onerror="this.src='/images/common/default-profile.png';" />
+
+
+                                      <img th:if="${grandChild.profileImage == null or grandChild.profileImage == ''}"
+                                        th:src="@{/images/common/default-profile.png}" alt="기본 프로필 이미지" />
+
+                                    </div>
+
+
+                                    <!-- 2단계 답글 내용 -->
+                                    <div class="comment-child-main">
+
+                                      <strong class="comment-child-writer"
+                                        th:text="${grandChild.nickname != null and grandChild.nickname != '' ? grandChild.nickname : grandChild.username}">
+                                        닉네임
+                                      </strong>
+
+
+                                      <span class="comment-child-content deleted-comment-text"
+                                        th:if="${grandChildDeleted}">
+                                        사용자가 삭제한 댓글입니다.
+                                      </span>
+
+
+                                      <span class="comment-child-content" th:unless="${grandChildDeleted}">
+
+                                        <span class="comment-mention"
+                                          th:if="${grandChild.parentNickname != null and grandChild.parentNickname != ''}"
+                                          th:text="${'@' + grandChild.parentNickname}"
+                                          th:data-target-reply-id="${grandChild.parentsReplyId}">
+                                        </span>
+
+                                        <span th:text="${grandChild.replyContent}">
+                                        </span>
+
+                                      </span>
+
+                                    </div>
+
+
+                                    <!-- 2단계 답글 수정 삭제 -->
+                                    <div class="comment-more-wrap" th:unless="${grandChildDeleted}">
+
+                                      <button type="button" class="comment-more-btn">
+                                        ···
+                                      </button>
+
+
+                                      <div class="comment-more-menu">
+
+                                        <button type="button" class="comment-menu-item comment-edit-btn">
+                                          수정하기
+                                        </button>
+
+
+                                        <button type="button" class="comment-menu-item danger comment-delete-btn">
+                                          삭제하기
+                                        </button>
+
+                                      </div>
+
+                                    </div>
+
+                                  </div>
+
+                                </div>
+
+                              </th:block>
+
+                            </div>
+
+                          </div>
+
+                        </th:block>
+
+                      </div>
+
+                    </div>
+
+                  </th:block>
+
+                </th:block>
+
+              </div>
+
+
+              <!-- 댓글 입력 -->
+              <div class="feed-comment-box">
+
+                <div class="comment-reply-target">
+
+                  <div class="comment-reply-target-text">
+
+                    <span class="comment-reply-target-writer">
+                    </span>
+
+                    님에게 답글 남기는 중
+
+                    <span class="comment-reply-target-content">
+                    </span>
+
+                  </div>
+
+
+                  <button type="button" class="comment-reply-cancel-btn">
+                    ×
+                  </button>
+
+                </div>
+
+
+                <form class="feed-comment-form" th:action="@{/feed/{feedId}/reply(feedId=${feed.feedId})}"
+                  method="post">
+
+                  <input type="hidden" name="parentsReplyId" class="reply-parent-id-input" value="" />
+
+
+                  <input type="text" name="replyContent" placeholder="댓글 달기..." autocomplete="off" />
+
+
+                  <button type="submit" class="comment-submit-btn">
+                    게시
+                  </button>
+
+                </form>
+
+              </div>
+
+            </div>
+
+          </article>
+
+        </div>
+
+
+        <!-- 피드가 없을 때 -->
+        <div class="feed-page-empty-state" id="feed-empty" th:if="${feedList == null or #lists.isEmpty(feedList)}">
+
+          <strong>
+            아직 등록된 피드가 없습니다.
+          </strong>
+
+          <span>
+            첫 번째 오늘의 화장을 공유해보세요.
+          </span>
+
+        </div>
+
+      </section>
+
     </div>
 
-    <footer th:replace="~{layout/footer :: footer}"></footer>
 
-    <script th:src="@{/js/feed/feed_list.js}"></script>
-    <script th:src="@{/js/feed/feed_like.js}"></script>
-    <script th:src="@{/js/feed/feed_reply.js}"></script>
-    <script th:src="@{/js/feed/feed_tag.js}"></script>
+    <!-- 오른쪽 해시태그 영역 -->
+    <aside class="feed-right-sidebar">
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const filterArea =
-          document.getElementById("feed-filter-ui") ||
-          document.querySelector(".feed-filter-details");
+      <div class="feed-trend-box" style="
+            padding: 22px 20px !important;
+            box-sizing: border-box !important;
+          ">
 
-        const feedCards = document.querySelectorAll(".feed-card");
+        <div class="feed-trend-title">
 
-        if (!filterArea || feedCards.length === 0) return;
+          <span class="feed-hashtag-title-icon">
 
-        function clean(value) {
-          return (value || "")
-            .replace(/\s/g, "")
-            .replace("웜톤", "웜")
-            .replace("쿨톤", "쿨")
-            .replace("피부", "")
-            .trim();
-        }
+            <img th:src="@{/images/feed/hashtag.png}" alt="해시태그 아이콘" />
 
-        function getSelectedValues(type) {
-          let values = [];
+          </span>
 
-          filterArea
-            .querySelectorAll('input[name="' + type + '"]:checked')
-            .forEach(function (input) {
-              values.push(clean(input.value));
-            });
+          <strong>
+            해시태그 TOP 5
+          </strong>
 
-          const groups = filterArea.querySelectorAll(".feed-filter-group");
+        </div>
 
-          if (type === "personalColor" && groups[0]) {
-            groups[0]
-              .querySelectorAll(".feed-filter-chip.is-selected")
-              .forEach(function (chip) {
-                values.push(clean(chip.textContent));
-              });
-          }
 
-          if (type === "skinType" && groups[1]) {
-            groups[1]
-              .querySelectorAll(".feed-filter-chip.is-selected")
-              .forEach(function (chip) {
-                values.push(clean(chip.textContent));
-              });
-          }
+        <ol class="feed-trend-list" id="feed-trend-list">
 
+
+          <!-- 인기 해시태그가 없을 때 -->
+          <li class="feed-trend-empty" th:if="${topTagList == null or #lists.isEmpty(topTagList)}">
+            아직 인기 해시태그가 없습니다.
+          </li>
+
+
+          <!-- 인기 해시태그가 있을 때 -->
+          <th:block th:if="${topTagList != null and !#lists.isEmpty(topTagList)}">
+
+            <li th:each="tag, tagStat : ${topTagList}" th:if="${tagStat.index < 5}">
+
+              <span class="feed-trend-rank" th:text="${tagStat.index + 1}">
+                1
+              </span>
+
+
+              <button type="button" class="feed-trend-tag feed-hashtag-btn" th:data-tag="${tag.tagName}"
+                th:text="${'#' + tag.tagName}">
+                #해시태그
+              </button>
+
+            </li>
+
+          </th:block>
+
+        </ol>
+
+      </div>
+
+    </aside>
+
+  </main>
+
+
+  <!-- 공유 모달 -->
+  <div class="share-modal" id="share-modal">
+
+    <div class="share-modal-box">
+
+      <div class="share-modal-header">
+
+        <h3>
+          링크 공유
+        </h3>
+
+
+        <button type="button" class="share-modal-close" id="share-modal-close">
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="share-modal-body">
+
+        <input type="text" class="share-url-input" id="share-url-input" readonly />
+
+
+        <button type="button" class="share-copy-btn" id="share-copy-btn">
+          복사
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- 푸터 -->
+  <footer th:replace="~{layout/footer :: footer}"></footer>
+
+
+  <!-- 자바스크립트 -->
+  <script th:src="@{/js/feed/feed_list.js}"></script>
+  <script th:src="@{/js/feed/feed_like.js}"></script>
+  <script th:src="@{/js/feed/feed_reply.js}"></script>
+  <script th:src="@{/js/feed/feed_tag.js}"></script>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+      // 필터 영역
+      const filterArea = document.querySelector(".feed-filter-details");
+      const feedCards = document.querySelectorAll(".feed-card");
+
+      // 값 정리
+      function clean(value) {
+        return (value || "")
+          .replace(/\s/g, "")
+          .replace("웜톤", "웜")
+          .replace("쿨톤", "쿨")
+          .replace("피부", "")
+          .trim();
+      }
+
+      // 선택값 가져오기
+      function getSelectedValues(name) {
+        const values = [];
+
+        if (!filterArea) {
           return values;
         }
 
-        function applyFilter() {
-          const selectedPersonalColors = getSelectedValues("personalColor");
-          const selectedSkinTypes = getSelectedValues("skinType");
-          const selectedAgeGroup = getSelectedValues("ageGroup");
-
-          feedCards.forEach(function (card) {
-            const cardPersonalColor = clean(card.dataset.personalColor);
-            const cardSkinType = clean(card.dataset.skinType);
-            const cardAgeGroup = clean(card.dataset.ageGroup);
-
-            const personalColorMatch =
-              selectedPersonalColors.length === 0 ||
-              selectedPersonalColors.includes(cardPersonalColor);
-
-            const skinTypeMatch =
-              selectedSkinTypes.length === 0 ||
-              selectedSkinTypes.includes(cardSkinType);
-
-            const ageGroupMatch =
-              selectedAgeGroup.length === 0 ||
-              selectedAgeGroup.includes(cardAgeGroup);
-
-            if (personalColorMatch && skinTypeMatch && ageGroupMatch) {
-              card.style.display = "";
-            } else {
-              card.style.display = "none";
-            }
+        filterArea
+          .querySelectorAll('input[name="' + name + '"]:checked')
+          .forEach(function (input) {
+            values.push(clean(input.value));
           });
-        }
 
-        filterArea.addEventListener("click", function (event) {
-          const chip = event.target.closest(".feed-filter-chip");
-          const resetBtn = event.target.closest(".feed-filter-reset-btn");
+        return values;
+      }
 
-          if (chip) {
-            event.preventDefault();
-            event.stopPropagation();
+      // 필터 적용
+      function applyFilter() {
+        const personalColorList = getSelectedValues("personalColor");
 
-            chip.classList.toggle("is-selected");
-            applyFilter();
-          }
+        const skinTypeList = getSelectedValues("skinType");
 
-          if (resetBtn) {
-            event.preventDefault();
-            event.stopPropagation();
+        const ageGroupList = getSelectedValues("ageGroup");
 
-            filterArea.querySelectorAll(".feed-filter-chip").forEach(function (chip) {
-              chip.classList.remove("is-selected");
-            });
+        feedCards.forEach(function (card) {
+          const cardPersonalColor =clean(card.dataset.personalColor);
 
-            filterArea.querySelectorAll("input[type='checkbox']").forEach(function (input) {
-              input.checked = false;
-            });
+          const cardSkinType =clean(card.dataset.skinType);
 
-            feedCards.forEach(function (card) {
-              card.style.display = "";
-            });
+          const cardAgeGroup = clean(card.dataset.ageGroup);
+
+          const personalColorMatch =
+            personalColorList.length === 0 ||
+            personalColorList.includes(cardPersonalColor);
+
+          const skinTypeMatch =
+            skinTypeList.length === 0 ||
+            skinTypeList.includes(cardSkinType);
+
+          const ageGroupMatch =
+            ageGroupList.length === 0 ||
+            ageGroupList.includes(cardAgeGroup);
+
+          if (
+            personalColorMatch &&
+            skinTypeMatch &&
+            ageGroupMatch
+          ) {
+            card.style.display = "";
+          } else {
+            card.style.display = "none";
           }
         });
+      }
+
+      // 필터 변경
+      if (filterArea && feedCards.length > 0) {
 
         filterArea.addEventListener("change", function (event) {
           if (event.target.matches("input[type='checkbox']")) {
             applyFilter();
           }
         });
-      });
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const shareModal = document.getElementById("share-modal");
-        const shareCloseBtn = document.getElementById("share-modal-close");
-        const shareUrlInput = document.getElementById("share-url-input");
-        const shareCopyBtn = document.getElementById("share-copy-btn");
-        const shareButtons = document.querySelectorAll(".feed-share-btn");
+        const filterForm =
+          filterArea.querySelector(".feed-filter-panel");
 
-        if (!shareModal) return;
+        // 필터 초기화
+        if (filterForm) {
+          filterForm.addEventListener("reset", function () {
 
+            setTimeout(function () {
+              feedCards.forEach(function (card) {
+                card.style.display = "";
+              });
+            }, 0);
+
+          });
+        }
+      }
+
+      // 공유 모달
+      const shareModal = document.getElementById("share-modal");
+      const shareCloseButton = document.getElementById("share-modal-close");
+      const shareUrlInput = document.getElementById("share-url-input");
+      const shareCopyButton = document.getElementById("share-copy-btn");
+      const shareButtons = document.querySelectorAll(".feed-share-btn");
+
+      if (shareModal) {
+
+        // 공유창 열기
         shareButtons.forEach(function (button) {
+
           button.addEventListener("click", function (event) {
             event.preventDefault();
             event.stopPropagation();
 
             const feedId = button.dataset.feedId;
-            const shareUrl = window.location.origin + "/feed/" + feedId;
+
+            const shareUrl =
+              window.location.origin + "/feed/" + feedId;
 
             if (shareUrlInput) {
               shareUrlInput.value = shareUrl;
@@ -1050,33 +1350,43 @@
 
             shareModal.classList.add("is-open");
           });
+
         });
 
-        if (shareCloseBtn) {
-          shareCloseBtn.addEventListener("click", function () {
+        // 공유창 닫기
+        if (shareCloseButton) {
+          shareCloseButton.addEventListener("click", function () {
             shareModal.classList.remove("is-open");
           });
         }
 
+        // 바깥 영역 닫기
         shareModal.addEventListener("click", function (event) {
           if (event.target === shareModal) {
             shareModal.classList.remove("is-open");
           }
         });
 
-        if (shareCopyBtn && shareUrlInput) {
-          shareCopyBtn.addEventListener("click", function () {
+        // 링크 복사
+        if (shareCopyButton && shareUrlInput) {
+
+          shareCopyButton.addEventListener("click", function () {
             shareUrlInput.select();
+
             document.execCommand("copy");
 
-            shareCopyBtn.textContent = "완료";
+            shareCopyButton.textContent = "완료";
 
             setTimeout(function () {
-              shareCopyBtn.textContent = "복사";
+              shareCopyButton.textContent = "복사";
             }, 1200);
           });
+
         }
-      });
-    </script>
-  </body>
+      }
+
+    });
+  </script>
+</body>
+
 </html>
