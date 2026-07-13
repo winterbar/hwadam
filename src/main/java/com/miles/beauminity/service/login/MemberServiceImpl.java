@@ -93,6 +93,10 @@ public class MemberServiceImpl implements MemberService {
         }
         memberMapper.insertMember(memberVO);
         memberProfileMapper.insertMemberProfile(memberVO.getUsername());
+
+        // 포인트 지급
+        memberVO.setPoint(100);
+        memberMapper.updatePoint(memberVO);
     }
     
     // 입력된 아이디를 모두 소문자로 변환
@@ -254,5 +258,6 @@ public class MemberServiceImpl implements MemberService {
         //탈퇴한 사유 저장
         memberMapper.feedback(feedbackVO);
     }
+
 
 }

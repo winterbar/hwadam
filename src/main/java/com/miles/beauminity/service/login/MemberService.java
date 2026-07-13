@@ -28,5 +28,5 @@ public interface MemberService {
     public List<QnaBoardCompleteVO> getCommunityList(String username);
     public List<ReviewBoardVO> getReviewList(String username);
     public void withdraw(String username,FeedbackVO feedbackVO);
-    
+
 }

@@ -75,6 +75,16 @@ public class QnaServiceImpl implements QnaService {
 
         qnaBoardMapper.insertQna(qnaBoardVO);
 
+        // 1. 이미지 포함 여부로 포인트 계산 (fileList의 사이즈 활용)
+        int point = (fileList != null && !fileList.isEmpty()) ? 30 : 15;
+
+        // 2. MemberVO 생성 및 정보 세팅
+        MemberVO pointVO = new MemberVO();
+        pointVO.setUsername(masterBoardVO.getUsername()); // 게시글 작성자
+        pointVO.setPoint(point); // 계산된 포인트(15 또는 30)
+
+        // 3. 포인트 업데이트 호출 (인자값 변경 없이 기존 매퍼 활용)
+        memberMapper.updatePoint(pointVO);
     }
 
     // 게시글 전체조회
