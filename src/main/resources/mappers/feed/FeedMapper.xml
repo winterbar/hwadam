@@ -224,4 +224,11 @@ ORDER BY f.feed_id DESC;
         where username=#{username}
 </update>
 
+<!--게시글 번호로 댓글 작성자의 아이디를 가져오는 쿼리-->
+<select id="getFeedWriter" parameterType="long" resultType="string">
+    SELECT username
+    FROM feed
+    WHERE feed_id = #{feedId}
+</select>
+
 </mapper>

@@ -18,4 +18,6 @@ public interface CommunityReplyMapper {
     public void updateCommunityReply(MasterBoardReplyVO masterBoardReplyVO);
     
     public void deleteReply(Long id);
+
+    public String getParentReplyWriter(Long parentsReplyId);
 }

@@ -111,6 +111,14 @@
         delete from feed_reply
         where reply_id = #{value}
     </delete>
-    
+
+<!-- 부모 댓글로 사용자의 아이디 가져오기-->
+    <select id = "getParentReplyWriter"
+            parameterType = "long"
+            resultType = "string">
+        SELECT username
+        FROM feed_reply
+        WHERE reply_id = #{parentsReplyId}
+    </select>
 
 </mapper>

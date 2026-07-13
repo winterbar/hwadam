@@ -34,6 +34,12 @@ public class ReviewBoardVO {
     private String memberProfilePath; // 작성자 프로필 이미지 경로 수신용
     private String savedName;         // 리뷰 메인에 띄울 C드라이브 저장 파일명 수신용 (사용자가 업로드한 파일경로 수신용)
     private String memberProfileSavedName; // 리뷰 메인에 띄울 C드라이브 저장 파일명 수신용 (사용자의 프로필 사진 파일경로 수신용)
+    private String skinType;
+    private String personalColor;
+    private LocalDateTime birthday;
+
+    private String ageGroup;
+
 
     // 후기 전용 데이터 (review_board에 넣게 위한 변수들)
     private String productName;                 // 후기 등록 폼은 선택된 리뷰 대상
