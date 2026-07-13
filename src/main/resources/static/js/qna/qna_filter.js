@@ -69,7 +69,7 @@ function drawBoardList(boardList){
     if(!boardList || boardList.length===0){
 
         listContainer.innerHTML =
-            `<tr><td colspan="6">게시글이 없습니다.</td></tr>`;
+            `<tr class="empty-row"><td class="col-empty" colspan="6">게시글이 없습니다.</td></tr>`;
 
         return;
     }
