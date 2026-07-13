@@ -96,14 +96,50 @@
 
     <!-- 게시글 수 확인 -->
     <select id="getQnaCountByCategory"
-            parameterType="com.miles.beauminity.vo.board.TypeOffsetVO"
             resultType="Int">
         SELECT COUNT(*)
-            FROM master_board m
-            INNER JOIN
-            qna_board q
-            ON m.board_id = q.board_id
-            WHERE q.category=#{category} AND m.board_type = #{type} AND deleted = 0
+            FROM master_board mb
+            INNER JOIN qna_board q
+                ON mb.board_id = q.board_id
+            INNER JOIN member m
+                ON mb.username = m.username
+            WHERE mb.board_type = #{type}
+            AND mb.deleted = 0
+
+            <if test="category != null and category != '전체보기'">
+                AND q.category = #{category}
+            </if>
+
+            <if test="startDate != null">
+                AND mb.created_at <![CDATA[>=]]> #{startDate}
+            </if>
+
+            <if test="endDate != null">
+                AND mb.created_at <![CDATA[<=]]> #{endDate}
+            </if>
+
+            <if test="keyword != null and keyword != ''">
+                <choose>
+                    <when test="searchType == 'title'">
+                        AND mb.title LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+
+                    <when test="searchType == 'content'">
+                        AND mb.content LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+
+                    <when test="searchType == 'writer'">
+                        AND m.nickname LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+
+                    <otherwise>
+                        AND (
+                            mb.title LIKE CONCAT('%', #{keyword}, '%')
+                            OR mb.content LIKE CONCAT('%', #{keyword}, '%')
+                        )
+                    </otherwise>
+                </choose>
+            </if>
     </select>
 
     <!-- 카테고리만 따로... 더 좋은 방법 없을까? -->
@@ -154,6 +190,15 @@
             on mb.board_id = qb.board_id
         where qb.category="질문" and deleted=0
         ORDER BY mb.created_at DESC
+    </select>
+
+    <!-- 게시글에 피부타입, 퍼스널컬러, 나이대를 가져오기 위해 멤버 테이블에서 조회  -->
+    <select id="getMemberInfoFromMember"
+            parameterType="String"
+            resultType="com.miles.beauminity.vo.login.MemberVO">
+        SELECT birthday, skin_type, personal_color
+        FROM member
+        WHERE nickname = #{value}
     </select>
 
 

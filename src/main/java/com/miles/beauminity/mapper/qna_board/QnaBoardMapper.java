@@ -30,7 +30,12 @@ public interface QnaBoardMapper {
                                                         , @Param("keyword") String keyword);
 
     // 카테고리별 게시글 수
-    public int getQnaCountByCategory(TypeOffsetVO typeOffsetVO);
+    public int getQnaCountByCategory(@Param("type") String type                                                    
+                                    , @Param("category") String category
+                                    , @Param("startDate") LocalDateTime startDate
+                                    , @Param("endDate") LocalDateTime endDate
+                                    , @Param("searchType") String searchType
+                                    , @Param("keyword") String keyword);
 
     // 카테고리만 따로 조회
     public String getCategoryById(Long id);
@@ -44,5 +49,8 @@ public interface QnaBoardMapper {
     public List<QnaBoardCompleteVO> getTopTipList();
 
     public List<QnaBoardCompleteVO> getRecentqnaList();
+
+    // 멤버 정보 일부 가져오기 
+    public MemberVO getMemberInfoFromMember(String nickname);
     
 }
