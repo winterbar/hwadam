@@ -170,8 +170,10 @@ public class QnaApiController {
 
         String username = getUsername();
 
-        if (username == null) {
-            result.put("isLikeOn", false);
+        System.out.println("아이디 확인, 지금의 아이디는?: " + username);
+
+        if (username == null || username.equals("anonymousUser")) {
+            result.put("isOwner", false);
             return ResponseEntity.ok(result);
         }
 
