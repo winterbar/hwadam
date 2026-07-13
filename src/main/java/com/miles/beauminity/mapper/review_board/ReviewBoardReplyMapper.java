@@ -10,11 +10,14 @@ import com.miles.beauminity.vo.review.ReviewReplyVO;
 public interface ReviewBoardReplyMapper {
 
     // 리뷰 게시글 등록
-    void saveReply(ReviewReplyVO replyVO);
+    public void saveReply(ReviewReplyVO replyVO);
 
     // 리뷰 게시글 댓글 가져오기
-    List<ReviewReplyVO> getReplyList(Long boardId);
+    public List<ReviewReplyVO> getReplyList(Long boardId);
 
     // 리뷰 게시글 삭제
-    void removeReply(Long boardId);
+    public void removeReply(Long boardId);
+
+    // 리뷰 게시글의 부모댓글 작성자 아이디 가져오기
+    public String getParentReplyWriter(Long parentsReplyId);
 }

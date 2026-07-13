@@ -32,4 +32,6 @@ public interface FeedReplyMapper {
 
     public Long parentsReplyFindId(Long replyId);
 
+    public String getParentReplyWriter(Long parentsReplyId);
+
 }
