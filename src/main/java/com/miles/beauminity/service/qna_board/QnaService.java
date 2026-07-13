@@ -36,7 +36,7 @@ public interface QnaService {
 
     int getTypeBoardCount(String type);
 
-    int getQnaCountByCategory(String type, String category);
+    int getQnaCountByCategory(String type, String category, LocalDateTime startDate, LocalDateTime endDate, String searchType, String keyword);
 
     String getNicknameByBoardId(Long id);
 
@@ -73,5 +73,7 @@ public interface QnaService {
     public List<QnaBoardCompleteVO> getRecentqnaList();
 
     String getCategoryById(Long id);
+
+    MemberVO getMemberInfoFromMember(String nickname);
     
 }

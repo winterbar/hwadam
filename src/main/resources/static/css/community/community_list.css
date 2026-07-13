@@ -304,7 +304,7 @@ main{
     transition:.2s;
 }
 
-.board-table tbody tr:hover{
+.board-table tbody tr:not(.empty-row):hover{
     background:var(--pink-soft);
 }
 
