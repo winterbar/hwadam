@@ -23,37 +23,52 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StoreServiceImpl implements StoreService {
 
-
     private final StoreMapper storeMapper;
     private static final String CLIENT_ID = "qBf8p8fqAgG9S9VMSebp";
     private static final String CLIENT_SECRET = "l3FLwmhvfL";
 
-    
-    //화면에 출력할 전체 상품 목록을 조회
-    //DB에 상품이 없으면 네이버 쇼핑 API에서 상품을 가져와 저장
-   
+    // 화면에 출력할 전체 상품 목록을 조회
+    // DB에 상품이 없으면 네이버 쇼핑 API에서 상품을 가져와 저장
+
     @Override
     public List<StoreVO> getStoreList() {
 
-        // DB에 저장된 전체 상품 조회
+        // 저장된 전체 상품 조회
         List<StoreVO> storeList = storeMapper.selectStoreList();
 
-        // DB가 비어 있을 때만 네이버 API를 호출
+        // 상품이 없을 때 카테고리별 상품 저장
         if (storeList == null || storeList.isEmpty()) {
-            getNaverProducts("화장품");
-            // API 상품 저장 후 다시 DB에서 상품을 조회
+
+            String[] categoryList = {
+                    "스킨케어",
+                    "메이크업",
+                    "클렌징",
+                    "선케어",
+                    "마스크팩",
+                    "헤어케어",
+                    "바디케어",
+                    "향수"
+            };
+
+            // 카테고리별 네이버 상품 조회
+            for (String category : categoryList) {
+                getNaverProducts(category);
+            }
+
+            // 저장 후 전체 상품 다시 조회
             storeList = storeMapper.selectStoreList();
         }
 
-        // 조회 결과가 null이면 빈 목록을 반환
+        // 조회 결과 없음
         if (storeList == null) {
             return Collections.emptyList();
         }
+
         return storeList;
     }
 
-    //전달받은 검색어로 네이버 쇼핑 API를 호출
-    //검색 결과를 store 테이블에 저장
+    // 전달받은 검색어로 네이버 쇼핑 API를 호출
+    // 검색 결과를 store 테이블에 저장
 
     @Override
     public void getNaverProducts(String keyword) {
@@ -63,7 +78,7 @@ public class StoreServiceImpl implements StoreService {
                 .fromUriString("https://openapi.naver.com")
                 .path("/v1/search/shop.json")
                 .queryParam("query", keyword)
-                .queryParam("display", 100)
+                .queryParam("display", 50)
                 .queryParam("start", 1)
                 .queryParam("sort", "sim")
                 .encode(StandardCharsets.UTF_8)
@@ -75,31 +90,27 @@ public class StoreServiceImpl implements StoreService {
 
         headers.set(
                 "X-Naver-Client-Id",
-                CLIENT_ID
-        );
+                CLIENT_ID);
         headers.set(
                 "X-Naver-Client-Secret",
-                CLIENT_SECRET
-        );
+                CLIENT_SECRET);
 
         // 헤더 정보를 담은 요청 객체 생성
-        HttpEntity<Void> requestEntity =new HttpEntity<>(null, headers);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(null, headers);
 
-        RestTemplate restTemplate =new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
 
         // 네이버 쇼핑 API에 GET 요청을 보내고 응답 받음
-        ResponseEntity<StoreResponseVO> response =
-                restTemplate.exchange(
-                        uri,
-                        HttpMethod.GET,
-                        requestEntity,
-                        StoreResponseVO.class
-                );
+        ResponseEntity<StoreResponseVO> response = restTemplate.exchange(
+                uri,
+                HttpMethod.GET,
+                requestEntity,
+                StoreResponseVO.class);
 
-        StoreResponseVO responseVO =response.getBody();
+        StoreResponseVO responseVO = response.getBody();
 
         // 응답 데이터나 상품 목록이 없으면 저장하지 않고 종료
-        if (responseVO == null ||responseVO.getItems() == null) {
+        if (responseVO == null || responseVO.getItems() == null) {
             return;
         }
 
@@ -115,16 +126,16 @@ public class StoreServiceImpl implements StoreService {
             // DB의 NOT NULL 조건에 맞게 null 값을 빈 문자열로 변경
             product.setImage(nullToEmpty(product.getImage()));
             product.setBrand(nullToEmpty(product.getBrand()));
-            product.setCategory2(nullToEmpty(product.getCategory2()));
+            product.setCategory2(keyword);
+            // 네이버 소분류 저장
             product.setCategory3(nullToEmpty(product.getCategory3()));
 
-            // 정리한 상품 정보를 store 테이블에 저장
+            // 상품 저장
             storeMapper.insertStore(product);
         }
     }
 
-
-     // 상품명에 포함된 HTML 태그 제거
+    // 상품명에 포함된 HTML 태그 제거
 
     private String removeHtmlTag(String title) {
 
@@ -135,8 +146,8 @@ public class StoreServiceImpl implements StoreService {
         return title.replaceAll("<[^>]*>", "");
     }
 
-    //문자열이 null이면 빈 문자열을 반환
-     
+    // 문자열이 null이면 빈 문자열을 반환
+
     private String nullToEmpty(String value) {
 
         if (value == null) {
@@ -144,5 +155,10 @@ public class StoreServiceImpl implements StoreService {
         }
 
         return value;
+    }
+
+    @Override
+    public List<StoreVO> getStoreListCategory2(String category2) {
+        return storeMapper.getStoreListCategory2(category2);
     }
 }

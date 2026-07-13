@@ -117,7 +117,7 @@
 
                     <div class="summer-image-banner">
 
-                        <a th:href="@{/store}">
+                        <a th:href="@{/store?category2=선케어}">
 
                             <img class="summer-image" th:src="@{/images/main/mainbanner3.png}"
                                 src="/images/main/mainbanner3.png" alt="여름 선케어 추천 배너">
@@ -194,7 +194,7 @@
                                 </p>
                             </div>
 
-                            <a th:href="@{/store/all}" class="view-more">
+                            <a th:href="@{/store}" class="view-more">
                                 전체보기 →
                             </a>
 
@@ -381,70 +381,7 @@
                         </div>
                     </section>
 
-                    <article class="feed-card">
-
-                        <a href="#">
-
-                            <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=500&q=80"
-                                alt="오늘의 화장 피드">
-
-                            <div class="feed-info">
-
-                                <div class="feed-user">
-                                    @glow_me
-                                </div>
-
-                                <div class="feed-main-tags">
-                                    <span>#광채피부</span>
-                                    <span>#촉촉베이스</span>
-                                </div>
-
-                                <div class="feed-meta">
-                                    <span>♡ 94</span>
-                                    <span>댓글 8</span>
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </article>
-
-
-                    <article class="feed-card">
-
-                        <a href="#">
-
-                            <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=500&q=80"
-                                alt="오늘의 화장 피드">
-
-                            <div class="feed-info">
-
-                                <div class="feed-user">
-                                    @daily_pink
-                                </div>
-
-                                <div class="feed-main-tags">
-                                    <span>#핑크톤</span>
-                                    <span>#아이팔레트</span>
-                                </div>
-
-                                <div class="feed-meta">
-                                    <span>♡ 87</span>
-                                    <span>댓글 5</span>
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    </article>
-
-                </div>
-
-                </section>
-
-
+                    
                 <!-- =========================
                      요즘 많이 본 리뷰
                 ========================= -->
@@ -493,7 +430,7 @@
 
                                         <div class="review-brand">
 
-                                            <span th:text="${review.category1}">
+                                            <span th:text="${review.category2}">
                                                 메이크업
                                             </span>
 
@@ -660,13 +597,14 @@
                 </section>
 
                 <!-- 오늘의 뷰티 팁 배너 -->
+                 <a th:href="@{/store?category2=마스크팩}">
                 <div class="side-beauty-tip-banner">
 
-                    <img th:src="@{/images/main/beauty-tip-mask-banner.png}"
-                        src="/images/main/beauty-tip-mask-banner.png" alt="오늘의 뷰티 팁 - 마스크팩 냉장 보관">
+                    <img th:src="@{/images/main/sidebanner1.png}"
+                        src="/images/main/sidebanner1.png" alt="오늘의 뷰티 팁 - 마스크팩 냉장 보관">
 
                 </div>
-
+                </a>
 
                 <!-- 인기 태그 -->
                 <section class="side-panel">
@@ -706,12 +644,13 @@
 
 
                 <!-- 오른쪽 이미지 배너 -->
+                 <a th:href="@{/store?category2=클렌징}">
                 <div class="side-image-banner">
 
                     <img th:src="@{/images/main/sidebanner2.png}" src="/images/main/sidebanner2.png" alt="화담 사이드 배너">
 
                 </div>
-
+                </a>
             </aside>
 
     </div>
