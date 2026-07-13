@@ -1726,3 +1726,171 @@ main.feed-page-layout .feed-trend-box {
         grid-template-columns: 52px minmax(0, 1fr) auto;
     }
 }
+.product-empty {
+    width: 100%;
+    min-height: 180px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #f1dbe4;
+    background: #fff9fb;
+}
+
+.product-empty p {
+    margin: 0;
+    color: #777777;
+    font-size: 14px;
+    font-weight: 700;
+}
+/* 메인 신상 상품 영역 깨짐 방지 */
+.product-section {
+    width: 100%;
+    min-width: 0;
+}
+
+.product-section .product-grid-five {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+
+    align-items: stretch;
+}
+
+.product-section .product-card {
+    width: 100%;
+    min-width: 0;
+
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #ffffff;
+
+    overflow: hidden;
+}
+
+.product-section .product-link {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.product-section .product-image-box {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+
+    overflow: hidden;
+    background: #f7f7f7;
+}
+
+.product-section .product-img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+    object-fit: cover;
+}
+
+.product-section .product-info {
+    min-width: 0;
+    padding: 12px 10px 14px;
+}
+
+.product-section .product-brand {
+    width: 100%;
+    margin-bottom: 5px;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.product-section .product-name {
+    width: 100%;
+    height: 38px;
+    min-height: 38px;
+    margin: 0 0 9px;
+
+    overflow: hidden;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    word-break: keep-all;
+    overflow-wrap: break-word;
+}
+
+.product-section .price-row {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.product-section .price {
+    white-space: nowrap;
+}
+
+.product-section .discount {
+    max-width: 100%;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* 화면이 조금 좁을 때 */
+@media (max-width: 1180px) {
+    .product-section .product-grid-five {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 720px) {
+    .product-section .product-grid-five {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+.review-empty {
+    width: 100%;
+    min-height: 120px;
+    padding: 30px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px dashed #FFA1C1;
+    border-radius: 12px;
+    background: #fff7fa;
+
+    color: #999999;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+}
+.side-tip-empty {
+    width: 100%;
+    min-height: 100px;
+    padding: 22px 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px dashed #FFA1C1;
+    border-radius: 12px;
+    background: #fff7fa;
+
+    color: #999999;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
