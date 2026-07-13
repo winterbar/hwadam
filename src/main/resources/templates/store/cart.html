@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>화담 : 내 장바구니</title>
+    <link rel="icon" type="image/png" th:href="@{/images/common/icon.png}">
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/store/cart.css}">
+</head>
+<body>
+
+    <header th:replace="~{layout/header :: header}"></header>
+
+    <div class="cart-box-container">
+        <div class="cart-items-section">
+            <h2 class="section-title">장바구니</h2>
+            <div class="cart-list">
+                <div class="cart-item">
+                    <button class="remove-x-btn">×</button>
+                    <img th:src="@{/images/common/logo.png}" alt="상품" class="item-img">
+                    <div class="item-info">
+                        <p class="item-name">화담 에센셜 오일 세트</p>
+                        <p class="item-option">옵션: 라벤더 / 100ml</p>
+                    </div>
+                    <div class="item-price">32,000원</div>
+                </div>
+                <div class="cart-item">
+                    <button class="remove-x-btn">×</button>
+                    <img th:src="@{/images/common/logo.png}" alt="상품" class="item-img">
+                    <div class="item-info">
+                        <p class="item-name">화담 에센셜 오일 세트</p>
+                        <p class="item-option">옵션: 라벤더 / 100ml</p>
+                    </div>
+                    <div class="item-price">32,000원</div>
+                </div>
+                <div class="cart-item">
+                    <button class="remove-x-btn">×</button>
+                    <img th:src="@{/images/common/logo.png}" alt="상품" class="item-img">
+                    <div class="item-info">
+                        <p class="item-name">화담 에센셜 오일 세트</p>
+                        <p class="item-option">옵션: 라벤더 / 100ml</p>
+                    </div>
+                    <div class="item-price">32,000원</div>
+                </div>
+                <div class="cart-item">
+                    <button class="remove-x-btn">×</button>
+                    <img th:src="@{/images/common/logo.png}" alt="상품" class="item-img">
+                    <div class="item-info">
+                        <p class="item-name">화담 에센셜 오일 세트</p>
+                        <p class="item-option">옵션: 라벤더 / 100ml</p>
+                    </div>
+                    <div class="item-price">32,000원</div>
+                </div>
+                <div class="cart-item">
+                    <button class="remove-x-btn">×</button>
+                    <img th:src="@{/images/common/logo.png}" alt="상품" class="item-img">
+                    <div class="item-info">
+                        <p class="item-name">화담 에센셜 오일 세트</p>
+                        <p class="item-option">옵션: 라벤더 / 100ml</p>
+                    </div>
+                    <div class="item-price">32,000원</div>
+                </div>
+                <div class="cart-item">
+                    <button class="remove-x-btn">×</button>
+                    <img th:src="@{/images/common/logo.png}" alt="상품" class="item-img">
+                    <div class="item-info">
+                        <p class="item-name">화담 에센셜 오일 세트</p>
+                        <p class="item-option">옵션: 라벤더 / 100ml</p>
+                    </div>
+                    <div class="item-price">32,000원</div>
+                </div>
+                <div class="cart-item">
+                    <button class="remove-x-btn">×</button>
+                    <img th:src="@{/images/common/logo.png}" alt="상품" class="item-img">
+                    <div class="item-info">
+                        <p class="item-name">화담 에센셜 오일 세트</p>
+                        <p class="item-option">옵션: 라벤더 / 100ml</p>
+                    </div>
+                    <div class="item-price">32,000원</div>
+                </div>
+                <div class="cart-item">
+                    <button class="remove-x-btn">×</button>
+                    <img th:src="@{/images/common/logo.png}" alt="상품" class="item-img">
+                    <div class="item-info">
+                        <p class="item-name">화담 에센셜 오일 세트</p>
+                        <p class="item-option">옵션: 라벤더 / 100ml</p>
+                    </div>
+                    <div class="item-price">32,000원</div>
+                </div>
+                <div class="cart-item">
+                    <button class="remove-x-btn">×</button>
+                    <img th:src="@{/images/common/logo.png}" alt="상품" class="item-img">
+                    <div class="item-info">
+                        <p class="item-name">화담 에센셜 오일 세트</p>
+                        <p class="item-option">옵션: 라벤더 / 100ml</p>
+                    </div>
+                    <div class="item-price">32,000원</div>
+                </div>
+                <div class="cart-item">
+                    <button class="remove-x-btn">×</button>
+                    <img th:src="@{/images/common/logo.png}" alt="상품" class="item-img">
+                    <div class="item-info">
+                        <p class="item-name">화담 에센셜 오일 세트</p>
+                        <p class="item-option">옵션: 라벤더 / 100ml</p>
+                    </div>
+                    <div class="item-price">32,000원</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-summary-section">
+            <div class="summary-box">
+                <h3 class="summary-title">주문 요약</h3>
+                <div class="summary-row">
+                    <span>결제 금액</span>
+                    <span>77,000원</span>
+                </div>
+                <div class="summary-row">
+                    <span>포인트 차감</span>
+                    <span class="point-minus">- 2,000원</span>
+                </div>
+                <div class="summary-row">
+                    <span>적립 예정 포인트</span>
+                    <span class="point-plus">+ 770원</span>
+                </div>
+                <hr class="summary-divider">
+                <div class="summary-total-row">
+                    <span>최종 결제 금액</span>
+                    <span class="total-price">75,000원</span>
+                </div>
+                <button class="checkout-btn">결제하기</button>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{layout/footer :: footer}"></footer>
+
+</body>
+</html>
