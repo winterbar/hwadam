@@ -240,8 +240,10 @@
                             <img th:if="${review.memberProfilePath != null and !#strings.isEmpty(review.memberProfilePath)}" 
                                 th:src="@{|/upload/profile/${review.memberProfileSavedName}|}" 
                                 alt="프로필 이미지" class="profile-img"/>
-                            <div th:unless="${review.memberProfilePath != null and !#strings.isEmpty(review.memberProfilePath)}" 
-                                class="profile-default"></div>
+                            <img th:unless="${review.memberProfilePath != null and !#strings.isEmpty(review.memberProfilePath)}"
+     th:src="@{/images/common/default-profile.png}"
+     alt="기본 프로필 이미지"
+     class="profile-img"/>
                             <span class="nickname" th:text="${review.nickName}">작성자 닉네임</span>
                         </div>
 
@@ -298,17 +300,20 @@
                     <a th:href="@{/review(page=${pageVO.endPage + 1}, category1=${param.category1}, category2=${param.category2}, sortType=${param.sortType})}">»</a>
                 </li>
             </ul>
-            <form th:action="@{/review/search}" method="POST">
-                <div class="search-group">
-                    <select name="searchType">
-                        <option value="titleContent">제목+내용</option>
-                        <option value="title">제목</option>
-                        <option value="writer">작성자</option>
-                    </select>
-                    <input type="text" name="searchStr" placeholder="궁금한 단어를 입력하세요.">
-                    <button type="submit" class="search-btn">검색</button>
-                </div>
-            </form>
+
+            <div class="search-group" id="searchWrapper">
+                <select id="searchType">
+                    <option value="product" th:selected="${param.searchType != null && param.searchType[0] == 'product'}">제품명</option>
+                    <option value="nickname" th:selected="${param.searchType != null && param.searchType[0] == 'nickname'}">닉네임</option>
+                    
+                </select>
+                
+                <input type="text" id="searchKeyword" placeholder="검색어를 입력하세요" 
+                    th:value="${param.keyword != null ? param.keyword[0] : ''}">
+                
+                <button type="button" id="searchBtn" class="search-btn">검색</button>
+            </div>
+
         </div>
 
 
@@ -468,6 +473,42 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    /* ==========================================================================
+       5. 검색 버튼 및 엔터키 입력 시 모든 파라미터 유지하며 이동 로직
+       ========================================================================== */
+    const searchBtn = document.getElementById("searchBtn");
+    const searchInput = document.getElementById("searchKeyword");
+    const searchTypeSelect = document.getElementById("searchType");
+
+    if (searchBtn && searchInput && searchTypeSelect) {
+        // 1) [검색] 버튼 클릭 이벤트 세팅
+        searchBtn.addEventListener("click", function() {
+            const keyword = searchInput.value.trim();
+            const searchType = searchTypeSelect.value;
+            
+            // 기존 주소창의 카테고리 및 정렬 기준 긁어오기
+            const cat1 = urlParams.get("category1") || "전체보기";
+            const cat2 = urlParams.get("category2") || "전체";
+            const sortType = urlParams.get("sortType") || "latest";
+
+            // 새로운 검색 시 무조건 page=1로 초기화하여 안전 이동
+            let targetUrl = `/review?page=1&category1=${encodeURIComponent(cat1)}&category2=${encodeURIComponent(cat2)}&sortType=${sortType}`;
+            
+            // 검색어가 유효하게 적혀있을 때만 파라미터 최종 추가
+            if (keyword !== "") {
+                targetUrl += `&searchType=${searchType}&keyword=${encodeURIComponent(keyword)}`;
+            }
+
+            location.href = targetUrl;
+        });
+
+        // 2) 검색창 내부 [엔터키] 바인딩 센서 세팅
+        searchInput.addEventListener("keyup", function(e) {
+            if (e.key === "Enter") {
+                searchBtn.click(); // 엔터를 치면 위의 클릭 이벤트 코드를 강제 실행시킵니다.
+            }
+        });
+    }
     
 
 

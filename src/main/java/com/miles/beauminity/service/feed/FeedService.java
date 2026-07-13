@@ -10,32 +10,30 @@ import com.miles.beauminity.vo.feed.FeedVO;
 
 
 public interface FeedService {
-    public void postFeed(FeedVO feedVO, MultipartFile[] files, List<String> tagNames);
+void postFeed(FeedVO feedVO, MultipartFile[] files, List<String> tagNames);
 
-    public List<String> getTagNameList();
+List<String> getTagNameList();
 
-    public List<FeedVO> getFeedList();
+List<FeedVO> getFeedList();
 
-    public FeedVO loadFeedData(Long feedId);
+FeedVO loadFeedData(Long feedId);
 
-    public void deleteFeedId(Long feedId);
-
-    public void updateFeed(Long feedId, FeedVO feedVO, MultipartFile[] files, List<String> existingImages,
+void deleteFeedId(Long feedId);
+void updateFeed(Long feedId, FeedVO feedVO, MultipartFile[] files, List<String> existingImages,
             List<String> tagNames);
+int getFeedLike(Boolean liked, FeedLikeVO feedLikeVO);
 
-    public int getFeedLike(Boolean liked, FeedLikeVO feedLikeVO);
+List<FeedReplyVO> getFeedReply(FeedReplyVO feedReplyVO);
 
-    public List<FeedReplyVO> getFeedReply(FeedReplyVO feedReplyVO);
+List<FeedReplyVO> updateReply(FeedReplyVO feedReplyVO);
 
-    public List<FeedReplyVO> updateReply(FeedReplyVO feedReplyVO);
-
-    public void deleteReply(Long replyId);
+void deleteReply(Long replyId);
     
-    public List<FeedVO> getShareFeedlist(Long feedId);
+List<FeedVO> getShareFeedlist(Long feedId);
 
-    public List<FeedVO> getTopTagList();
+List<FeedVO> getTopTagList();
 
-    public List<FeedVO> getSearchTag(String tagName);
+List<FeedVO> getSearchTag(String tagName);
 
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,22 +73,31 @@ public class ReviewController { // 역할: 후기 게시판에 대한 사용자�
 
     // 후기 게시판 상세 페이지 요청 처리
     @GetMapping("/review/detail/{boardId}")
-    public String reviewDetailPage(@PathVariable("boardId") Long boardId, Model model) {
+    public String reviewDetailPage(@PathVariable("boardId") Long boardId,
+                                    Model model,
+                                    @AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            // 1. 상세 데이터
+            ReviewBoardVO detail = reviewService.getReviewBoardDetail(boardId);
+            
+            // 2. 조회수 상승은 상세 페이지에서 바로 하지 말고, 
+            // 서비스 내부에서 예외 처리를 하거나 컨트롤러에서 분리하는 것이 안전합니다.
+            reviewService.viewUp(boardId); 
 
-        // 1. 서비스 호출을 통해 후기 상세 데이터 가져오기
-        ReviewBoardVO detail = reviewService.getReviewBoardDetail(boardId);
+            // 3. 댓글
+            model.addAttribute("replyList", reviewService.getReplyList(boardId));
+            model.addAttribute("detail", detail);
+            
+            // 4. 좋아요 로직
+            model.addAttribute("isLikeOn", (userDetails != null) && reviewService.isLikeON(boardId, userDetails.getUsername()));
+            model.addAttribute("likeCount", reviewService.getLikeCount(boardId));
 
-        // 2. 조회수 상승
-        reviewService.viewUp(boardId);
-
-        // 해당 게시글의 댓글 목록 조회해서 보내기
-        List<ReviewReplyVO> replyList = reviewService.getReplyList(boardId);
-
-        model.addAttribute("replyList", replyList);
-        model.addAttribute("detail", detail);
-
-
-        return "review_board/detail";
+            return "review_board/detail";
+            
+        } catch (Exception e) {
+            e.printStackTrace(); // 어디서 터지는지 콘솔에서 확인하세요!
+            return "redirect:/review"; // 에러 발생 시 안전하게 목록으로 리다이렉트
+        }
     }
     
 

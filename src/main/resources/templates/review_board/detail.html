@@ -278,6 +278,20 @@ button, input, textarea, select {
     transform: scale(1.2);          /* 하트에 마우스 올리면 통통 튀는 피드백 */
     color: #ff4d4d !important;
 }
+/* ======================================================= */
+/* 🆕 [추가] 좋아요가 실제로 눌렸을 때(활성화) 고정될 빨간색 스타일 */
+/* ======================================================= */
+.detail-actions-row div:has(> .like-icon.active) .like-icon {
+    color: #ff4d4d !important;      /* 마우스를 떼어도 하트가 빨간색으로 고정됨 */
+}
+.like-count {
+    margin-left: 5px;
+    /* body에 설정한 폰트 우선순위를 그대로 가져옵니다 */
+    font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    font-weight: 600; /* 숫자를 좀 더 또렷하게 보이게 합니다 */
+    font-size: 14px;  /* 필요에 따라 조절하세요 */
+    color: var(--text);
+}
 
 /* 댓글 영역 */
 /* 9. 댓글 섹션 디자인 (댓글 창 무드 세팅) */
@@ -690,6 +704,8 @@ button, input, textarea, select {
     background-color: #333;
 }
 
+
+
 /* ==========================================================================
    [유지 및 보완] 모바일 및 태블릿 환경 대응 (반응형 미디어 쿼리)
    ========================================================================== */
@@ -797,7 +813,7 @@ button, input, textarea, select {
                     </span>
                     <img th:src="@{/upload/review/{name}(name=${file.savedName})}" 
                         th:alt="${file.originalName}"
-                        style="width: 100%; height: auto; object-fit: cover; border-radius: 4px; display: block;">
+                        style="width: 100%; height: auto; object-fit: contain; border-radius: 4px; display: block;">
                 </div>
             </div>
 
@@ -830,19 +846,25 @@ button, input, textarea, select {
                         삭제
                     </button>
                     
-                    <div style="display: flex; align-items: center; justify-content: center; padding: 0 0.5rem; font-size: 1.4rem; cursor: pointer; color: #333333;">
-                        <span class="like-icon" id="like-icon">♡</span>
+                    <div id="btnLike" style="display: flex; align-items: center; justify-content: center; padding: 0 0.5rem; font-size: 1.4rem; cursor: pointer; color: #333333;">
+                        <span class="like-icon" id="like-icon" 
+                                th:attr="data-id=${detail.boardId}"
+                                th:text="${isLikeOn} ? '♥' : '♡'" 
+                                th:style="${isLikeOn} ? 'color: #ff4d4f;' : 'color: #333333;'">
+                                ♡
+                        </span>
+
+                        <span class="like-count" style="margin-left: 5px;" th:text="${likeCount}">0</span>
+                        
                     </div>
+
+
                 </div>
             </div>
 
         </div> 
 
-        <div style="max-width: 1200px; margin: 1rem auto 0 auto; background: #f8d7da; padding: 0.5rem; font-size: 0.8rem; color: #721c24; text-align: center; border-radius: 4px;">
-            현재 로그인 계정 ID: <strong th:text="${#authentication.name}">로그인ID</strong> | 
-            게시글 작성자 ID: <strong th:text="${detail.userName}">작성자ID</strong>
-        </div>
-
+   
 
         <div class="comment-section">
             <h5>댓글 <span th:text="${detail.replyCnt}">0</span></h5>
@@ -867,10 +889,19 @@ button, input, textarea, select {
                     </div>
                     
                     <div class="comment-content-flex">
-                        <div class="comment-body" th:text="${reply.replyContent}">
+                        <div class="comment-body"
+                             th:if="${!reply.deleted}" 
+                             th:text="${reply.replyContent}">
                             사용자가 작성한 후기 댓글 내용이 이곳에 깔끔하게 출력됩니다.
                         </div>
-                        <div class="comment-action-row" th:if="${#authentication.name != 'anonymousUser'}">
+
+                        <div class="comment-body deleted-comment" 
+                                th:if="${reply.deleted}" 
+                                style="color: #aaa; font-style: italic;">
+                            삭제된 댓글입니다.
+                        </div>
+
+                        <div class="comment-action-row" th:if="${#authentication.name != 'anonymousUser'} and ${reply.parentsReplyId == null}">
                             <button type="button" class="btn-reply-toggle" th:data-reply-id="${reply.replyId}">
                                 답글 쓰기
                             </button>
@@ -950,6 +981,67 @@ button, input, textarea, select {
 </html>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+    const likeIcon = document.getElementById('like-icon');
+    const likeBtn = document.getElementById('btnLike');
+ 
+    
+    if (likeIcon && likeBtn) {
+        // HTML 타임리프(th:attr="data-id=${...}")에서 심어둔 게시글 번호 읽기
+        const boardId = likeIcon.getAttribute('data-id') || likeIcon.dataset.id;
+        
+        if (boardId) {
+            // 서버에 내가 이 글에 좋아요를 눌렀는지 물어봄
+            fetch(`/api/review/${boardId}/like-check`)
+                .then(response => response.json())
+                .then(data => {
+                    // 백엔드가 주는 true/false에 따라 하트 모양 스위칭
+                    if (data.isLikeOn) {
+                        likeIcon.textContent = "♥";
+                        likeIcon.style.color = "#ff4d4f"; // 누른 상태면 빨간색 하트
+                    } else {
+                        likeIcon.textContent = "♡";
+                        likeIcon.style.color = "#333333"; // 안 누른 상태면 기본색
+                    }
+                })
+                .catch(error => console.error("좋아요 상태 조회 실패:", error));
+        }
+
+        // ==========================================
+        // 🆕 [추가] 하트(div 영역 포함) 클릭 시 토글 요청
+        // ==========================================
+        likeBtn.addEventListener('click', function () {
+            if (!boardId) return;
+
+            fetch(`/api/review/${boardId}/toggle-like`, {
+                method: "POST"
+            })
+                .then(response => {
+                    if (response.status === 401) {
+                        alert("로그인이 필요한 기능입니다.");
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data) return;
+
+                    // 변한 상태에 맞춰 하트 모양 변경
+                    if (data.isLikeOn) {
+                        likeIcon.textContent = "♥";
+                        likeIcon.style.color = "#ff4d4f";
+                    } else {
+                        likeIcon.textContent = "♡";
+                        likeIcon.style.color = "#333333";
+                    }
+
+                    // 💡 만약 화면에 실시간 좋아요 개수를 보여주는 구역(예: .like-count)이 있다면 
+                    // 아래 주석을 풀고 클래스나 ID 명을 맞춰 활용하세요.
+                    const countSpan = document.querySelector('.like-count');
+                    if (countSpan) countSpan.textContent = data.likeCount;
+                })
+                .catch(error => console.error("좋아요 처리 중 에러 발생:", error));
+        });
+    }
     
     // 1. [···] 버튼 클릭 시 드롭다운 메뉴 토글
     document.querySelectorAll(".comment-more-btn").forEach(btn => {
@@ -974,11 +1066,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // 2. [수정하기] 버튼 클릭 시 편집 모드 전환
     document.querySelectorAll(".comment-edit-btn").forEach(btn => {
         btn.addEventListener("click", function () {
-            const commentItem = this.closest(".comment-item");
-            const bodyDiv = commentItem.querySelector(".comment-body");
+            // 💡 [핵심 수정] .comment-item 대신 버튼이 속한 개별 콘텐츠 구역(.comment-content-flex)만 조준합니다.
+            const contentFlex = this.closest(".comment-content-flex");
+            if (!contentFlex) return;
+
+            const bodyDiv = contentFlex.querySelector(".comment-body");
             
-            // 이미 수정창이 열려 있다면 중복 실행 방지
-            if (commentItem.querySelector(".edit-textarea")) return;
+            // 💡 중복 실행 방지 조건도 contentFlex 내부만 검사하도록 수정
+            if (contentFlex.querySelector(".edit-textarea")) return;
 
             const originalContent = bodyDiv.innerText; // 원본 댓글 내용 백업
 
@@ -1050,7 +1145,7 @@ function deleteReply(boardId, replyId, btn) {
     }
 
     // 2. 클릭된 버튼(btn)을 기준으로 상위 댓글 상자 찾기
-    const commentBox = btn.closest(".comment-item");
+    const commentItem = btn.closest(".comment-item");
 
     // 3. fetch 요청 날리기 (매개변수로 받은 값을 그대로 주소에 꽂아줍니다!)
     fetch(`/review/detail/${boardId}/reply/delete/${replyId}`, {
@@ -1058,7 +1153,37 @@ function deleteReply(boardId, replyId, btn) {
     })
     .then(function(response) {
         if (response.ok) {
-            commentBox.remove(); // 화면에서 댓글 삭제
+            
+            if (commentItem) {
+                // ① 정상 댓글용 본문과 삭제된 댓글용 본문을 둘 다 제어합니다.
+                const normalBody = commentItem.querySelector(".comment-body:not(.deleted-comment)");
+                const deletedBody = commentItem.querySelector(".comment-body.deleted-comment");
+                
+                // 만약 정상 댓글이 띄워져 있었다면 내용 치환 후 스타일 적용
+                if (normalBody) {
+                    normalBody.textContent = "삭제된 댓글입니다.";
+                    normalBody.style.color = "#aaa";
+                    normalBody.style.fontStyle = "italic";
+                }
+                
+                // 타임리프가 처음에 '삭제된 댓글입니다'를 그렸을 때 비동기 삭제를 수용하기 위함
+                if (deletedBody) {
+                    deletedBody.style.display = "block";
+                }
+
+                // ② '답글 쓰기' 버튼 영역 숨기기
+                const actionRow = commentItem.querySelector(".comment-action-row");
+                if (actionRow) {
+                    actionRow.style.display = "none";
+                }
+
+                // ③ 더보기 메뉴 버튼(···) 및 내부 팝업 메뉴 통째로 안 보이게 숨김 처리
+                const moreWrap = commentItem.querySelector(".comment-more-wrap");
+                if (moreWrap) {
+                    moreWrap.style.display = "none";
+                }
+            }
+
             alert("댓글이 삭제되었습니다.");
         } else {
             alert("삭제에 실패했습니다.");
@@ -1114,6 +1239,19 @@ function postCommentReply(btn) {
     });
 }
 
+// 대댓글 취소 버튼을 누르면
+document.querySelectorAll(".btn-reply-cancel").forEach(btn => {
+    btn.addEventListener("click", function () {
+        const replyForm = this.closest(".reply-form-box");
+        if (replyForm) {
+            replyForm.classList.add("hidden"); // 다시 hidden 클래스를 넣어서 숨김
+            
+            // 옵션: 입력창에 써두었던 글자도 깨끗하게 지워주고 싶다면 아래 코드 추가
+            const textarea = replyForm.querySelector(".reply-textarea");
+            if (textarea) textarea.value = "";
+        }
+    });
+});
 </script>
 <script th:src="@{/js/review/review_delete.js}"></script>
 <script th:src="@{/js/review/review_like.js}"></script>

@@ -158,7 +158,7 @@ public class QnaServiceImpl implements QnaService {
     public void deleteBoard(Long id) {
 
         List<MasterBoardFileVO> fileList = masterBoardFileMapper.getBoardFileById(id);
-        String prevPath = "c:/uploads";
+        String prevPath = "c:/uploads/qna";
         String nextPath = "c:/deleted/qna";
 
         masterBoardMapper.deleteBoard(id);
@@ -243,15 +243,15 @@ public class QnaServiceImpl implements QnaService {
     @Override
     public boolean isLikeON(Long id, String username) {
 
-        MasterBoardLikeVO masterBoardLikeVO = new MasterBoardLikeVO();
-        masterBoardLikeVO.setBoardId(id);
-        masterBoardLikeVO.setUsername(username);
+        MasterBoardLikeVO vo = new MasterBoardLikeVO();
+        vo.setBoardId(id);
+        vo.setUsername(username);
 
-        if (masterBoardLikeMapper.isLikeON(masterBoardLikeVO).isEmpty())
-            return false;
-        else
-            return true;
-
+        // 💡 List 타입으로 결과를 받습니다.
+        List<MasterBoardLikeVO> result = masterBoardLikeMapper.isLikeON(vo);
+        
+        // 💡 List가 null이 아니고, 비어있지 않으면 좋아요가 눌린 상태(true)
+        return result != null && !result.isEmpty();
     }
 
     @Override
@@ -316,7 +316,7 @@ public class QnaServiceImpl implements QnaService {
 
         MasterBoardFileVO getFile = masterBoardFileMapper.getFileById(id);
 
-        String prevPath = "c:/uploads";
+        String prevPath = "c:/uploads/qna";
         String nextPath = "c:/deleted/qna";
 
         // 삭제 이전에 삭제할 파일 복사
@@ -372,6 +372,11 @@ public class QnaServiceImpl implements QnaService {
     @Override
     public List<QnaBoardCompleteVO> getRecentqnaList() {
         return qnaBoardMapper.getRecentqnaList();
+    }
+
+    @Override
+    public String getCategoryById(Long id) {
+        return qnaBoardMapper.getCategoryById(id);
     }
     
 

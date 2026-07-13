@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     let currentIndex = 0;
     // 슬라이드 전체 개수
     const totalSlides = slides.length;
+    //시간 간격
+    const intervalTime = Number(slider.dataset.interval) || 10000;
+    let autoSlideTimer;
 
     function showSlide(index){
         if(index<0){
@@ -36,24 +39,37 @@ document.addEventListener('DOMContentLoaded',()=>{
             }
         });
     }
+    function startAutoSlide() {
+            autoSlideTimer = setInterval(function(){
+                showSlide(currentIndex+1);
+            },intervalTime);
+        }
+        function restAutoSlide() {
+            clearInterval(autoSlideTimer);
+            startAutoSlide;
+        }
+        // 이전 버튼
         if(prevBtn){
             prevBtn.addEventListener("click",function(){
                 showSlide(currentIndex-1);
             });
         }
+        // 다음 버튼
         if(nextBtn){
             nextBtn.addEventListener("click",function(){
                 showSlide(currentIndex+1);
             });
         }
+        // 점 눌러서 이동 가능
         dots.forEach(function(dot){
             dot.addEventListener("click",function(){
                 const index = Number(dot.dataset.index);
                 showSlide(index);
             });
         });
+
     
     showSlide(0);
-    
+    startAutoSlide();
 
 });
