@@ -12,6 +12,6 @@ public class StoreVO {
     private int lprice;
     private String image;
     private String brand;
-    private String category1;
     private String category2;
+    private String category3;
    }

@@ -115,8 +115,8 @@ public class StoreServiceImpl implements StoreService {
             // DB의 NOT NULL 조건에 맞게 null 값을 빈 문자열로 변경
             product.setImage(nullToEmpty(product.getImage()));
             product.setBrand(nullToEmpty(product.getBrand()));
-            product.setCategory1(nullToEmpty(product.getCategory1()));
             product.setCategory2(nullToEmpty(product.getCategory2()));
+            product.setCategory3(nullToEmpty(product.getCategory3()));
 
             // 정리한 상품 정보를 store 테이블에 저장
             storeMapper.insertStore(product);
