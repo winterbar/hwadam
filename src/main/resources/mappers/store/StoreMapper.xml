@@ -13,8 +13,8 @@
             lprice,
             image,
             brand,
-            category1,
-            category2
+            category2,
+            category3
         )
         VALUES (
             #{productId},
@@ -22,8 +22,8 @@
             #{lprice},
             #{image},
             #{brand},
-            #{category1},
-            #{category2}
+            #{category2},
+            #{category3}
         )
 </insert>
  <!-- 전체 상품 조회 -->
@@ -36,9 +36,26 @@
             lprice,
             image,
             brand,
-            category1,
-            category2
+            category2,
+            category3
         FROM store
+        ORDER BY product_id DESC
+
+    </select>
+    
+    <select id="getStoreListCategory2"
+            parameterType="String"
+            resultType="com.miles.beauminity.vo.store.StoreVO">
+        SELECT
+            product_id,
+            title,
+            lprice,
+            image,
+            brand,
+            category2,
+            category3
+        FROM store
+        WHERE category2=${category2}
         ORDER BY product_id DESC
 
     </select>
