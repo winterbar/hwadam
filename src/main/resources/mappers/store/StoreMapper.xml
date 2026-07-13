@@ -22,8 +22,8 @@
             #{lprice},
             #{image},
             #{brand},
-            #{category1},
-            #{category2}
+            #{category2},
+            #{category3}
         )
 </insert>
  <!-- 전체 상품 조회 -->
@@ -36,8 +36,8 @@
             lprice,
             image,
             brand,
-            category1,
-            category2
+            category2,
+            category3
         FROM store
         ORDER BY product_id DESC
 
