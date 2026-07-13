@@ -21,4 +21,5 @@ public interface MemberMapper {
     public String findPasswordById(String username);
     public void withdrawMember(String username);
     public void feedback(FeedbackVO feedbackVO);
+    public void updatePoint(MemberVO memberVO);
 }

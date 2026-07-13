@@ -4,8 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.miles.beauminity.mapper.review_board.ReviewBoardMapper">
-
-
+<!--=================================
+리뷰 게시판에 관련된 쿼리문을 작성하는 매퍼
+=====================================--> 
 
 
     <insert id="insertReviewBoard">
