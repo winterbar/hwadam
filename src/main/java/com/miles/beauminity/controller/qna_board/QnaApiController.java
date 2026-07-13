@@ -67,7 +67,7 @@ public class QnaApiController {
 
         String type = "qna";
 
-        int count = qnaService.getQnaCountByCategory(type, category);
+        int count = qnaService.getQnaCountByCategory(type, category, startDate, endDate, searchType, keyword);
         pageVO.pageInfo(count);
 
         System.out.println("페이지 정보:" + pageVO.toString());

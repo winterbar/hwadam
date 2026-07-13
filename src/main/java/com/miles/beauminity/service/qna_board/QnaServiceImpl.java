@@ -118,13 +118,11 @@ public class QnaServiceImpl implements QnaService {
 
     // 게시글 카테고리별 전체조회
     @Override
-    public List<QnaBoardCompleteVO> getQnaBoardByCategory(String type, PageVO pageVO, String category, String sort
-                                                        , LocalDateTime startDate, LocalDateTime endDate
-                                                        , String searchType, String keyword) {
-        
-        return qnaBoardMapper.selectCommuByCategory(type, pageVO, category
-                                                    , sort, startDate, endDate
-                                                    , searchType, keyword);
+    public List<QnaBoardCompleteVO> getQnaBoardByCategory(String type, PageVO pageVO, String category, String sort,
+            LocalDateTime startDate, LocalDateTime endDate, String searchType, String keyword) {
+
+        return qnaBoardMapper.selectCommuByCategory(type, pageVO, category, sort, startDate, endDate, searchType,
+                keyword);
     }
 
     // 게시글 상세조회
@@ -140,21 +138,21 @@ public class QnaServiceImpl implements QnaService {
     @Override
     public List<MasterBoardFileVO> getBoardFileById(Long id) {
         // 파일의 경로를 확인하기 위해 일단 파일의 리스트를 불러온다.
-        List<MasterBoardFileVO> flist =masterBoardFileMapper.getBoardFileById(id);
-        List<MasterBoardFileVO> existFList= new ArrayList<>();
-        
+        List<MasterBoardFileVO> flist = masterBoardFileMapper.getBoardFileById(id);
+        List<MasterBoardFileVO> existFList = new ArrayList<>();
+
         // 파일을 순차탐색하면서 파일의 저장명이 지정 경로에 있는지 확인한다. 있으면 최종리스트에 푸시
-        for(MasterBoardFileVO f : flist){
+        for (MasterBoardFileVO f : flist) {
             String fileName = f.getSavedName();
-            System.out.println("현재 파일 이름: "+fileName);
-            String filePath = "c:/uploads/qna/"+fileName;
-            System.out.println("파일 경로: "+filePath);
+            System.out.println("현재 파일 이름: " + fileName);
+            String filePath = "c:/uploads/qna/" + fileName;
+            System.out.println("파일 경로: " + filePath);
             File file = new File(filePath);
 
-            if(file.exists() && file.isFile()){
+            if (file.exists() && file.isFile()) {
                 System.out.println("파일 있음");
                 existFList.add(f);
-            } else{
+            } else {
                 System.out.println("파일 없음");
             }
         }
@@ -222,20 +220,10 @@ public class QnaServiceImpl implements QnaService {
 
     // 카테고리별 게시글 수 조회
     @Override
-    public int getQnaCountByCategory(String type, String category) {
+    public int getQnaCountByCategory(String type, String category, LocalDateTime startDate, LocalDateTime endDate,
+            String searchType, String keyword) {
 
-        System.out.println("카테고리: " + category);
-
-        TypeOffsetVO typeOffsetVO = new TypeOffsetVO();
-
-        typeOffsetVO.setType(type);
-        if (category.equals("전체보기")) {
-            return masterBoardMapper.getTypeBoardCount(type);
-        } else {
-            typeOffsetVO.setCategory(category);
-            System.out.println("현재상태: " + typeOffsetVO.toString());
-            return qnaBoardMapper.getQnaCountByCategory(typeOffsetVO);
-        }
+        return qnaBoardMapper.getQnaCountByCategory(type, category, startDate, endDate, searchType, keyword);
 
     }
 
@@ -259,7 +247,7 @@ public class QnaServiceImpl implements QnaService {
 
         // 💡 List 타입으로 결과를 받습니다.
         List<MasterBoardLikeVO> result = masterBoardLikeMapper.isLikeON(vo);
-        
+
         // 💡 List가 null이 아니고, 비어있지 않으면 좋아요가 눌린 상태(true)
         return result != null && !result.isEmpty();
     }
@@ -331,7 +319,7 @@ public class QnaServiceImpl implements QnaService {
 
         // 삭제 이전에 삭제할 파일 복사
         MasterFileUtil.copyFiles(prevPath, getFile.getSavedName(), nextPath);
-            // 이전 경로에 있던 파일은 삭제
+        // 이전 경로에 있던 파일은 삭제
         MasterFileUtil.deleteFiles(prevPath, getFile.getSavedName());
     }
 
@@ -345,8 +333,8 @@ public class QnaServiceImpl implements QnaService {
         List<CommunityReplyVO> reList = communityReplyMapper.getReplyList(id);
         List<CommunityReplyVO> finList = new ArrayList<>();
 
-        for(CommunityReplyVO c : reList){
-            String nickname=memberMapper.findLoginId(c.getUsername()).getNickname();
+        for (CommunityReplyVO c : reList) {
+            String nickname = memberMapper.findLoginId(c.getUsername()).getNickname();
             c.setNickname(nickname);
             finList.add(c);
         }
@@ -375,6 +363,7 @@ public class QnaServiceImpl implements QnaService {
     public void deleteReply(Long id) {
         communityReplyMapper.deleteReply(id);
     }
+
     public List<QnaBoardCompleteVO> getTopTipList() {
         return qnaBoardMapper.getTopTipList();
     }
@@ -388,6 +377,10 @@ public class QnaServiceImpl implements QnaService {
     public String getCategoryById(Long id) {
         return qnaBoardMapper.getCategoryById(id);
     }
-    
+
+    @Override
+    public MemberVO getMemberInfoFromMember(String nickname) {
+        return qnaBoardMapper.getMemberInfoFromMember(nickname);
+    }
 
 }
