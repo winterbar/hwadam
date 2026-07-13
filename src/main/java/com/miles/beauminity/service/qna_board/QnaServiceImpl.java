@@ -358,6 +358,29 @@ public class QnaServiceImpl implements QnaService {
     @Override
     public void insertReply(MasterBoardReplyVO masterBoardReplyVO) {
         communityReplyMapper.insertReply(masterBoardReplyVO);
+   
+        //===============================
+        // 포인트 지급 로직
+        //===============================
+        // 1. 게시글 작성자 조회 (MasterBoardMapper 사용)
+        String boardWriter = masterBoardMapper.getUsernameByBoardId(masterBoardReplyVO.getBoardId());
+        
+        // 2. 부모 댓글 작성자 조회 (대댓글일 경우)
+        String parentReplyWriter = null;
+        if (masterBoardReplyVO.getParentsReplyId() != null && masterBoardReplyVO.getParentsReplyId() != 0) {
+            parentReplyWriter = communityReplyMapper.getParentReplyWriter(masterBoardReplyVO.getParentsReplyId());
+        }
+
+        // 3. 포인트 지급 로직 (게시글 주인도 아니고, 부모 댓글 주인도 아닐 때)
+        boolean isNotBoardWriter = !boardWriter.equals(masterBoardReplyVO.getUsername());
+        boolean isNotParentWriter = (parentReplyWriter == null || !parentReplyWriter.equals(masterBoardReplyVO.getUsername()));
+
+        if (isNotBoardWriter && isNotParentWriter) {
+            MemberVO pointVO = new MemberVO();
+            pointVO.setUsername(masterBoardReplyVO.getUsername()); // 댓글 작성자
+            pointVO.setPoint(10); // 10포인트 지급
+            memberMapper.updatePoint(pointVO);
+        }
     }
 
     @Override

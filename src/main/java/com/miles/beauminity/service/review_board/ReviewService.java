@@ -61,7 +61,7 @@ public interface ReviewService { // 역할: 후기 게시판에 대한 서비스
 
     List<ReviewBoardVO> getTopReviewList();
     
-  
+    String calculateAgeGroup(String birthDay);
 }
 
     

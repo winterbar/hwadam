@@ -13,12 +13,14 @@ import com.miles.beauminity.mapper.feed.FeedFileMapper;
 import com.miles.beauminity.mapper.feed.FeedMapper;
 import com.miles.beauminity.mapper.feed.FeedReplyMapper;
 import com.miles.beauminity.mapper.feed.TagMapper;
+import com.miles.beauminity.mapper.login.MemberMapper;
 import com.miles.beauminity.util.FileUploadUtil;
 import com.miles.beauminity.vo.feed.FeedFileVO;
 import com.miles.beauminity.vo.feed.FeedLikeVO;
 import com.miles.beauminity.vo.feed.FeedReplyVO;
 import com.miles.beauminity.vo.feed.FeedVO;
 import com.miles.beauminity.vo.feed.TagVO;
+import com.miles.beauminity.vo.login.MemberVO;
 
 import lombok.AllArgsConstructor;
 
@@ -30,6 +32,7 @@ public class FeedServiceImpl implements FeedService {
     private final FeedFileMapper feedFileMapper;
     private final TagMapper tagMapper;
     private final FeedReplyMapper feedReplyMapper;
+    private final MemberMapper memberMapper;
 
     // 피드 내용 저장하기 
     @Override
@@ -61,6 +64,14 @@ public class FeedServiceImpl implements FeedService {
             tagMapper.tagFeed(feedId, tagId);
         }
 
+      
+
+        // 피드 등록 시 포인트 지급 로직
+        MemberVO pointVO = new MemberVO();
+        pointVO.setUsername(feedVO.getUsername()); // 게시글 작성자
+        pointVO.setPoint(20); // 지급할 포인트(20)
+        memberMapper.updatePoint(pointVO);
+        
     }
 
     // 태그 리스트 가져오기
@@ -217,8 +228,29 @@ public class FeedServiceImpl implements FeedService {
     // 댓글 및 대댓글 등록
     @Override
     public List<FeedReplyVO> getFeedReply(FeedReplyVO feedReplyVO) {
+
+        
         feedReplyMapper.postReply(feedReplyVO);
         feedReplyMapper.increaseReply(feedReplyVO);
+
+        //포인트 지급 로직
+        String feedWriter = feedMapper.getFeedWriter(feedReplyVO.getFeedId()); // 게시글 작성자 조회
+
+        String parentReplyWriter = null;
+        if(feedReplyVO.getParentsReplyId() != null && feedReplyVO.getParentsReplyId() != 0) {
+            parentReplyWriter = feedReplyMapper.getParentReplyWriter(feedReplyVO.getParentsReplyId());
+        }
+
+        boolean isNotFeedWriter = !feedWriter.equals(feedReplyVO.getUsername());
+        boolean isNotParentWriter = (parentReplyWriter == null || !parentReplyWriter.equals(feedReplyVO.getUsername()));
+
+        if (isNotFeedWriter && isNotParentWriter) {
+            MemberVO pointVO = new MemberVO();
+            pointVO.setUsername(feedReplyVO.getUsername()); // 댓글 작성자
+            pointVO.setPoint(10); // 10포인트
+            memberMapper.updatePoint(pointVO);
+        }
+
         return feedReplyMapper.getReply(feedReplyVO.getFeedId());
     }
 
