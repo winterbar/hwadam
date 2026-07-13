@@ -392,6 +392,18 @@ main{
     color:#fff;
 }
 
+.board-table tbody tr.empty-row:hover,
+.board-table tbody tr.empty-row:hover td{
+    background:#fff;
+    cursor:default;
+}
+
+.pagination .page-arrow{
+    font-size: 20px;
+    font-weight: 600;
+    padding-bottom: 4px;
+}
+
 /* 검색 */
 .search-group{
     display:flex;

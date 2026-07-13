@@ -14,4 +14,7 @@ public interface StoreMapper {
     // 전체 상품 조회
     List<StoreVO> selectStoreList();
     
+    //카테고리별 상품 조회
+    List<StoreVO> getStoreListCategory2(String category2);
+    
 } 
