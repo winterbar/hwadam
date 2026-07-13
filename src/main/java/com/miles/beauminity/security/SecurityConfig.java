@@ -36,7 +36,7 @@ public class SecurityConfig {
                 ) // 클라이언트 요청이 이것과 일치한다면
                 .permitAll() // 접근을 허가
                 .requestMatchers(
-                    "/review/write", "/review/edit/**",
+                    "/review/write", "/review/edit/**", "/cart",
                     "/community/**", "/reply/**", "/feed/**", "/mypage/**"
                 ).hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
