@@ -1,13 +1,11 @@
 package com.miles.beauminity.controller.store;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.miles.beauminity.service.store.StoreService;
@@ -24,7 +22,7 @@ public class StoreController {
 
     @GetMapping("/store")
     public String storeAll(
-            @RequestParam(required = false) String category2,
+            @RequestParam(name = "category2",required = false) String category2,
             Model model) {
 
         // 전체 상품 조회
