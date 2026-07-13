@@ -107,6 +107,8 @@
                             th:classappend="${param.category2 != null && #strings.toString(param.category2) == '애프터선'} ? 'active'">애프터선</button>
                 </div>
 
+                
+
                <div class="chips-container" data-group="클렌징"
                     th:classappend="${param.category1 != null && #strings.toString(param.category1) == '클렌징'} ? 'active'">
                     <button type="button" class="chip-item" data-cat1="클렌징" data-cat2="전체" th:classappend="${param.category2 == null || #strings.isEmpty(param.category2) || #strings.toString(param.category2) == '전체'} ? 'active'">전체 보기</button>

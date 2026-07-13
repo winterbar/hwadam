@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.miles.beauminity.mapper.board.MasterBoardFileMapper;
 import com.miles.beauminity.mapper.board.MasterBoardLikeMapper;
 import com.miles.beauminity.mapper.board.MasterBoardMapper;
-
+import com.miles.beauminity.mapper.login.MemberMapper;
 import com.miles.beauminity.mapper.review_board.ReviewBoardMapper;
 import com.miles.beauminity.mapper.review_board.ReviewBoardReplyMapper;
 import com.miles.beauminity.util.MasterFileUtil;
@@ -21,6 +21,7 @@ import com.miles.beauminity.vo.board.MasterBoardLikeVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.board.TypeOffsetVO;
+import com.miles.beauminity.vo.login.MemberVO;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
 import com.miles.beauminity.vo.review.ReviewReplyVO;
 import com.miles.beauminity.vo.review.ReviewSearchVO;
@@ -39,6 +40,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final MasterBoardFileMapper masterBoardFileMapper;
     private final ReviewBoardReplyMapper reviewBoardReplyMapper; 
     private final MasterBoardLikeMapper masterBoardLikeMapper;
+    private final MemberMapper memberMapper;
   
     // 역할: 후기 게시판 게시글 등록요청 서비스 처리
     @Override
@@ -65,6 +67,7 @@ public class ReviewServiceImpl implements ReviewService {
             
             // 4. 첨부 파일 처리 구역
             List<MultipartFile> fileList = reviewBoardVO.getReviewFiles();
+            int point = 15; // 기본 포인트 15점
 
             if (fileList != null && !fileList.isEmpty() && !fileList.get(0).isEmpty()) {
 
@@ -115,8 +118,17 @@ public class ReviewServiceImpl implements ReviewService {
 
                     // ReviewServiceImpl 에 void insertBoardFile 호출
                     masterBoardFileMapper.insertFile(fileVO);
+
+                   
                 }
+                // 파일이 있으면 30점
+                point = 30;
             }
+
+            MemberVO pointVO = new MemberVO();
+            pointVO.setUsername(reviewBoardVO.getUserName()); 
+            pointVO.setPoint(point);  
+            memberMapper.updatePoint(pointVO);
             
             return true; 
             
@@ -125,6 +137,10 @@ public class ReviewServiceImpl implements ReviewService {
             log.error("❌ [디버깅 에러 발생] 원인: {}", e.getMessage(), e);
             throw e; // 트랜잭션 자동 롤백 유도
         }
+
+        
+
+       
     }
 
     
