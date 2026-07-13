@@ -104,7 +104,9 @@ textarea.form-control {
     background-color: var(--pink-deep); /* 마우스를 올리면 조금 더 진한 핑크색으로 변경 */
 }
 
-/* 7. 이미지 첨부 드롭박스 영역 (점선 모양의 세련된 상자) */
+/*============================================== 
+7. 이미지 첨부 드롭박스 영역 (점선 모양의 세련된 상자) 
+================================================*/
 .file-upload-wrapper {
     width: 100%;
     padding: 40px 20px;     /* 드롭존 영역 내부 상하좌우 여백 */
@@ -185,6 +187,56 @@ textarea.form-control {
 
 .btn-submit:hover {
     background-color: var(--pink-deep); /* 호버 시 진한 핑크 */
+}
+
+/*==========================================
+ 미리보기 컨테이너 전체 레이아웃 (Grid 또는 Flex)
+ ===========================================*/
+
+.preview-container {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+/* 개별 이미지 래퍼 박스 (X 버튼 정렬을 위해 relative 필수) */
+.preview-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+/* 미리보기 이미지 스타일 */
+.preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 구겨지지 않고 꽉 차게 */
+    border-radius: 12px; /* 둥근 모서리 처리 */
+    border: 1px solid #ddd;
+}
+
+/* 우상단 삭제(X) 버튼 스타일 */
+.preview-item .delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 18px;
+    height: 18px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.preview-item .delete-btn:hover {
+    background-color: rgba(255, 0, 0, 0.8); /* 마우스 올리면 빨갛게 */
 }
 
 
@@ -366,8 +418,12 @@ textarea.form-control {
                         <span class="upload-icon">📁</span>
                         <span class="upload-text" id="uploadText">파일을 선택하거나 여기로 드래그하세요.</span>
                         <span class="upload-hint">JPG, PNG, GIF 파일만 업로드 가능합니다.</span>
-                        <input type="file" id="fileInput" name="reviewFiles" multiple>
+                        <input type="file" id="fileInput" name="reviewFiles" multiple accept="image/*">
                     </div>
+
+                    <div id="previewContainer" class="preview-container">
+                    </div>
+
                 </section>
 
                 <section class="form-row">
@@ -398,6 +454,10 @@ textarea.form-control {
         // 전역 파일 배열 객체 선언 (드롭과 클릭 추가 파일들을 누적해서 관리하기 위함)
         let globalFiles = [];  
 
+        // 용량 제한 기준 정의 (바이트 단위)
+        const MAX_SINGLE_SIZE = 10 * 1024 * 1024; // 10MB
+        const MAX_TOTAL_SIZE = 50 * 1024 * 1024; // 50MB
+
         // 등록 버튼 클릭 시 리뷰 대상 및 필수 데이터 검증 함수
         function submitReviewForm() {
             const targetTitle = document.getElementById("targetTitle");
@@ -405,6 +465,9 @@ textarea.form-control {
             const content = document.getElementById("content");
             const form = document.getElementById("reviewForm");
 
+
+
+            
             // 1. 리뷰 대상(제품) 선택 여부 검증
             if (!targetTitle.value || targetTitle.value.trim() === "") {
                 alert("리뷰 대상을 선택해주세요.");
@@ -580,8 +643,46 @@ textarea.form-control {
                 fileInput.files = dataTransfer.files; // 가상 객체의 파일 목록 데이터를 실제 input 태그에 주입
             }
 
+            // [추가] 전역 배열(globalFiles)을 돌며 화면에 미리보기 썸네일을 렌더링하는 함수
+            function renderPreviews() {
+                const container = document.getElementById("previewContainer");
+                if (!container) return; // 안전장치
 
-            // 5. 가장 중요: 파일을 드롭했을 때 처리하는 로직(데이터 주입 및 UI 변경 로직)
+                container.innerHTML = ""; // 기존에 그려진 썸네일들 싹 청소
+
+                globalFiles.forEach((file, index) => {
+                    const objectUrl = URL.createObjectURL(file);
+
+                    // 개별 이미지 카드 HTML 동적 생성
+                    const previewItem = document.createElement("div");
+                    previewItem.className = "preview-item";
+                    previewItem.innerHTML = `
+                        <img src="${objectUrl}" alt="미리보기" onload="URL.revokeObjectURL('${objectUrl}')">
+                        <button type="button" class="delete-btn" onclick="removeFile(${index})">X</button>
+                    `;
+                    container.appendChild(previewItem);
+                    
+                });
+            }
+
+            // [추가] X 버튼 클릭 시 특정 인덱스의 파일을 배열과 input에서 도려내는 함수
+            window.removeFile = function(index) {
+                globalFiles.splice(index, 1); // 전역 파일 배열에서 해당 데이터 삭제
+                
+                syncFilesToInput();  // input[type=file] 데이터 재동기화
+                updateUploadText(globalFiles); // 안내 글자 갱신
+                renderPreviews();    // 미리보기 화면 재출력 (인덱스가 재배정됨)
+            };
+
+
+   
+
+            // 현재 전역 배열(globalFiles)에 담긴 파일들의 총 용량을 계산하는 함수
+            function getGlobalTotalSize() {
+                return globalFiles.reduce((sum, file) => sum + file.size, 0);
+            }
+
+           // 5. 가장 중요: 파일을 드롭했을 때 처리하는 로직(데이터 주입 및 UI 변경 로직)
             dropZone.addEventListener('drop', function (e) {
                 preventDefaults(e); // 브라우저 가로채기 및 클릭 이벤트 간섭 완전 차단
                 dropZone.classList.remove('drag-over'); // 드롭 완료 시 스타일 제거
@@ -591,11 +692,62 @@ textarea.form-control {
 
                 if (newFiles && newFiles.length > 0) {
                   
+                    // ① 먼저 드롭된 모든 파일을 돌며 이미지 검증 및 데이터 주입 진행
                     for (let i = 0; i < newFiles.length; i++) {
-                        globalFiles.push(newFiles[i]);
-                    }
-                    syncFilesToInput(); // input 태그 데이터 갱신
+                        const file = newFiles[i];
+
+                        // 이미지 파일 유형 체크 (image/ 로 시작하지 않으면 스킵)
+                        if (!file.type.startsWith('image/')) {
+                            alert(` 이미지가 아닌 파일은 제외됩니다: ${file.name}`);
+                            continue;
+                        }
+                        
+                        // ① 이미지 파일 유형 체크
+                        if (!file.type.startsWith('image/')) {
+                            alert(`이미지가 아닌 파일은 제외됩니다: ${file.name}`);
+                            continue;
+                        }
+
+                        // ② [추가] 낱개 파일 10MB 초과 검증
+                        if (file.size > MAX_SINGLE_SIZE) {
+                            alert("10MB 초과 입니다.");
+                            continue; // 이 파일은 건너뛰고 다음 파일 검사
+                        }
+
+                        // ③ [추가] 총 업로드 용량 50MB 초과 검증
+                        // (현재 누적된 용량 + 지금 추가하려는 파일 용량)
+                        if (getGlobalTotalSize() + file.size > MAX_TOTAL_SIZE) {
+                            alert("50MB 초과입니다.");
+                            break; // 총량이 넘어가면 이후 파일들은 더 이상 추가하지 않고 루프 종료
+                        }
+
+
+                        // 검증을 통과한 이미지만 기존 파일 배열에 추적용으로 주입
+                        
+                        globalFiles.push(file);
+
+                        // 💥 [Base64 인코딩 핵심 구역 - 내부 유지]
+                        // 자바스크립트 내장 객체 FileReader 생성
+                        // const reader = new FileReader();
+
+                        // 파일을 Base64 문자열(Data URL)로 읽어들이기 시작
+                        // reader.readAsDataURL(file);
+
+                        // 인코딩이 완료되었을 때 실행되는 이벤트
+                        // reader.onload = function (event) {
+                            // event.target.result 안에 Base64 코드가 담깁니다.
+                           // const base64String = event.target.result;
+                            //console.log(`변환된 Base64 문자열 (${file.name}):`, base64String);
+                        //};
+
+
+
+                    } // 👈 💥 [중요] 꼬였던 for문 괄호를 여기서 닫아주어야 루프 내에서 file 변수가 안전하게 유지됩니다!
+                    
+                    // ② 모든 파일의 수집 및 FileReader 예약이 끝난 후 딱 한 번만 일괄 처리!
+                    syncFilesToInput();            // input 태그 데이터 갱신
                     updateUploadText(globalFiles); // 화면 글자 갱신
+                    renderPreviews();              // 📸 하단 바둑판 미리보기 컨테이너 출력!
                 }
             }, false);
 
@@ -603,8 +755,10 @@ textarea.form-control {
             dropZone.addEventListener('click', function (e) {
     
                 if (e.target === fileInput) {
-                    fileInput.click();
+                   return;
                 }
+
+                 fileInput.click();
             })
 
             // 7. 드롭 대신 클릭해서 일반적인 방법(파일 탐색기)으로 파일을 선택했을 때도 텍스트 변경 처리
@@ -614,11 +768,40 @@ textarea.form-control {
                 if (selectedFiles && selectedFiles.length > 0) {
                     // 파일 개수에 따른 화면 텍스트 분기 처리
                     for (let i = 0; i < selectedFiles.length; i++) {
-                        // 중복 유입 방지를 위해 전역 배열에 순차 등록
-                        globalFiles.push(selectedFiles[i]);
+                        
+                        const file = selectedFiles[i];
+
+                        // ① 이미지 파일 유형 체크
+                        if (!file.type.startsWith('image/')) {
+                            alert(`❌ 이미지가 아닌 파일은 제외됩니다`);
+                            continue; // 이미지가 아니면 패스!
+                        }
+
+                        // ① 이미지 파일 유형 체크
+                        if (!file.type.startsWith('image/')) {
+                            alert(`❌ 이미지가 아닌 파일은 제외됩니다`);
+                            continue; 
+                        }
+
+                        // ② [보완] 낱개 파일 10MB 초과 검증
+                        if (file.size > MAX_SINGLE_SIZE) {
+                            alert("10MB 초과 입니다.");
+                            continue;
+                        }
+
+                        // ③ [보완] 총 업로드 용량 50MB 초과 검증
+                        if (getGlobalTotalSize() + file.size > MAX_TOTAL_SIZE) {
+                            alert("50MB 초과입니다.");
+                            break; 
+                        }
+
+                        // ② 이미지인 경우에만 전역 배열과 임시 배열에 추가
+                        globalFiles.push(file);
+                        
                     }
                     syncFilesToInput();
                     updateUploadText(globalFiles);
+                    renderPreviews();
                 }
             });
         });

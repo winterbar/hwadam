@@ -2,6 +2,7 @@ package com.miles.beauminity.service.review_board;
 
 import java.util.List;
 
+import com.miles.beauminity.vo.board.MasterBoardLikeVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
 import com.miles.beauminity.vo.review.ReviewReplyVO;
@@ -44,6 +45,19 @@ public interface ReviewService { // 역할: 후기 게시판에 대한 서비스
 
     // 리뷰 게시글 댓글 삭제 명세
     void removeReply(Long replyId);
+
+    // 리뷰 게시글 좋아요 여부 확인 명세
+    boolean isLikeON(Long boardId, String username);
+
+    // 리뷰 게시글 좋아요 등록 명세
+    void insertLike(MasterBoardLikeVO vo);
+
+    // 리뷰 게시글 좋아요 취소 명세
+    void deleteLike(MasterBoardLikeVO vo);
+
+    // 리뷰 게시글 총 좋아요 갯수 조회 명세
+    int getLikeCount(Long boardId);
+
 
     List<ReviewBoardVO> getTopReviewList();
     

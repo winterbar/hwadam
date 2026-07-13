@@ -10,12 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.miles.beauminity.mapper.board.MasterBoardFileMapper;
+import com.miles.beauminity.mapper.board.MasterBoardLikeMapper;
 import com.miles.beauminity.mapper.board.MasterBoardMapper;
 
 import com.miles.beauminity.mapper.review_board.ReviewBoardMapper;
 import com.miles.beauminity.mapper.review_board.ReviewBoardReplyMapper;
 import com.miles.beauminity.util.MasterFileUtil;
 import com.miles.beauminity.vo.board.MasterBoardFileVO;
+import com.miles.beauminity.vo.board.MasterBoardLikeVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
 import com.miles.beauminity.vo.board.TypeOffsetVO;
@@ -36,9 +38,9 @@ public class ReviewServiceImpl implements ReviewService {
     private final MasterBoardMapper masterBoardMapper;
     private final MasterBoardFileMapper masterBoardFileMapper;
     private final ReviewBoardReplyMapper reviewBoardReplyMapper; 
-    
+    private final MasterBoardLikeMapper masterBoardLikeMapper;
   
-    // 역할: 후기 게시판 등록요청 서비스 처리
+    // 역할: 후기 게시판 게시글 등록요청 서비스 처리
     @Override
     @Transactional(rollbackFor = Exception.class) // 여러 데이블의 데이터 정보 무결성을 위해 트랜잭션 어노테이션 필수 부여
     public boolean registerReviewPost(ReviewBoardVO reviewBoardVO) {
@@ -65,6 +67,23 @@ public class ReviewServiceImpl implements ReviewService {
             List<MultipartFile> fileList = reviewBoardVO.getReviewFiles();
 
             if (fileList != null && !fileList.isEmpty() && !fileList.get(0).isEmpty()) {
+
+                // 💥 [추가 1] 용량 체크 및 이미지 확장자 검증 선행 처리
+                long maxPostSize = 50 * 1024 * 1024; // 50MB를 바이트(Byte) 단위로 계산
+                
+                for (MultipartFile file : fileList) {
+                    // ① 용량 검증 (50MB 초과 시 에러 발생시켜 롤백 유도)
+                    if (file.getSize() > maxPostSize) {
+                        throw new IllegalArgumentException("❌ 업로드 한도를 초과했습니다. 파일당 최대 50MB까지 가능합니다. (" + file.getOriginalFilename() + ")");
+                    }
+                    
+                    // ② 이미지 파일 검증 (Content-Type이 image/ 로 시작하는지 체크)
+                    String contentType = file.getContentType();
+                    if (contentType == null || !contentType.startsWith("image/")) {
+                        throw new IllegalArgumentException("❌ 이미지 파일만 업로드할 수 있습니다. (" + file.getOriginalFilename() + ")");
+                    }
+                }
+
                 // 파일 업로드 및 공용 파일 매퍼 호출 로직 위치
                 // 1. 물리 파일이 저장될 디스크 경로 지정
                 String uploadPath = "C:/upload/review";
@@ -77,6 +96,20 @@ public class ReviewServiceImpl implements ReviewService {
 
                 // 4. 반환된 파일 리스트를 루프 돌며 board_file 테이블에 순차 insert
                 for (MasterBoardFileVO fileVO : savedFileList) {
+
+                    // 💥 [추가 2] 파일명 특수문자 정화 로직 (알파벳, 숫자, ., _, - 제외하고 모두 제거)
+                    String originalName = fileVO.getOriginalName();
+                    if (originalName != null) {
+                        // 자바스크립트의 .replace(/[^a-zA-Z0-9._-]/g, "") 와 동일한 자바 정규식 작동
+                        String safeName = originalName.replaceAll("[^a-zA-Z0-9._-]", "");
+                        
+                        // 만약 특수문자가 싹 지워져서 파일명이 빈 값이 되었을 경우를 대비한 최소한의 안전장치
+                        if (safeName.trim().isEmpty() || safeName.startsWith(".")) {
+                            safeName = "cleaned_image_" + System.currentTimeMillis() + "_" + originalName;
+                        }
+                        fileVO.setOriginalName(safeName);
+                    }
+
                     // 마스터 게시글 등록 시 발급받은 고유 boardId를 파일 객체에 수동 매핑
                     fileVO.setBoardId(reviewBoardVO.getBoardId());
 
@@ -121,7 +154,7 @@ public class ReviewServiceImpl implements ReviewService {
     // 역할: 후기 게시글 수 조회 요청 서비스 처리
     @Override
     public int getTypeBoardCount(String type, PageVO pageVO, ReviewSearchVO searchVO) {
-        return masterBoardMapper.getTypeBoardCount(type);
+        return reviewBoardMapper.getTypeBoardCountWithSearch(type, searchVO);
     }
 
     // 역할: 후기게시판 게시글 상세보기 요청 서비스 처리
@@ -322,6 +355,36 @@ public class ReviewServiceImpl implements ReviewService {
 
 
     @Override
+    public boolean isLikeON(Long boardId, String username) {
+        // 팀원 맵퍼의 리턴 타입이 VO 객체였으므로, null이 아니면 좋아요가 눌린 상태(true)로 판단
+        MasterBoardLikeVO vo = new MasterBoardLikeVO();
+        vo.setBoardId(boardId);
+        vo.setUsername(username);
+        
+        List<MasterBoardLikeVO> resultList = masterBoardLikeMapper.isLikeON(vo);
+        
+        // 데이터가 DB에 있고, boardId값이 제대로 넘어왔을 때만 true를 반환
+        return resultList != null && !resultList.isEmpty();
+    }
+
+        @Override
+        public void insertLike(MasterBoardLikeVO vo) {
+            masterBoardLikeMapper.insertLike(vo);
+    }
+
+    @Override
+    public void deleteLike(MasterBoardLikeVO vo) {
+        masterBoardLikeMapper.deleteLike(vo);
+    }
+
+    @Override
+    public int getLikeCount(Long boardId) {
+        return masterBoardLikeMapper.getLikeCount(boardId);
+    }
+
+
+
+
     public List<ReviewBoardVO> getTopReviewList() {
         return reviewBoardMapper.getTopReviewList();
     }

@@ -49,8 +49,6 @@ commentList.addEventListener("click", function (e) {
 
         const replyId = Number(e.target.dataset.replyId);
 
-        console.log(replyId);
-
         if (confirm("정말 삭제하시겠습니까?")) {
             deleteReply(replyId);
             alert("삭제되었습니다.");
@@ -66,10 +64,6 @@ commentList.addEventListener("click", function (e) {
         const commentItem = e.target.closest(".comment-edit-item");
 
         const content = commentItem.querySelector(".comment-edit-content").value;
-
-        console.log(replyId);
-
-        console.log(content);
 
         updateReply(replyId, content);
 
@@ -151,8 +145,6 @@ function insertReply(content, parentsReplyId = null) {
 
             if (response.ok) {
 
-                console.log(response);
-
                 // 댓글 다시 조회
                 getReplyList();
 
@@ -192,8 +184,6 @@ function updateReply(replyId, content) {
 
             if (response.ok) {
 
-                console.log(response);
-
                 // 댓글 다시 조회
                 getReplyList();
 
@@ -227,8 +217,6 @@ function deleteReply(replyId) {
 
         if (response.ok) {
 
-            console.log(response);
-
             // 댓글 다시 조회
             getReplyList();
 
@@ -251,23 +239,19 @@ function getReplyList() {
     ).then(res => res.json())
         .then(data => {
 
-            drawReplyList(data.reList, data.nowUse);
+            drawReplyList(data.reList, data.nowUse, data.role);
             document.getElementById("replyCount").textContent = data.rCount;
 
         });
 }
 
 // 댓글목록 그리기
-function drawReplyList(replyList, logOn) {
-
-    console.log(replyList);
+function drawReplyList(replyList, logOn, role) {
 
     let html = "";
 
     const parentList =
         replyList.filter(reply => reply.parentsReplyId === null);
-
-    console.log(parentList);
 
     parentList.forEach(parent => {
 
@@ -277,7 +261,7 @@ function drawReplyList(replyList, logOn) {
 
         } else {
 
-            html += createReplyHtml(parent, replyList, logOn);
+            html += createReplyHtml(parent, replyList, logOn, role);
 
         }
 
@@ -287,7 +271,7 @@ function drawReplyList(replyList, logOn) {
 
         }
 
-        html += drawChildReply(parent.replyId, replyList, logOn);
+        html += drawChildReply(parent.replyId, replyList, logOn, role);
 
     });
 
@@ -295,7 +279,7 @@ function drawReplyList(replyList, logOn) {
 }
 
 // 자식들을 모두 그린다.
-function drawChildReply(parentId, replyList, logOn) {
+function drawChildReply(parentId, replyList, logOn, role) {
 
     let html = "";
 
@@ -311,7 +295,7 @@ function drawChildReply(parentId, replyList, logOn) {
 
         } else {
 
-            html += createReplyHtml(child, replyList, logOn);
+            html += createReplyHtml(child, replyList, logOn, role);
 
         }
 
@@ -321,7 +305,7 @@ function drawChildReply(parentId, replyList, logOn) {
 
         }
 
-        html += drawChildReply(child.replyId, replyList);
+        html += drawChildReply(child.replyId, replyList, logOn, role);
 
     });
 
@@ -341,7 +325,7 @@ function hasChildReply(reply, replyList) {
 
 // 댓글 html
 // 대댓이냐 아니냐를 가른다. 
-function createReplyHtml(reply, replyList, logOn) {
+function createReplyHtml(reply, replyList, logOn, role) {
 
     if (reply.deleted) {
 
@@ -394,7 +378,8 @@ function createReplyHtml(reply, replyList, logOn) {
                         data-reply-id="${reply.replyId}">
                         수정
                     </button>
-
+                    ` : ""}
+                    ${(logOn === reply.username || role === "ADMIN") ? `
                     <button
                         type="button"
                         class="btn-comment-delete"

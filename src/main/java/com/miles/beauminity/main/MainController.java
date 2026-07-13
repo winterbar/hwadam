@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.miles.beauminity.service.feed.FeedService;
 import com.miles.beauminity.service.qna_board.QnaService;
 import com.miles.beauminity.service.review_board.ReviewService;
+import com.miles.beauminity.service.store.StoreService;
 import com.miles.beauminity.vo.feed.FeedVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 import com.miles.beauminity.vo.review.ReviewBoardVO;
+import com.miles.beauminity.vo.store.StoreVO;
 
 import org.springframework.ui.Model;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class MainController {
     private final FeedService feedService;
     private final QnaService qnaService;
     private final ReviewService reviewService;
+    private final StoreService storeService;
     
     // 메인화면 이동
     @GetMapping("/")
@@ -47,8 +50,12 @@ public class MainController {
         List<QnaBoardCompleteVO> qnaList = qnaService.getRecentqnaList();
         model.addAttribute("qnaList",qnaList);
 
+        //인기 리뷰 가져오기
         List<ReviewBoardVO> reviewList = reviewService.getTopReviewList();
         model.addAttribute("reviewList",reviewList);
+
+        List<StoreVO> storeList = storeService.getStoreList();
+        model.addAttribute("storeList", storeList);
 
         return "main/index";
     }

@@ -27,6 +27,17 @@
 
     </select>
 
+    <!-- 입력된 아이디와 이메일로 가입된 계정이 있는지 확인 -->
+    <select id="findMemberByEmailUsername"
+            parameterType="com.miles.beauminity.vo.login.MemberVO"
+            resultType="long">
+
+        SELECT count(*)
+        FROM member
+        WHERE email = #{email} AND username = #{username}
+
+    </select>
+
     <!-- 로그인된 회원의 정보 검색 -->
     <select id="findLoginId"
             parameterType="String"
@@ -46,6 +57,17 @@
         SELECT password
         FROM member
         WHERE username = #{username}
+
+    </select>
+    
+    <!-- 회원의 이메일로 가입된 아이디, 가입일 검색-->
+    <select id="findSignedIdsByEmail"
+            parameterType="String"
+            resultType="com.miles.beauminity.vo.login.MemberVO">
+
+        SELECT username, signed_at
+        FROM member
+        WHERE email = #{email}
 
     </select>
     
