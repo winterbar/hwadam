@@ -166,4 +166,12 @@
         )
     </insert>
 
+    <!-- 회원등록 시 100point 지급하는 쿼리문 -->
+    <update id="updatePoint"
+            parameterType="com.miles.beauminity.vo.login.MemberVO">
+        UPDATE member 
+        SET point = point + #{point}
+        WHERE username = #{username}
+    </update>
+
 </mapper>
