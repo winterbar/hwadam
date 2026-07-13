@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.miles.beauminity.mapper.store.StoreMapper">
+
+<insert id="insertStore"
+        parameterType="com.miles.beauminity.vo.store.StoreVO">
+    INSERT INTO store (
+            product_id,
+            title,
+            lprice,
+            image,
+            brand,
+            category1,
+            category2
+        )
+        VALUES (
+            #{productId},
+            #{title},
+            #{lprice},
+            #{image},
+            #{brand},
+            #{category1},
+            #{category2}
+        )
+</insert>
+ <!-- 전체 상품 조회 -->
+    <select id="selectStoreList"
+            resultType="com.miles.beauminity.vo.store.StoreVO">
+
+        SELECT
+            product_id,
+            title,
+            lprice,
+            image,
+            brand,
+            category1,
+            category2
+        FROM store
+        ORDER BY product_id DESC
+
+    </select>
+</mapper>
