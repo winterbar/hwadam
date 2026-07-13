@@ -7,8 +7,14 @@ document.addEventListener("DOMContentLoaded", function(){
     .then(res =>res.json())
     .then(data =>{
 
-        if(!data.isOwner){
-            buttonField.hidden = true;
+        console.log(data.isOwner);
+        console.log(typeof data.isOwner);
+
+        if(data.isOwner === false){
+            buttonField.style.display = "none";
         }
+
+        console.log(buttonField.hidden);
+        console.log(buttonField.outerHTML);
     })
 });

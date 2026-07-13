@@ -96,7 +96,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
                 <div class="board-footer">
                     <ul class="pagination" id="pagination-container">
                         <li>
-                            <a th:if="${pageVO.prev}" th:href="@{/community(page=${pageVO.startPage-1})}">←</a>
+                            <a th:if="${pageVO.prev}" class="page-arrow" th:href="@{/community(page=${pageVO.startPage-1})}">‹</a>
                         </li>
                         <th:block
                             th:if="${pageVO.totalCount > 0}"
@@ -108,7 +108,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
                             </li>
                         </th:block>
                         <li>
-                            <a th:if="${pageVO.next}" th:href="@{/community(page=${pageVO.endPage+1})}">→</a>
+                            <a th:if="${pageVO.next}" class="page-arrow" th:href="@{/community(page=${pageVO.endPage+1})}">›</a>
                         </li>
                     </ul>
                         <div class="search-group">
