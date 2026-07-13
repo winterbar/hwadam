@@ -75,8 +75,34 @@
                     </div>
                     <div class="edit-item">
                         <span class="edit-label">퍼스널 컬러</span>
-                        <input type="text" name="personalColor" th:value="${memberInfo.member.personalColor}"
-                            class="edit-input" placeholder="퍼스널 컬러 (10자 이하)" required>
+                        <div class="edit-item">
+
+    <select name="personalColor"
+            class="edit-input"
+            required>
+
+        <option value="봄웜"
+                th:selected="${memberInfo.member.personalColor == '봄웜'}">
+            봄웜
+        </option>
+
+        <option value="가을웜"
+                th:selected="${memberInfo.member.personalColor == '가을웜'}">
+            가을웜
+        </option>
+
+        <option value="여름쿨"
+                th:selected="${memberInfo.member.personalColor == '여름쿨'}">
+            여름쿨
+        </option>
+
+        <option value="겨울쿨"
+                th:selected="${memberInfo.member.personalColor == '겨울쿨'}">
+            겨울쿨
+        </option>
+
+    </select>
+</div>
                     </div>
                 </div>
 
