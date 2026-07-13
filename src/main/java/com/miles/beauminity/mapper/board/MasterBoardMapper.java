@@ -62,5 +62,7 @@ public interface MasterBoardMapper {
     
     public void withdrawBoard(String username);
 
+   
+
 }
 
