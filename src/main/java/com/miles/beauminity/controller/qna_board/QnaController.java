@@ -24,6 +24,7 @@ import com.miles.beauminity.vo.board.MasterBoardFileVO;
 import com.miles.beauminity.vo.board.MasterBoardReplyVO;
 import com.miles.beauminity.vo.board.MasterBoardVO;
 import com.miles.beauminity.vo.board.PageVO;
+import com.miles.beauminity.vo.login.MemberVO;
 import com.miles.beauminity.vo.qna_board.CommunityReplyVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 
@@ -34,32 +35,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-
-
-
-
 @Controller
 @AllArgsConstructor
 public class QnaController {
     // 서비스를 받아옵니다.
     private final QnaService qnaService;
 
-    public String getUsername(){
-    
+    public String getUsername() {
+
         // 멤버 정보 가져오기
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
         String username = authentication.getName();
 
-        System.out.println("현재 로그인한 회원: "+username);
-        
+        System.out.println("현재 로그인한 회원: " + username);
+
         return username;
     }
 
-
     // 질문 게시판 이동
     // 여기에서 목록을 받아와야할 거 같은데...
-    // 파라미터에 값 받아오는 느낌인가 으음 
+    // 파라미터에 값 받아오는 느낌인가 으음
     @GetMapping("/community")
     public String getQnaList(@ModelAttribute PageVO pageVO, Model model) {
 
@@ -68,18 +64,18 @@ public class QnaController {
         // 게시판 종류 설정
         String type = "qna";
 
-        System.out.println("page: "+pageVO.getPage());
-        System.out.println("offset: "+pageVO.getOffset());
+        System.out.println("page: " + pageVO.getPage());
+        System.out.println("offset: " + pageVO.getOffset());
 
         // 전체 게시글수 확인
-        int count = qnaService.getTypeBoardCount(type); 
+        int count = qnaService.getTypeBoardCount(type);
         System.out.println("게시글의 수:" + count);
         pageVO.pageInfo(count);
 
-        // 파라미터 여러개는 페이징 적용 이후에 고려해보는 걸로. 
-        List<QnaBoardCompleteVO> qnaBoardList=qnaService.getTypeBoard(type, pageVO);
+        // 파라미터 여러개는 페이징 적용 이후에 고려해보는 걸로.
+        List<QnaBoardCompleteVO> qnaBoardList = qnaService.getTypeBoard(type, pageVO);
 
-        for(QnaBoardCompleteVO q : qnaBoardList )
+        for (QnaBoardCompleteVO q : qnaBoardList)
             System.out.println(q.toString());
 
         model.addAttribute("qnaS", qnaBoardList);
@@ -101,32 +97,31 @@ public class QnaController {
 
     // 질문 게시글을 포스트
     @PostMapping("/community")
-    public String postQna(@ModelAttribute MasterBoardVO masterBoardVO
-        , @RequestParam("category") String category, @RequestParam("files") MultipartFile[] files) {
-        
-        System.out.println("카테고리: "+category);
+    public String postQna(@ModelAttribute MasterBoardVO masterBoardVO, @RequestParam("category") String category,
+            @RequestParam("files") MultipartFile[] files) {
+
+        System.out.println("카테고리: " + category);
         masterBoardVO.setBoardType("qna");
 
-        // 로그인 중인 회원의 아이디를 저장 
+        // 로그인 중인 회원의 아이디를 저장
         masterBoardVO.setUsername(getUsername());
 
         // 0617 - 파일 메타데이터 저장 추가, 확인을 위해 순차적 출력 시도.
-        for(MultipartFile f:files){
+        for (MultipartFile f : files) {
             System.out.println(f.getOriginalFilename());
             System.out.println(f.getSize());
         }
-
 
         // vo에 모든 값이 잘 들어갔나? 테스트 해봅니다.
         System.out.println(masterBoardVO.toString());
 
         // 모든 값이 잘 들어가는 것을 확인했기 때문에 이제 서비스의 메서드로 넘기겠습니다. 한꺼번에 넘기는 것으로.
         qnaService.insertBoard(masterBoardVO, files, category);
-        
+
         return "redirect:/community";
     }
 
-    //게시글 이동 링크
+    // 게시글 이동 링크
     @GetMapping("/community/{id}")
     public String getQnaDetail(@PathVariable("id") Long id, Model model) {
 
@@ -139,31 +134,48 @@ public class QnaController {
 
         String nickname = qnaService.getNicknameByBoardId(id);
 
-        // 댓글수
-        
+        MemberVO memInfo = qnaService.getMemberInfoFromMember(nickname);
+
+        int birthYear = Integer.parseInt(memInfo.getBirthday().substring(0, 4));
+
+        System.out.println("생년 " + birthYear);
+
+        LocalDate today = LocalDate.now();
+
+        int thisYear = today.getYear();
+
+        int ageType = (thisYear - birthYear) - ((thisYear - birthYear) % 10);
+
+        String ageGroup;
+
+        if (ageType >= 40 && ageType <= 50) {
+            ageGroup = "40~50대";
+        } else if (ageType >= 20 && ageType < 40) {
+            ageGroup = "20~30대";
+        } else if (ageType >=10 && ageType < 20) {
+            ageGroup = "10대";
+        } else {
+            ageGroup = "기타";
+        }
 
         // 댓글 가져오기
         List<CommunityReplyVO> reList = qnaService.getReplyList(id);
 
         List<CommunityReplyVO> fReList = new ArrayList<>();
 
-        for(CommunityReplyVO c : reList){
+        for (CommunityReplyVO c : reList) {
             String reNickname = qnaService.getNicknameByBoardId(c.getBoardId());
             c.setNickname(reNickname);
             fReList.add(c);
         }
-
-        
-
-
 
         model.addAttribute("qna", qna);
         model.addAttribute("flist", qnaFiles);
         model.addAttribute("nickname", nickname);
         model.addAttribute("likecnt", qnaService.getLikeCount(id));
         model.addAttribute("rList", fReList);
-
-
+        model.addAttribute("infoTag", memInfo);
+        model.addAttribute("ageGroup", ageGroup);
 
         return "qna_board/detail";
     }
@@ -191,7 +203,7 @@ public class QnaController {
 
         MasterBoardVO qnaEdit = qnaService.getOneBoard(id);
 
-        // 수정하는 거에 사진도 같이 넣으려면 어떻게 해야하나 
+        // 수정하는 거에 사진도 같이 넣으려면 어떻게 해야하나
         List<MasterBoardFileVO> files = qnaService.getBoardFileById(id);
 
         String category = qnaService.getCategoryById(id);
@@ -200,31 +212,29 @@ public class QnaController {
         model.addAttribute("qnaFiles", files);
         model.addAttribute("category", category);
 
-        System.out.println("테스트: "+qnaEdit.toString());
+        System.out.println("테스트: " + qnaEdit.toString());
 
-        
         return "/qna_board/edit";
     }
 
-    //수정한 거... 보낸다~!
+    // 수정한 거... 보낸다~!
     @PostMapping("/community/update")
     public String postMethodName(@ModelAttribute MasterBoardVO masterBoardVO,
-                                 @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
-                                 @RequestParam("selectedFiles") MultipartFile[] files,
-                                 @RequestParam("category") String category
-    ) {
-        
-        // 모든 값이 잘 고쳐졌나 볼게요 
+            @RequestParam(value = "deletedFileIds", required = false) List<Long> deletedFileIds,
+            @RequestParam("selectedFiles") MultipartFile[] files,
+            @RequestParam("category") String category) {
+
+        // 모든 값이 잘 고쳐졌나 볼게요
         System.out.println(masterBoardVO.toString());
 
         if (deletedFileIds != null) {
-            for (Long fileId : deletedFileIds){
-                qnaService.deleteFilesForUpdate(fileId); 
+            for (Long fileId : deletedFileIds) {
+                qnaService.deleteFilesForUpdate(fileId);
             }
         }
 
         qnaService.updateBoard(masterBoardVO, files, category);
-        
+
         return "redirect:/community";
     }
 
@@ -249,35 +259,30 @@ public class QnaController {
 
     // // 게시글 검색 메서드
     // @PostMapping("/community/search")
-    // public String getSearchBoard(@RequestParam("searchStr") String str, @ModelAttribute PageVO pageVO, Model model) {
-        
-    //     System.out.println("현재 검색어: "+str);
+    // public String getSearchBoard(@RequestParam("searchStr") String str,
+    // @ModelAttribute PageVO pageVO, Model model) {
 
-    //     // 게시판 종류 설정
-    //     String type = "qna";
+    // System.out.println("현재 검색어: "+str);
 
-    //     // 전체 게시글수 확인
-    //     int count = qnaService.getCountSearchBoardByTitle(type, str); 
-    //     System.out.println("게시글의 수:" + count);
-    //     pageVO.pageInfo(count);
+    // // 게시판 종류 설정
+    // String type = "qna";
 
-    //     // 파라미터 여러개는 페이징 적용 이후에 고려해보는 걸로. 
-    //     List<QnaBoardCompleteVO> qnaBoardList=qnaService.getSearchBoard(type, str, pageVO);
+    // // 전체 게시글수 확인
+    // int count = qnaService.getCountSearchBoardByTitle(type, str);
+    // System.out.println("게시글의 수:" + count);
+    // pageVO.pageInfo(count);
 
-    //     for(QnaBoardCompleteVO q : qnaBoardList )
-    //         System.out.println(q.toString());
+    // // 파라미터 여러개는 페이징 적용 이후에 고려해보는 걸로.
+    // List<QnaBoardCompleteVO> qnaBoardList=qnaService.getSearchBoard(type, str,
+    // pageVO);
 
-    //     model.addAttribute("qnaS", qnaBoardList);
-    //     model.addAttribute("pageVO", pageVO);
+    // for(QnaBoardCompleteVO q : qnaBoardList )
+    // System.out.println(q.toString());
 
-        
-    //     return "/qna_board/list";
+    // model.addAttribute("qnaS", qnaBoardList);
+    // model.addAttribute("pageVO", pageVO);
+
+    // return "/qna_board/list";
     // }
-    
-    
 
-    
-    
-    
-    
 }

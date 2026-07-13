@@ -76,5 +76,16 @@
         WHERE reply_id = #{value}
     </update>
 
+    <!--부모 댓글의 사용자 아이디를 가져오기 위한 쿼리-->
+    <select id="getParentReplyWriter"
+            parameterType = "long"
+            resultType = "string">
+
+        SELECT username
+        FROM board_reply
+        WHERE reply_id = #{parentsReplyId}
+
+    </select>
+
 
 </mapper>

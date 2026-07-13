@@ -36,4 +36,6 @@ public interface FeedMapper {
 
     public void withdrawFeed(String username);
 
+    public String getFeedWriter(Long feedId);
+
 }

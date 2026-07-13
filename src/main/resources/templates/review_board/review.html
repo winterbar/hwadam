@@ -126,6 +126,20 @@
                     <button type="button" class="chip-item" data-cat1="클렌징" data-cat2="클렌징크림" th:classappend="${param.category2 != null && #strings.toString(param.category2) == '클렌징크림'} ? 'active'">클렌징크림</button>
                 </div>
 
+                <div class="chips-container" data-group="마스크/팩"
+                    th:classappend="${param.category1 != null && #strings.toString(param.category1) == '마스크/팩'} ? 'active'">
+                    <button type="button" class="chip-item" data-cat1="마스크/팩" data-cat2="전체" th:classappend="${param.category2 == null || #strings.isEmpty(param.category2) || #strings.toString(param.category2) == '전체'} ? 'active'">전체 보기</button>
+                    <button type="button" class="chip-item" data-cat1="마스크/팩" data-cat2="모델링팩" th:classappend="${#strings.toString(param.category2) == '모델링팩'} ? 'active'">모델링팩</button>
+                    <button type="button" class="chip-item" data-cat1="마스크/팩" data-cat2="필오프팩" th:classappend="${#strings.toString(param.category2) == '필오프팩'} ? 'active'">필오프팩</button>
+                    <button type="button" class="chip-item" data-cat1="마스크/팩" data-cat2="워시오프팩" th:classappend="${#strings.toString(param.category2) == '워시오프팩'} ? 'active'">워시오프팩</button>
+                    <button type="button" class="chip-item" data-cat1="마스크/팩" data-cat2="코팩" th:classappend="${#strings.toString(param.category2) == '코팩'} ? 'active'">코팩</button>
+                    <button type="button" class="chip-item" data-cat1="마스크/팩" data-cat2="수면팩" th:classappend="${#strings.toString(param.category2) == '수면팩'} ? 'active'">수면팩</button>
+                    <button type="button" class="chip-item" data-cat1="마스크/팩" data-cat2="마사지크림/젤" th:classappend="${#strings.toString(param.category2) == '마사지크림/젤'} ? 'active'">마사지크림/젤</button>
+                    <button type="button" class="chip-item" data-cat1="마스크/팩" data-cat2="마스크/팩세트" th:classappend="${#strings.toString(param.category2) == '마스크/팩세트'} ? 'active'">마스크/팩세트</button>
+                    <button type="button" class="chip-item" data-cat1="마스크/팩" data-cat2="시트팩" th:classappend="${#strings.toString(param.category2) == '시트팩'} ? 'active'">시트팩</button>
+                    <button type="button" class="chip-item" data-cat1="마스크/팩" data-cat2="패치" th:classappend="${#strings.toString(param.category2) == '패치'} ? 'active'">패치</button>
+                </div>
+
                 <div class="chips-container" data-group="메이크업"
                     th:classappend="${param.category1 != null && #strings.toString(param.category1) == '메이크업'} ? 'active'">
                     <button type="button" class="chip-item" data-cat1="메이크업" data-cat2="전체" th:classappend="${param.category2 == null || #strings.isEmpty(param.category2) || #strings.toString(param.category2) == '전체'} ? 'active'">전체 보기</button>
@@ -243,10 +257,17 @@
                                 th:src="@{|/upload/profile/${review.memberProfileSavedName}|}" 
                                 alt="프로필 이미지" class="profile-img"/>
                             <img th:unless="${review.memberProfilePath != null and !#strings.isEmpty(review.memberProfilePath)}"
-     th:src="@{/images/common/default-profile.png}"
-     alt="기본 프로필 이미지"
-     class="profile-img"/>
+                                th:src="@{/images/common/default-profile.png}"
+                                alt="기본 프로필 이미지"
+                                class="profile-img"/>
                             <span class="nickname" th:text="${review.nickName}">작성자 닉네임</span>
+
+                            <div class="user-tags">
+                                <span class="tag-skin" th:text="${review.skinType}">지성</span>
+                                <span class="tag-color" th:text="${review.personalColor}">봄웜</span>
+                                <span class="tag-age" th:text="${review.ageGroup}">10대</span>
+                            </div>
+
                         </div>
 
                         <div class="card-image-wrapper">
@@ -268,7 +289,7 @@
                             </div>
 
                             <div class="card-footer">
-                                <div class="rating-star">★ ★ ★ ★ ★</div>
+                                <div class="rating-star"></div>
                                 <div class="meta-info">
                                     <span>조회수 <span th:text="${review.viewCnt}">0</span></span>
                                     <span class="meta-divider">·</span>
@@ -299,7 +320,7 @@
                 </li>
 
                 <li th:if="${pageVO.next}">
-                    <a th:href="@{/review(page=${pageVO.endPage + 1}, category1=${param.category1}, category2=${param.category2}, sortType=${param.sortType})}">»</a>
+                    <a th:href="@{/review(page=${pageVO.endPage + 1}, category1=${searchVO.category1}, category2=${searchVO.category2}, sortType=${param.sortType})}">»</a>
                 </li>
             </ul>
 

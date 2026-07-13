@@ -2,6 +2,7 @@ package com.miles.beauminity.service.review_board;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -160,6 +161,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         for(ReviewBoardVO r : reviewList) {
             r.setNickName(masterBoardMapper.getNicknameByBoardId(r.getBoardId()));
+            r.setAgeGroup(calculateAgeGroup(r.getBirthday().toString()));
         } 
 
         return reviewList;
@@ -339,6 +341,26 @@ public class ReviewServiceImpl implements ReviewService {
     public void registerReply(ReviewReplyVO replyVO) {
         
         reviewBoardReplyMapper.saveReply(replyVO);
+
+           // 1. 게시글 작성자 조회 (MasterBoardMapper 사용)
+        String boardWriter = masterBoardMapper.getUsernameByBoardId(replyVO.getBoardId());
+        
+        // 2. 부모 댓글 작성자 조회 (대댓글일 경우)
+        String parentReplyWriter = null;
+        if (replyVO.getParentsReplyId() != null && replyVO.getParentsReplyId() != 0) {
+            parentReplyWriter = reviewBoardReplyMapper.getParentReplyWriter(replyVO.getParentsReplyId());
+        }
+
+        // 3. 포인트 지급 로직 (게시글 주인도 아니고, 부모 댓글 주인도 아닐 때)
+        boolean isNotBoardWriter = !boardWriter.equals(replyVO.getUserName());
+        boolean isNotParentWriter = (parentReplyWriter == null || !parentReplyWriter.equals(replyVO.getUserName()));
+
+        if (isNotBoardWriter && isNotParentWriter) {
+            MemberVO pointVO = new MemberVO();
+            pointVO.setUsername(replyVO.getUserName()); // 댓글 작성자
+            pointVO.setPoint(10); // 10포인트 지급
+            memberMapper.updatePoint(pointVO);
+        }
     }
 
     //역할: 게시글 댓글 조회
@@ -383,9 +405,9 @@ public class ReviewServiceImpl implements ReviewService {
         return resultList != null && !resultList.isEmpty();
     }
 
-        @Override
-        public void insertLike(MasterBoardLikeVO vo) {
-            masterBoardLikeMapper.insertLike(vo);
+    @Override
+    public void insertLike(MasterBoardLikeVO vo) {
+        masterBoardLikeMapper.insertLike(vo);
     }
 
     @Override
@@ -399,9 +421,26 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
 
-
-
     public List<ReviewBoardVO> getTopReviewList() {
         return reviewBoardMapper.getTopReviewList();
+    }
+
+    public String calculateAgeGroup(String birthday) {
+        if (birthday == null || birthday.length() < 4) {
+        return "나이 미상";
+        }
+        try {
+            int birthYear = Integer.parseInt(birthday.substring(0, 4));
+            
+            // 💥 핵심: 직접 2026을 적지 않고 시스템 시간을 가져옵니다.
+            int currentYear = LocalDate.now().getYear(); 
+            
+            int age = currentYear - birthYear + 1;
+            int ageGroup = (age / 10) * 10;
+            
+            return ageGroup + "대";
+        } catch (Exception e) {
+            return "나이 미상";
+        }
     }
 }
