@@ -31,7 +31,8 @@ public class SecurityConfig {
                 .requestMatchers("/", "/login",
                     "/register", "/chkid-dup/{username}", "/find/**",
                     "/css/**", "/images/**", "/js/**", "/api/**", "/upload/**",
-                    "/review", "/review/detail/**", "/community", "/community/{id}"
+                    "/review", "/review/detail/**", "/community", "/community/{id}",
+                    "/feed"
                 ) // 클라이언트 요청이 이것과 일치한다면
                 .permitAll() // 접근을 허가
                 .requestMatchers(
