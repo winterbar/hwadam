@@ -177,8 +177,6 @@ public class MemberServiceImpl implements MemberService {
 
         // 회원 정보
         memberInfo.setMember(member);
-        // 등급 이름
-        memberInfo.setGradeName(memberMapper.findGradeName(member.getGradeId()));
         // 프로필 사진 정보
         MyPageFileVO profile = memberProfileMapper.findMemberProfile(username);
         String filePath = "C:/upload/profile/" + profile.getSavedName();
