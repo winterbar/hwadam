@@ -174,12 +174,14 @@ public class QnaApiController {
 
         if (username == null || username.equals("anonymousUser")) {
             result.put("isOwner", false);
+            result.put("isLogOn", false);
             return ResponseEntity.ok(result);
         }
 
         boolean isOwner = username.equals(qnaService.getUsernameByBoardId(id));
 
         result.put("isOwner", isOwner);
+        result.put("isLogOn", true);
 
         return ResponseEntity.ok(result);
     }
