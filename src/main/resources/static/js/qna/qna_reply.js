@@ -1,6 +1,6 @@
 // 등록버튼 변수 생성
 const commentInsertBtn = document.getElementById('comment-submit');
-
+const commentArea = document.getElementById('comment-content');
 const boardId = Number(window.location.pathname.split("/").pop());
 
 // 수정 변수 선언
@@ -18,6 +18,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // 등록버튼 클릭 
 commentInsertBtn.addEventListener('click', () => {
+
+    if (commentArea.disabled === true){
+        return;
+    }
 
 
     // 내용을 가져온다
