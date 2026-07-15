@@ -97,17 +97,15 @@ public class AdminMemberServiceImpl implements AdminMemberService {
     // 화면에 출력하기 위한 텍스트 변경
     private void convertText(List<AdminMemberVO> members) {
         for(AdminMemberVO member : members) {
-            if(member.getRole().equals("USER")) {
+            if("USER".equals(member.getRole())) {
                 member.setRole("일반");
             } else {
                 member.setRole("관리자");
             }
 
-            if(member.getStatus().equals("normal")) {
+            if("normal".equals(member.getStatus())) {
                 member.setStatus("정상");
-            } else if(member.getStatus().equals("blocked")) {
-                member.setStatus("정지");
-            } else if(member.getStatus().equals("deleted")) {
+            } else {
                 member.setStatus("탈퇴");
             }
         }
