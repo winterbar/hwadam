@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     return headers;
   }
-    //좋아요 기능
+  //좋아요 기능
   function initLikeButtons() {
     document.querySelectorAll(".feed-like-btn").forEach(function (button) {
       const icon = button.querySelector(".feed-like-icon");
@@ -26,6 +26,10 @@ document.addEventListener("DOMContentLoaded", function () {
       button.addEventListener("click", function (event) {
         event.preventDefault();
         event.stopPropagation();
+        if (!isLoggedIn) {
+          location.href = "/login";
+          return;
+        }
 
         if (isRequesting) return;
 
@@ -94,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-  
+
   initLikeButtons();
 
 });

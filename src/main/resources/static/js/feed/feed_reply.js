@@ -75,6 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 댓글 / 답글 기능
   function initCommentArea() {
+    
     document.querySelectorAll(".feed-card").forEach(function (card) {
       const commentToggleBtn = card.querySelector(".feed-comment-toggle-btn");
       const commentBox = card.querySelector(".feed-comment-box");
@@ -154,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // 댓글 등록 / 답글 등록
       if (commentForm && commentInput) {
+        
         commentForm.addEventListener("submit", function (event) {
           event.preventDefault();
 
@@ -162,6 +164,10 @@ document.addEventListener("DOMContentLoaded", function () {
           const submitContent = commentInput.value.trim();
 
           if (!submitContent) return;
+          if (!isLoggedIn) {
+          location.href = "/login";
+          return;
+        }
 
           formData.set("replyContent", submitContent);
 
@@ -209,9 +215,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (commentList) {
         commentList.addEventListener("click", function (event) {
           const mentionEl = event.target.closest(".comment-mention");
-          const commentBubble = event.target.closest(
-            ".feed-comment-bubble, .comment-child-bubble",
-          );
+          const commentBubble = event.target.closest( ".feed-comment-bubble, .comment-child-bubble",);
 
           // 댓글 말풍선 클릭 시 답글 대상 설정
           if (commentBubble) {
