@@ -687,19 +687,35 @@
 
 
                   <!-- 좋아요 -->
-                  <button type="button" class="feed-like-btn"
-                    th:classappend="${feed.liked != null and feed.liked ? ' is-liked' : ''}"
-                    th:attr="data-liked=${feed.liked != null ? feed.liked : false}, data-like-count=${feed.likeCnt != null ? feed.likeCnt : 0}">
-
-                    <span class="feed-like-icon" th:text="${feed.liked != null and feed.liked ? '❤️' : '🤍'}">
-                      ♡
+                  <button type="button" class="feed-like-btn" th:classappend="${
+    #authentication.name != 'anonymousUser'
+    and feed.liked != null
+    and feed.liked
+    ? ' is-liked'
+    : ''
+  }" th:attr="
+    data-liked=${
+      #authentication.name != 'anonymousUser'
+      and feed.liked != null
+      and feed.liked
+    },
+    data-like-count=${
+      feed.likeCnt != null ? feed.likeCnt : 0
+    }
+  ">
+                    <span class="feed-like-icon" th:text="${
+      #authentication.name != 'anonymousUser'
+      and feed.liked != null
+      and feed.liked
+      ? '❤️'
+      : '🤍'
+    }">
+                      🤍
                     </span>
-
 
                     <span class="feed-like-count" th:text="${feed.likeCnt != null ? feed.likeCnt : 0}">
                       0
                     </span>
-
                   </button>
 
 
@@ -1218,6 +1234,14 @@
 
 
   <!-- 자바스크립트 -->
+  <script>
+    const loginUsername = document.body.dataset.loginUsername;
+
+    const isLoggedIn =
+      loginUsername &&
+      loginUsername !== "anonymousUser";
+  </script>
+
   <script th:src="@{/js/feed/feed_list.js}"></script>
   <script th:src="@{/js/feed/feed_like.js}"></script>
   <script th:src="@{/js/feed/feed_reply.js}"></script>
@@ -1225,167 +1249,7 @@
 
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
 
-      // 필터 영역
-      const filterArea = document.querySelector(".feed-filter-details");
-      const feedCards = document.querySelectorAll(".feed-card");
-
-      // 값 정리
-      function clean(value) {
-        return (value || "")
-          .replace(/\s/g, "")
-          .replace("웜톤", "웜")
-          .replace("쿨톤", "쿨")
-          .replace("피부", "")
-          .trim();
-      }
-
-      // 선택값 가져오기
-      function getSelectedValues(name) {
-        const values = [];
-
-        if (!filterArea) {
-          return values;
-        }
-
-        filterArea
-          .querySelectorAll('input[name="' + name + '"]:checked')
-          .forEach(function (input) {
-            values.push(clean(input.value));
-          });
-
-        return values;
-      }
-
-      // 필터 적용
-      function applyFilter() {
-        const personalColorList = getSelectedValues("personalColor");
-
-        const skinTypeList = getSelectedValues("skinType");
-
-        const ageGroupList = getSelectedValues("ageGroup");
-
-        feedCards.forEach(function (card) {
-          const cardPersonalColor =clean(card.dataset.personalColor);
-
-          const cardSkinType =clean(card.dataset.skinType);
-
-          const cardAgeGroup = clean(card.dataset.ageGroup);
-
-          const personalColorMatch =
-            personalColorList.length === 0 ||
-            personalColorList.includes(cardPersonalColor);
-
-          const skinTypeMatch =
-            skinTypeList.length === 0 ||
-            skinTypeList.includes(cardSkinType);
-
-          const ageGroupMatch =
-            ageGroupList.length === 0 ||
-            ageGroupList.includes(cardAgeGroup);
-
-          if (
-            personalColorMatch &&
-            skinTypeMatch &&
-            ageGroupMatch
-          ) {
-            card.style.display = "";
-          } else {
-            card.style.display = "none";
-          }
-        });
-      }
-
-      // 필터 변경
-      if (filterArea && feedCards.length > 0) {
-
-        filterArea.addEventListener("change", function (event) {
-          if (event.target.matches("input[type='checkbox']")) {
-            applyFilter();
-          }
-        });
-
-        const filterForm =
-          filterArea.querySelector(".feed-filter-panel");
-
-        // 필터 초기화
-        if (filterForm) {
-          filterForm.addEventListener("reset", function () {
-
-            setTimeout(function () {
-              feedCards.forEach(function (card) {
-                card.style.display = "";
-              });
-            }, 0);
-
-          });
-        }
-      }
-
-      // 공유 모달
-      const shareModal = document.getElementById("share-modal");
-      const shareCloseButton = document.getElementById("share-modal-close");
-      const shareUrlInput = document.getElementById("share-url-input");
-      const shareCopyButton = document.getElementById("share-copy-btn");
-      const shareButtons = document.querySelectorAll(".feed-share-btn");
-
-      if (shareModal) {
-
-        // 공유창 열기
-        shareButtons.forEach(function (button) {
-
-          button.addEventListener("click", function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            const feedId = button.dataset.feedId;
-
-            const shareUrl =
-              window.location.origin + "/feed/" + feedId;
-
-            if (shareUrlInput) {
-              shareUrlInput.value = shareUrl;
-            }
-
-            shareModal.classList.add("is-open");
-          });
-
-        });
-
-        // 공유창 닫기
-        if (shareCloseButton) {
-          shareCloseButton.addEventListener("click", function () {
-            shareModal.classList.remove("is-open");
-          });
-        }
-
-        // 바깥 영역 닫기
-        shareModal.addEventListener("click", function (event) {
-          if (event.target === shareModal) {
-            shareModal.classList.remove("is-open");
-          }
-        });
-
-        // 링크 복사
-        if (shareCopyButton && shareUrlInput) {
-
-          shareCopyButton.addEventListener("click", function () {
-            shareUrlInput.select();
-
-            document.execCommand("copy");
-
-            shareCopyButton.textContent = "완료";
-
-            setTimeout(function () {
-              shareCopyButton.textContent = "복사";
-            }, 1200);
-          });
-
-        }
-      }
-
-    });
   </script>
 </body>
 
