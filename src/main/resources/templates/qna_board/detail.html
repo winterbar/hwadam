@@ -26,7 +26,15 @@
                     <div class="meta-left">
                         <span class="meta-author" th:text="|${nickname} (${qna.username})|"></span>
                         <span class="meta-divider">|</span>
+<<<<<<< HEAD
                         <span class="meta-date" th:text="${qna.title}"></span>
+=======
+                        <div class="meta-tags">
+                            <span class="meta-tag" th:text="|[${infoTag.skinType}]|"></span>
+                            <span class="meta-tag" th:text="|[${infoTag.personalColor}]|"></span>
+                            <span class="meta-tag" th:text="|[${ageGroup}]|"></span>
+                        </div>
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
                     </div>
                     <div class="meta-right">
                         <span>조회수</span> <span th:text="${qna.viewCnt}"></span>

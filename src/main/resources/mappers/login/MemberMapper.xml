@@ -88,7 +88,10 @@
     
         INSERT INTO member(
             username,
+<<<<<<< HEAD
             grade_id,
+=======
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
             password,
             nickname,
             name,
@@ -100,7 +103,10 @@
             personal_color
         ) VALUES (
             #{username},
+<<<<<<< HEAD
             #{gradeId},
+=======
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
             #{password},
             #{nickname},
             #{name},

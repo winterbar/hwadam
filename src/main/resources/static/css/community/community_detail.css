@@ -57,6 +57,15 @@
 
 .meta-left{display:flex;gap:10px;align-items:center;}
 .meta-author{font-weight:700;color:#222;}
+<<<<<<< HEAD
+=======
+.meta-tag{
+    /* background:#fff8fb; */
+    color:#ff7ca2;
+    /* border:1px solid #ffd8e6; */
+    margin: 1px;
+}
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 
 .post-content{
   font-size:16px;

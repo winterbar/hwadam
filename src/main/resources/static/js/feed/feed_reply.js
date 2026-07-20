@@ -75,6 +75,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 댓글 / 답글 기능
   function initCommentArea() {
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
     document.querySelectorAll(".feed-card").forEach(function (card) {
       const commentToggleBtn = card.querySelector(".feed-comment-toggle-btn");
       const commentBox = card.querySelector(".feed-comment-box");
@@ -154,6 +158,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // 댓글 등록 / 답글 등록
       if (commentForm && commentInput) {
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
         commentForm.addEventListener("submit", function (event) {
           event.preventDefault();
 
@@ -162,6 +170,13 @@ document.addEventListener("DOMContentLoaded", function () {
           const submitContent = commentInput.value.trim();
 
           if (!submitContent) return;
+<<<<<<< HEAD
+=======
+          if (!isLoggedIn) {
+          location.href = "/login";
+          return;
+        }
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 
           formData.set("replyContent", submitContent);
 
@@ -209,9 +224,13 @@ document.addEventListener("DOMContentLoaded", function () {
       if (commentList) {
         commentList.addEventListener("click", function (event) {
           const mentionEl = event.target.closest(".comment-mention");
+<<<<<<< HEAD
           const commentBubble = event.target.closest(
             ".feed-comment-bubble, .comment-child-bubble",
           );
+=======
+          const commentBubble = event.target.closest( ".feed-comment-bubble, .comment-child-bubble",);
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 
           // 댓글 말풍선 클릭 시 답글 대상 설정
           if (commentBubble) {

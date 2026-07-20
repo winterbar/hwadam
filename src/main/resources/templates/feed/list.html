@@ -687,6 +687,7 @@
 
 
                   <!-- 좋아요 -->
+<<<<<<< HEAD
                   <button type="button" class="feed-like-btn"
                     th:classappend="${feed.liked != null and feed.liked ? ' is-liked' : ''}"
                     th:attr="data-liked=${feed.liked != null ? feed.liked : false}, data-like-count=${feed.likeCnt != null ? feed.likeCnt : 0}">
@@ -701,6 +702,24 @@
                     </span>
 
                   </button>
+=======
+
+<button type="button"
+        class="feed-like-btn"
+        th:data-feed-id="${feed.feedId}"
+        th:data-liked="${feed.liked == true ? 'true' : 'false'}"
+        th:data-like-count="${feed.likeCnt != null ? feed.likeCnt : 0}">
+
+  <span class="feed-like-icon">🤍</span>
+
+  <span class="feed-like-count"
+        th:text="${feed.likeCnt != null ? feed.likeCnt : 0}">
+    0
+  </span>
+
+</button>
+                    
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 
 
                   <!-- 댓글 -->
@@ -1218,11 +1237,23 @@
 
 
   <!-- 자바스크립트 -->
+<<<<<<< HEAD
+=======
+  <script>
+    const loginUsername = document.body.dataset.loginUsername;
+
+    const isLoggedIn =
+      loginUsername &&
+      loginUsername !== "anonymousUser";
+  </script>
+
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
   <script th:src="@{/js/feed/feed_list.js}"></script>
   <script th:src="@{/js/feed/feed_like.js}"></script>
   <script th:src="@{/js/feed/feed_reply.js}"></script>
   <script th:src="@{/js/feed/feed_tag.js}"></script>
 
+<<<<<<< HEAD
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -1387,6 +1418,8 @@
 
     });
   </script>
+=======
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 </body>
 
 </html>

@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class MemberVO {
     private String username;
-    private String gradeId = "lvl1";
     private String password;
     private String nickname;
     private String name;

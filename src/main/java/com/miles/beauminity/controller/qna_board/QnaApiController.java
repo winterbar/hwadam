@@ -1,6 +1,9 @@
 package com.miles.beauminity.controller.qna_board;
 
+<<<<<<< HEAD
 import java.time.LocalDate;
+=======
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +13,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+<<<<<<< HEAD
 import org.springframework.security.access.prepost.PostAuthorize;
+=======
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,7 +35,10 @@ import com.miles.beauminity.vo.login.MemberVO;
 import com.miles.beauminity.vo.qna_board.CommunityReplyVO;
 import com.miles.beauminity.vo.qna_board.QnaBoardCompleteVO;
 
+<<<<<<< HEAD
 import jakarta.servlet.http.HttpSession;
+=======
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -67,7 +76,11 @@ public class QnaApiController {
 
         String type = "qna";
 
+<<<<<<< HEAD
         int count = qnaService.getQnaCountByCategory(type, category);
+=======
+        int count = qnaService.getQnaCountByCategory(type, category, startDate, endDate, searchType, keyword);
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
         pageVO.pageInfo(count);
 
         System.out.println("페이지 정보:" + pageVO.toString());
@@ -75,6 +88,14 @@ public class QnaApiController {
         List<QnaBoardCompleteVO> filteredList = qnaService.getQnaBoardByCategory(type, pageVO, category, sort,
                 startDate, endDate, searchType, keyword);
 
+<<<<<<< HEAD
+=======
+        for (QnaBoardCompleteVO q : filteredList){
+            q.setReplyCnt(qnaService.getReplyCountByBoardId(q.getBoardId()));
+            System.out.println("게시글 정보"+q.toString());
+        }
+
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
         result.put("list", filteredList);
         result.put("pageInfo", pageVO);
 
@@ -90,7 +111,11 @@ public class QnaApiController {
 
         String username = getUsername();
 
+<<<<<<< HEAD
         if (username == null) {
+=======
+        if (username == null || username.equals("anonymousUser")) {
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
             result.put("isLikeOn", false);
             return ResponseEntity.ok(result);
         }
@@ -174,12 +199,20 @@ public class QnaApiController {
 
         if (username == null || username.equals("anonymousUser")) {
             result.put("isOwner", false);
+<<<<<<< HEAD
+=======
+            result.put("isLogOn", false);
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
             return ResponseEntity.ok(result);
         }
 
         boolean isOwner = username.equals(qnaService.getUsernameByBoardId(id));
 
         result.put("isOwner", isOwner);
+<<<<<<< HEAD
+=======
+        result.put("isLogOn", true);
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 
         return ResponseEntity.ok(result);
     }

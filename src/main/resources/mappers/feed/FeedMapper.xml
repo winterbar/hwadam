@@ -66,9 +66,13 @@ GROUP BY
     m.personal_color,
 
     mp.saved_name,
+<<<<<<< HEAD
     mp.file_path,
 
     fl_me.like_id
+=======
+    mp.file_path
+>>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 
 ORDER BY f.feed_id DESC
 </select>
