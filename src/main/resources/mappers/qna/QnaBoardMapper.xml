@@ -12,6 +12,7 @@
     <result property="nickname" column="nickname"/>
     <result property="createdAt" column="created_at"/>
     <result property="viewCnt" column="view_cnt"/>
+    <result property="replyCnt" column="reply_cnt"/>
 </resultMap>
 
     <!-- 게시글에 정보 등록 -->
@@ -31,7 +32,8 @@
             mb.title,
             m.nickname,
             mb.created_at,
-            mb.view_cnt
+            mb.view_cnt,
+            mb.reply_cnt
             FROM master_board mb
             INNER JOIN qna_board q
             ON mb.board_id = q.board_id
