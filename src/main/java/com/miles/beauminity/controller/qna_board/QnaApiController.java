@@ -72,6 +72,11 @@ public class QnaApiController {
         List<QnaBoardCompleteVO> filteredList = qnaService.getQnaBoardByCategory(type, pageVO, category, sort,
                 startDate, endDate, searchType, keyword);
 
+        for (QnaBoardCompleteVO q : filteredList){
+            q.setReplyCnt(qnaService.getReplyCountByBoardId(q.getBoardId()));
+            System.out.println("게시글 정보"+q.toString());
+        }
+
         result.put("list", filteredList);
         result.put("pageInfo", pageVO);
 
