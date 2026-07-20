@@ -174,7 +174,7 @@ button {
 }
 
 .feed-filter-bar.is-closed .feed-filter-inner {
-  display: none !important;
+  display: none ;
 }
 
 .feed-tag-btn {

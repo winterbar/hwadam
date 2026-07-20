@@ -66,9 +66,7 @@ GROUP BY
     m.personal_color,
 
     mp.saved_name,
-    mp.file_path,
-
-    fl_me.like_id
+    mp.file_path
 
 ORDER BY f.feed_id DESC
 </select>

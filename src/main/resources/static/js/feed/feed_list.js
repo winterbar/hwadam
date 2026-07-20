@@ -641,14 +641,52 @@ document.addEventListener("DOMContentLoaded", function () {
       caption.textContent =
         caption.textContent.trim();
     });
+    // 같은 feedId 피드 중복 제거
+function removeDuplicateFeedCards() {
+  const feedContainer =
+    document.getElementById(
+      "feed-list-container"
+    );
+
+  if (!feedContainer) return;
+
+  const seenFeedIds = new Set();
+
+  const feedCards =
+    Array.from(
+      feedContainer.querySelectorAll(
+        ".feed-card"
+      )
+    );
+
+  feedCards.forEach(function (card) {
+    const feedId =
+      card.dataset.feedId
+        ? card.dataset.feedId.trim()
+        : "";
+
+    if (!feedId) {
+      return;
+    }
+
+    if (seenFeedIds.has(feedId)) {
+      card.remove();
+      return;
+    }
+
+    seenFeedIds.add(feedId);
+  });
+}
 
   // 기능 실행
-  renderFeedContentAndLink();
-  renderFeedImages();
-  initFeedFilterToggle();
-  initFeedSortSelect();
-  initOwnerMoreMenus();
-  initMoreMenu();
-  initFeedDetailFilter();
-  initShareModal();
+ removeDuplicateFeedCards();
+
+renderFeedContentAndLink();
+renderFeedImages();
+initFeedFilterToggle();
+initFeedSortSelect();
+initOwnerMoreMenus();
+initMoreMenu();
+initFeedDetailFilter();
+initShareModal();
 });
