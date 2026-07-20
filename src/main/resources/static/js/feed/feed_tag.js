@@ -29,36 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   // 상단 해시태그 필터 영역 열기 / 닫기
-<<<<<<< HEAD
-  function toggleFeedFilter() {
-    if (!filterInner) return;
-
-    const isClosed =
-      filterInner.style.display === "none" || filterInner.style.display === "";
-
-    if (isClosed) {
-      filterInner.style.display = "flex";
-
-      if (filterBar) {
-        filterBar.classList.remove("is-closed");
-      }
-
-      if (filterToggleIcon) {
-        filterToggleIcon.innerText = "접기 －";
-      }
-    } else {
-      filterInner.style.display = "none";
-
-      if (filterBar) {
-        filterBar.classList.add("is-closed");
-      }
-
-      if (filterToggleIcon) {
-        filterToggleIcon.innerText = "펼치기 ＋";
-      }
-    }
-  }
-=======
 
 function toggleFeedFilter() {
 if (filterSummary) {
@@ -102,7 +72,6 @@ if (filterSummary) {
   );
 }
 }
->>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 
 
   // 선택한 해시태그에 해당하는 피드만 보여주기
@@ -159,20 +128,6 @@ if (filterSummary) {
   }
 
 
-<<<<<<< HEAD
-  //상단 해시태그 필터 버튼 클릭
-  if (filterSummary) {
-    filterSummary.addEventListener("click", toggleFeedFilter);
-
-    filterSummary.addEventListener("keydown", function (event) {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        toggleFeedFilter();
-      }
-    });
-  }
-=======
->>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 
   if (filterInner) {
     filterInner.addEventListener("click", function (event) {   

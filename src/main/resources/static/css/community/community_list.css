@@ -304,11 +304,7 @@ main{
     transition:.2s;
 }
 
-<<<<<<< HEAD
-.board-table tbody tr:hover{
-=======
 .board-table tbody tr:not(.empty-row):hover{
->>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
     background:var(--pink-soft);
 }
 

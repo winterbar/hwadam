@@ -1,9 +1,9 @@
 package com.miles.beauminity.controller.feed;
 
 import java.security.Principal;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,17 +14,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.miles.beauminity.mapper.feed.FeedMapper;
+
 import com.miles.beauminity.service.feed.FeedService;
 import com.miles.beauminity.vo.feed.FeedLikeVO;
 import com.miles.beauminity.vo.feed.FeedReplyVO;
 import com.miles.beauminity.vo.feed.FeedVO;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+
 
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 @AllArgsConstructor

@@ -174,11 +174,7 @@ button {
 }
 
 .feed-filter-bar.is-closed .feed-filter-inner {
-<<<<<<< HEAD
-  display: none !important;
-=======
   display: none ;
->>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 }
 
 .feed-tag-btn {

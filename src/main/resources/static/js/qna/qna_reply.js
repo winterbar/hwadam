@@ -1,10 +1,6 @@
 // 등록버튼 변수 생성
 const commentInsertBtn = document.getElementById('comment-submit');
-<<<<<<< HEAD
-
-=======
 const commentArea = document.getElementById('comment-content');
->>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 const boardId = Number(window.location.pathname.split("/").pop());
 
 // 수정 변수 선언
@@ -23,13 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
 // 등록버튼 클릭 
 commentInsertBtn.addEventListener('click', () => {
 
-<<<<<<< HEAD
-=======
     if (commentArea.disabled === true){
         return;
     }
 
->>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 
     // 내용을 가져온다
     const content = document.getElementById('comment-content').value.trim();

@@ -12,10 +12,7 @@
     <result property="nickname" column="nickname"/>
     <result property="createdAt" column="created_at"/>
     <result property="viewCnt" column="view_cnt"/>
-<<<<<<< HEAD
-=======
     <result property="replyCnt" column="reply_cnt"/>
->>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 </resultMap>
 
     <!-- 게시글에 정보 등록 -->
@@ -35,12 +32,8 @@
             mb.title,
             m.nickname,
             mb.created_at,
-<<<<<<< HEAD
-            mb.view_cnt
-=======
             mb.view_cnt,
             mb.reply_cnt
->>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
             FROM master_board mb
             INNER JOIN qna_board q
             ON mb.board_id = q.board_id
@@ -105,16 +98,6 @@
 
     <!-- 게시글 수 확인 -->
     <select id="getQnaCountByCategory"
-<<<<<<< HEAD
-            parameterType="com.miles.beauminity.vo.board.TypeOffsetVO"
-            resultType="Int">
-        SELECT COUNT(*)
-            FROM master_board m
-            INNER JOIN
-            qna_board q
-            ON m.board_id = q.board_id
-            WHERE q.category=#{category} AND m.board_type = #{type} AND deleted = 0
-=======
             resultType="Int">
         SELECT COUNT(*)
             FROM master_board mb
@@ -159,7 +142,6 @@
                     </otherwise>
                 </choose>
             </if>
->>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
     </select>
 
     <!-- 카테고리만 따로... 더 좋은 방법 없을까? -->
@@ -212,8 +194,6 @@
         ORDER BY mb.created_at DESC
     </select>
 
-<<<<<<< HEAD
-=======
     <!-- 게시글에 피부타입, 퍼스널컬러, 나이대를 가져오기 위해 멤버 테이블에서 조회  -->
     <select id="getMemberInfoFromMember"
             parameterType="String"
@@ -223,6 +203,5 @@
         WHERE nickname = #{value}
     </select>
 
->>>>>>> 0d35ef02876eefeac7946681f4dd3e4770293f9e
 
 </mapper>
