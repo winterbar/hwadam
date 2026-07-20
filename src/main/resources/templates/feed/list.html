@@ -687,36 +687,22 @@
 
 
                   <!-- 좋아요 -->
-                  <button type="button" class="feed-like-btn" th:classappend="${
-    #authentication.name != 'anonymousUser'
-    and feed.liked != null
-    and feed.liked
-    ? ' is-liked'
-    : ''
-  }" th:attr="
-    data-liked=${
-      #authentication.name != 'anonymousUser'
-      and feed.liked != null
-      and feed.liked
-    },
-    data-like-count=${
-      feed.likeCnt != null ? feed.likeCnt : 0
-    }
-  ">
-                    <span class="feed-like-icon" th:text="${
-      #authentication.name != 'anonymousUser'
-      and feed.liked != null
-      and feed.liked
-      ? '❤️'
-      : '🤍'
-    }">
-                      🤍
-                    </span>
 
-                    <span class="feed-like-count" th:text="${feed.likeCnt != null ? feed.likeCnt : 0}">
-                      0
-                    </span>
-                  </button>
+<button type="button"
+        class="feed-like-btn"
+        th:data-feed-id="${feed.feedId}"
+        th:data-liked="${feed.liked == true ? 'true' : 'false'}"
+        th:data-like-count="${feed.likeCnt != null ? feed.likeCnt : 0}">
+
+  <span class="feed-like-icon">🤍</span>
+
+  <span class="feed-like-count"
+        th:text="${feed.likeCnt != null ? feed.likeCnt : 0}">
+    0
+  </span>
+
+</button>
+                    
 
 
                   <!-- 댓글 -->
@@ -1247,10 +1233,6 @@
   <script th:src="@{/js/feed/feed_reply.js}"></script>
   <script th:src="@{/js/feed/feed_tag.js}"></script>
 
-
-  <script>
-
-  </script>
 </body>
 
 </html>

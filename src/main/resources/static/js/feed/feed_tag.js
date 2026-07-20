@@ -29,34 +29,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   // 상단 해시태그 필터 영역 열기 / 닫기
-  function toggleFeedFilter() {
-    if (!filterInner) return;
 
-    const isClosed =
-      filterInner.style.display === "none" || filterInner.style.display === "";
+function toggleFeedFilter() {
+if (filterSummary) {
+  filterSummary.addEventListener(
+    "click",
+    function (event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
 
-    if (isClosed) {
-      filterInner.style.display = "flex";
+      const isClosed = filterBar.classList.contains("is-closed");
 
-      if (filterBar) {
+      if (isClosed) {
         filterBar.classList.remove("is-closed");
-      }
 
-      if (filterToggleIcon) {
+        filterInner.style.removeProperty("display");
+        filterInner.style.setProperty("display", "flex", "important");
+
         filterToggleIcon.innerText = "접기 －";
-      }
-    } else {
-      filterInner.style.display = "none";
-
-      if (filterBar) {
+      } else {
         filterBar.classList.add("is-closed");
-      }
 
-      if (filterToggleIcon) {
+        filterInner.style.removeProperty("display");
+        filterInner.style.setProperty("display", "none", "important");
+
         filterToggleIcon.innerText = "펼치기 ＋";
       }
-    }
-  }
+    },
+    true
+  );
+
+  filterSummary.addEventListener(
+    "keydown",
+    function (event) {
+      if (event.key !== "Enter" && event.key !== " ") return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      filterSummary.click();
+    },
+    true
+  );
+}
+}
 
 
   // 선택한 해시태그에 해당하는 피드만 보여주기
@@ -113,17 +128,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  //상단 해시태그 필터 버튼 클릭
-  if (filterSummary) {
-    filterSummary.addEventListener("click", toggleFeedFilter);
-
-    filterSummary.addEventListener("keydown", function (event) {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        toggleFeedFilter();
-      }
-    });
-  }
 
   if (filterInner) {
     filterInner.addEventListener("click", function (event) {   
