@@ -73,8 +73,10 @@ public class QnaController {
         // 파라미터 여러개는 페이징 적용 이후에 고려해보는 걸로.
         List<QnaBoardCompleteVO> qnaBoardList = qnaService.getTypeBoard(type, pageVO);
 
-        for (QnaBoardCompleteVO q : qnaBoardList)
+        for (QnaBoardCompleteVO q : qnaBoardList) {
             System.out.println(q.toString());
+            q.setReplyCnt(qnaService.getReplyCountByBoardId(q.getBoardId()));
+        }
 
         model.addAttribute("qnaS", qnaBoardList);
         model.addAttribute("pageVO", pageVO);
@@ -150,7 +152,7 @@ public class QnaController {
             ageGroup = "40~50대";
         } else if (ageType >= 20 && ageType < 40) {
             ageGroup = "20~30대";
-        } else if (ageType >=10 && ageType < 20) {
+        } else if (ageType >= 10 && ageType < 20) {
             ageGroup = "10대";
         } else {
             ageGroup = "기타";
