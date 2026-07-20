@@ -35,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-// @Transactional(readOnly = true)
+@Transactional(readOnly = true)
 public class MemberServiceImpl implements MemberService {
 
     private final MemberMapper memberMapper;
@@ -80,8 +80,8 @@ public class MemberServiceImpl implements MemberService {
     // member 테이블엔 회원 정보, member_profile에는 프로필 사진 정보
     // member와 member_profile은 식별 관계로 member 테이블에 튜플이 정상적으로 추가 되어야
     // member_profile에 튜플을 추가할 수 있어 트랜잭션 제어 처리로 구현
-    @Override
     @Transactional(rollbackFor = Exception.class) // RunTimeException 외에도 모든 예외를 감지
+    @Override
     public void registerMember(MemberVO memberVO) {
         // 아이디를 소문자로 변환
         if (memberVO.getUsername() != null) {
@@ -107,6 +107,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 사용자의 회원 정보 수정
+    @Transactional
     @Override
     public boolean updateMember(MemberVO memberVO) {
         int updated = memberMapper.updateMember(memberVO);
@@ -131,6 +132,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 사용자의 계정 비밀번호 수정
+    @Transactional
     @Override
     public boolean updatePassword(MemberVO memberVO) {
         // 변경할 패스워드 암호화
@@ -142,6 +144,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 사용자의 프로필 사진 수정
+    @Transactional
     @Override
     public void updateMemberProfile(CustomUserDetails loginMember, MultipartFile file) {
         // 등록한 이미지가 존재할 경우 해당 이미지 삭제
@@ -159,6 +162,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 사용자의 프로필 사진을 기본 프로필로 수정
+    @Transactional
     @Override
     public void resetMemberProfile(String username) {
         // 등록한 이미지가 존재할 경우 해당 이미지 삭제
