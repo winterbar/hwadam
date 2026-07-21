@@ -49,6 +49,7 @@ LEFT JOIN feed_like fl_all
 
 LEFT JOIN feed_like fl_me
     ON f.feed_id = fl_me.feed_id
+    AND fl_me.username = #{username}
 
 WHERE f.deleted = 0
 
@@ -146,6 +147,7 @@ LEFT JOIN feed_like fl_all
 
 LEFT JOIN feed_like fl_me
     ON f.feed_id = fl_me.feed_id
+    AND fl_me.username = #{username}
     
 
 WHERE f.deleted = 0
